@@ -1,0 +1,23 @@
+services:
+  backend:
+    build:
+      context: ./packages/backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      PORT: "8000"
+      JWT_SECRET: ${JWT_SECRET:-secreto-solo-para-docker-local}
+      JWT_EXPIRES_IN: 7d
+      # Vacío = cualquiera. Expo Go no envía cabecera Origin, así que no la necesita.
+      ALLOWED_ORIGINS: ""
+      # Sin MONGO_URI: el back levanta MongoDB en memoria dentro del contenedor.
+      MONGO_URI: ""
+      INTERVALO_JOBS_MS: "60000"
+      UPLOADS_DIR: uploads
+    volumes:
+      # Cachea el binario de MongoDB que descarga mongodb-memory-server en el primer arranque.
+      - mongodb_binaries:/home/node/.cache/mongodb-binaries
+
+volumes:
+  mongodb_binaries:

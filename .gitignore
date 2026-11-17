@@ -1,0 +1,11 @@
+node_modules/
+/packages/**/node_modules/
+.env
+.env*.local
+.expo/
+uploads/
+coverage/
+dist/
+web-build/
+npm-debug.*
+.DS_Store

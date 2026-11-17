@@ -1,0 +1,229 @@
+@startuml DiagramaClasesDominio
+title Diagrama de clases del dominio — AI Ticket It
+
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+hide empty members
+
+enum Roles {
+  COMPRADOR
+  ORGANIZADOR
+}
+
+enum EstadoCompra {
+  PENDIENTE
+  CONFIRMADA
+  UTILIZADA
+  CANCELADA
+  REEMBOLSADA
+}
+
+enum MotivoCancelacion {
+  CANCELADA_POR_COMPRADOR
+  VENCIDA
+}
+
+enum TipoMultimedia {
+  imagen
+  video
+}
+
+abstract class Persistible {
+  activo : Boolean
+  fechaModificacion : Date
+  modificadoPor : String
+  --
+  + darDeBaja(usuarioActual, reloj?) : void
+  + darDeAlta(usuarioActual, reloj?) : void
+}
+
+class Usuario {
+  id : String
+  nombre : String
+  apellido : String
+  email : String
+  passwordHash : String
+  rol : Roles
+  favoritos : String [0..*]
+  puntajePromedio : Number <<solo ORGANIZADOR>>
+  cantidadResenias : Integer <<solo ORGANIZADOR>>
+  --
+  + agregarFavorito(eventoId) : void
+  + quitarFavorito(eventoId) : void
+  + esFavorito(eventoId) : Boolean
+  + registrarResenia(puntuacion : Number) : void
+}
+
+class Categoria {
+  id : String
+  nombre : String
+  descripcion : String
+}
+
+class TipoEntrada {
+  id : String
+  nombre : String
+  descripcion : String
+  precio : Number
+  cupo : Integer
+  disponibles : Integer
+  / vendidas : Integer
+  --
+  + hayCupoPara(cantidad) : Boolean
+  + reservar(cantidad) : void
+  + liberar(cantidad) : void
+}
+
+class Multimedia <<value>> {
+  ruta : String
+  tipo : TipoMultimedia
+  alt : String
+}
+
+class AmpliacionDescripcion <<value>> {
+  texto : String
+  fecha : Date
+}
+
+class Evento {
+  id : String
+  nombre : String
+  descripcion : String {readOnly}
+  ampliacionesDescripcion : AmpliacionDescripcion [0..*]
+  fecha : Date
+  lugar : String
+  tiposEntrada : TipoEntrada [1..*]
+  multimedia : Multimedia [0..*]
+  / precioMinimo : Number
+  --
+  + {static} crear(datos, reloj) : Evento
+  + yaOcurrio(reloj) : Boolean
+  + tuPrecioEstaEntre(min?, max?) : Boolean
+  + buscarTipoEntrada(id) : TipoEntrada
+  + editar(cambios, reloj) : void
+  + agregarMultimedia(items, reloj) : void
+  + quitarMultimedia(ruta, reloj) : void
+  + agregarTipoEntrada(tipo, reloj) : void
+  + ampliarDescripcion(texto, reloj) : void
+  + finalizar(usuarioSistema, reloj) : void
+}
+
+class CambioEstadoCompra {
+  estadoAnterior : EstadoCompra
+  estadoNuevo : EstadoCompra
+  quien : {id, nombre, rol | SISTEMA}
+  fechaHora : Date
+  detalle : String
+}
+
+class Mensaje {
+  id : String
+  usuarioId : String
+  usuarioNombre : String
+  rol : String
+  mensaje : String [1..1000]
+  enviado : Date
+}
+
+class Compra {
+  id : String
+  tipoEntradaNombre : String
+  precioUnitario : Number
+  cantidad : Integer [1..10]
+  total : Number
+  estado : EstadoCompra
+  historial : CambioEstadoCompra [1..*]
+  mensajes : Mensaje [0..*]
+  fechaCompra : Date
+  fechaLimitePago : Date
+  motivoCancelacion : MotivoCancelacion
+  reembolsoPendiente : Boolean
+  fechaLimiteReembolso : Date
+  --
+  + {static} crear(comprador, evento, tipoEntradaId, cantidad, reloj) : Compra
+  + pagar(quien, reloj) : void
+  + cancelar(evento, quien, reloj) : void
+  + vencer(evento, reloj) : void
+  + reembolsar(quien, reloj) : void
+  + reembolsarAutomaticamente(reloj) : void
+  + marcarUtilizada(evento, reloj) : void
+  + diasParaElEvento(eventoFecha, reloj) : Integer
+  + puedeCancelar(eventoFecha, reloj) : Boolean
+  + puedePagar(reloj) : Boolean
+  + puedeReseniar(usuarioId) : Boolean
+  + crearResenia(comprador, puntuacion, detalle, reloj) : Resenia
+  + registrarResenia(resenia) : void
+  + agregarMensaje(usuario, texto, reloj) : Mensaje
+  - actualizarEstado(accion, quien, detalle, reloj) : void
+}
+
+class Resenia {
+  id : String
+  compradorNombre : String
+  tipoEntradaNombre : String
+  puntuacion : Number [1..5, paso 0,5]
+  detalle : String [0..1000]
+  fecha : Date
+}
+
+class Notificacion {
+  id : String
+  tipo : String
+  titulo : String
+  mensaje : String
+  datos : {compraId?, eventoId?}
+  fecha : Date
+  leida : Boolean
+  --
+  + marcarLeida() : void
+}
+
+class Recomendacion <<module>> {
+  + {static} categoriasPreferidas(eventosFavoritos, maxCategorias = 3) : {categoriaId, cantidad, peso} [0..*]
+  + {static} puntajeRecomendacion(evento, preferidas) : Number
+  + {static} ordenarRecomendados(eventos, preferidas) : Evento [0..*]
+}
+
+Persistible <|-- Usuario
+Persistible <|-- Categoria
+Persistible <|-- Evento
+Persistible <|-- Compra
+Persistible <|-- Resenia
+Persistible <|-- Notificacion
+
+Usuario --> Roles
+Usuario "1" o-- "0..*" Evento : favoritos >
+Evento "0..*" --> "1" Categoria
+Evento "0..*" --> "1" Usuario : organizador >
+Evento "1" *-- "1..*" TipoEntrada
+Evento "1" *-- "0..*" Multimedia
+Evento "1" *-- "0..*" AmpliacionDescripcion
+Multimedia --> TipoMultimedia
+
+Compra "0..*" --> "1" Usuario : comprador >
+Compra "0..*" --> "1" Evento
+Compra "0..*" --> "1" TipoEntrada
+Compra --> EstadoCompra
+Compra --> MotivoCancelacion
+Compra "1" *-- "1..*" CambioEstadoCompra
+Compra "1" *-- "0..*" Mensaje
+Compra "1" -- "0..1" Resenia
+
+Resenia "0..*" --> "1" Usuario : organizador >
+Notificacion "0..*" --> "1" Usuario : destinatario >
+
+Recomendacion ..> Evento
+Recomendacion ..> Categoria
+
+note right of Compra
+  Máquina de estados (toda transición pasa por actualizarEstado):
+  — → PENDIENTE : crear (reserva cupo)
+  PENDIENTE → CONFIRMADA : pagar (ahora < fechaLimitePago)
+  PENDIENTE → CANCELADA : cancelar (libera cupo)
+  PENDIENTE → CANCELADA (VENCIDA) : vencer (ahora >= fechaLimitePago)
+  CONFIRMADA → CANCELADA : cancelar (reembolso pendiente 24 h)
+  CANCELADA → REEMBOLSADA : reembolsar / reembolsarAutomaticamente
+  CONFIRMADA → UTILIZADA : marcarUtilizada (ahora >= evento.fecha)
+end note
+
+@enduml
