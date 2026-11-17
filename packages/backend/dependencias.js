@@ -66,6 +66,8 @@ export const eventosService = new EventosService({
   recomendacionesService,
   vistasEventos,
   reloj,
+  // comprasService se crea más abajo: se resuelve recién al cancelar un evento.
+  alCancelarEvento: (evento, quien) => comprasService.resolverCancelacionDeEvento(evento, quien),
 });
 export const favoritosService = new FavoritosService({
   usuariosRepository,

@@ -269,6 +269,32 @@ describe("Multimedia", () => {
     expect(servido.headers["content-type"]).toBe("image/png");
   });
 
+  test("un video sin texto alternativo → 400; con texto alternativo se sube", async () => {
+    const sinAlt = await request(app)
+      .post(`/api/eventos/${evento.id}/multimedia`)
+      .set(await auth(LUCIA))
+      .attach("archivos", Buffer.from("video"), {
+        filename: "ensayo.mp4",
+        contentType: "video/mp4",
+      });
+    expect(sinAlt.status).toBe(400);
+    expect(sinAlt.body.message).toContain("texto alternativo del video");
+
+    const conAlt = await request(app)
+      .post(`/api/eventos/${evento.id}/multimedia`)
+      .set(await auth(LUCIA))
+      .attach("archivos", Buffer.from("video"), {
+        filename: "ensayo.mp4",
+        contentType: "video/mp4",
+      })
+      .field("alts", "Ensayo general con la banda completa");
+    expect(conAlt.status).toBe(201);
+    expect(conAlt.body.multimedia.at(-1)).toMatchObject({
+      tipo: "video",
+      alt: "Ensayo general con la banda completa",
+    });
+  });
+
   test("una imagen sin texto alternativo → 400 y no deja archivos", async () => {
     const antes = fs.readdirSync(path.join(process.env.UPLOADS_DIR, "eventos")).length;
     const res = await request(app)
@@ -375,6 +401,14 @@ describe("GET /api/eventos/mios y /:id/resenias", () => {
       vendidas: 2,
       disponibles: 18,
     });
+    expect(jazz.reembolsosPendientes).toEqual({ cantidad: 0, proximoVencimiento: null });
+    // Primavera: Bruno canceló una compra pagada hace 5 h → 1 reembolso por hacer (vence en ~19 h).
+    const primavera = res.body.find((e) => e.nombre === "Festival Primavera Sonora");
+    expect(primavera.reembolsosPendientes.cantidad).toBe(1);
+    const horas =
+      (Date.parse(primavera.reembolsosPendientes.proximoVencimiento) - Date.now()) / 3600000;
+    expect(horas).toBeGreaterThan(18);
+    expect(horas).toBeLessThan(20);
     expect(sinCamposInternos(res.body)).toBe(true);
     expect(
       (

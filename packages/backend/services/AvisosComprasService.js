@@ -34,6 +34,17 @@ export class AvisosComprasService {
     const avisar = (tipo, destinatarioId, extra = {}) =>
       this.notificacionesService.notificar(tipo, destinatarioId, { ...vars, ...extra }, vars.datos);
 
+    // Cancelación del evento: un único aviso al comprador con el motivo (y el reembolso, si hubo).
+    if (
+      compra.motivoCancelacion === MotivoCancelacion.EVENTO_CANCELADO &&
+      [EstadoCompra.CANCELADA, EstadoCompra.REEMBOLSADA].includes(cambio.estadoNuevo)
+    ) {
+      return avisar(T.EVENTO_CANCELADO, compra.compradorId, {
+        motivo: vars.motivoCancelacionEvento ?? "sin motivo informado",
+        reembolsado: cambio.estadoNuevo === EstadoCompra.REEMBOLSADA,
+      });
+    }
+
     switch (cambio.estadoNuevo) {
       case EstadoCompra.PENDIENTE:
         return avisar(T.NUEVA_COMPRA, compra.organizadorId);
@@ -89,6 +100,7 @@ export class AvisosComprasService {
     });
     return {
       evento: evento?.nombre ?? "el evento",
+      motivoCancelacionEvento: evento?.cancelacion?.motivo ?? null,
       comprador: compra.historial[0]?.quien.nombre ?? "Un comprador",
       cantidad: compra.cantidad,
       tipoEntrada: compra.tipoEntradaNombre,

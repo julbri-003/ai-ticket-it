@@ -2,7 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Text } from "react-native";
 import { AuthContext } from "../src/context/AuthContext";
-import { usuarioComprador } from "./apiFalsa";
+import { usuarioComprador, usuarioOrganizador } from "./apiFalsa";
 import { renderConTema } from "./helpers";
 
 const Stack = createNativeStackNavigator();
@@ -18,7 +18,18 @@ export const sesionComprador = {
   esOrganizador: false,
 };
 
+export const sesionOrganizador = {
+  ...sesionComprador,
+  usuario: { ...usuarioOrganizador, nombreCompleto: "Lucía Ferrari" },
+  esComprador: false,
+  esOrganizador: true,
+};
+
 const DESTINOS = [
+  "MisEventos",
+  "Crear",
+  "EditarEvento",
+  "ComprasEvento",
   "DetalleEvento",
   "Checkout",
   "DetalleCompra",

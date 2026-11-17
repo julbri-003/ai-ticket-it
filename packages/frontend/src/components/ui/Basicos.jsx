@@ -2,6 +2,7 @@ import { ActivityIndicator } from "react-native";
 import styled, { useTheme } from "styled-components/native";
 import {
   AlertTriangle,
+  Ban,
   CheckCircle2,
   Clock,
   RotateCcw,
@@ -108,6 +109,15 @@ const TextoPill = styled.Text`
   font-size: ${({ theme }) => theme.typography.sizes.caption}px;
   color: ${({ $color }) => $color};
 `;
+
+/** Pill de evento cancelado (ícono + texto, nunca solo color). */
+export function EventoCanceladoBadge() {
+  return (
+    <Badge variant="error" icono={Ban}>
+      Cancelado
+    </Badge>
+  );
+}
 
 // ----- EstadoCompraBadge -----
 

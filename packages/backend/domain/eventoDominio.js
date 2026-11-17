@@ -2,7 +2,7 @@ import { BadRequestError, ConflictError, NotFoundError } from "../errors/AppErro
 import { mismoId } from "../utils/id.js";
 import { Persistible, restaurarAuditoria } from "./persistibleDominio.js";
 import { TipoEntrada } from "./tipoEntradaDominio.js";
-import { fechaValida, idObligatorio, textoObligatorio, textoOpcional } from "./validaciones.js";
+import { fechaValida, idObligatorio, textoObligatorio } from "./validaciones.js";
 
 export const TipoMultimedia = Object.freeze({
   IMAGEN: "imagen",
@@ -10,6 +10,8 @@ export const TipoMultimedia = Object.freeze({
 });
 
 export const MAX_TEXTO_AMPLIACION = 2000;
+export const MAX_TEXTO_ALT = 300;
+export const MAX_MOTIVO_CANCELACION = 500;
 
 // Campos que se pueden enviar a editar(); cualquier otro se rechaza.
 const CAMBIOS_PERMITIDOS = [
@@ -34,13 +36,18 @@ function normalizarMultimedia(item) {
   if (!Object.values(TipoMultimedia).includes(item.tipo)) {
     throw new BadRequestError('El tipo de multimedia debe ser "imagen" o "video"');
   }
-  const alt =
+  // Texto alternativo obligatorio también en videos (descripción para lectores de pantalla).
+  const alt = textoObligatorio(
+    item.alt,
     item.tipo === TipoMultimedia.IMAGEN
-      ? textoObligatorio(
-          item.alt,
-          "Cada imagen debe tener un texto alternativo que describa su contenido",
-        )
-      : textoOpcional(item.alt, { campo: "El texto alternativo", max: 300 });
+      ? "Cada imagen debe tener un texto alternativo que describa su contenido"
+      : "Cada video debe tener un texto alternativo que describa su contenido",
+  );
+  if (alt.length > MAX_TEXTO_ALT) {
+    throw new BadRequestError(
+      `El texto alternativo admite como máximo ${MAX_TEXTO_ALT} caracteres`,
+    );
+  }
   return { ruta, tipo: item.tipo, alt };
 }
 
@@ -64,6 +71,9 @@ function exigirNombresUnicos(tipos) {
 }
 
 function exigirEditable(evento, reloj) {
+  if (evento.estaCancelado()) {
+    throw new ConflictError("El evento está cancelado y ya no se puede editar");
+  }
   if (!evento.activo) {
     throw new ConflictError("El evento está finalizado y ya no se puede editar");
   }
@@ -94,6 +104,7 @@ export class Evento extends Persistible {
     tiposEntrada,
     multimedia = [],
     organizadorId,
+    cancelacion = null,
     activo,
     fechaModificacion,
     modificadoPor,
@@ -117,6 +128,10 @@ export class Evento extends Persistible {
     exigirNombresUnicos(this.tiposEntrada);
     this.multimedia = multimedia.map(normalizarMultimedia);
     this.organizadorId = idObligatorio(organizadorId, "El evento debe tener un organizador");
+    // { motivo, fecha, quien: { id, nombre, rol } } o null si no fue cancelado.
+    this.cancelacion = cancelacion?.motivo
+      ? { motivo: cancelacion.motivo, fecha: new Date(cancelacion.fecha), quien: cancelacion.quien ?? null }
+      : null;
 
     restaurarAuditoria(this, { activo, fechaModificacion, modificadoPor });
   }
@@ -128,6 +143,36 @@ export class Evento extends Persistible {
       throw new BadRequestError("La fecha del evento debe ser futura");
     }
     return evento;
+  }
+
+  estaCancelado() {
+    return this.cancelacion != null;
+  }
+
+  /** Se puede vender: activo, no cancelado y todavía no ocurrió. */
+  estaALaVenta(reloj) {
+    return this.activo && !this.estaCancelado() && !this.yaOcurrio(reloj);
+  }
+
+  /**
+   * Cancelación por el organizador, con motivo obligatorio. Solo antes de que ocurra. Las
+   * compras se resuelven aparte (Compra.aplicarCancelacionDelEvento): se cancelan y se
+   * reembolsan automáticamente.
+   */
+  cancelar(motivo, quien, reloj) {
+    if (this.estaCancelado()) {
+      throw new ConflictError("El evento ya está cancelado");
+    }
+    if (!this.activo || this.yaOcurrio(reloj)) {
+      throw new ConflictError("No se puede cancelar un evento que ya ocurrió");
+    }
+    const limpio = textoObligatorio(motivo, "Contá el motivo de la cancelación");
+    if (limpio.length > MAX_MOTIVO_CANCELACION) {
+      throw new BadRequestError(
+        `El motivo admite como máximo ${MAX_MOTIVO_CANCELACION} caracteres`,
+      );
+    }
+    this.cancelacion = { motivo: limpio, fecha: reloj.ahora(), quien };
   }
 
   yaOcurrio(reloj) {

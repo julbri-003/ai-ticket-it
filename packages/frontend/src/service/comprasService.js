@@ -56,6 +56,7 @@ export function aCompra(dto) {
 export function aCompraDetalle(dto, usuarioId) {
   return {
     ...aCompra(dto),
+    esOrganizador: Boolean(dto.organizadorId) && dto.organizadorId === usuarioId,
     historial: (dto.historial ?? []).map((c, i) => ({
       id: `${i}-${c.fechaHora}`,
       estado: c.estadoNuevo,
@@ -94,6 +95,9 @@ export const comprasService = {
   },
   async cancelar(id, usuarioId) {
     return aCompraDetalle(await comprasApi.cancelar(id), usuarioId);
+  },
+  async reembolsar(id, usuarioId) {
+    return aCompraDetalle(await comprasApi.reembolsar(id), usuarioId);
   },
   async reseniar(id, { puntuacion, detalle }) {
     return comprasApi.reseniar(id, {

@@ -218,6 +218,28 @@ export class ComprasService {
     };
   }
 
+  /**
+   * El organizador canceló el evento: cada compra activa se cancela y, si estaba paga (o tenía
+   * un reembolso pendiente), se reembolsa en el acto. Un error en una compra no frena a las
+   * demás; la evaluación perezosa la resuelve la próxima vez que se lea.
+   * Devuelve cuántas compras se resolvieron.
+   */
+  async resolverCancelacionDeEvento(evento, quien) {
+    let resueltas = 0;
+    for (const compra of await this.comprasRepository.listarPorEvento(evento.id)) {
+      if (!compra.afectadaPorCancelacionDelEvento()) continue;
+      try {
+        await this.#transicion(compra, evento, (c) =>
+          c.aplicarCancelacionDelEvento(evento, quien, this.reloj),
+        );
+        resueltas += 1;
+      } catch (error) {
+        this.log.error?.(`No se pudo cancelar la compra ${compra.id}: ${error.message}`);
+      }
+    }
+    return resueltas;
+  }
+
   // ----- Tareas programadas (las orquesta jobs/ProgramadorTareas) -----
 
   async vencerComprasPendientes() {
@@ -283,6 +305,9 @@ export class ComprasService {
   /** Transiciones automáticas que ya corresponden a la compra (vence, utiliza, reembolsa). */
   #transicionAutomatica(compra, evento) {
     const ahora = this.reloj.ahora().getTime();
+    if (evento.estaCancelado() && compra.afectadaPorCancelacionDelEvento()) {
+      return (c) => c.aplicarCancelacionDelEvento(evento, evento.cancelacion.quien ?? ACTOR_SISTEMA, this.reloj);
+    }
     if (compra.estado === PENDIENTE && ahora >= compra.fechaLimitePago.getTime()) {
       return (c) => c.vencer(evento, this.reloj);
     }
@@ -319,7 +344,8 @@ export class ComprasService {
 
   /**
    * Aplica una transición del dominio y la persiste solo si la compra sigue en el estado leído.
-   * Si pasó a CANCELADA desde PENDIENTE/CONFIRMADA, libera el cupo (una única vez).
+   * Si dejó de estar activa (PENDIENTE/CONFIRMADA → CANCELADA, o → REEMBOLSADA en un solo paso
+   * por la cancelación del evento), libera el cupo (una única vez).
    */
   async #transicion(compra, evento, aplicar) {
     const estadoAnterior = compra.estado;
@@ -328,7 +354,10 @@ export class ComprasService {
     if (!guardada) {
       throw new ConflictError("La compra cambió mientras se procesaba. Volvé a intentarlo");
     }
-    if (guardada.estado === CANCELADA && estadoAnterior !== CANCELADA) {
+    if (
+      [PENDIENTE, CONFIRMADA].includes(estadoAnterior) &&
+      [CANCELADA, REEMBOLSADA].includes(guardada.estado)
+    ) {
       await this.eventosRepository.liberarCupo(
         evento.id,
         guardada.tipoEntradaId,

@@ -63,7 +63,7 @@ function TipoEntrada({ tipo, seleccionado, onPress, deshabilitado }) {
       <TextosTipo>
         <NombreTipo>{tipo.nombre}</NombreTipo>
         {tipo.descripcion ? <Secundario>{tipo.descripcion}</Secundario> : null}
-        <Badge variant={tipo.agotado ? "error" : tipo.disponibles <= 20 ? "warning" : "success"}>
+        <Badge variant={tipo.agotado ? "error" : tipo.disponibles <= 5 ? "warning" : "success"}>
           {tipo.quedanTexto}
         </Badge>
       </TextosTipo>
@@ -276,7 +276,12 @@ export function DetalleEvento({ route, navigation }) {
         <Rating valor={evento.organizador.puntaje} cantidad={evento.organizador.cantidadResenias} />
       </Card>
 
-      {anterior ? (
+      {evento.cancelado ? (
+        <EmptyState
+          titulo="Este evento fue cancelado"
+          mensaje={`Motivo: ${evento.motivoCancelacion}. Las compras se reembolsaron automáticamente.`}
+        />
+      ) : anterior ? (
         <EmptyState
           titulo="Este evento ya ocurrió"
           mensaje="Ya no se pueden comprar entradas. Podés ver las reseñas del organizador más abajo."

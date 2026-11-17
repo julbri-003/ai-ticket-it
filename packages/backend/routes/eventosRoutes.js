@@ -203,7 +203,7 @@ eventosRouter.post("/", ...soloOrganizador, (req, res) => eventosController.crea
  *     summary: Subir imágenes o videos del evento (organizador dueño)
  *     description: |
  *       Hasta 6 archivos en el campo `archivos`: JPG, PNG o WEBP (≤ 5 MB) y MP4 (≤ 20 MB).
- *       Por cada archivo, un campo `alts` en el mismo orden (obligatorio para imágenes).
+ *       Por cada archivo, un campo `alts` en el mismo orden (obligatorio para imágenes y videos).
  *     tags: [Eventos]
  *     security: [{ bearerAuth: [] }]
  *     parameters: [{ $ref: "#/components/parameters/EventoId" }]
@@ -330,6 +330,49 @@ eventosRouter.post("/:id/tipos-entrada", ...soloOrganizador, (req, res) =>
  */
 eventosRouter.post("/:id/ampliaciones", ...soloOrganizador, (req, res) =>
   eventosController.ampliarDescripcion(req, res),
+);
+
+/**
+ * @swagger
+ * /api/eventos/{id}/cancelar:
+ *   post:
+ *     summary: Cancelar el evento (organizador dueño)
+ *     description: >
+ *       Motivo obligatorio. Solo antes de que ocurra. Todas las compras se cancelan; las pagas
+ *       (y las canceladas con reembolso pendiente) se reembolsan automáticamente. El evento deja
+ *       de aparecer en el buscador y ya no se puede editar ni comprar.
+ *     tags: [Eventos]
+ *     security: [{ bearerAuth: [] }]
+ *     parameters: [{ $ref: "#/components/parameters/EventoId" }]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [motivo]
+ *             additionalProperties: false
+ *             properties:
+ *               motivo: { type: string, maxLength: 500, example: "La sala suspendió la función por obras." }
+ *     responses:
+ *       200:
+ *         description: Evento cancelado y cantidad de compras resueltas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - { $ref: "#/components/schemas/Evento" }
+ *                 - type: object
+ *                   properties:
+ *                     comprasResueltas: { type: integer, example: 3 }
+ *       400: { $ref: "#/components/responses/Validacion" }
+ *       401: { $ref: "#/components/responses/NoAutenticado" }
+ *       403: { $ref: "#/components/responses/SinPermiso" }
+ *       404: { $ref: "#/components/responses/NoEncontrado" }
+ *       409: { $ref: "#/components/responses/Conflicto" }
+ */
+eventosRouter.post("/:id/cancelar", ...soloOrganizador, (req, res) =>
+  eventosController.cancelar(req, res),
 );
 
 export default eventosRouter;

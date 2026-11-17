@@ -13,6 +13,7 @@ export {
   ErrorState,
   EstadoCompraBadge,
   ESTADOS_COMPRA,
+  EventoCanceladoBadge,
   Spinner,
 } from "./Basicos";
 export { Skeleton, SkeletonCard, SkeletonDetalle, SkeletonLista } from "./Skeleton";

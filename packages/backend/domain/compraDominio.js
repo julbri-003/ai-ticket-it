@@ -27,6 +27,7 @@ const { PENDIENTE, CONFIRMADA, UTILIZADA, CANCELADA, REEMBOLSADA } = EstadoCompr
 const Accion = Object.freeze({
   PAGAR: "pagar",
   CANCELAR: "cancelar",
+  CANCELAR_POR_EVENTO: "cancelar por evento cancelado",
   VENCER: "vencer",
   REEMBOLSAR: "reembolsar",
   MARCAR_UTILIZADA: "marcar como utilizada",
@@ -35,6 +36,7 @@ const Accion = Object.freeze({
 const TRANSICIONES = Object.freeze({
   [Accion.PAGAR]: { desde: [PENDIENTE], hacia: CONFIRMADA },
   [Accion.CANCELAR]: { desde: [PENDIENTE, CONFIRMADA], hacia: CANCELADA },
+  [Accion.CANCELAR_POR_EVENTO]: { desde: [PENDIENTE, CONFIRMADA], hacia: CANCELADA },
   [Accion.VENCER]: { desde: [PENDIENTE], hacia: CANCELADA },
   [Accion.REEMBOLSAR]: { desde: [CANCELADA], hacia: REEMBOLSADA },
   [Accion.MARCAR_UTILIZADA]: { desde: [CONFIRMADA], hacia: UTILIZADA },
@@ -171,6 +173,9 @@ export class Compra extends Persistible {
     if (comprador?.rol !== Roles.COMPRADOR) {
       throw new ForbiddenError("Solo los compradores pueden comprar entradas");
     }
+    if (evento.estaCancelado()) {
+      throw new BadRequestError("El evento fue cancelado: no se pueden comprar entradas");
+    }
     if (!evento.activo || evento.yaOcurrio(reloj)) {
       throw new BadRequestError("El evento ya ocurrió: no se pueden comprar entradas");
     }
@@ -304,6 +309,50 @@ export class Compra extends Persistible {
       reloj,
     });
     this.reembolsoPendiente = false;
+  }
+
+  /** true si la cancelación del evento todavía tiene que resolver esta compra. */
+  afectadaPorCancelacionDelEvento() {
+    return (
+      TRANSICIONES[Accion.CANCELAR_POR_EVENTO].desde.includes(this.estado) ||
+      (this.estado === CANCELADA && this.reembolsoPendiente)
+    );
+  }
+
+  /**
+   * El evento se canceló: PENDIENTE → CANCELADA; CONFIRMADA → CANCELADA → REEMBOLSADA en el
+   * acto (reembolso automático); una CANCELADA con reembolso pendiente → REEMBOLSADA.
+   * Todo queda en el historial con el motivo.
+   */
+  aplicarCancelacionDelEvento(evento, quien, reloj) {
+    exigirEventoDeLaCompra(this, evento);
+    if (!evento.estaCancelado()) {
+      throw new ConflictError("El evento no está cancelado");
+    }
+    if (!this.afectadaPorCancelacionDelEvento()) {
+      throw new ConflictError(`No se puede cancelar por evento una compra ${this.estado}`);
+    }
+    const { motivo } = evento.cancelacion;
+    if (this.estado !== CANCELADA) {
+      const estabaConfirmada = this.estado === CONFIRMADA;
+      actualizarEstado(this, {
+        accion: Accion.CANCELAR_POR_EVENTO,
+        quien,
+        detalle: `Evento cancelado por el organizador: ${motivo}`,
+        reloj,
+      });
+      this.motivoCancelacion = MotivoCancelacion.EVENTO_CANCELADO;
+      this.reembolsoPendiente = estabaConfirmada;
+    }
+    if (this.reembolsoPendiente) {
+      actualizarEstado(this, {
+        accion: Accion.REEMBOLSAR,
+        quien: ACTOR_SISTEMA,
+        detalle: `Reembolso automático de ${formatearMonto(this.total)} por la cancelación del evento`,
+        reloj,
+      });
+      this.reembolsoPendiente = false;
+    }
   }
 
   /** CONFIRMADA → UTILIZADA por el sistema cuando el evento ya ocurrió. Habilita la reseña. */

@@ -91,6 +91,16 @@ export const ampliacionSchema = z
   .object({ texto: z.string().trim().min(1, "La ampliación no puede estar vacía").max(2000) })
   .strict();
 
+export const cancelacionSchema = z
+  .object({
+    motivo: z
+      .string({ error: "Contá el motivo de la cancelación" })
+      .trim()
+      .min(1, "Contá el motivo de la cancelación")
+      .max(500, "El motivo admite como máximo 500 caracteres"),
+  })
+  .strict();
+
 export const quitarMultimediaSchema = z
   .object({ ruta: z.string().trim().min(1, "Indicá la ruta del archivo a quitar") })
   .strict();
@@ -157,6 +167,7 @@ export class EventosController {
       vistas.map((vista) => ({
         ...this.#dto(req, vista),
         comprasPorEstado: vista.comprasPorEstado,
+        reembolsosPendientes: vista.reembolsosPendientes,
       })),
     );
   }
@@ -185,6 +196,13 @@ export class EventosController {
     res
       .status(201)
       .json(this.#dto(req, await this.eventosService.agregarTipoEntrada(id, tipo, req.user)));
+  }
+
+  async cancelar(req, res) {
+    const { id } = idParamSchema.parse(req.params);
+    const { motivo } = cancelacionSchema.parse(req.body);
+    const { vista, comprasResueltas } = await this.eventosService.cancelar(id, motivo, req.user);
+    res.json({ ...this.#dto(req, vista), comprasResueltas });
   }
 
   async ampliarDescripcion(req, res) {

@@ -573,3 +573,85 @@ describe("Hook de cambio de estado (para la iteración 06)", () => {
     }
   });
 });
+
+describe("Cancelar un evento (organizador)", () => {
+  const cancelarEvento = async (email, evento, cuerpo) =>
+    request(app)
+      .post(`/api/eventos/${evento.id}/cancelar`)
+      .set(await auth(email))
+      .send(cuerpo);
+
+  test("motivo obligatorio; otro organizador → 403; un comprador → 403", async () => {
+    const evento = await eventoDeLucia();
+    expect((await cancelarEvento(LUCIA, evento, {})).status).toBe(400);
+    expect((await cancelarEvento(LUCIA, evento, { motivo: "  " })).status).toBe(400);
+    expect((await cancelarEvento(MARTIN, evento, { motivo: "x" })).status).toBe(403);
+    expect((await cancelarEvento(ANA, evento, { motivo: "x" })).status).toBe(403);
+  });
+
+  test("cancela y reembolsa todo automáticamente; sale del buscador y no se puede comprar ni editar", async () => {
+    const evento = await eventoDeLucia();
+    const pendiente = await compraHecha(ANA, evento, { cantidad: 1 });
+    const pagada = await compraHecha(BRUNO, evento, { cantidad: 2 });
+    await accion(BRUNO, pagada, "pagar");
+    const canceladaPaga = await compraHecha(ANA, evento, { tipo: 1, cantidad: 1 });
+    await accion(ANA, canceladaPaga, "pagar");
+    await accion(ANA, canceladaPaga, "cancelar");
+
+    const res = await cancelarEvento(LUCIA, evento, { motivo: "La sala cerró por obras" });
+    expect(res.status).toBe(200);
+    expect(res.body).toMatchObject({
+      cancelado: true,
+      cancelacion: { motivo: "La sala cerró por obras" },
+      comprasResueltas: 3,
+    });
+
+    const estados = async (compra, email) => (await detalle(email, compra)).body;
+    expect(await estados(pendiente, ANA)).toMatchObject({
+      estado: "CANCELADA",
+      motivoCancelacion: "EVENTO_CANCELADO",
+      reembolsoPendiente: false,
+    });
+    const reembolsada = await estados(pagada, BRUNO);
+    expect(reembolsada).toMatchObject({ estado: "REEMBOLSADA", reembolsoPendiente: false });
+    expect(reembolsada.historial.at(-1)).toMatchObject({
+      quien: { id: "SISTEMA" },
+      detalle: "Reembolso automático de $3.001,00 por la cancelación del evento",
+    });
+    expect(reembolsada.historial.at(-2).detalle).toBe(
+      "Evento cancelado por el organizador: La sala cerró por obras",
+    );
+    expect((await estados(canceladaPaga, ANA)).estado).toBe("REEMBOLSADA");
+    expect(await disponibles(evento.id)).toEqual([10, 4]);
+
+    const busqueda = await request(app).get(`/api/eventos?q=${encodeURIComponent(evento.nombre)}`);
+    expect(busqueda.body.items.map((e) => e.id)).not.toContain(evento.id);
+    const anteriores = await request(app).get(
+      `/api/eventos?anteriores=true&q=${encodeURIComponent(evento.nombre)}`,
+    );
+    expect(anteriores.body.items.map((e) => e.id)).not.toContain(evento.id);
+
+    expect((await comprar(ANA, evento)).status).toBe(400);
+    const ampliar = await request(app)
+      .post(`/api/eventos/${evento.id}/ampliaciones`)
+      .set(await auth(LUCIA))
+      .send({ texto: "Algo" });
+    expect(ampliar.status).toBe(409);
+    expect((await cancelarEvento(LUCIA, evento, { motivo: "otra vez" })).status).toBe(409);
+
+    const mios = await request(app)
+      .get("/api/eventos/mios")
+      .set(await auth(LUCIA));
+    expect(mios.body.find((e) => e.id === evento.id)).toMatchObject({
+      cancelado: true,
+      reembolsosPendientes: { cantidad: 0 },
+    });
+  });
+
+  test("no se puede cancelar un evento que ya ocurrió", async () => {
+    const evento = await eventoDeLucia(5);
+    await avanzarReloj(6 * HORA);
+    const res = await cancelarEvento(LUCIA, evento, { motivo: "Tarde" });
+    expect(res.status).toBe(409);
+  });
+});

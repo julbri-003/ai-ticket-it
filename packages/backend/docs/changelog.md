@@ -127,3 +127,22 @@
   `GestureHandlerRootView`.
 - Tests: filtros, Explorar, recomendados, TarjetaCompra, TimelineEstados, Checkout, DetalleCompra, DetalleEvento y
   Favoritos.
+
+## Iteración 09 — Front organizador
+
+- Back: el texto alternativo pasa a ser obligatorio también en videos (dominio y `POST /eventos/:id/multimedia`), con un
+  máximo de 300 caracteres. `GET /eventos/mios` suma `reembolsosPendientes: { cantidad, proximoVencimiento }` por
+  evento (compras canceladas con reembolso todavía no vencido).
+- Front: `organizadorService` (validaciones del formulario, mapeos y casos de uso) y las APIs nuevas de eventos y
+  `reembolsar` de compras.
+- Pantallas: **Mis eventos** (puntaje propio, Próximos/Anteriores, ocupación, conteo por estado y alerta de
+  reembolsos), **Crear evento** en 4 pasos (datos, tipos de entrada, multimedia con alt, revisión) con validación
+  inline y subida con progreso, **Editar evento** (multimedia libre, tipos existentes en solo lectura, agregar tipos,
+  actualizaciones de la descripción y solo lectura total si ya ocurrió) y **Compras del evento** (resumen por tipo con
+  "Quedan N", recaudación, filtro por estado y Reembolsar).
+- `DetalleCompra` en modo organizador: Reembolsar según `acciones.puedeReembolsar` y "Chat con el comprador".
+- Componentes: `BarraOcupacion`, `TarjetaEventoOrganizador`, `CampoFechaHora` (datetimepicker nativo),
+  `EditorTiposEntrada`, `SelectorMultimedia` (expo-image-picker) y `ModalTipoEntrada`.
+- Tests del front: validaciones, creación (sin tipos no avanza, nombres duplicados, payload), edición (tipos y
+  descripción original no editables, solo lectura), compras (Quedan N, Reembolsar), alerta de reembolsos y detalle
+  en modo organizador.

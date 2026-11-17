@@ -4,6 +4,13 @@ import { reseniasApi } from "./apis/reseniasApi";
 import { diaMesTexto, fechaHoraTexto, fechaLargaTexto, horaTexto } from "../utils/fechas";
 import { montoTexto, precioTexto } from "../utils/montos";
 
+/** Cupo que le queda a un tipo de entrada: "Agotado", "¡Es la última!" o "Quedan N". */
+export function quedanTexto(quedan) {
+  if (quedan === 0) return "Agotado";
+  if (quedan === 1) return "¡Es la última!";
+  return `Quedan ${quedan}`;
+}
+
 function aTipoEntrada(dto) {
   const quedan = dto.disponibles;
   return {
@@ -14,7 +21,7 @@ function aTipoEntrada(dto) {
     precioTexto: montoTexto(dto.precio),
     disponibles: quedan,
     agotado: quedan === 0,
-    quedanTexto: quedan === 0 ? "Agotado" : quedan <= 20 ? `Quedan ${quedan}` : "Disponible",
+    quedanTexto: quedanTexto(quedan),
   };
 }
 
@@ -46,7 +53,11 @@ export function aEvento(dto) {
     agotado: dto.agotado,
     yaOcurrio: dto.yaOcurrio,
     finalizado: dto.finalizado,
-    anterior: dto.yaOcurrio || dto.finalizado,
+    cancelado: dto.cancelado ?? false,
+    motivoCancelacion: dto.cancelacion?.motivo ?? null,
+    canceladoTexto: dto.cancelacion ? `Cancelado el ${diaMesTexto(dto.cancelacion.fecha)}` : null,
+    // Un evento cancelado va en "Cancelados", no en "Anteriores".
+    anterior: !dto.cancelado && (dto.yaOcurrio || dto.finalizado),
     organizador: {
       id: dto.organizador?.id,
       nombre: dto.organizador?.nombre ?? "",

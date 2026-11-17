@@ -50,12 +50,22 @@ describe("Dominio Evento", () => {
       expect(new Evento(pasado).yaOcurrio(relojFijo())).toBe(true);
     });
 
-    test("las imágenes requieren texto alternativo; los videos no", () => {
+    test("imágenes y videos requieren texto alternativo", () => {
       expect(() =>
         crearEvento({ multimedia: [{ ruta: "a.jpg", tipo: "imagen", alt: "" }] }),
       ).toThrow("texto alternativo");
-      const evento = crearEvento({ multimedia: [{ ruta: "a.mp4", tipo: "video" }] });
-      expect(evento.multimedia).toEqual([{ ruta: "a.mp4", tipo: "video", alt: "" }]);
+      expect(() => crearEvento({ multimedia: [{ ruta: "a.mp4", tipo: "video" }] })).toThrow(
+        "Cada video debe tener un texto alternativo",
+      );
+      expect(() =>
+        crearEvento({ multimedia: [{ ruta: "a.mp4", tipo: "video", alt: "x".repeat(301) }] }),
+      ).toThrow("como máximo 300");
+      const evento = crearEvento({
+        multimedia: [{ ruta: "a.mp4", tipo: "video", alt: " Escenario con luces " }],
+      });
+      expect(evento.multimedia).toEqual([
+        { ruta: "a.mp4", tipo: "video", alt: "Escenario con luces" },
+      ]);
     });
 
     test("rechaza multimedia de tipo desconocido o sin ruta", () => {
@@ -116,7 +126,10 @@ describe("Dominio Evento", () => {
     });
 
     test("agrega y quita multimedia", () => {
-      evento.agregarMultimedia([{ ruta: "uploads/b.mp4", tipo: "video" }], reloj);
+      evento.agregarMultimedia(
+        [{ ruta: "uploads/b.mp4", tipo: "video", alt: "Ensayo general" }],
+        reloj,
+      );
       evento.quitarMultimedia("uploads/afiche.jpg", reloj);
       expect(evento.multimedia.map((m) => m.ruta)).toEqual(["uploads/b.mp4"]);
     });
@@ -224,5 +237,41 @@ describe("Dominio Evento", () => {
     test("no finaliza un evento futuro", () => {
       expect(() => crearEvento().finalizar(sistemaUsuario, relojFijo())).toThrow(ConflictError);
     });
+  });
+});
+
+describe("Dominio Evento — cancelación", () => {
+  const quien = { id: "org-1", nombre: "Lucía Ferrari", rol: "ORGANIZADOR" };
+
+  test("con motivo: queda cancelado, con fecha y quién, y ya no se edita", () => {
+    const reloj = relojFijo();
+    const evento = crearEvento();
+    expect(evento.estaCancelado()).toBe(false);
+    expect(evento.estaALaVenta(reloj)).toBe(true);
+    evento.cancelar("  La sala cerró por obras ", quien, reloj);
+    expect(evento.estaCancelado()).toBe(true);
+    expect(evento.estaALaVenta(reloj)).toBe(false);
+    expect(evento.cancelacion).toEqual({ motivo: "La sala cerró por obras", fecha: AHORA, quien });
+    expect(() => evento.ampliarDescripcion("Algo más", reloj)).toThrow("está cancelado");
+    expect(() => evento.cancelar("otra vez", quien, reloj)).toThrow(ConflictError);
+  });
+
+  test.each([[""], ["   "], [undefined], ["x".repeat(501)]])("rechaza el motivo %p", (motivo) => {
+    expect(() => crearEvento().cancelar(motivo, quien, relojFijo())).toThrow(BadRequestError);
+  });
+
+  test("no se cancela un evento que ya ocurrió", () => {
+    const evento = crearEvento();
+    expect(() => evento.cancelar("Motivo", quien, relojFijo(new Date(evento.fecha.getTime() + HORA)))).toThrow(
+      "ya ocurrió",
+    );
+  });
+
+  test("se restaura desde los datos persistidos", () => {
+    const evento = new Evento(
+      datosEvento({ cancelacion: { motivo: "Lluvia", fecha: AHORA.toISOString(), quien } }),
+    );
+    expect(evento.estaCancelado()).toBe(true);
+    expect(evento.cancelacion.fecha).toEqual(AHORA);
   });
 });

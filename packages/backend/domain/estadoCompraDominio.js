@@ -9,6 +9,7 @@ export const EstadoCompra = Object.freeze({
 export const MotivoCancelacion = Object.freeze({
   CANCELADA_POR_COMPRADOR: "CANCELADA_POR_COMPRADOR",
   VENCIDA: "VENCIDA",
+  EVENTO_CANCELADO: "EVENTO_CANCELADO",
 });
 
 /** Quién figura en el historial cuando una transición la dispara una tarea programada. */

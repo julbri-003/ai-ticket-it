@@ -75,6 +75,7 @@ export class EventosMongoRepository extends RepositorioMongoPersistible {
       lugar: evento.lugar,
       multimedia: evento.multimedia,
       organizadorId: aObjectId(evento.organizadorId),
+      cancelacion: evento.cancelacion,
       textoBusqueda: textoBusqueda(evento),
     };
   }
@@ -192,6 +193,7 @@ export class EventosMongoRepository extends RepositorioMongoPersistible {
       {
         _id: aObjectId(eventoId),
         activo: true,
+        cancelacion: null,
         tiposEntrada: { $elemMatch: { _id: tipoId, disponibles: { $gte: cantidad } } },
       },
       { $inc: { "tiposEntrada.$[tipo].disponibles": -cantidad } },
@@ -269,7 +271,8 @@ export class EventosMongoRepository extends RepositorioMongoPersistible {
     anteriores = false,
     ahora = this.reloj.ahora(),
   } = {}) {
-    const filtros = [];
+    // Los eventos cancelados no aparecen en el buscador (ni en próximos ni en anteriores).
+    const filtros = [{ cancelacion: null }];
 
     filtros.push(
       anteriores

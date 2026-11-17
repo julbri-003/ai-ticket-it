@@ -592,3 +592,57 @@ describe("Dominio Compra", () => {
     });
   });
 });
+
+describe("Dominio Compra — cancelación del evento", () => {
+  const quien = { id: organizador.id, nombre: organizador.nombre, rol: "ORGANIZADOR" };
+
+  function conEventoCancelado(estado) {
+    const datos = compraEn(estado);
+    datos.evento.cancelar("La sala cerró", quien, datos.reloj);
+    return datos;
+  }
+
+  test("PENDIENTE → CANCELADA con motivo EVENTO_CANCELADO y sin reembolso", () => {
+    const { compra, evento, reloj } = conEventoCancelado(PENDIENTE);
+    compra.aplicarCancelacionDelEvento(evento, quien, reloj);
+    expect(compra.estado).toBe(CANCELADA);
+    expect(compra.motivoCancelacion).toBe(MotivoCancelacion.EVENTO_CANCELADO);
+    expect(compra.reembolsoPendiente).toBe(false);
+    expect(compra.historial.at(-1).detalle).toBe("Evento cancelado por el organizador: La sala cerró");
+  });
+
+  test("CONFIRMADA → CANCELADA → REEMBOLSADA en el acto (reembolso automático del sistema)", () => {
+    const { compra, evento, reloj } = conEventoCancelado(CONFIRMADA);
+    compra.aplicarCancelacionDelEvento(evento, quien, reloj);
+    expect(compra.estado).toBe(REEMBOLSADA);
+    expect(compra.reembolsoPendiente).toBe(false);
+    expect(compra.historial.slice(-2).map((c) => [c.estadoNuevo, c.quien.id])).toEqual([
+      [CANCELADA, organizador.id],
+      [REEMBOLSADA, ACTOR_SISTEMA.id],
+    ]);
+    expect(compra.historial.at(-1).detalle).toMatch(/Reembolso automático de .* por la cancelación del evento/);
+  });
+
+  test("una CANCELADA con reembolso pendiente se reembolsa en el acto", () => {
+    const { compra, evento, reloj } = conEventoCancelado("CANCELADA_PAGA");
+    expect(compra.afectadaPorCancelacionDelEvento()).toBe(true);
+    compra.aplicarCancelacionDelEvento(evento, quien, reloj);
+    expect(compra.estado).toBe(REEMBOLSADA);
+    expect(compra.motivoCancelacion).toBe(MotivoCancelacion.CANCELADA_POR_COMPRADOR);
+  });
+
+  test.each([[CANCELADA], [REEMBOLSADA]])("una %s ya resuelta no se toca (409)", (estado) => {
+    const { compra, evento, reloj } = conEventoCancelado(estado);
+    expect(compra.afectadaPorCancelacionDelEvento()).toBe(false);
+    expect(() => compra.aplicarCancelacionDelEvento(evento, quien, reloj)).toThrow(ConflictError);
+  });
+
+  test("si el evento no está cancelado → 409; no se puede comprar un evento cancelado", () => {
+    const { compra, evento, reloj } = compraEn(PENDIENTE);
+    expect(() => compra.aplicarCancelacionDelEvento(evento, quien, reloj)).toThrow("no está cancelado");
+    evento.cancelar("Lluvia", quien, reloj);
+    expect(() =>
+      Compra.crear({ comprador, evento, tipoEntradaId: "tipo-vip", cantidad: 1, reloj }),
+    ).toThrow("fue cancelado");
+  });
+});

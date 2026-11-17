@@ -47,6 +47,10 @@ export function eventoToDTO(
     agotado: evento.tiposEntrada.every((t) => t.disponibles === 0),
     yaOcurrio: evento.yaOcurrio(reloj),
     finalizado: !evento.activo,
+    cancelado: evento.estaCancelado(),
+    cancelacion: evento.cancelacion
+      ? { motivo: evento.cancelacion.motivo, fecha: evento.cancelacion.fecha }
+      : null,
     organizador: organizadorToDTO(organizador) ?? { id: evento.organizadorId },
   };
   if (esFavorito !== undefined) dto.esFavorito = esFavorito;

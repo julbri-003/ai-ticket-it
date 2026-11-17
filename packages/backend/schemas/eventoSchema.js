@@ -44,6 +44,17 @@ const EventoSchema = new mongoose.Schema(
     },
     multimedia: { type: [MultimediaSchema], default: [] },
     organizadorId: { type: ObjectId, ref: "Usuario", required: true },
+    cancelacion: {
+      type: new mongoose.Schema(
+        {
+          motivo: { type: String, required: true, trim: true },
+          fecha: { type: Date, required: true },
+          quien: { id: String, nombre: String, rol: String },
+        },
+        { _id: false },
+      ),
+      default: null,
+    },
     // nombre + descripción + ampliaciones + lugar, en minúsculas y sin acentos (búsqueda parcial).
     textoBusqueda: { type: String, default: "" },
   },

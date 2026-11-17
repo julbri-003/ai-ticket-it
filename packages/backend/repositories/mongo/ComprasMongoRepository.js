@@ -189,6 +189,39 @@ export class ComprasMongoRepository extends RepositorioMongoPersistible {
     return conteos;
   }
 
+  /**
+   * Reembolsos pendientes todavía en plazo por evento:
+   * { [eventoId]: { cantidad, proximoVencimiento } } (solo los eventos que tienen alguno).
+   */
+  async reembolsosPendientesPorEvento(eventoIds = [], ahora = new Date()) {
+    const validos = eventoIds.filter(esIdValido).map(aObjectId);
+    if (validos.length === 0) return {};
+    const filas = await this.model.aggregate([
+      {
+        $match: {
+          eventoId: { $in: validos },
+          activo: true,
+          estado: EstadoCompra.CANCELADA,
+          reembolsoPendiente: true,
+          fechaLimiteReembolso: { $gt: ahora },
+        },
+      },
+      {
+        $group: {
+          _id: "$eventoId",
+          cantidad: { $sum: 1 },
+          proximoVencimiento: { $min: "$fechaLimiteReembolso" },
+        },
+      },
+    ]);
+    return Object.fromEntries(
+      filas.map((f) => [
+        String(f._id),
+        { cantidad: f.cantidad, proximoVencimiento: f.proximoVencimiento },
+      ]),
+    );
+  }
+
   /** Ids de los eventos que el comprador compró en alguno de los estados indicados. */
   async listarEventosComprados(compradorId, estados = []) {
     if (!esIdValido(compradorId)) return [];

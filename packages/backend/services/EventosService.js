@@ -17,6 +17,7 @@ export class EventosService {
     recomendacionesService,
     vistasEventos,
     reloj,
+    alCancelarEvento = null,
   }) {
     this.eventosRepository = eventosRepository;
     this.categoriasRepository = categoriasRepository;
@@ -25,6 +26,8 @@ export class EventosService {
     this.recomendacionesService = recomendacionesService;
     this.vistasEventos = vistasEventos;
     this.reloj = reloj;
+    // (evento, quien) => cantidad de compras resueltas (cancelar + reembolsar).
+    this.alCancelarEvento = alCancelarEvento;
   }
 
   async crear(datos, usuario) {
@@ -84,14 +87,26 @@ export class EventosService {
     return this.vistasEventos.armarUna(evento, usuario);
   }
 
-  /** Eventos del organizador (activos y anteriores) con conteo de compras por estado. */
+  /**
+   * Eventos del organizador (activos y anteriores) con conteo de compras por estado y los
+   * reembolsos que tiene por hacer (cantidad y vencimiento más próximo).
+   */
   async listarMios(usuario) {
     const eventos = await this.eventosRepository.listarPorOrganizador(usuario.id);
-    const [vistas, conteos] = await Promise.all([
+    const ids = eventos.map((e) => e.id);
+    const [vistas, conteos, reembolsos] = await Promise.all([
       this.vistasEventos.armar(eventos, usuario),
-      this.comprasRepository.contarPorEstado(eventos.map((e) => e.id)),
+      this.comprasRepository.contarPorEstado(ids),
+      this.comprasRepository.reembolsosPendientesPorEvento(ids, this.reloj.ahora()),
     ]);
-    return vistas.map((vista) => ({ ...vista, comprasPorEstado: conteos[vista.evento.id] }));
+    return vistas.map((vista) => ({
+      ...vista,
+      comprasPorEstado: conteos[vista.evento.id],
+      reembolsosPendientes: reembolsos[vista.evento.id] ?? {
+        cantidad: 0,
+        proximoVencimiento: null,
+      },
+    }));
   }
 
   /** Tarea programada: baja lógica de los eventos activos que ya ocurrieron. */
@@ -121,9 +136,10 @@ export class EventosService {
       a.mimetype.startsWith("video/") ? TipoMultimedia.VIDEO : TipoMultimedia.IMAGEN,
     );
     tipos.forEach((tipo, i) => {
-      if (tipo === TipoMultimedia.IMAGEN && !alts[i]?.trim()) {
+      if (!alts[i]?.trim()) {
+        const que = tipo === TipoMultimedia.VIDEO ? "del video" : "de la imagen";
         throw new BadRequestError(
-          `Falta el texto alternativo de la imagen "${archivos[i].originalname}": describí qué se ve en ella`,
+          `Falta el texto alternativo ${que} "${archivos[i].originalname}": describí qué se ve`,
         );
       }
     });
@@ -162,6 +178,21 @@ export class EventosService {
     const evento = await this.#obtenerPropio(id, usuario);
     evento.ampliarDescripcion(texto, this.reloj);
     return this.vistasEventos.armarUna(await this.eventosRepository.guardar(evento), usuario);
+  }
+
+  /**
+   * Cancela el evento (motivo obligatorio) y resuelve sus compras: se cancelan y las pagas se
+   * reembolsan automáticamente. Devuelve la vista y cuántas compras se resolvieron.
+   */
+  async cancelar(id, motivo, usuario) {
+    const evento = await this.#obtenerPropio(id, usuario);
+    const quien = { id: usuario.id, nombre: usuario.nombre, rol: usuario.rol };
+    evento.cancelar(motivo, quien, this.reloj);
+    const guardado = await this.eventosRepository.guardar(evento);
+    const comprasResueltas = this.alCancelarEvento
+      ? await this.alCancelarEvento(guardado, quien)
+      : 0;
+    return { vista: await this.vistasEventos.armarUna(guardado, usuario), comprasResueltas };
   }
 
   async #obtener(id) {

@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import styled from "styled-components/native";
-import { CreditCard, MessageCircle, Star, XCircle } from "lucide-react-native";
+import { CreditCard, MessageCircle, RotateCcw, Star, XCircle } from "lucide-react-native";
 import { Pantalla } from "../../components/layout/Pantalla";
 import { ModalCalificar } from "../../components/compras/ModalCalificar";
 import { TimelineEstados } from "../../components/compras/TimelineEstados";
@@ -41,6 +41,8 @@ export function DetalleCompra({ route, navigation }) {
   const [cancelando, setCancelando] = useState(false);
   const [confirmarCancelacion, setConfirmarCancelacion] = useState(false);
   const [calificando, setCalificando] = useState(false);
+  const [confirmarReembolso, setConfirmarReembolso] = useState(false);
+  const [reembolsando, setReembolsando] = useState(false);
 
   const cargar = useCallback(async () => {
     setEstado((e) => ({ ...e, cargando: true, error: null }));
@@ -98,7 +100,24 @@ export function DetalleCompra({ route, navigation }) {
     }
   };
 
-  const { acciones } = compra;
+  const reembolsar = async () => {
+    setReembolsando(true);
+    try {
+      setEstado({
+        cargando: false,
+        compra: await comprasService.reembolsar(compra.id, usuario.id),
+      });
+      toast.success(`Reembolsaste ${compra.totalTexto}.`, "Reembolso registrado");
+    } catch (error) {
+      toast.error(error.message, "No pudimos registrar el reembolso");
+      cargar();
+    } finally {
+      setReembolsando(false);
+      setConfirmarReembolso(false);
+    }
+  };
+
+  const { acciones, esOrganizador } = compra;
 
   return (
     <Pantalla alRefrescar={cargar} refrescando={estado.cargando}>
@@ -168,6 +187,16 @@ export function DetalleCompra({ route, navigation }) {
             Calificar
           </Button>
         ) : null}
+        {acciones.puedeReembolsar ? (
+          <Button
+            icono={RotateCcw}
+            onPress={() => setConfirmarReembolso(true)}
+            bloque
+            testID="accion-reembolsar"
+          >
+            {`Reembolsar ${compra.totalTexto}`}
+          </Button>
+        ) : null}
         <Button
           variant="outline"
           icono={MessageCircle}
@@ -175,7 +204,7 @@ export function DetalleCompra({ route, navigation }) {
           bloque
           testID="accion-chat"
         >
-          Chat con el organizador
+          {esOrganizador ? "Chat con el comprador" : "Chat con el organizador"}
         </Button>
         {acciones.puedeCancelar ? (
           <Button
@@ -192,7 +221,7 @@ export function DetalleCompra({ route, navigation }) {
 
       {compra.resenia ? (
         <Card>
-          <EtiquetaSeccion>Tu reseña</EtiquetaSeccion>
+          <EtiquetaSeccion>{esOrganizador ? "Reseña del comprador" : "Tu reseña"}</EtiquetaSeccion>
           <Rating valor={compra.resenia.puntuacion} />
           {compra.resenia.detalle ? <Secundario>“{compra.resenia.detalle}”</Secundario> : null}
         </Card>
@@ -213,6 +242,16 @@ export function DetalleCompra({ route, navigation }) {
         cargando={cancelando}
         alConfirmar={cancelar}
         alCancelar={() => setConfirmarCancelacion(false)}
+      />
+      <ModalConfirmacion
+        visible={confirmarReembolso}
+        titulo="¿Registrar el reembolso?"
+        mensaje={`Confirmás que le devolviste ${compra.totalTexto} al comprador. La compra pasa a Reembolsada.`}
+        textoConfirmar="Reembolsar"
+        textoCancelar="Volver"
+        cargando={reembolsando}
+        alConfirmar={reembolsar}
+        alCancelar={() => setConfirmarReembolso(false)}
       />
       <ModalCalificar
         visible={calificando}

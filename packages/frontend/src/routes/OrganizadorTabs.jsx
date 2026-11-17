@@ -4,16 +4,20 @@ import { useTheme } from "styled-components/native";
 import { Bell, CalendarDays, MessageCircle, PlusCircle, UserRound } from "lucide-react-native";
 import { Encabezado } from "../components/layout/Encabezado";
 import { EnConstruccion } from "../components/layout/EnConstruccion";
+import { DetalleCompra } from "../features/compras/DetalleCompra";
+import { ComprasEvento } from "../features/organizador/ComprasEvento";
+import { CrearEvento } from "../features/organizador/CrearEvento";
+import { EditarEvento } from "../features/organizador/EditarEvento";
+import { MisEventos } from "../features/organizador/MisEventos";
 import { Perfil } from "../features/perfil/Perfil";
 import { opcionesStack, opcionesTabs } from "./opcionesNavegacion";
 
 const Tabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const MisEventos = () => <EnConstruccion titulo="Mis eventos" iteracion="09" />;
-const CrearEvento = () => <EnConstruccion titulo="Crear evento" iteracion="09" />;
 const Mensajes = () => <EnConstruccion titulo="Mensajes" iteracion="10" />;
 const Notificaciones = () => <EnConstruccion titulo="Notificaciones" iteracion="10" />;
+const ChatCompra = () => <EnConstruccion titulo="Chat con el comprador" iteracion="10" />;
 
 const icono = (Icono) =>
   function IconoTab({ color, size }) {
@@ -69,6 +73,14 @@ export function OrganizadorTabs() {
         component={TabsOrganizador}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="EditarEvento"
+        component={EditarEvento}
+        options={{ title: "Editar evento" }}
+      />
+      <Stack.Screen name="ComprasEvento" component={ComprasEvento} options={{ title: "Compras" }} />
+      <Stack.Screen name="DetalleCompra" component={DetalleCompra} options={{ title: "Compra" }} />
+      <Stack.Screen name="ChatCompra" component={ChatCompra} options={{ title: "Chat" }} />
     </Stack.Navigator>
   );
 }

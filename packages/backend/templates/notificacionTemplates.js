@@ -7,6 +7,7 @@ export const TiposNotificacion = Object.freeze({
   COMPRA_CANCELADA: "COMPRA_CANCELADA",
   COMPRA_VENCIDA: "COMPRA_VENCIDA",
   REEMBOLSO_REALIZADO: "REEMBOLSO_REALIZADO",
+  EVENTO_CANCELADO: "EVENTO_CANCELADO",
   ENTRADA_UTILIZADA: "ENTRADA_UTILIZADA",
   NUEVO_MENSAJE: "NUEVO_MENSAJE",
   NUEVA_RESENIA: "NUEVA_RESENIA",
@@ -59,6 +60,14 @@ export const notificationTemplates = {
       automatico
         ? `Te reembolsamos ${total} por tu compra cancelada de "${evento}" (reembolso automático).`
         : `El organizador te reembolsó ${total} por tu compra cancelada de "${evento}".`,
+  },
+
+  EVENTO_CANCELADO: {
+    titulo: "Evento cancelado",
+    mensaje: ({ evento, motivo, total, reembolsado }) =>
+      reembolsado
+        ? `"${evento}" fue cancelado por el organizador (${motivo}). Te reembolsamos ${total} automáticamente.`
+        : `"${evento}" fue cancelado por el organizador (${motivo}). Tu reserva quedó cancelada; no se te cobró nada.`,
   },
 
   ENTRADA_UTILIZADA: {

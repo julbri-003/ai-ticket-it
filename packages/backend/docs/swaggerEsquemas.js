@@ -131,6 +131,15 @@ export const esquemas = {
       agotado: { type: "boolean", example: false },
       yaOcurrio: { type: "boolean", example: false },
       finalizado: { type: "boolean", example: false },
+      cancelado: { type: "boolean", example: false },
+      cancelacion: {
+        type: "object",
+        nullable: true,
+        properties: {
+          motivo: { type: "string", example: "La sala suspendió la función por obras." },
+          fecha: { type: "string", format: "date-time" },
+        },
+      },
       organizador: { $ref: "#/components/schemas/Organizador" },
       esFavorito: {
         type: "boolean",
@@ -215,6 +224,14 @@ export const esquemas = {
           comprasPorEstado: {
             type: "object",
             example: { PENDIENTE: 1, CONFIRMADA: 3, UTILIZADA: 0, CANCELADA: 1, REEMBOLSADA: 0 },
+          },
+          reembolsosPendientes: {
+            type: "object",
+            description: "Reembolsos por hacer todavía en plazo y el vencimiento más próximo",
+            properties: {
+              cantidad: { type: "integer", example: 2 },
+              proximoVencimiento: { ...FECHA, nullable: true },
+            },
           },
         },
       },
@@ -312,7 +329,7 @@ export const esquemas = {
       motivoCancelacion: {
         type: "string",
         nullable: true,
-        enum: ["CANCELADA_POR_COMPRADOR", "VENCIDA", null],
+        enum: ["CANCELADA_POR_COMPRADOR", "VENCIDA", "EVENTO_CANCELADO", null],
         example: null,
       },
       fechaCompra: FECHA,
@@ -462,6 +479,7 @@ export const esquemas = {
           "COMPRA_CANCELADA",
           "COMPRA_VENCIDA",
           "REEMBOLSO_REALIZADO",
+          "EVENTO_CANCELADO",
           "ENTRADA_UTILIZADA",
           "NUEVO_MENSAJE",
           "NUEVA_RESENIA",

@@ -22,7 +22,18 @@ export default {
     web: {
       favicon: "./assets/favicon.png",
     },
-    plugins: ["expo-secure-store", "expo-image", "expo-font"],
+    plugins: [
+      "expo-secure-store",
+      "expo-image",
+      "expo-font",
+      [
+        "expo-image-picker",
+        {
+          photosPermission:
+            "AI Ticket It necesita acceder a tus fotos y videos para que puedas subirlos a tus eventos.",
+        },
+      ],
+    ],
     extra: {
       apiUrl: process.env.EXPO_PUBLIC_API_URL || "http://localhost:8000/api",
     },

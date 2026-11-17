@@ -221,3 +221,19 @@ false` y `orden=relevancia` cae a `fecha`. Con `categoriaIds`, la intersección 
 - **Eventos anteriores** en gris por opacidad: `filter: grayscale` no es confiable en styled-components/native.
 - **Tests**: `ReanimatedSwipeable` se mockea con un contenedor simple (reanimated 4 necesita worklets nativos aun desde
   su mock); se prueban las vías equivalentes al swipe (acción accesible y corazón) y el "Deshacer".
+
+## Iteración 09
+
+- **Alt obligatorio en videos**: pedido explícito; se valida en el cliente, en el service y en el dominio.
+- **Reembolsos en Mis eventos**: el back agrega `reembolsosPendientes` a `/eventos/mios` (una aggregation por todos los
+  eventos) en vez de pedir las compras de cada evento desde el front.
+- **Validación de archivos en el cliente**: imágenes JPG/PNG/WEBP de hasta 5 MB y videos MP4 de hasta 20 MB, máximo 6
+  archivos por evento; el back vuelve a validar.
+- **Publicar**: primero se crea el evento y después se sube la multimedia. Si la subida falla, el evento ya existe: se
+  avisa y se navega a Editar para reintentar. Si todo sale bien, toast, formulario limpio y vuelta a Mis eventos.
+- **Fecha y hora** con `@react-native-community/datetimepicker` (solo fechas futuras); en Android se elige día y
+  después hora.
+- **Compras del evento**: la tarjeta tiene un área presionable (abre el detalle) separada del botón Reembolsar, para que
+  el lector de pantalla no oculte el botón dentro de otro botón.
+- **Modo organizador de DetalleCompra**: se decide por `organizadorId === usuario.id`; las acciones del comprador ya
+  vienen en `false` desde el back.

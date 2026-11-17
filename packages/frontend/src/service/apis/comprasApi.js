@@ -6,6 +6,7 @@ export const comprasApi = {
   detalle: (id) => apiCaller.get(`/compras/${id}`),
   pagar: (id) => apiCaller.post(`/compras/${id}/pagar`),
   cancelar: (id) => apiCaller.post(`/compras/${id}/cancelar`),
+  reembolsar: (id) => apiCaller.post(`/compras/${id}/reembolsar`),
   reseniar: (id, datos) => apiCaller.post(`/compras/${id}/resenia`, datos),
 };
 
