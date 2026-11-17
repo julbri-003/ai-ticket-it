@@ -1,0 +1,999 @@
+<!doctype html>
+
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+      name="viewport"
+    />
+    <meta content="mobile_blank" name="shell-type" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @layer base {
+        html,
+        body {
+          width: 100vw;
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          overscroll-behavior: none;
+        }
+        .pb-safe {
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .pt-safe {
+          padding-top: env(safe-area-inset-top, 0px);
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-fixed": "#271900",
+              "primary-fixed": "#ffdada",
+              error: "#ba1a1a",
+              "on-tertiary-container": "#d7a545",
+              "on-surface": "#22191b",
+              "secondary-container": "#ffcd76",
+              "on-primary-fixed-variant": "#822431",
+              "secondary-fixed-dim": "#efbf6a",
+              "on-primary": "#ffffff",
+              "tertiary-fixed-dim": "#f3be5b",
+              "on-error": "#ffffff",
+              "on-tertiary-fixed-variant": "#5e4100",
+              outline: "#8c7d80",
+              background: "#faf7f2",
+              "primary-container": "#7a1e2c",
+              primary: "#7a1e2c",
+              "on-surface-variant": "#564242",
+              secondary: "#8a6417",
+              "surface-container": "#f3ece4",
+              surface: "#faf7f2",
+              "secondary-fixed": "#ffdeaa",
+              "on-error-container": "#93000a",
+              "surface-bright": "#faf7f2",
+              "surface-container-highest": "#e6dcd0",
+              "error-container": "#ffdad6",
+              "on-primary-fixed": "#40000d",
+              "on-primary-container": "#ff8a93",
+              "surface-dim": "#e6d6d9",
+              "on-tertiary": "#ffffff",
+              "inverse-primary": "#ffb2b6",
+              tertiary: "#3b2700",
+              "surface-variant": "#f3ece4",
+              "on-background": "#22191b",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-high": "#ede3d8",
+              "tertiary-fixed": "#ffdea9",
+              "on-secondary-fixed-variant": "#5f4100",
+              "inverse-surface": "#372e30",
+              "outline-variant": "#e6dcd0",
+              "on-tertiary-fixed": "#271900",
+              "primary-fixed-dim": "#ffb2b6",
+              "on-secondary-container": "#795505",
+              "tertiary-container": "#573c00",
+              "inverse-on-surface": "#fdedef",
+              "surface-container-low": "#f7f1ea",
+              "on-secondary": "#ffffff",
+              "surface-tint": "#7a1e2c",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "1rem",
+              "2xl": "1.25rem",
+              full: "9999px",
+            },
+            spacing: {
+              "space-xs": "0.25rem",
+              "gutter-mobile": "1rem",
+              gutter: "1.5rem",
+              "margin-mobile": "1.25rem",
+              "space-2xl": "4rem",
+              "space-md": "1rem",
+              "space-lg": "1.5rem",
+              "space-sm": "0.5rem",
+              margin: "1.25rem",
+              "space-xl": "2.5rem",
+            },
+            fontFamily: {
+              "body-lg": ["Inter", "sans-serif"],
+              "headline-md": ["Playfair Display", "serif"],
+              "title-lg": ["Playfair Display", "serif"],
+              display: ["Playfair Display", "serif"],
+              "display-mobile": ["Playfair Display", "serif"],
+              "title-md": ["Inter", "sans-serif"],
+              "label-section": ["Inter", "sans-serif"],
+              "headline-lg": ["Playfair Display", "serif"],
+              "body-md": ["Inter", "sans-serif"],
+              "headline-lg-mobile": ["Playfair Display", "serif"],
+              "body-sm": ["Inter", "sans-serif"],
+              "headline-sm": ["Playfair Display", "serif"],
+              "label-interactive": ["Inter", "sans-serif"],
+            },
+            boxShadow: {
+              "velvet-sm":
+                "0 2px 8px -1px rgba(122, 30, 44, 0.05), 0 1px 3px -1px rgba(0, 0, 0, 0.04)",
+              "velvet-md":
+                "0 6px 16px -2px rgba(122, 30, 44, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.03)",
+              "velvet-lg":
+                "0 12px 28px -4px rgba(122, 30, 44, 0.12), 0 4px 10px -2px rgba(0, 0, 0, 0.04)",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen pt-safe pb-safe selection:bg-primary selection:text-white"
+  >
+    <main class="flex flex-col relative w-full bg-surface min-h-screen">
+      <div class="flex flex-col w-full text-on-surface">
+        <!-- Skip to content -->
+        <a
+          class="sr-only focus:not-sr-only focus:p-space-sm focus:bg-primary focus:text-on-primary font-label-section uppercase z-50 rounded-full"
+          href="#contenido-principal"
+          >Saltar al contenido principal</a
+        >
+        <!-- Top Navigation Bar -->
+        <header
+          class="w-full px-margin py-3 bg-surface/90 backdrop-blur-md sticky top-0 z-40 flex items-center justify-between border-b border-outline-variant/60 shadow-velvet-sm"
+        >
+          <div class="flex items-center gap-space-sm">
+            <img
+              alt="AI Ticket It Logo"
+              class="h-9 w-auto object-contain"
+              src="https://lh3.googleusercontent.com/aida/ALJJyrAHdFExftQpnSuMjc6CR9Jq62WPyA7GTjk3to8YedLlCSp-HBe4gbBsAyFNWgtWuP3S7t1ZkrzorsknV9EZVE-M1UUbQVzdV2G6k4J8a1_m5FClK5l42kh-jETuN1_UVIzYK3DneHqLDOKHA04X7MQRJ2ywA7bQQP0KT75STdLmXCG4NI7sLTHEeCqbmyM0QZp_KAdo9AwKae67Wsa5kI8EGeXsk6XTQzmAa_3vOVCK"
+            />
+          </div>
+          <div class="flex items-center gap-space-sm">
+            <button
+              aria-label="Centro de Ayuda"
+              class="flex items-center justify-center w-10 h-10 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors"
+              type="button"
+            >
+              <span class="material-symbols-outlined text-2xl">help_outline</span>
+            </button>
+            <button
+              class="px-5 py-2 bg-primary text-white font-body-md font-medium rounded-full shadow-velvet-sm hover:opacity-95 transition-all text-sm tracking-wide"
+              type="button"
+            >
+              Ingresar
+            </button>
+          </div>
+        </header>
+        <!-- Main Content Container -->
+        <div class="flex flex-col gap-6 px-margin py-5" id="contenido-principal">
+          <!-- HERO SECTION (Modern Velvet Ticket) -->
+          <section
+            class="relative bg-surface-container-lowest rounded-2xl shadow-velvet-md border border-outline-variant/70 overflow-hidden flex flex-col"
+          >
+            <!-- Top Ticket Header / Stub Serial -->
+            <div
+              class="bg-surface-container/70 border-b border-outline-variant px-space-md py-2 flex items-center justify-between"
+            >
+              <span
+                class="font-label-section text-[11px] tracking-wider text-secondary uppercase font-semibold"
+              >
+                ADMITE UNO · Nº 000001 · SERIE A
+              </span>
+              <span
+                class="font-label-section text-[11px] text-on-surface-variant flex items-center gap-1.5 font-medium"
+              >
+                <span class="inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span> VÁLIDO EN
+                TODO EL PAÍS
+              </span>
+            </div>
+            <!-- Ticket Body -->
+            <div class="p-space-lg flex flex-col gap-3 relative">
+              <div
+                class="inline-flex items-center self-start gap-1.5 px-3 py-1 bg-surface-container text-secondary font-label-section text-xs uppercase tracking-wider font-semibold rounded-full border border-outline-variant"
+              >
+                <span>✦ TUS ENTRADAS, SIN FILAS</span>
+              </div>
+              <h1
+                class="font-headline-lg-mobile text-[32px] text-on-surface leading-tight font-bold tracking-tight"
+              >
+                Viví la emoción de cada
+                <span class="italic font-normal text-primary">espectáculo</span> en vivo
+              </h1>
+              <p class="font-body-md text-on-surface-variant leading-relaxed">
+                Conseguí tus entradas oficiales para recitales, teatro, festivales y deportes en
+                todo el país sin intermediarios oscuros ni sorpresas.
+              </p>
+              <!-- CTAs with 48px touch targets -->
+              <div class="flex flex-col sm:flex-row gap-space-sm pt-2">
+                <button
+                  class="h-12 w-full sm:w-auto px-6 bg-primary text-white font-body-md font-semibold rounded-full shadow-velvet-sm flex items-center justify-center gap-space-xs hover:opacity-95 active:scale-[0.99] transition-all"
+                  type="button"
+                >
+                  <span>Explorar eventos</span>
+                  <span class="material-symbols-outlined text-xl">confirmation_number</span>
+                </button>
+                <button
+                  class="h-12 w-full sm:w-auto px-6 bg-surface-container border border-outline/30 text-on-surface font-body-md font-medium rounded-full flex items-center justify-center gap-space-xs hover:bg-surface-container-high transition-colors"
+                  type="button"
+                >
+                  <span>Publicar mi evento</span>
+                  <span class="material-symbols-outlined text-xl text-primary"
+                    >add_circle_outline</span
+                  >
+                </button>
+              </div>
+            </div>
+            <!-- Ticket Perforation Line & Modern Clean Notches -->
+            <div class="relative w-full flex items-center justify-between my-0">
+              <div
+                class="w-5 h-8 rounded-r-full bg-surface border-y border-r border-outline-variant -ml-px shadow-inner"
+              ></div>
+              <div class="flex-1 mx-2 border-b-2 border-dashed border-outline-variant"></div>
+              <div
+                class="w-5 h-8 rounded-l-full bg-surface border-y border-l border-outline-variant -mr-px shadow-inner"
+              ></div>
+            </div>
+            <!-- Ticket Tear Bottom / Guarantee Details -->
+            <div
+              class="px-space-lg py-3 bg-surface-container-low flex flex-wrap items-center justify-between gap-space-sm text-on-surface-variant font-label-section text-[11px] tracking-wider uppercase font-semibold"
+            >
+              <div class="flex items-center gap-1.5 text-on-surface">
+                <span class="material-symbols-outlined text-base text-secondary"
+                  >verified_user</span
+                >
+                <span>ENTRADAS 100% NOMINADAS Y VERIFICADAS</span>
+              </div>
+              <div class="flex items-center gap-1 text-secondary font-medium">
+                <span>✦ QR ANTI-FRAUDE DINÁMICO</span>
+              </div>
+            </div>
+          </section>
+          <!-- STATS (4 Mini Stub Cards) -->
+          <section class="grid grid-cols-2 gap-3">
+            <div
+              class="relative bg-surface-container-lowest p-4 rounded-xl shadow-velvet-sm border border-outline-variant flex flex-col justify-center overflow-hidden"
+            >
+              <div class="font-headline-md text-primary font-bold">320+</div>
+              <div
+                class="font-label-section text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider mt-1"
+              >
+                Eventos activos
+              </div>
+            </div>
+            <div
+              class="relative bg-surface-container-lowest p-4 rounded-xl shadow-velvet-sm border border-outline-variant flex flex-col justify-center overflow-hidden"
+            >
+              <div class="font-headline-md text-secondary font-bold">450K+</div>
+              <div
+                class="font-label-section text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider mt-1"
+              >
+                Entradas vendidas
+              </div>
+            </div>
+            <div
+              class="relative bg-surface-container-lowest p-4 rounded-xl shadow-velvet-sm border border-outline-variant flex flex-col justify-center overflow-hidden"
+            >
+              <div class="font-headline-md text-primary font-bold">1.200+</div>
+              <div
+                class="font-label-section text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider mt-1"
+              >
+                Organizadores
+              </div>
+            </div>
+            <div
+              class="relative bg-surface-container-lowest p-4 rounded-xl shadow-velvet-sm border border-outline-variant flex flex-col justify-center overflow-hidden"
+            >
+              <div class="font-headline-md text-secondary font-bold flex items-center gap-1">
+                <span>4.9</span>
+                <span class="text-xl">★</span>
+              </div>
+              <div
+                class="font-label-section text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider mt-1"
+              >
+                Puntaje promedio
+              </div>
+            </div>
+          </section>
+          <!-- SECTION TITLE: PRÓXIMOS EVENTOS -->
+          <section class="flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <div>
+                <span
+                  class="font-label-section text-xs uppercase text-secondary font-semibold tracking-wider"
+                  >✦ Cartelera en vivo</span
+                >
+                <h2 class="font-headline-lg-mobile text-2xl text-on-surface font-bold">
+                  Próximos <span class="italic font-normal text-primary">eventos</span>
+                </h2>
+              </div>
+              <a
+                class="font-label-section text-xs uppercase tracking-wider text-primary font-semibold hover:underline"
+                href="#todos-los-eventos"
+                >Ver todos</a
+              >
+            </div>
+            <!-- Horizontal Carousel -->
+            <div class="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory -mx-margin px-margin">
+              <!-- Ticket Card 1 -->
+              <article
+                class="flex-none w-72 bg-surface-container-lowest rounded-2xl shadow-velvet-md border border-outline-variant overflow-hidden snap-start flex flex-col"
+              >
+                <div class="relative h-36 w-full bg-surface-container overflow-hidden">
+                  <img
+                    class="w-full h-full object-cover"
+                    data-alt="Fotografía vibrante de un concierto de rock argentino bajo luces escénicas de color ámbar y azul noche, atmósfera cálida y público eufórico con las manos arriba."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1GaKT9NelwZ88xyx0udt0m5mb_2nJzPqDjtWlWbz1D0V1rHtWaqQXd1g1vMeYa9we8tZrtIh5C_ZmU0FpsEhuiaj8dH6gl71KnSirG4c3EaEpXmewuBX6f3OQUpJ5mC_znQOMM0jFfMy6ya8-M0XZKx9DPtWQ40J9LdiP6vF-aw93hpBb6OkVsb7o4ko6n6Al8WsevLvjF4FMgDtPwhxONe4uaS-ZLuOUxSyV1B8"
+                  />
+                  <span
+                    class="absolute top-2.5 left-2.5 px-2.5 py-0.5 bg-primary text-white font-label-section text-[10px] tracking-wider font-semibold rounded-full uppercase shadow-sm"
+                  >
+                    CONCIERTO
+                  </span>
+                </div>
+                <div class="p-4 flex flex-col gap-1 flex-1">
+                  <span
+                    class="font-label-section text-xs text-secondary uppercase font-semibold tracking-wider"
+                    >sáb 22 nov · 21:00</span
+                  >
+                  <h3 class="font-headline-sm text-lg text-on-surface line-clamp-1 font-bold">
+                    Divididos en Vivo
+                  </h3>
+                  <p
+                    class="font-body-sm text-sm text-on-surface-variant flex items-center gap-1 mt-0.5"
+                  >
+                    <span class="material-symbols-outlined text-sm text-primary">location_on</span>
+                    Estadio Obras, CABA
+                  </p>
+                </div>
+                <div
+                  class="p-3.5 bg-surface-container border-t border-outline-variant flex items-center justify-between mt-auto"
+                >
+                  <div>
+                    <span
+                      class="font-label-section text-[10px] text-on-surface-variant block uppercase font-medium"
+                      >Precio</span
+                    >
+                    <span class="font-body-md text-sm text-primary font-bold"
+                      >Desde $42.000,00</span
+                    >
+                  </div>
+                  <button
+                    class="h-9 px-4 bg-primary text-white font-body-sm text-xs font-semibold rounded-full shadow-velvet-sm hover:opacity-95 transition-opacity"
+                    type="button"
+                  >
+                    Comprar ticket
+                  </button>
+                </div>
+              </article>
+              <!-- Ticket Card 2 -->
+              <article
+                class="flex-none w-72 bg-surface-container-lowest rounded-2xl shadow-velvet-md border border-outline-variant overflow-hidden snap-start flex flex-col"
+              >
+                <div class="relative h-36 w-full bg-surface-container overflow-hidden">
+                  <img
+                    class="w-full h-full object-cover"
+                    data-alt="Escena dramática de teatro en Calle Corrientes, Buenos Aires, con dos actores bajo un foco cenital cálido, fondo de terciopelo y madera clásica de sala teatral."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuD73q3CRO5xlRr2M_JLG1aK8lCI-BgUZCvNQnGxmWeWLRencSgqKqS-k_7xFHVpIJdNMyt53iw4bInzdd0RX5ajHTWK3x_tI65DAt48BhMZbYfyNMHHX4iALHyu7F20hS5lXwasiBHw5vbA3WzdSVZ4gXeamdl_BBIx3j5FgHMH7V6dtpbAbtRm3qqqS6UI2BiH4VEFsA08YQPgt1MKBUURpfyCTnU_DLA5IZaCR1Q"
+                  />
+                  <span
+                    class="absolute top-2.5 left-2.5 px-2.5 py-0.5 bg-secondary text-white font-label-section text-[10px] tracking-wider font-semibold rounded-full uppercase shadow-sm"
+                  >
+                    TEATRO
+                  </span>
+                </div>
+                <div class="p-4 flex flex-col gap-1 flex-1">
+                  <span
+                    class="font-label-section text-xs text-secondary uppercase font-semibold tracking-wider"
+                    >dom 23 nov · 20:30</span
+                  >
+                  <h3 class="font-headline-sm text-lg text-on-surface line-clamp-1 font-bold">
+                    Toc Toc - 14ª Temporada
+                  </h3>
+                  <p
+                    class="font-body-sm text-sm text-on-surface-variant flex items-center gap-1 mt-0.5"
+                  >
+                    <span class="material-symbols-outlined text-sm text-primary">location_on</span>
+                    Teatro Multitabaris, CABA
+                  </p>
+                </div>
+                <div
+                  class="p-3.5 bg-surface-container border-t border-outline-variant flex items-center justify-between mt-auto"
+                >
+                  <div>
+                    <span
+                      class="font-label-section text-[10px] text-on-surface-variant block uppercase font-medium"
+                      >Precio</span
+                    >
+                    <span class="font-body-md text-sm text-primary font-bold"
+                      >Desde $28.500,00</span
+                    >
+                  </div>
+                  <button
+                    class="h-9 px-4 bg-primary text-white font-body-sm text-xs font-semibold rounded-full shadow-velvet-sm hover:opacity-95 transition-opacity"
+                    type="button"
+                  >
+                    Comprar ticket
+                  </button>
+                </div>
+              </article>
+              <!-- Ticket Card 3 -->
+              <article
+                class="flex-none w-72 bg-surface-container-lowest rounded-2xl shadow-velvet-md border border-outline-variant overflow-hidden snap-start flex flex-col"
+              >
+                <div class="relative h-36 w-full bg-surface-container overflow-hidden">
+                  <img
+                    class="w-full h-full object-cover"
+                    data-alt="Comediante de stand-up con micrófono clásico en mano sobre escenario íntimo de bar porteño con pared de ladrillo visto y luz cálida puntual."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOSkIdvp_XCnh4t38wFWLum8-sox0YZ9VUKx1Hbw2UmQDHE_v50pE9GipgTM5QCqcfzeODVrD3NWmi7poA3iBIKlTBP5i4YWq0w9b12I27WEZ8gxLY1kKOXqPOX88ZG8QgHZ14VD9yyHwkfT7X9c_5Qf1QfzdaX6TY2NTx7l1WOSE_sXAKe4R-1odRsQ1AUjZfzt81-TT9dSqLAGHQZdv9OnpJJmXTL_kCwVKYPnc"
+                  />
+                  <span
+                    class="absolute top-2.5 left-2.5 px-2.5 py-0.5 bg-primary text-white font-label-section text-[10px] tracking-wider font-semibold rounded-full uppercase shadow-sm"
+                  >
+                    STAND UP
+                  </span>
+                </div>
+                <div class="p-4 flex flex-col gap-1 flex-1">
+                  <span
+                    class="font-label-section text-xs text-secondary uppercase font-semibold tracking-wider"
+                    >vie 28 nov · 22:45</span
+                  >
+                  <h3 class="font-headline-sm text-lg text-on-surface line-clamp-1 font-bold">
+                    Noche de Comedia &amp; Vermú
+                  </h3>
+                  <p
+                    class="font-body-sm text-sm text-on-surface-variant flex items-center gap-1 mt-0.5"
+                  >
+                    <span class="material-symbols-outlined text-sm text-primary">location_on</span>
+                    Paseo La Plaza, CABA
+                  </p>
+                </div>
+                <div
+                  class="p-3.5 bg-surface-container border-t border-outline-variant flex items-center justify-between mt-auto"
+                >
+                  <div>
+                    <span
+                      class="font-label-section text-[10px] text-on-surface-variant block uppercase font-medium"
+                      >Precio</span
+                    >
+                    <span class="font-body-md text-sm text-primary font-bold"
+                      >Desde $18.000,00</span
+                    >
+                  </div>
+                  <button
+                    class="h-9 px-4 bg-primary text-white font-body-sm text-xs font-semibold rounded-full shadow-velvet-sm hover:opacity-95 transition-opacity"
+                    type="button"
+                  >
+                    Comprar ticket
+                  </button>
+                </div>
+              </article>
+            </div>
+          </section>
+          <!-- EXPLORAR CATEGORÍAS -->
+          <section class="flex flex-col gap-3">
+            <div class="flex flex-col">
+              <span
+                class="font-label-section text-xs uppercase text-secondary font-semibold tracking-wider"
+                >✦ Clasificación</span
+              >
+              <h2 class="font-headline-lg-mobile text-2xl text-on-surface font-bold">
+                Explorá por <span class="italic font-normal text-primary">categoría</span>
+              </h2>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <button
+                class="p-3.5 bg-surface-container-lowest rounded-xl shadow-velvet-sm border border-outline-variant flex items-center gap-3 text-left hover:bg-surface-container transition-colors"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-2xl text-primary">music_note</span>
+                <div>
+                  <span class="font-body-md text-sm font-semibold block text-on-surface"
+                    >Conciertos</span
+                  >
+                  <span class="font-label-section text-[11px] text-on-surface-variant"
+                    >142 eventos</span
+                  >
+                </div>
+              </button>
+              <button
+                class="p-3.5 bg-surface-container-lowest rounded-xl shadow-velvet-sm border border-outline-variant flex items-center gap-3 text-left hover:bg-surface-container transition-colors"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-2xl text-secondary"
+                  >theater_comedy</span
+                >
+                <div>
+                  <span class="font-body-md text-sm font-semibold block text-on-surface"
+                    >Teatro</span
+                  >
+                  <span class="font-label-section text-[11px] text-on-surface-variant"
+                    >88 obras</span
+                  >
+                </div>
+              </button>
+              <button
+                class="p-3.5 bg-surface-container-lowest rounded-xl shadow-velvet-sm border border-outline-variant flex items-center gap-3 text-left hover:bg-surface-container transition-colors"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-2xl text-primary"
+                  >sentiment_very_satisfied</span
+                >
+                <div>
+                  <span class="font-body-md text-sm font-semibold block text-on-surface"
+                    >Stand Up</span
+                  >
+                  <span class="font-label-section text-[11px] text-on-surface-variant"
+                    >45 shows</span
+                  >
+                </div>
+              </button>
+              <button
+                class="p-3.5 bg-surface-container-lowest rounded-xl shadow-velvet-sm border border-outline-variant flex items-center gap-3 text-left hover:bg-surface-container transition-colors"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-2xl text-secondary">festival</span>
+                <div>
+                  <span class="font-body-md text-sm font-semibold block text-on-surface"
+                    >Festivales</span
+                  >
+                  <span class="font-label-section text-[11px] text-on-surface-variant"
+                    >26 fechas</span
+                  >
+                </div>
+              </button>
+              <button
+                class="p-3.5 bg-surface-container-lowest rounded-xl shadow-velvet-sm border border-outline-variant flex items-center gap-3 text-left hover:bg-surface-container transition-colors"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-2xl text-primary">sports_soccer</span>
+                <div>
+                  <span class="font-body-md text-sm font-semibold block text-on-surface"
+                    >Deportes</span
+                  >
+                  <span class="font-label-section text-[11px] text-on-surface-variant"
+                    >19 partidos</span
+                  >
+                </div>
+              </button>
+              <button
+                class="p-3.5 bg-surface-container-lowest rounded-xl shadow-velvet-sm border border-outline-variant flex items-center gap-3 text-left hover:bg-surface-container transition-colors"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-2xl text-secondary">podium</span>
+                <div>
+                  <span class="font-body-md text-sm font-semibold block text-on-surface"
+                    >Conferencias</span
+                  >
+                  <span class="font-label-section text-[11px] text-on-surface-variant"
+                    >12 charlas</span
+                  >
+                </div>
+              </button>
+              <button
+                class="p-3.5 bg-surface-container-lowest rounded-xl shadow-velvet-sm border border-outline-variant flex items-center gap-3 text-left hover:bg-surface-container transition-colors"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-2xl text-primary">child_care</span>
+                <div>
+                  <span class="font-body-md text-sm font-semibold block text-on-surface"
+                    >Infantiles</span
+                  >
+                  <span class="font-label-section text-[11px] text-on-surface-variant"
+                    >31 funciones</span
+                  >
+                </div>
+              </button>
+              <button
+                class="p-3.5 bg-surface-container-lowest rounded-xl shadow-velvet-sm border border-outline-variant flex items-center gap-3 text-left hover:bg-surface-container transition-colors"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-2xl text-secondary">nightlife</span>
+                <div>
+                  <span class="font-body-md text-sm font-semibold block text-on-surface"
+                    >Danza</span
+                  >
+                  <span class="font-label-section text-[11px] text-on-surface-variant"
+                    >14 ballets</span
+                  >
+                </div>
+              </button>
+            </div>
+          </section>
+          <!-- CÓMO FUNCIONA -->
+          <section
+            class="bg-surface-container-lowest p-5 rounded-2xl shadow-velvet-md border border-outline-variant flex flex-col gap-4"
+          >
+            <div>
+              <span
+                class="font-label-section text-xs uppercase text-secondary font-semibold tracking-wider"
+                >✦ Guía de ventanilla</span
+              >
+              <h2 class="font-headline-lg-mobile text-2xl text-on-surface font-bold">
+                ¿Cómo <span class="italic font-normal text-primary">funciona</span>?
+              </h2>
+            </div>
+            <div class="flex flex-col gap-4">
+              <!-- Paso 1 -->
+              <div class="flex gap-3.5 items-start">
+                <div
+                  class="w-10 h-10 flex-none bg-primary text-white rounded-full flex items-center justify-center font-body-md font-bold text-sm shadow-velvet-sm"
+                >
+                  01
+                </div>
+                <div class="flex flex-col">
+                  <h3 class="font-headline-sm text-base text-on-surface font-bold">
+                    Elegí tu función
+                  </h3>
+                  <p class="font-body-md text-sm text-on-surface-variant leading-relaxed">
+                    Buscá tu espectáculo favorito, compará fechas y seleccioná la ubicación exacta
+                    que querés en la sala interactiva.
+                  </p>
+                </div>
+              </div>
+              <!-- Paso 2 -->
+              <div class="flex gap-3.5 items-start">
+                <div
+                  class="w-10 h-10 flex-none bg-surface-container text-secondary border border-outline/30 rounded-full flex items-center justify-center font-body-md font-bold text-sm shadow-velvet-sm"
+                >
+                  02
+                </div>
+                <div class="flex flex-col">
+                  <h3 class="font-headline-sm text-base text-on-surface font-bold">
+                    Pagá al instante
+                  </h3>
+                  <p class="font-body-md text-sm text-on-surface-variant leading-relaxed">
+                    Aboná en pesos argentinos con tarjetas de crédito, débito o transferencia
+                    bancaria con confirmación inmediata.
+                  </p>
+                </div>
+              </div>
+              <!-- Paso 3 -->
+              <div class="flex gap-3.5 items-start">
+                <div
+                  class="w-10 h-10 flex-none bg-primary text-white rounded-full flex items-center justify-center font-body-md font-bold text-sm shadow-velvet-sm"
+                >
+                  03
+                </div>
+                <div class="flex flex-col">
+                  <h3 class="font-headline-sm text-base text-on-surface font-bold">
+                    Entrá sin demoras
+                  </h3>
+                  <p class="font-body-md text-sm text-on-surface-variant leading-relaxed">
+                    Presentá tu boleto digital con código QR dinámico directo desde el celular.
+                    Olvidate de imprimir papeles.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- BENEFICIOS COMPARATIVOS -->
+          <section class="flex flex-col gap-3">
+            <div class="flex flex-col">
+              <span
+                class="font-label-section text-xs uppercase text-secondary font-semibold tracking-wider"
+                >✦ Experiencia</span
+              >
+              <h2 class="font-headline-lg-mobile text-2xl text-on-surface font-bold">
+                Pensado para <span class="italic font-normal text-primary">todos</span>
+              </h2>
+            </div>
+            <div class="grid grid-cols-1 gap-3.5">
+              <!-- Tarjeta Para Compradores -->
+              <div
+                class="bg-surface-container-lowest p-4 rounded-xl shadow-velvet-sm border border-outline-variant flex flex-col gap-2.5"
+              >
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-2xl text-primary">person</span>
+                  <h3 class="font-headline-sm text-lg text-on-surface font-bold">
+                    Para compradores
+                  </h3>
+                </div>
+                <ul class="flex flex-col gap-2 font-body-md text-sm text-on-surface-variant">
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base text-secondary font-bold"
+                      >check</span
+                    >
+                    Entradas garantizadas con nominación oficial
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base text-secondary font-bold"
+                      >check</span
+                    >
+                    Cero recargos ocultos en el checkout
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base text-secondary font-bold"
+                      >check</span
+                    >
+                    Reventa legal protegida entre fans
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base text-secondary font-bold"
+                      >check</span
+                    >
+                    Atención directa por WhatsApp en tu idioma
+                  </li>
+                </ul>
+              </div>
+              <!-- Tarjeta Para Organizadores -->
+              <div
+                class="bg-surface-container-lowest p-4 rounded-xl shadow-velvet-sm border border-outline-variant flex flex-col gap-2.5"
+              >
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-2xl text-secondary"
+                    >corporate_fare</span
+                  >
+                  <h3 class="font-headline-sm text-lg text-on-surface font-bold">
+                    Para organizadores
+                  </h3>
+                </div>
+                <ul class="flex flex-col gap-2 font-body-md text-sm text-on-surface-variant">
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base text-secondary font-bold"
+                      >check</span
+                    >
+                    Acreditación veloz por escáner QR en puerta
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base text-secondary font-bold"
+                      >check</span
+                    >
+                    Cobro y liquidación bancaria en 24 horas
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base text-secondary font-bold"
+                      >check</span
+                    >
+                    Panel de estadísticas y venta en tiempo real
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base text-secondary font-bold"
+                      >check</span
+                    >
+                    Comisiones transparentes y facturación AFIP automática
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+          <!-- RESEÑAS DESTACADAS -->
+          <section class="flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <div>
+                <span
+                  class="font-label-section text-xs uppercase text-secondary font-semibold tracking-wider"
+                  >✦ Comunidad</span
+                >
+                <h2 class="font-headline-lg-mobile text-2xl text-on-surface font-bold">
+                  Opiniones de <span class="italic font-normal text-primary">espectadores</span>
+                </h2>
+              </div>
+            </div>
+            <div
+              class="flex gap-3.5 overflow-x-auto pb-2 snap-x snap-mandatory -mx-margin px-margin"
+            >
+              <!-- Review 1 -->
+              <div
+                class="flex-none w-72 bg-surface-container-lowest p-4 rounded-xl shadow-velvet-sm border border-outline-variant snap-start flex flex-col justify-between"
+              >
+                <div class="flex flex-col gap-2">
+                  <div class="flex text-secondary text-sm tracking-wider">★★★★★</div>
+                  <p class="font-body-md text-sm text-on-surface leading-relaxed">
+                    "Compré mis entradas para el recital de Obras en 2 minutos. Entramos sin hacer
+                    cola con el QR directo del celu."
+                  </p>
+                </div>
+                <div
+                  class="mt-3 pt-2 bg-surface-container/60 border border-outline-variant px-3 py-1.5 rounded-lg flex items-center justify-between"
+                >
+                  <span class="font-body-sm text-xs font-semibold text-on-surface"
+                    >Martín G. (Palermo)</span
+                  >
+                  <span class="font-label-section text-[11px] text-on-surface-variant"
+                    >sáb 15 nov</span
+                  >
+                </div>
+              </div>
+              <!-- Review 2 -->
+              <div
+                class="flex-none w-72 bg-surface-container-lowest p-4 rounded-xl shadow-velvet-sm border border-outline-variant snap-start flex flex-col justify-between"
+              >
+                <div class="flex flex-col gap-2">
+                  <div class="flex text-secondary text-sm tracking-wider">★★★★★</div>
+                  <p class="font-body-md text-sm text-on-surface leading-relaxed">
+                    "La mejor plataforma de Calle Corrientes. Sin costos fantasmas al final del
+                    pago, precio clarísimo desde el arranque."
+                  </p>
+                </div>
+                <div
+                  class="mt-3 pt-2 bg-surface-container/60 border border-outline-variant px-3 py-1.5 rounded-lg flex items-center justify-between"
+                >
+                  <span class="font-body-sm text-xs font-semibold text-on-surface"
+                    >Florencia V. (Rosario)</span
+                  >
+                  <span class="font-label-section text-[11px] text-on-surface-variant"
+                    >jue 20 nov</span
+                  >
+                </div>
+              </div>
+              <!-- Review 3 -->
+              <div
+                class="flex-none w-72 bg-surface-container-lowest p-4 rounded-xl shadow-velvet-sm border border-outline-variant snap-start flex flex-col justify-between"
+              >
+                <div class="flex flex-col gap-2">
+                  <div class="flex text-secondary text-sm tracking-wider">★★★★★</div>
+                  <p class="font-body-md text-sm text-on-surface leading-relaxed">
+                    "Como organizador de stand-up chico, AI Ticket It me solucionó el ingreso y el
+                    control de ventas sin cobrar barbaridades."
+                  </p>
+                </div>
+                <div
+                  class="mt-3 pt-2 bg-surface-container/60 border border-outline-variant px-3 py-1.5 rounded-lg flex items-center justify-between"
+                >
+                  <span class="font-body-sm text-xs font-semibold text-on-surface"
+                    >Luciano R. (Córdoba)</span
+                  >
+                  <span class="font-label-section text-[11px] text-on-surface-variant"
+                    >dom 09 nov</span
+                  >
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- BANNER FINAL CTA -->
+          <section
+            class="relative bg-primary text-white p-6 rounded-2xl shadow-velvet-lg overflow-hidden flex flex-col gap-4"
+          >
+            <!-- Subtle Glow Pattern -->
+            <div
+              class="absolute -right-8 -bottom-8 w-44 h-44 rounded-full bg-white/5 pointer-events-none blur-xl"
+            ></div>
+            <div class="flex flex-col gap-1.5 relative z-10">
+              <span
+                class="font-label-section text-xs tracking-wider uppercase text-secondary-fixed font-semibold"
+                >✦ PROMO BIENVENIDA · CUPÓN DE REGALO</span
+              >
+              <h2 class="font-headline-lg-mobile text-2xl font-bold text-white leading-tight">
+                Creá tu cuenta gratis y llevate
+                <span class="italic font-normal text-secondary-fixed">$5.000</span> de descuento en
+                tu primer evento
+              </h2>
+              <p class="font-body-md text-sm text-white/85 leading-relaxed">
+                Sumate a la nueva forma de vivir espectáculos en vivo en Argentina. Registro rápido
+                en 30 segundos.
+              </p>
+            </div>
+            <div class="relative z-10 flex flex-col sm:flex-row gap-space-sm pt-1">
+              <button
+                class="h-12 w-full sm:w-auto px-6 bg-surface-container-lowest text-primary font-body-md font-semibold rounded-full shadow-velvet-sm hover:bg-surface-container transition-colors flex items-center justify-center gap-space-xs"
+                type="button"
+              >
+                <span>Registrarme con descuento</span>
+                <span class="material-symbols-outlined text-xl">arrow_forward</span>
+              </button>
+            </div>
+          </section>
+        </div>
+        <!-- FOOTER COMPLETO -->
+        <footer
+          class="w-full bg-surface-container border-t border-outline-variant px-margin py-8 mt-6 flex flex-col gap-6"
+        >
+          <div class="flex flex-col gap-2">
+            <img
+              alt="AI Ticket It Logo"
+              class="h-8 w-auto object-contain self-start"
+              src="https://lh3.googleusercontent.com/aida/ALJJyrAHdFExftQpnSuMjc6CR9Jq62WPyA7GTjk3to8YedLlCSp-HBe4gbBsAyFNWgtWuP3S7t1ZkrzorsknV9EZVE-M1UUbQVzdV2G6k4J8a1_m5FClK5l42kh-jETuN1_UVIzYK3DneHqLDOKHA04X7MQRJ2ywA7bQQP0KT75STdLmXCG4NI7sLTHEeCqbmyM0QZp_KAdo9AwKae67Wsa5kI8EGeXsk6XTQzmAa_3vOVCK"
+            />
+            <p class="font-body-sm text-sm text-on-surface-variant leading-relaxed">
+              La boletería digital definitiva de Argentina. Entradas seguras, transparentes y al
+              instante para tus recitales y obras favoritas.
+            </p>
+          </div>
+          <!-- Links List -->
+          <div class="grid grid-cols-2 gap-4 font-body-sm text-sm">
+            <div class="flex flex-col gap-2">
+              <span
+                class="font-label-section text-xs uppercase text-on-surface font-semibold tracking-wider"
+                >Plataforma</span
+              >
+              <a
+                class="text-on-surface-variant hover:text-primary transition-colors"
+                href="#como-funciona"
+                >Cómo funciona</a
+              >
+              <a
+                class="text-on-surface-variant hover:text-primary transition-colors"
+                href="#organizadores"
+                >Para organizadores</a
+              >
+              <a
+                class="text-on-surface-variant hover:text-primary transition-colors"
+                href="#cartelera"
+                >Cartelera CABA y Provincias</a
+              >
+              <a class="text-on-surface-variant hover:text-primary transition-colors" href="#ayuda"
+                >Centro de Ayuda</a
+              >
+            </div>
+            <div class="flex flex-col gap-2">
+              <span
+                class="font-label-section text-xs uppercase text-on-surface font-semibold tracking-wider"
+                >Legales</span
+              >
+              <a
+                class="text-on-surface-variant hover:text-primary transition-colors"
+                href="#terminos"
+                >Términos del Servicio</a
+              >
+              <a
+                class="text-on-surface-variant hover:text-primary transition-colors"
+                href="#privacidad"
+                >Política de Privacidad</a
+              >
+              <a
+                class="text-on-surface-variant hover:text-primary transition-colors"
+                href="#defensa"
+                >Defensa del Consumidor</a
+              >
+              <a
+                class="text-on-surface-variant hover:text-primary transition-colors"
+                href="#seguridad"
+                >Seguridad Anti-Fraude</a
+              >
+            </div>
+          </div>
+          <!-- Theme Switcher & Copyright -->
+          <div
+            class="pt-4 border-t border-outline-variant flex flex-col sm:flex-row items-center justify-between gap-4"
+          >
+            <div
+              class="flex items-center gap-1 bg-surface-container-lowest p-1 rounded-full border border-outline-variant shadow-velvet-sm"
+            >
+              <button
+                aria-pressed="true"
+                class="px-3.5 py-1.5 bg-primary text-white rounded-full font-label-section text-xs uppercase font-semibold flex items-center gap-1.5 shadow-sm"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-sm">light_mode</span> Claro (Marfil)
+              </button>
+              <button
+                aria-pressed="false"
+                class="px-3.5 py-1.5 text-on-surface-variant rounded-full font-label-section text-xs uppercase font-semibold flex items-center gap-1.5 hover:text-on-surface"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-sm">dark_mode</span> Oscuro
+              </button>
+            </div>
+            <div
+              class="font-label-section text-[11px] text-center sm:text-right text-on-surface-variant"
+            >
+              <span>© 2026 AI Ticket It · CABA, Argentina. Todos los derechos reservados.</span>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>

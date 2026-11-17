@@ -34,6 +34,27 @@ const DESCRIPCION_COMPRAS = [
   "```",
 ].join("\n");
 
+// Chat: REST para enviar y leer; socket.io solo para empujar (descripción del tag "Chat").
+const DESCRIPCION_CHAT = [
+  "Chat entre el comprador y el organizador de cada compra, en cualquier estado.",
+  "**Los mensajes se envían por REST** (pasan por validación, permisos y dominio); el socket solo empuja.",
+  "Si el socket se cae, el front hace polling con `GET /api/compras/{id}/mensajes?desde=<ISO>`.",
+  "",
+  "### Socket.io (mismo host y puerto que la API)",
+  '- **Conexión**: `io(URL, { auth: { token: "<JWT>" } })`. Sin token o con uno inválido se rechaza con `No autorizado`.',
+  "- Al conectar, el socket entra a la sala `usuario:<id>`.",
+  "",
+  "| Dirección | Evento | Payload | Descripción |",
+  "|---|---|---|---|",
+  "| cliente → server | `compra:unirse` | `{ compraId }` + ack | Entra a la sala `compra:<id>` si es participante. Ack `{ ok: true }` o `{ error }`. |",
+  "| cliente → server | `compra:salir` | `{ compraId }` + ack | Sale de la sala de la compra. |",
+  "| server → sala `compra:<id>` | `mensaje:nuevo` | `{ compraId, mensaje }` | Nuevo mensaje del chat (después de un POST REST). |",
+  "| server → `usuario:<id>` | `compra:estado` | `{ compraId, estado, cambio }` | Cada transición de la compra, al comprador y al organizador. |",
+  "| server → `usuario:<id>` | `notificacion:nueva` | Notificacion | Notificación in-app nueva. |",
+  "",
+  "Mientras un participante está en la sala de la compra no recibe la notificación NUEVO_MENSAJE (ya lo ve en el chat).",
+].join("\n");
+
 const puerto = process.env.PORT || 8000;
 const serverUrl = `http://localhost:${puerto}`;
 const directorio = path.dirname(fileURLToPath(import.meta.url));
@@ -53,6 +74,12 @@ const options = {
       { name: "Eventos" },
       { name: "Favoritos" },
       { name: "Compras", description: DESCRIPCION_COMPRAS },
+      { name: "Chat", description: DESCRIPCION_CHAT },
+      {
+        name: "Notificaciones",
+        description:
+          "Notificaciones in-app. Cada una nueva también llega en tiempo real por el evento de socket `notificacion:nueva` (ver tag Chat).",
+      },
     ],
     components: {
       securitySchemes: {

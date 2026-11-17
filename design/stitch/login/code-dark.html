@@ -1,0 +1,394 @@
+<!doctype html>
+
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+      name="viewport"
+    />
+    <meta content="mobile_blank" name="shell-type" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @layer base {
+        html,
+        body {
+          width: 100vw;
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          overscroll-behavior: none;
+        }
+        .pb-safe {
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .pt-safe {
+          padding-top: env(safe-area-inset-top, 0px);
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#c8102e",
+              "velvet-bg": "#0f0b0d",
+              "velvet-card": "#1d1417",
+              "velvet-surface": "#2a1a1f",
+              "velvet-border": "#3a2a2e",
+              "velvet-input-border": "#7a6a64",
+              "text-cream": "#f5efe6",
+              "text-secondary": "#d8ccc0",
+              "text-muted": "#a8998f",
+              "gold-accent": "#d4af37",
+              "accent-red": "#ff4757",
+            },
+            fontFamily: {
+              display: ["Playfair Display", "serif"],
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-[#0f0b0d] text-[#f5efe6] font-sans flex flex-col min-h-screen pt-safe pb-safe antialiased"
+  >
+    <main class="flex flex-col relative w-full bg-[#0f0b0d] min-h-screen">
+      <div class="flex flex-col w-full px-4 pb-8 space-y-4 max-w-md mx-auto">
+        <!-- Top Utilities / Return Bar -->
+        <div class="flex items-center justify-between pt-2">
+          <a
+            class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#d8ccc0] hover:text-[#f5efe6] transition-colors"
+            href="#"
+          >
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            <span>Volver a la cartelera</span>
+          </a>
+          <div
+            class="bg-[#1d1417] border border-[#3a2a2e] px-3 py-1 rounded-full text-[#d4af37] text-xs font-semibold tracking-wider flex items-center gap-1 shadow-sm"
+          >
+            <span>✦</span> PASE Nº 4092-B
+          </div>
+        </div>
+        <!-- Header Banner / Eyebrow Header -->
+        <div
+          class="bg-[#1d1417] border border-[#3a2a2e] rounded-xl p-3 flex items-center justify-between shadow-lg"
+        >
+          <div class="flex items-center gap-2">
+            <span class="text-[#d4af37] text-xs">✦</span>
+            <span class="text-xs font-semibold text-[#f5efe6] tracking-wider uppercase"
+              >Boletería Oficial · Acceso</span
+            >
+          </div>
+          <span
+            class="text-xs font-semibold text-[#ff4757] bg-[#2a1a1f] border border-[#3a2a2e] px-2.5 py-0.5 rounded-full"
+          >
+            PUERTA 01
+          </span>
+        </div>
+        <!-- Main Ticket Slip Container -->
+        <div
+          class="relative bg-[#1d1417] border border-[#3a2a2e] rounded-2xl shadow-2xl overflow-hidden"
+        >
+          <!-- Top Branding & Form Header -->
+          <div class="p-6 pb-5 space-y-4">
+            <div class="flex flex-col items-center text-center space-y-2.5">
+              <div
+                class="p-2.5 bg-[#2a1a1f] border border-[#3a2a2e] rounded-xl inline-block shadow-inner"
+              >
+                <img
+                  alt="AI Ticket It Logo"
+                  class="h-12 w-auto object-contain"
+                  src="https://lh3.googleusercontent.com/aida/ALJJyrAHdFExftQpnSuMjc6CR9Jq62WPyA7GTjk3to8YedLlCSp-HBe4gbBsAyFNWgtWuP3S7t1ZkrzorsknV9EZVE-M1UUbQVzdV2G6k4J8a1_m5FClK5l42kh-jETuN1_UVIzYK3DneHqLDOKHA04X7MQRJ2ywA7bQQP0KT75STdLmXCG4NI7sLTHEeCqbmyM0QZp_KAdo9AwKae67Wsa5kI8EGeXsk6XTQzmAa_3vOVCK"
+                />
+              </div>
+              <h1
+                class="font-display text-[26px] leading-tight font-bold text-[#f5efe6] tracking-tight pt-1"
+              >
+                Ingresá a tu <span class="italic text-[#ff4757]">cuenta</span>
+              </h1>
+              <p class="text-sm text-[#d8ccc0] max-w-xs leading-relaxed">
+                Gestioná tus entradas adquiridas o administrá tus eventos culturales.
+              </p>
+            </div>
+            <div class="flex items-center justify-between pt-1 border-t border-[#3a2a2e]/60">
+              <span class="text-xs font-semibold text-[#ff4757] flex items-center gap-1">
+                * Campo obligatorio
+              </span>
+              <span class="text-xs uppercase font-semibold text-[#d4af37] flex items-center gap-1">
+                <span>✦</span> SISTEMA CENTRAL
+              </span>
+            </div>
+            <!-- Login Form -->
+            <form
+              class="space-y-4 pt-1"
+              id="loginForm"
+              onsubmit="event.preventDefault(); validateForm();"
+            >
+              <!-- Field: Email -->
+              <div class="space-y-1.5">
+                <label
+                  class="block text-xs font-semibold text-[#d8ccc0] uppercase tracking-wider"
+                  for="emailInput"
+                >
+                  ✦ Correo electrónico <span class="text-[#ff4757]">*</span>
+                </label>
+                <div class="relative flex items-center">
+                  <span
+                    class="material-symbols-outlined absolute left-3.5 text-[#a8998f] text-[20px] pointer-events-none"
+                    >alternate_email</span
+                  >
+                  <input
+                    class="w-full bg-[#2a1a1f] border border-[#7a6a64] rounded-[12px] pl-11 pr-3 py-3 text-sm text-[#f5efe6] placeholder-[#a8998f]/60 focus:outline-none focus:ring-2 focus:ring-[#f5efe6] focus:border-transparent transition-all"
+                    id="emailInput"
+                    placeholder="tu@correo.com.ar"
+                    required=""
+                    type="email"
+                  />
+                </div>
+                <p class="text-xs text-[#a8998f] flex items-center gap-1 pl-1">
+                  <span class="material-symbols-outlined text-[14px] text-[#d4af37]">info</span>
+                  Accedé con el correo donde recibiste tus comprobantes.
+                </p>
+              </div>
+              <!-- Field: Password -->
+              <div class="space-y-1.5">
+                <div class="flex justify-between items-center">
+                  <label
+                    class="block text-xs font-semibold text-[#d8ccc0] uppercase tracking-wider"
+                    for="passwordInput"
+                  >
+                    ✦ Contraseña <span class="text-[#ff4757]">*</span>
+                  </label>
+                  <a
+                    class="text-xs font-medium text-[#d8ccc0] hover:text-[#f5efe6] hover:underline transition-colors"
+                    href="#"
+                  >
+                    ¿Olvidaste tu contraseña?
+                  </a>
+                </div>
+                <div class="relative flex items-center">
+                  <span
+                    class="material-symbols-outlined absolute left-3.5 text-[#a8998f] text-[20px] pointer-events-none"
+                    >lock</span
+                  >
+                  <input
+                    class="w-full bg-[#2a1a1f] border border-[#7a6a64] rounded-[12px] pl-11 pr-12 py-3 text-sm text-[#f5efe6] placeholder-[#a8998f]/60 focus:outline-none focus:ring-2 focus:ring-[#f5efe6] focus:border-transparent transition-all"
+                    id="passwordInput"
+                    placeholder="••••••••••••"
+                    required=""
+                    type="password"
+                  />
+                  <button
+                    aria-label="Mostrar u ocultar contraseña"
+                    class="absolute right-3 p-1.5 text-[#a8998f] hover:text-[#f5efe6] transition-colors focus:outline-none"
+                    id="togglePasswordBtn"
+                    onclick="togglePasswordVisibility()"
+                    type="button"
+                  >
+                    <span class="material-symbols-outlined text-[20px]" id="pwdIcon"
+                      >visibility</span
+                    >
+                  </button>
+                </div>
+              </div>
+              <!-- Notice Banner -->
+              <div
+                class="bg-[#2a1a1f] border border-[#3a2a2e] p-3 rounded-xl flex items-start gap-2.5 shadow-sm"
+              >
+                <span class="material-symbols-outlined text-[#d4af37] text-[20px] shrink-0 mt-0.5"
+                  >verified_user</span
+                >
+                <p class="text-xs text-[#d8ccc0] leading-snug">
+                  Tus compras y reservas se vinculan automáticamente por token criptográfico a tu
+                  credencial de espectador.
+                </p>
+              </div>
+              <!-- Primary Submit CTA Button (Velvet Crimson Pill) -->
+              <div class="pt-2">
+                <button
+                  class="w-full min-h-[50px] bg-[#c8102e] hover:bg-[#a60d26] active:scale-[0.99] text-white font-semibold text-sm rounded-full py-3.5 px-6 flex items-center justify-center gap-2 shadow-lg shadow-[#c8102e]/20 focus:outline-none focus:ring-2 focus:ring-[#f5efe6] focus:ring-offset-2 focus:ring-offset-[#1d1417] transition-all"
+                  id="submitBtn"
+                  type="submit"
+                >
+                  <span class="material-symbols-outlined text-[20px]">local_activity</span>
+                  <span id="btnText">Validar Pase &amp; Ingresar</span>
+                </button>
+              </div>
+            </form>
+          </div>
+          <!-- Perforation Section with Left and Right Punch Notches -->
+          <div class="relative py-2 flex items-center justify-center overflow-hidden">
+            <!-- Left cut notch -->
+            <div
+              class="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#0f0b0d] border-r border-[#3a2a2e]"
+            ></div>
+            <!-- Dashed tear perforation -->
+            <div class="w-full mx-6 h-[1px] border-b border-dashed border-[#3a2a2e]"></div>
+            <!-- Centered Pill Badge -->
+            <div
+              class="absolute bg-[#2a1a1f] border border-[#3a2a2e] px-3.5 py-0.5 rounded-full text-[11px] font-semibold text-[#a8998f] tracking-wider uppercase shadow-sm"
+            >
+              ✦ O INGRESÁ CON
+            </div>
+            <!-- Right cut notch -->
+            <div
+              class="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#0f0b0d] border-l border-[#3a2a2e]"
+            ></div>
+          </div>
+          <!-- Social SSO Integration -->
+          <div class="p-6 pt-3 space-y-3">
+            <div class="grid grid-cols-2 gap-3">
+              <button
+                class="min-h-[46px] bg-[#2a1a1f] border border-[#3a2a2e] hover:bg-[#352229] hover:border-[#7a6a64] text-[#f5efe6] rounded-xl px-3 py-2.5 flex items-center justify-center gap-2 transition-all focus:outline-none focus:ring-1 focus:ring-[#f5efe6]"
+                type="button"
+              >
+                <svg class="w-4 h-4 shrink-0" viewbox="0 0 24 24">
+                  <path
+                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                    fill="#ff4757"
+                  ></path>
+                  <path
+                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                    fill="#d4af37"
+                  ></path>
+                  <path
+                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+                    fill="#d8ccc0"
+                  ></path>
+                  <path
+                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+                    fill="#f5efe6"
+                  ></path>
+                </svg>
+                <span class="font-semibold text-xs tracking-wider">Google</span>
+              </button>
+              <button
+                class="min-h-[46px] bg-[#2a1a1f] border border-[#3a2a2e] hover:bg-[#352229] hover:border-[#7a6a64] text-[#f5efe6] rounded-xl px-3 py-2.5 flex items-center justify-center gap-2 transition-all focus:outline-none focus:ring-1 focus:ring-[#f5efe6]"
+                type="button"
+              >
+                <svg class="w-4 h-4 fill-current text-[#f5efe6] shrink-0" viewbox="0 0 24 24">
+                  <path
+                    d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.61-.75 1.04-1.8 0.92-2.85-.9.04-2 .6-2.65 1.35-.56.64-1.05 1.69-.92 2.71 1.01.08 2.03-.49 2.65-1.21z"
+                  ></path>
+                </svg>
+                <span class="font-semibold text-xs tracking-wider">Apple ID</span>
+              </button>
+            </div>
+            <!-- Registration Box -->
+            <div
+              class="bg-[#2a1a1f] border border-[#3a2a2e] p-3.5 rounded-xl flex items-center justify-between gap-2 mt-4"
+            >
+              <div class="flex items-center gap-2.5">
+                <div
+                  class="p-2 bg-[#1d1417] border border-[#3a2a2e] rounded-lg text-[#d4af37] shrink-0"
+                >
+                  <span class="material-symbols-outlined text-[18px]">add_card</span>
+                </div>
+                <div>
+                  <p class="text-xs text-[#a8998f]">¿Todavía no tenés cuenta?</p>
+                  <a
+                    class="text-xs font-semibold text-[#f5efe6] hover:text-[#d4af37] hover:underline transition-colors"
+                    href="#"
+                  >
+                    Registrate acá y conseguí tus pases
+                  </a>
+                </div>
+              </div>
+              <span class="material-symbols-outlined text-[#a8998f] text-[18px]"
+                >chevron_right</span
+              >
+            </div>
+          </div>
+          <!-- Stub Bottom Ledger Footer -->
+          <div
+            class="bg-[#2a1a1f] border-t border-[#3a2a2e] px-6 py-3 flex items-center justify-between"
+          >
+            <div class="flex items-center gap-2">
+              <span class="text-[#d4af37] text-xs">✦</span>
+              <span class="text-[11px] font-semibold text-[#a8998f] tracking-widest uppercase">
+                SERIE B Nº 004812
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5 text-[#d8ccc0]">
+              <span class="material-symbols-outlined text-[14px] text-[#d4af37]">encrypted</span>
+              <span class="text-[11px] font-semibold tracking-wider uppercase text-[#a8998f]">
+                SISTEMA SEGURO
+              </span>
+            </div>
+          </div>
+        </div>
+        <!-- Cultural Archival Heritage Footnote -->
+        <div class="text-center pt-2 pb-4 space-y-1">
+          <p
+            class="text-xs uppercase font-semibold text-[#d4af37] tracking-widest flex items-center justify-center gap-1"
+          >
+            <span>✦</span> Circuito Teatral &amp; Cultural Independiente <span>✦</span>
+          </p>
+          <p class="text-xs text-[#a8998f]">
+            Entradas digitales válidas con estándar de validación QR dinámico en sala.
+          </p>
+        </div>
+      </div>
+      <script>
+        function togglePasswordVisibility() {
+          const pwdInput = document.getElementById("passwordInput");
+          const pwdIcon = document.getElementById("pwdIcon");
+          if (pwdInput.type === "password") {
+            pwdInput.type = "text";
+            pwdIcon.textContent = "visibility_off";
+          } else {
+            pwdInput.type = "password";
+            pwdIcon.textContent = "visibility";
+          }
+        }
+
+        function validateForm() {
+          const btn = document.getElementById("submitBtn");
+          const btnText = document.getElementById("btnText");
+          const originalText = btnText.textContent;
+
+          btn.disabled = true;
+          btn.classList.add("opacity-80", "cursor-wait");
+          btnText.textContent = "Verificando credencial...";
+
+          setTimeout(() => {
+            btnText.textContent = "Acceso Autorizado";
+            btn.classList.remove("bg-[#c8102e]");
+            btn.classList.add("bg-[#105137]");
+            setTimeout(() => {
+              btnText.textContent = originalText;
+              btn.classList.remove("bg-[#105137]", "opacity-80", "cursor-wait");
+              btn.classList.add("bg-[#c8102e]");
+              btn.disabled = false;
+            }, 1500);
+          }, 1000);
+        }
+      </script>
+    </main>
+  </body>
+</html>

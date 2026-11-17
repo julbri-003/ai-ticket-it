@@ -80,6 +80,12 @@ function liberarCupo(compra, evento) {
   evento.buscarTipoEntrada(compra.tipoEntradaId).liberar(compra.cantidad);
 }
 
+function lecturaGuardada(compra, usuarioId) {
+  if (mismoId(compra.compradorId, usuarioId)) return compra.ultimaLecturaComprador;
+  if (mismoId(compra.organizadorId, usuarioId)) return compra.ultimaLecturaOrganizador;
+  return null;
+}
+
 function exigirCantidad(cantidad) {
   if (!Number.isInteger(cantidad) || cantidad < 1 || cantidad > MAX_ENTRADAS_POR_COMPRA) {
     throw new BadRequestError(
@@ -112,6 +118,9 @@ export class Compra extends Persistible {
     reembolsoPendiente = false,
     fechaLimiteReembolso = null,
     reseniaId = null,
+    ultimaLecturaComprador = null,
+    ultimaLecturaOrganizador = null,
+    recordatorioEnviado = false,
     activo,
     fechaModificacion,
     modificadoPor,
@@ -145,6 +154,11 @@ export class Compra extends Persistible {
     this.reembolsoPendiente = reembolsoPendiente;
     this.fechaLimiteReembolso = fechaLimiteReembolso ? new Date(fechaLimiteReembolso) : null;
     this.reseniaId = reseniaId;
+    this.ultimaLecturaComprador = ultimaLecturaComprador ? new Date(ultimaLecturaComprador) : null;
+    this.ultimaLecturaOrganizador = ultimaLecturaOrganizador
+      ? new Date(ultimaLecturaOrganizador)
+      : null;
+    this.recordatorioEnviado = recordatorioEnviado;
 
     restaurarAuditoria(this, { activo, fechaModificacion, modificadoPor });
   }
@@ -384,15 +398,44 @@ export class Compra extends Persistible {
     return mismoId(this.compradorId, usuarioId) || mismoId(this.organizadorId, usuarioId);
   }
 
+  /** Campo de la última lectura del participante ("ultimaLecturaComprador" | "ultimaLecturaOrganizador"). */
+  campoLecturaDe(usuarioId) {
+    if (mismoId(this.compradorId, usuarioId)) return "ultimaLecturaComprador";
+    if (mismoId(this.organizadorId, usuarioId)) return "ultimaLecturaOrganizador";
+    throw new ForbiddenError("Solo el comprador y el organizador pueden usar este chat");
+  }
+
+  /** Registra que el participante leyó el chat hasta ahora. La marca nunca retrocede. */
+  registrarLectura(usuarioId, reloj) {
+    const campo = this.campoLecturaDe(usuarioId);
+    const ahora = reloj.ahora();
+    if (!this[campo] || this[campo] < ahora) this[campo] = ahora;
+    return { campo, fecha: this[campo] };
+  }
+
   /**
-   * Mensajes del otro participante posteriores a la última lectura de `usuarioId`.
-   * Sin lectura registrada (null) cuentan todos. La marca de lectura se guarda desde la iteración 06.
+   * Mensajes del otro participante posteriores a la última lectura de `usuarioId`
+   * (la guardada en la compra, salvo que se indique otra). Sin lectura, cuentan todos.
    */
-  mensajesNoLeidosPara(usuarioId, ultimaLectura = null) {
+  mensajesNoLeidosPara(usuarioId, ultimaLectura = lecturaGuardada(this, usuarioId)) {
     const desde = ultimaLectura ? new Date(ultimaLectura).getTime() : -Infinity;
     return this.mensajes.filter(
       (m) => !mismoId(m.usuarioId, usuarioId) && m.enviado.getTime() > desde,
     ).length;
+  }
+
+  // ----- Recordatorio 24 h antes del evento -----
+
+  /** CONFIRMADA, sin recordatorio previo y con el evento dentro de las próximas 24 h. */
+  debeRecordarse(eventoFecha, reloj) {
+    const faltan = new Date(eventoFecha).getTime() - ahoraMs(reloj);
+    return (
+      this.estado === CONFIRMADA && !this.recordatorioEnviado && faltan > 0 && faltan <= MS_POR_DIA
+    );
+  }
+
+  marcarRecordatorioEnviado() {
+    this.recordatorioEnviado = true;
   }
 
   /** Solo el comprador o el organizador del evento, en cualquier estado de la compra. */

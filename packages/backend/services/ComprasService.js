@@ -26,6 +26,8 @@ export class ComprasService {
     reseniasRepository,
     reloj,
     alCambiarEstado = null,
+    alReseniar = null,
+    alRecordarEvento = null,
     log = console,
   }) {
     this.comprasRepository = comprasRepository;
@@ -35,6 +37,8 @@ export class ComprasService {
     this.reloj = reloj;
     // Hook para la iteración 06 (notificaciones y sockets): (compra, cambio) => void.
     this.alCambiarEstado = alCambiarEstado;
+    this.alReseniar = alReseniar;
+    this.alRecordarEvento = alRecordarEvento;
     this.log = log;
   }
 
@@ -157,6 +161,7 @@ export class ComprasService {
     compra.registrarResenia(resenia);
     const guardada =
       (await this.comprasRepository.guardarSi(compra, { reseniaId: null })) ?? compra;
+    await this.#avisar("alReseniar", guardada, resenia);
     return { compra: guardada, evento, resenia };
   }
 
@@ -225,6 +230,29 @@ export class ComprasService {
     return this.#procesar(
       await this.comprasRepository.listarConfirmadasDeEventosOcurridos(this.reloj.ahora()),
     );
+  }
+
+  /**
+   * Recordatorio 24 h antes del evento a cada compra CONFIRMADA, una sola vez: el flag
+   * recordatorioEnviado se guarda con condición, así dos corridas no avisan dos veces.
+   */
+  async recordarEventosProximos() {
+    const compras = await this.comprasRepository.listarParaRecordatorio(this.reloj.ahora());
+    const eventos = await this.#eventosPorId(compras.map((c) => c.eventoId));
+    let enviados = 0;
+    for (const compra of compras) {
+      const evento = eventos.get(compra.eventoId);
+      if (!evento || !compra.debeRecordarse(evento.fecha, this.reloj)) continue;
+      compra.marcarRecordatorioEnviado();
+      const guardada = await this.comprasRepository.guardarSi(compra, {
+        estado: CONFIRMADA,
+        recordatorioEnviado: { $ne: true },
+      });
+      if (!guardada) continue;
+      enviados += 1;
+      await this.#avisar("alRecordarEvento", guardada, evento);
+    }
+    return enviados;
   }
 
   async reembolsosAutomaticos() {
@@ -312,13 +340,16 @@ export class ComprasService {
   }
 
   async #notificar(compra) {
-    if (!this.alCambiarEstado) return;
+    await this.#avisar("alCambiarEstado", compra, compra.historial.at(-1));
+  }
+
+  /** Llama a un hook (si está configurado). Un fallo al avisar nunca hace fallar la operación. */
+  async #avisar(hook, ...args) {
+    if (!this[hook]) return;
     try {
-      await this.alCambiarEstado(compra, compra.historial.at(-1));
+      await this[hook](...args);
     } catch (error) {
-      this.log.error?.(
-        `Falló el aviso de cambio de estado de la compra ${compra.id}: ${error.message}`,
-      );
+      this.log.error?.(`Falló el aviso ${hook} de la compra ${args[0]?.id}: ${error.message}`);
     }
   }
 

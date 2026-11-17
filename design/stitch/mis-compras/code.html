@@ -1,0 +1,780 @@
+<!doctype html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+      name="viewport"
+    />
+    <meta content="mobile_tab" name="shell-type" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface-variant": "#564242",
+              "surface-container": "#fbeaec",
+              "surface-container-low": "#fff0f2",
+              tertiary: "#3b2700",
+              "inverse-primary": "#ffb2b6",
+              surface: "#fff8f8",
+              "on-surface": "#22191b",
+              "on-background": "#22191b",
+              "on-tertiary-fixed-variant": "#5e4100",
+              "surface-container-lowest": "#ffffff",
+              "primary-fixed-dim": "#ffb2b6",
+              "surface-container-highest": "#efdfe1",
+              primary: "#5b0418",
+              "on-secondary-fixed": "#271900",
+              "on-primary-fixed-variant": "#822431",
+              outline: "#897172",
+              "on-tertiary-fixed": "#271900",
+              "on-tertiary": "#ffffff",
+              "inverse-on-surface": "#fdedef",
+              "surface-container-high": "#f5e4e7",
+              "on-secondary": "#ffffff",
+              "surface-bright": "#fff8f8",
+              background: "#fff8f8",
+              "tertiary-container": "#573c00",
+              "on-error": "#ffffff",
+              "tertiary-fixed-dim": "#f3be5b",
+              "on-secondary-container": "#795505",
+              "secondary-container": "#ffcd76",
+              "on-error-container": "#93000a",
+              "on-tertiary-container": "#d7a545",
+              error: "#ba1a1a",
+              "on-secondary-fixed-variant": "#5f4100",
+              "outline-variant": "#dcc0c0",
+              "secondary-fixed": "#ffdeaa",
+              "inverse-surface": "#372e30",
+              "surface-variant": "#efdfe1",
+              "surface-dim": "#e6d6d9",
+              "on-primary-container": "#ff8a93",
+              "on-primary": "#ffffff",
+              "on-primary-fixed": "#40000d",
+              "secondary-fixed-dim": "#efbf6a",
+              "error-container": "#ffdad6",
+              "tertiary-fixed": "#ffdea9",
+              "primary-container": "#7a1e2c",
+              "primary-fixed": "#ffdada",
+              "surface-tint": "#a13c47",
+              secondary: "#7c5808",
+            },
+            borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+            spacing: {
+              "space-lg": "1.5rem",
+              "space-md": "1rem",
+              gutter: "1.5rem",
+              margin: "2.5rem",
+              "space-xs": "0.25rem",
+              "space-sm": "0.5rem",
+              "space-xl": "2.5rem",
+              "margin-mobile": "1.25rem",
+              "gutter-mobile": "1rem",
+              "space-2xl": "4rem",
+            },
+            fontFamily: {
+              "label-section": ["Inter"],
+              "body-sm": ["Inter"],
+              display: ["Playfair Display"],
+              "display-mobile": ["Playfair Display"],
+              "title-md": ["Inter"],
+              "headline-lg-mobile": ["Playfair Display"],
+              "headline-sm": ["Playfair Display"],
+              "body-lg": ["Inter"],
+              "label-interactive": ["Inter"],
+              "title-lg": ["Playfair Display"],
+              "body-md": ["Inter"],
+              "headline-lg": ["Playfair Display"],
+              "headline-md": ["Playfair Display"],
+            },
+            fontSize: {
+              "label-section": [
+                "11px",
+                { lineHeight: "16px", letterSpacing: "0.12em", fontWeight: "600" },
+              ],
+              "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }],
+              display: ["48px", { lineHeight: "56px", fontWeight: "700" }],
+              "display-mobile": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+              "headline-lg-mobile": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+              "headline-sm": ["22px", { lineHeight: "30px", fontWeight: "700" }],
+              "body-lg": ["16px", { lineHeight: "26px", fontWeight: "400" }],
+              "label-interactive": [
+                "13px",
+                { lineHeight: "18px", letterSpacing: "0.02em", fontWeight: "500" },
+              ],
+              "title-lg": ["20px", { lineHeight: "28px", fontWeight: "700" }],
+              "body-md": ["14px", { lineHeight: "22px", fontWeight: "400" }],
+              "headline-lg": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+              "headline-md": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @layer base {
+        html,
+        body {
+          width: 100vw;
+          margin: 0;
+          padding: 0;
+          background-color: #fff8f8;
+        }
+        body {
+          overscroll-behavior-y: none;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .pb-safe {
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .pt-safe {
+          padding-top: env(safe-area-inset-top, 0px);
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-surface text-on-surface font-body-md text-body-md min-h-screen flex flex-col antialiased selection:bg-secondary-fixed selection:text-on-secondary-fixed"
+  >
+    <header
+      class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_12px_rgba(34,25,27,0.04)]"
+    >
+      <div class="h-16 px-margin-mobile flex items-center justify-between">
+        <div class="flex flex-col justify-center">
+          <span
+            class="font-label-section text-label-section uppercase text-secondary tracking-widest"
+            >AI TICKET IT</span
+          >
+          <h1 class="font-title-lg text-title-lg text-primary tracking-tight">
+            Compras / Entradas
+          </h1>
+        </div>
+        <div class="flex items-center gap-space-sm">
+          <a
+            class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary transition-colors active:scale-95"
+            data-path="notificaciones"
+            href="#"
+            ><span class="material-symbols-outlined text-[22px]">notifications</span></a
+          ><a class="w-11 h-11 flex items-center justify-center" data-path="perfil" href="#"
+            ><div
+              class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-sm"
+            >
+              <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+            </div></a
+          >
+        </div>
+      </div>
+    </header>
+    <main class="flex-1 w-full bg-surface pt-16 pb-24">
+      <div class="flex flex-col w-full px-margin-mobile pb-space-xl">
+        <!-- Subtle ambient decorative glow -->
+        <div class="relative w-full mb-space-md mt-space-xs">
+          <div class="flex items-center justify-between">
+            <div>
+              <span
+                class="font-label-section text-label-section uppercase text-secondary tracking-widest block mb-1"
+                >Gala &amp; Espectáculos</span
+              >
+              <h2
+                class="font-headline-lg-mobile text-headline-lg-mobile text-primary tracking-tight"
+              >
+                Mis Compras
+              </h2>
+              <p class="font-body-md text-body-md text-on-surface-variant mt-0.5">
+                Talonario de entradas adquiridas y pases exclusivos
+              </p>
+            </div>
+            <div
+              class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary shadow-sm"
+            >
+              <span class="material-symbols-outlined text-[20px]">local_activity</span>
+            </div>
+          </div>
+        </div>
+        <!-- Interactive Filter Chips Carousel -->
+        <div
+          class="flex items-center gap-space-sm overflow-x-auto no-scrollbar py-space-xs mb-space-lg"
+        >
+          <button
+            class="filter-pill whitespace-nowrap px-4 py-2 rounded-full font-label-interactive text-label-interactive transition-all flex items-center gap-1.5 bg-primary-container text-on-primary shadow-sm"
+            data-filter="all"
+          >
+            <span>Todas</span>
+            <span
+              class="bg-surface-container-lowest/20 text-on-primary px-1.5 py-0.2 rounded-full text-[10px] font-semibold"
+              >12</span
+            >
+          </button>
+          <button
+            class="filter-pill whitespace-nowrap px-4 py-2 rounded-full font-label-interactive text-label-interactive transition-all flex items-center gap-1.5 bg-surface-container text-on-surface-variant hover:bg-surface-container-high"
+            data-filter="pending"
+          >
+            <span>Pendientes</span>
+            <span
+              class="bg-secondary-container text-on-secondary-container px-1.5 py-0.2 rounded-full text-[10px] font-bold"
+              >1</span
+            >
+          </button>
+          <button
+            class="filter-pill whitespace-nowrap px-4 py-2 rounded-full font-label-interactive text-label-interactive transition-all flex items-center gap-1.5 bg-surface-container text-on-surface-variant hover:bg-surface-container-high"
+            data-filter="confirmed"
+          >
+            <span>Confirmadas</span>
+            <span
+              class="bg-surface-container-highest text-on-surface-variant px-1.5 py-0.2 rounded-full text-[10px] font-medium"
+              >4</span
+            >
+          </button>
+          <button
+            class="filter-pill whitespace-nowrap px-4 py-2 rounded-full font-label-interactive text-label-interactive transition-all flex items-center gap-1.5 bg-surface-container text-on-surface-variant hover:bg-surface-container-high"
+            data-filter="archived"
+          >
+            <span>Historial</span>
+            <span class="text-on-surface-variant/70 text-[10px]">7</span>
+          </button>
+        </div>
+        <!-- Ticket Cards Stream -->
+        <div class="flex flex-col gap-space-lg">
+          <!-- TICKET 1: Divididos - Confirmada -->
+          <div
+            class="ticket-card relative w-full bg-surface-container-lowest rounded-[18px] shadow-sm overflow-hidden flex flex-col group transition-all duration-200"
+          >
+            <!-- Notch Cutouts Left & Right -->
+            <div
+              class="absolute left-[-11px] top-[68%] -translate-y-1/2 w-[22px] h-[22px] rounded-full bg-surface z-20 pointer-events-none"
+            ></div>
+            <div
+              class="absolute right-[-11px] top-[68%] -translate-y-1/2 w-[22px] h-[22px] rounded-full bg-surface z-20 pointer-events-none"
+            ></div>
+            <!-- Top Urgency Accent / Countdown Strip -->
+            <div
+              class="bg-secondary-container/30 px-space-md py-1.5 flex items-center justify-between text-secondary"
+            >
+              <div class="flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px] text-secondary"
+                  >hourglass_top</span
+                >
+                <span
+                  class="font-label-section text-[11px] font-semibold tracking-wider uppercase text-secondary"
+                  >Faltan solo 5 días</span
+                >
+              </div>
+              <span class="font-body-sm text-[11px] text-on-surface-variant font-medium"
+                >Cód: #DIV-8821</span
+              >
+            </div>
+            <!-- Main Ticket Body Area -->
+            <div class="p-space-md flex flex-col gap-space-sm">
+              <div class="flex items-start justify-between gap-space-sm">
+                <div class="flex-1 min-w-0">
+                  <div
+                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#1b5e20]/10 text-[#1b5e20] mb-1.5"
+                  >
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#1b5e20]"></span>
+                    <span
+                      class="font-label-section text-[10px] tracking-wide uppercase font-semibold"
+                      >Confirmada</span
+                    >
+                  </div>
+                  <h3
+                    class="font-headline-sm text-headline-sm text-primary leading-tight font-display"
+                  >
+                    Divididos
+                  </h3>
+                  <p class="font-body-md text-on-surface-variant font-medium">
+                    35 Años de Rock Nacional
+                  </p>
+                </div>
+                <!-- Production Chat Quick Action -->
+                <a
+                  class="relative p-2 rounded-full bg-surface-container hover:bg-surface-container-high text-primary transition-colors flex items-center justify-center shrink-0"
+                  href="#"
+                  title="Chat con el organizador"
+                >
+                  <span class="material-symbols-outlined text-[20px]">chat</span>
+                  <span
+                    class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-primary text-on-primary text-[10px] font-bold flex items-center justify-center shadow-xs"
+                    >2</span
+                  >
+                </a>
+              </div>
+              <!-- Event Logistics Grid -->
+              <div
+                class="grid grid-cols-2 gap-space-xs bg-surface-container-low p-space-sm rounded-xl mt-1"
+              >
+                <div class="flex flex-col">
+                  <span class="font-label-section text-[10px] text-on-surface-variant/70 uppercase"
+                    >Fecha y Hora</span
+                  >
+                  <span
+                    class="font-title-md text-body-md text-on-surface font-semibold flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-[15px] text-secondary"
+                      >calendar_today</span
+                    >
+                    Sáb 22 Nov · 21:00 hs
+                  </span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="font-label-section text-[10px] text-on-surface-variant/70 uppercase"
+                    >Ubicación</span
+                  >
+                  <span
+                    class="font-body-md text-on-surface font-medium truncate flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-[15px] text-secondary"
+                      >location_on</span
+                    >
+                    Estadio Obras Sanitarias
+                  </span>
+                </div>
+              </div>
+              <div
+                class="flex items-center justify-between text-body-sm text-on-surface-variant pt-1"
+              >
+                <span class="font-body-sm"
+                  >Acceso:
+                  <strong class="text-on-surface font-semibold">Campo General x 2</strong></span
+                >
+                <span class="font-title-md text-primary font-bold text-[15px]">$84.000,00</span>
+              </div>
+            </div>
+            <!-- Perforated Dividing Line -->
+            <div class="relative w-full flex items-center justify-center px-4">
+              <div class="w-full border-t-[1.5px] border-dashed border-outline-variant/60"></div>
+            </div>
+            <!-- Ticket Stub Action Footer -->
+            <div
+              class="bg-surface-container-low px-space-md py-space-sm flex items-center justify-between"
+            >
+              <div class="flex items-center gap-2">
+                <div
+                  class="w-8 h-8 rounded-lg bg-surface-container-lowest flex items-center justify-center shadow-xs"
+                >
+                  <span class="material-symbols-outlined text-[18px] text-primary">qr_code_2</span>
+                </div>
+                <div class="flex flex-col">
+                  <span
+                    class="font-label-interactive text-label-interactive text-on-surface font-semibold"
+                    >Pase Digital Listo</span
+                  >
+                  <span class="font-body-sm text-[11px] text-on-surface-variant"
+                    >Billetera offline disponible</span
+                  >
+                </div>
+              </div>
+              <button
+                class="px-space-md py-2 rounded-full bg-primary-container text-on-primary font-label-interactive text-label-interactive shadow-sm hover:opacity-95 active:scale-95 transition-all flex items-center gap-1.5"
+              >
+                <span class="material-symbols-outlined text-[16px]">visibility</span>
+                <span>Ver Pase</span>
+              </button>
+            </div>
+          </div>
+          <!-- TICKET 2: Toc Toc - Pendiente de Pago -->
+          <div
+            class="ticket-card relative w-full bg-surface-container-lowest rounded-[18px] shadow-sm overflow-hidden flex flex-col group transition-all duration-200"
+          >
+            <!-- Notch Cutouts Left & Right -->
+            <div
+              class="absolute left-[-11px] top-[66%] -translate-y-1/2 w-[22px] h-[22px] rounded-full bg-surface z-20 pointer-events-none"
+            ></div>
+            <div
+              class="absolute right-[-11px] top-[66%] -translate-y-1/2 w-[22px] h-[22px] rounded-full bg-surface z-20 pointer-events-none"
+            ></div>
+            <!-- Warning Alert Banner for Expiration -->
+            <div
+              class="bg-secondary-container/40 px-space-md py-2 flex items-center gap-2 text-on-secondary-container"
+            >
+              <span class="material-symbols-outlined text-[17px] text-secondary shrink-0"
+                >timer</span
+              >
+              <span class="font-body-sm text-[12px] leading-tight font-medium"
+                >Pagar antes del <strong class="font-bold text-primary">18/11</strong> para
+                conservar la butaca reservada.</span
+              >
+            </div>
+            <!-- Main Ticket Body Area -->
+            <div class="p-space-md flex flex-col gap-space-sm">
+              <div class="flex items-start justify-between gap-space-sm">
+                <div class="flex-1 min-w-0">
+                  <div
+                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container mb-1.5"
+                  >
+                    <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                    <span
+                      class="font-label-section text-[10px] tracking-wide uppercase font-semibold"
+                      >Pendiente de pago</span
+                    >
+                  </div>
+                  <h3
+                    class="font-headline-sm text-headline-sm text-primary leading-tight font-display"
+                  >
+                    Obra “Toc Toc”
+                  </h3>
+                  <p class="font-body-md text-on-surface-variant font-medium">
+                    Multiteatro Comafi · Corrientes
+                  </p>
+                </div>
+                <span class="font-headline-sm text-secondary font-display font-bold shrink-0"
+                  >$28.000</span
+                >
+              </div>
+              <div
+                class="grid grid-cols-2 gap-space-xs bg-surface-container-low p-space-sm rounded-xl"
+              >
+                <div class="flex flex-col">
+                  <span class="font-label-section text-[10px] text-on-surface-variant/70 uppercase"
+                    >Función</span
+                  >
+                  <span
+                    class="font-title-md text-body-md text-on-surface font-semibold flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-[15px] text-secondary"
+                      >event_seat</span
+                    >
+                    Dom 23 Nov · 20:30 hs
+                  </span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="font-label-section text-[10px] text-on-surface-variant/70 uppercase"
+                    >Ubicación Asignada</span
+                  >
+                  <span
+                    class="font-body-md text-on-surface font-medium truncate flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-[15px] text-secondary">chair</span>
+                    Platea Baja · Fila 04
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!-- Perforated Dividing Line -->
+            <div class="relative w-full flex items-center justify-center px-4">
+              <div class="w-full border-t-[1.5px] border-dashed border-outline-variant/60"></div>
+            </div>
+            <!-- Ticket Stub Action Footer -->
+            <div
+              class="bg-surface-container-low px-space-md py-space-sm flex items-center justify-between"
+            >
+              <div class="flex flex-col">
+                <span class="font-label-section text-[10px] text-on-surface-variant uppercase"
+                  >Reserva Temporal</span
+                >
+                <span class="font-body-sm text-[11px] text-on-surface-variant"
+                  >1x Platea Central</span
+                >
+              </div>
+              <button
+                class="px-space-lg py-2.5 rounded-full bg-primary text-on-primary font-label-interactive text-label-interactive shadow-md hover:bg-primary-container active:scale-95 transition-all flex items-center gap-2"
+              >
+                <span class="material-symbols-outlined text-[16px]">credit_card</span>
+                <span>Pagar ahora ($28.000,00)</span>
+              </button>
+            </div>
+          </div>
+          <!-- TICKET 3: Festival Capital 2026 - Utilizada -->
+          <div
+            class="ticket-card relative w-full bg-surface-container-lowest/80 rounded-[18px] shadow-sm overflow-hidden flex flex-col group opacity-90 transition-all duration-200"
+          >
+            <!-- Notch Cutouts Left & Right -->
+            <div
+              class="absolute left-[-11px] top-[66%] -translate-y-1/2 w-[22px] h-[22px] rounded-full bg-surface z-20 pointer-events-none"
+            ></div>
+            <div
+              class="absolute right-[-11px] top-[66%] -translate-y-1/2 w-[22px] h-[22px] rounded-full bg-surface z-20 pointer-events-none"
+            ></div>
+            <!-- Main Ticket Body Area -->
+            <div class="p-space-md flex flex-col gap-space-sm">
+              <div class="flex items-start justify-between gap-space-sm">
+                <div class="flex-1 min-w-0">
+                  <div
+                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-variant text-on-surface-variant mb-1.5"
+                  >
+                    <span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                    <span
+                      class="font-label-section text-[10px] tracking-wide uppercase font-semibold"
+                      >Función Utilizada</span
+                    >
+                  </div>
+                  <h3
+                    class="font-headline-sm text-headline-sm text-on-surface leading-tight font-display"
+                  >
+                    Festival Capital 2026
+                  </h3>
+                  <p class="font-body-md text-on-surface-variant">
+                    República de los Niños · 14 Nov
+                  </p>
+                </div>
+                <div
+                  class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-outline"
+                >
+                  <span class="material-symbols-outlined text-[20px]">task_alt</span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between text-body-sm text-on-surface-variant">
+                <span>Acreditación: Pase Completo Día 1</span>
+                <span class="font-label-interactive text-secondary font-semibold"
+                  >Revivir Galería</span
+                >
+              </div>
+            </div>
+            <!-- Perforated Dividing Line -->
+            <div class="relative w-full flex items-center justify-center px-4">
+              <div class="w-full border-t-[1.5px] border-dashed border-outline-variant/60"></div>
+            </div>
+            <!-- Stub Interactive Review Action -->
+            <div
+              class="bg-surface-container-low px-space-md py-space-sm flex items-center justify-between"
+            >
+              <span class="font-body-sm text-on-surface-variant text-[12px] italic font-display"
+                >¿Qué te pareció el espectáculo?</span
+              >
+              <button
+                class="px-space-md py-1.5 rounded-full bg-surface-container hover:bg-secondary-container/50 text-secondary font-label-interactive text-label-interactive transition-colors flex items-center gap-1"
+              >
+                <span class="text-[14px]">★</span>
+                <span>Calificar función</span>
+              </button>
+            </div>
+          </div>
+          <!-- TICKET 4: Homenaje a Piazzolla - Cancelada -->
+          <div
+            class="ticket-card relative w-full bg-surface-container-lowest/70 rounded-[18px] shadow-sm overflow-hidden flex flex-col group opacity-85 transition-all duration-200"
+          >
+            <!-- Notch Cutouts Left & Right -->
+            <div
+              class="absolute left-[-11px] top-[66%] -translate-y-1/2 w-[22px] h-[22px] rounded-full bg-surface z-20 pointer-events-none"
+            ></div>
+            <div
+              class="absolute right-[-11px] top-[66%] -translate-y-1/2 w-[22px] h-[22px] rounded-full bg-surface z-20 pointer-events-none"
+            ></div>
+            <!-- Cancellation Status Bar -->
+            <div
+              class="bg-error-container/40 px-space-md py-1.5 flex items-center gap-2 text-error"
+            >
+              <span class="material-symbols-outlined text-[15px]">info</span>
+              <span class="font-body-sm text-[11px] font-medium"
+                >Cancelada por la sala teatral · Desprogramación técnica</span
+              >
+            </div>
+            <!-- Main Ticket Body Area -->
+            <div class="p-space-md flex flex-col gap-space-sm">
+              <div class="flex items-start justify-between gap-space-sm">
+                <div class="flex-1 min-w-0">
+                  <div
+                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-error-container text-on-error-container mb-1.5"
+                  >
+                    <span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                    <span
+                      class="font-label-section text-[10px] tracking-wide uppercase font-semibold"
+                      >Cancelada</span
+                    >
+                  </div>
+                  <h3
+                    class="font-headline-sm text-headline-sm text-on-surface-variant line-through leading-tight font-display"
+                  >
+                    Homenaje a Piazzolla
+                  </h3>
+                  <p class="font-body-md text-on-surface-variant/80">
+                    Centro Cultural Kirchner (CCK)
+                  </p>
+                </div>
+                <span class="material-symbols-outlined text-outline-variant text-[24px]"
+                  >cancel</span
+                >
+              </div>
+              <div class="flex items-center justify-between text-body-sm text-on-surface-variant">
+                <span>Palco Bajo Norte x 1</span>
+                <span class="font-label-section text-outline">Ref: #CCK-990</span>
+              </div>
+            </div>
+            <!-- Perforated Dividing Line -->
+            <div class="relative w-full flex items-center justify-center px-4">
+              <div class="w-full border-t-[1.5px] border-dashed border-outline-variant/60"></div>
+            </div>
+            <!-- Refund Confirmation Banner -->
+            <div
+              class="bg-surface-container-low px-space-md py-space-sm flex items-center justify-between"
+            >
+              <div class="flex items-center gap-1.5 text-[#1b5e20]">
+                <span class="material-symbols-outlined text-[18px]">verified</span>
+                <span class="font-label-interactive text-label-interactive font-medium"
+                  >Reembolso acreditado de $30.000,00</span
+                >
+              </div>
+              <button
+                class="font-label-interactive text-[11px] text-primary underline underline-offset-2 hover:opacity-80"
+              >
+                Ver comprobante
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Classical Numeric Pagination Controls -->
+        <div class="flex items-center justify-center gap-2 mt-space-xl mb-space-2xl">
+          <button
+            class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors disabled:opacity-40"
+            disabled=""
+          >
+            <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+          </button>
+          <button
+            class="w-9 h-9 rounded-full bg-primary-container text-on-primary font-label-interactive text-label-interactive font-semibold shadow-xs"
+          >
+            1
+          </button>
+          <button
+            class="w-9 h-9 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high font-label-interactive text-label-interactive transition-colors"
+          >
+            2
+          </button>
+          <button
+            class="w-9 h-9 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high font-label-interactive text-label-interactive transition-colors"
+          >
+            3
+          </button>
+          <span class="px-1 text-outline font-display">…</span>
+          <button
+            class="w-9 h-9 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high font-label-interactive text-label-interactive transition-colors"
+          >
+            6
+          </button>
+          <button
+            class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors"
+          >
+            <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+          </button>
+        </div>
+        <!-- Editorial Empty State (Shown gracefully as preview / illustration placeholder for zero-ticket views) -->
+        <div
+          class="mt-space-lg p-space-xl rounded-[18px] bg-surface-container-low text-center flex flex-col items-center justify-center relative overflow-hidden"
+        >
+          <!-- Velvet Vignette Backdrop Accent -->
+          <div
+            class="w-20 h-20 rounded-full bg-primary/5 flex items-center justify-center mb-space-md text-primary"
+          >
+            <svg
+              class="w-10 h-10 text-primary"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              viewbox="0 0 48 48"
+            >
+              <path
+                d="M6 14C6 11.7909 7.79086 10 10 10H38C40.2091 10 42 11.7909 42 14V19C39.7909 19 38 20.7909 38 23C38 25.2091 39.7909 27 42 27V34C42 36.2091 40.2091 38 38 38H10C7.79086 38 6 36.2091 6 34V27C8.20914 27 10 25.2091 10 23C10 20.7909 8.20914 19 6 19V14Z"
+                stroke-linecap="round"
+              ></path>
+              <line stroke-linecap="round" x1="16" x2="32" y1="18" y2="18"></line>
+              <line stroke-linecap="round" x1="16" x2="28" y1="24" y2="24"></line>
+              <line stroke-linecap="round" x1="16" x2="22" y1="30" y2="30"></line>
+            </svg>
+          </div>
+          <span class="font-label-section uppercase text-secondary tracking-widest text-[11px] mb-1"
+            >Palco &amp; Plateas</span
+          >
+          <h4
+            class="font-headline-sm text-headline-sm text-primary font-display font-semibold mb-1"
+          >
+            ¿Buscás una nueva velada?
+          </h4>
+          <p class="font-body-md text-body-md text-on-surface-variant max-w-[280px] mb-space-lg">
+            Tu talonario está siempre sincronizado. Explorá la cartelera curada por nuestra
+            inteligencia teatral.
+          </p>
+          <a
+            class="px-space-xl py-3 rounded-full bg-primary text-on-primary font-label-interactive text-label-interactive shadow-md hover:bg-primary-container active:scale-95 transition-all inline-flex items-center gap-2"
+            href="#"
+          >
+            <span class="material-symbols-outlined text-[18px]">theater_comedy</span>
+            <span>Explorar Cartelera de Gala</span>
+          </a>
+        </div>
+      </div>
+      <script>
+        // Simple client-side micro-interaction for tab/filter switching
+        document.querySelectorAll(".filter-pill").forEach((btn) => {
+          btn.addEventListener("click", function () {
+            document.querySelectorAll(".filter-pill").forEach((b) => {
+              b.classList.remove("bg-primary-container", "text-on-primary", "shadow-sm");
+              b.classList.add("bg-surface-container", "text-on-surface-variant");
+            });
+            this.classList.remove("bg-surface-container", "text-on-surface-variant");
+            this.classList.add("bg-primary-container", "text-on-primary", "shadow-sm");
+          });
+        });
+      </script>
+    </main>
+    <nav
+      class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-4px_20px_rgba(34,25,27,0.05)]"
+      data-active-classes="text-primary font-title-md"
+    >
+      <div class="flex justify-around items-center h-16 px-space-xs">
+        <a
+          class="flex-1 flex flex-col items-center justify-center h-full text-on-surface-variant transition-colors hover:text-primary"
+          data-path="explorar"
+          href="#"
+          ><span class="material-symbols-outlined text-[24px]">theater_comedy</span
+          ><span class="font-label-interactive text-[11px] mt-0.5 leading-none">Explorar</span></a
+        ><a
+          class="flex-1 flex flex-col items-center justify-center h-full text-on-surface-variant transition-colors hover:text-primary"
+          data-path="compras-entradas"
+          href="#"
+          ><span class="material-symbols-outlined text-[24px]">confirmation_number</span
+          ><span class="font-label-interactive text-[11px] mt-0.5 leading-none">Entradas</span></a
+        ><a
+          class="flex-1 flex flex-col items-center justify-center h-full text-on-surface-variant transition-colors hover:text-primary"
+          data-path="favoritos"
+          href="#"
+          ><span class="material-symbols-outlined text-[24px]">bookmark</span
+          ><span class="font-label-interactive text-[11px] mt-0.5 leading-none">Favoritos</span></a
+        ><a
+          class="flex-1 flex flex-col items-center justify-center h-full text-on-surface-variant transition-colors hover:text-primary"
+          data-path="mensajes"
+          href="#"
+          ><span class="material-symbols-outlined text-[24px]">chat_bubble</span
+          ><span class="font-label-interactive text-[11px] mt-0.5 leading-none">Mensajes</span></a
+        ><a
+          class="flex-1 flex flex-col items-center justify-center h-full text-on-surface-variant transition-colors hover:text-primary"
+          data-path="perfil"
+          href="#"
+          ><span class="material-symbols-outlined text-[24px]">account_circle</span
+          ><span class="font-label-interactive text-[11px] mt-0.5 leading-none">Perfil</span></a
+        >
+      </div>
+    </nav>
+  </body>
+</html>

@@ -1,0 +1,772 @@
+<!doctype html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+      name="viewport"
+    />
+    <meta content="mobile_tab" name="shell-type" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:wght@600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-container": "#ffcd76",
+              "error-container": "#ffdad6",
+              "on-tertiary": "#ffffff",
+              error: "#ba1a1a",
+              "on-secondary-container": "#795505",
+              outline: "#897172",
+              "on-error-container": "#93000a",
+              "surface-dim": "#e6d6d9",
+              "surface-container-lowest": "#ffffff",
+              "surface-tint": "#a13c47",
+              "surface-container-low": "#fff0f2",
+              "on-background": "#22191b",
+              "on-surface": "#22191b",
+              background: "#fff8f8",
+              "surface-bright": "#fff8f8",
+              "on-secondary-fixed-variant": "#5f4100",
+              surface: "#fff8f8",
+              "on-error": "#ffffff",
+              "tertiary-container": "#573c00",
+              "on-primary": "#ffffff",
+              "inverse-on-surface": "#fdedef",
+              "primary-container": "#7a1e2c",
+              "surface-container-high": "#f5e4e7",
+              "outline-variant": "#dcc0c0",
+              "surface-container-highest": "#efdfe1",
+              "surface-container": "#fbeaec",
+              "on-primary-fixed": "#40000d",
+              "surface-variant": "#efdfe1",
+              "inverse-primary": "#ffb2b6",
+              primary: "#5b0418",
+              tertiary: "#3b2700",
+              "on-primary-container": "#ff8a93",
+              "tertiary-fixed": "#ffdea9",
+              "on-surface-variant": "#564242",
+              "on-tertiary-fixed-variant": "#5e4100",
+              "secondary-fixed-dim": "#efbf6a",
+              "on-tertiary-fixed": "#271900",
+              "primary-fixed-dim": "#ffb2b6",
+              "secondary-fixed": "#ffdeaa",
+              "tertiary-fixed-dim": "#f3be5b",
+              "on-secondary-fixed": "#271900",
+              "primary-fixed": "#ffdada",
+              "on-primary-fixed-variant": "#822431",
+              secondary: "#7c5808",
+              "on-secondary": "#ffffff",
+              "inverse-surface": "#372e30",
+              "on-tertiary-container": "#d7a545",
+            },
+            borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+            spacing: {
+              gutter: "1.5rem",
+              "gutter-mobile": "1rem",
+              "margin-mobile": "1.25rem",
+              "space-sm": "0.5rem",
+              "space-2xl": "4rem",
+              margin: "2.5rem",
+              "space-lg": "1.5rem",
+              "space-xs": "0.25rem",
+              "space-md": "1rem",
+              "space-xl": "2.5rem",
+            },
+            fontFamily: {
+              "body-md": ["Inter"],
+              "label-section": ["Inter"],
+              "body-sm": ["Inter"],
+              "title-lg": ["Playfair Display"],
+              "label-interactive": ["Inter"],
+              "title-md": ["Inter"],
+              "headline-lg": ["Playfair Display"],
+              "headline-sm": ["Playfair Display"],
+              "headline-md": ["Playfair Display"],
+              display: ["Playfair Display"],
+              "display-mobile": ["Playfair Display"],
+              "body-lg": ["Inter"],
+              "headline-lg-mobile": ["Playfair Display"],
+            },
+            fontSize: {
+              "body-md": ["14px", { lineHeight: "22px", fontWeight: "400" }],
+              "label-section": [
+                "11px",
+                { lineHeight: "16px", letterSpacing: "0.12em", fontWeight: "600" },
+              ],
+              "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }],
+              "title-lg": ["20px", { lineHeight: "28px", fontWeight: "700" }],
+              "label-interactive": [
+                "13px",
+                { lineHeight: "18px", letterSpacing: "0.02em", fontWeight: "500" },
+              ],
+              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+              "headline-lg": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+              "headline-sm": ["22px", { lineHeight: "30px", fontWeight: "700" }],
+              "headline-md": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+              display: ["48px", { lineHeight: "56px", fontWeight: "700" }],
+              "display-mobile": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+              "body-lg": ["16px", { lineHeight: "26px", fontWeight: "400" }],
+              "headline-lg-mobile": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @layer base {
+        html,
+        body {
+          width: 100vw;
+          min-height: 100vh;
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          overscroll-behavior-y: none;
+        }
+        .pb-safe {
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .pt-safe {
+          padding-top: env(safe-area-inset-top, 0px);
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+  </head>
+  <body class="bg-background font-body-md text-on-surface antialiased flex flex-col min-h-screen">
+    <header
+      class="fixed top-0 w-full z-50 bg-surface/85 backdrop-blur-xl shadow-[0_1px_12px_rgba(34,25,27,0.06)] pt-safe"
+    >
+      <div class="h-16 px-gutter-mobile flex items-center justify-between">
+        <div class="flex items-center gap-space-xs">
+          <button
+            aria-label="Cambiar organización"
+            class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface hover:text-primary transition-colors"
+          >
+            <span class="material-symbols-outlined text-[22px]">theater_comedy</span>
+          </button>
+          <div class="flex flex-col">
+            <span class="font-title-lg text-title-md text-primary leading-none tracking-tight"
+              >AI Ticket It</span
+            ><span
+              class="font-label-section text-label-section text-secondary uppercase tracking-widest"
+              >Organizador</span
+            >
+          </div>
+        </div>
+        <div class="flex items-center gap-space-xs">
+          <a
+            aria-label="Avisos y alertas"
+            class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary relative"
+            data-path="notificaciones"
+            href="#"
+            ><span class="material-symbols-outlined text-[20px]">notifications</span
+            ><span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-primary"></span
+          ></a>
+          <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center ml-1">
+            <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface">
+      <div class="flex flex-col w-full">
+        <!-- Saludo & Estado Operativo -->
+        <section class="px-margin-mobile pt-space-md pb-space-sm flex flex-col gap-space-xs">
+          <div class="flex items-center justify-between gap-space-sm">
+            <span
+              class="font-label-section text-label-section text-secondary uppercase tracking-widest"
+              >Temporada Oficial 2024</span
+            >
+            <div
+              class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface"
+            >
+              <span class="w-2 h-2 rounded-full bg-[#1b873f] animate-pulse"></span>
+              <span class="font-body-sm text-[11px] font-medium tracking-tight">AFIP En Línea</span>
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary tracking-tight">
+              Hola, 300 Producciones
+            </h1>
+            <p class="font-body-md text-body-md text-on-surface-variant mt-0.5">
+              Bordereaux y gestión de salas en tiempo real · CABA
+            </p>
+          </div>
+        </section>
+        <!-- Banner de Alerta Urgente de Liquidación -->
+        <section class="px-margin-mobile my-space-xs">
+          <a
+            class="group block relative overflow-hidden rounded-[18px] bg-primary text-on-primary p- space-md shadow-md transition-all active:scale-[0.99]"
+            href="#"
+          >
+            <div
+              class="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-primary-container opacity-40 blur-xl pointer-events-none"
+            ></div>
+            <div class="flex items-start gap-space-sm relative z-10">
+              <div
+                class="w-8 h-8 rounded-full bg-on-primary/15 flex items-center justify-center shrink-0 mt-0.5"
+              >
+                <span
+                  class="material-symbols-outlined text-[18px] text-on-primary"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >error</span
+                >
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between">
+                  <span
+                    class="font-label-section text-label-section uppercase tracking-wider text-on-primary-container"
+                    >Atención Requerida</span
+                  >
+                  <span
+                    class="font-body-sm text-[11px] bg-on-primary/10 px-2 py-0.5 rounded-full text-white"
+                    >Vence en 5 h</span
+                  >
+                </div>
+                <p class="font-body-md text-body-sm text-on-primary font-medium mt-1">
+                  2 devoluciones pendientes por un total de
+                  <strong class="text-white font-semibold">$60.000,00</strong>
+                </p>
+                <span
+                  class="inline-flex items-center gap-1 font-label-interactive text-label-interactive text-on-primary-container group-hover:text-white mt-1.5 transition-colors"
+                >
+                  Gestionar en Compras
+                  <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                </span>
+              </div>
+            </div>
+          </a>
+        </section>
+        <!-- Cuadrícula Bento de 4 KPIs -->
+        <section class="px-margin-mobile py-space-sm">
+          <div class="grid grid-cols-2 gap-space-sm">
+            <!-- KPI 1 -->
+            <div
+              class="bg-surface-container-lowest rounded-[18px] p-space-md shadow-[0_8px_24px_-6px_rgba(34,25,27,0.06)] flex flex-col justify-between"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="font-label-section text-label-section text-on-surface-variant uppercase"
+                  >En Cartelera</span
+                >
+                <div
+                  class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary"
+                >
+                  <span class="material-symbols-outlined text-[18px]">theater_comedy</span>
+                </div>
+              </div>
+              <div class="mt-space-md">
+                <span class="font-headline-md text-headline-md text-primary leading-none">03</span>
+                <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Salas activas</p>
+              </div>
+            </div>
+            <!-- KPI 2 -->
+            <div
+              class="bg-surface-container-lowest rounded-[18px] p-space-md shadow-[0_8px_24px_-6px_rgba(34,25,27,0.06)] flex flex-col justify-between"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="font-label-section text-label-section text-on-surface-variant uppercase"
+                  >Localidades</span
+                >
+                <div
+                  class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-secondary"
+                >
+                  <span class="material-symbols-outlined text-[18px]">confirmation_number</span>
+                </div>
+              </div>
+              <div class="mt-space-md">
+                <div class="flex items-baseline gap-1.5">
+                  <span class="font-headline-md text-headline-md text-on-surface leading-none"
+                    >1.420</span
+                  >
+                </div>
+                <div class="flex items-center gap-1 mt-1 text-[#1b873f] font-medium text-[11px]">
+                  <span class="material-symbols-outlined text-[14px]">trending_up</span>
+                  <span>+18% vs ant.</span>
+                </div>
+              </div>
+            </div>
+            <!-- KPI 3 -->
+            <div
+              class="bg-surface-container-lowest rounded-[18px] p-space-md shadow-[0_8px_24px_-6px_rgba(34,25,27,0.06)] flex flex-col justify-between"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="font-label-section text-label-section text-on-surface-variant uppercase"
+                  >Bordereaux</span
+                >
+                <div
+                  class="w-8 h-8 rounded-full bg-secondary-container/40 flex items-center justify-center text-secondary"
+                >
+                  <span class="material-symbols-outlined text-[18px]">payments</span>
+                </div>
+              </div>
+              <div class="mt-space-md">
+                <span class="font-title-lg text-title-lg text-primary leading-none truncate block"
+                  >$58.420.000</span
+                >
+                <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Recaudación bruta
+                </p>
+              </div>
+            </div>
+            <!-- KPI 4 -->
+            <div
+              class="bg-surface-container-lowest rounded-[18px] p-space-md shadow-[0_8px_24px_-6px_rgba(34,25,27,0.06)] flex flex-col justify-between"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="font-label-section text-label-section text-on-surface-variant uppercase"
+                  >Calificación</span
+                >
+                <div
+                  class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-secondary"
+                >
+                  <span
+                    class="material-symbols-outlined text-[18px]"
+                    style="font-variation-settings: &quot;FILL&quot; 1"
+                    >star</span
+                  >
+                </div>
+              </div>
+              <div class="mt-space-md">
+                <div class="flex items-baseline gap-1">
+                  <span class="font-headline-md text-headline-md text-on-surface leading-none"
+                    >4,8</span
+                  >
+                  <span class="text-secondary text-sm">★</span>
+                </div>
+                <p class="font-body-sm text-body-sm text-on-surface-variant mt-1 truncate">
+                  128 reseñas
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Pestañas de Filtrado Segmentadas -->
+        <section class="px-margin-mobile pt-space-md pb-space-xs">
+          <div class="flex items-center justify-between">
+            <div class="inline-flex p-1 rounded-full bg-surface-container-high">
+              <button
+                class="px-space-md py-1.5 rounded-full bg-primary text-on-primary font-label-interactive text-label-interactive transition-all shadow-sm"
+                id="tab-next"
+              >
+                Próximos (3)
+              </button>
+              <button
+                class="px-space-md py-1.5 rounded-full text-on-surface-variant hover:text-primary font-label-interactive text-label-interactive transition-all"
+                id="tab-prev"
+              >
+                Anteriores (12)
+              </button>
+            </div>
+            <button
+              aria-label="Filtrar espectáculos"
+              class="w-9 h-9 rounded-full bg-surface-container-lowest text-on-surface flex items-center justify-center shadow-sm hover:text-primary"
+            >
+              <span class="material-symbols-outlined text-[19px]">tune</span>
+            </button>
+          </div>
+        </section>
+        <!-- Listado de Eventos (Tarjetas estilo Boleto Teatral) -->
+        <section class="px-margin-mobile py-space-sm flex flex-col gap-space-md">
+          <!-- EVENTO 1: Divididos -->
+          <article
+            class="relative bg-surface-container-lowest rounded-[18px] overflow-hidden shadow-[0_12px_32px_-8px_rgba(34,25,27,0.07)] flex flex-col"
+          >
+            <!-- Media Header Con Imagen Placeholder Enriquecida -->
+            <div class="relative h-28 w-full bg-surface-container">
+              <div
+                class="w-full h-full bg-cover bg-center"
+                data-alt="Dynamic wide angle live shot of an electric stadium rock concert in Buenos Aires, red velvet atmospheric stage floodlights, subtle haze, dramatic golden spotlights illuminating silhouette of performers and ecstatic packed arena audience"
+                style="
+                  background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuAYyQQTryVyqQsI-bh-a6VEdhQ6iCEcbP-9u-InuoNsSWc2ywrjL006_4f9_X0NvZz9L9tDaN5dwKJrWD4Jum2Jn85fEzm6S78mQSP382HS_leaxLBJq1vMU4byPHMKBk-4ArLZQPpIXo-RIUKbA2_ZnehM0J9gseyOYBDWQo36OBswWnO1_Qqc6rbdQeJXlvzjLHyonUiRX7uBKC5OzJyXyvW-Vwx892jvfxARt6g&quot;);
+                "
+              ></div>
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/30 to-transparent"
+              ></div>
+              <div
+                class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-md px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm"
+              >
+                <span class="material-symbols-outlined text-secondary text-[15px]">event</span>
+                <span class="font-label-section text-label-section text-on-surface"
+                  >SÁB 22 NOV · 21:00 HS</span
+                >
+              </div>
+              <div
+                class="absolute top-3 right-3 bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full font-label-section text-[10px] font-bold tracking-wider"
+              >
+                LIVE STADIUM
+              </div>
+            </div>
+            <!-- Contenido Principal Boleto -->
+            <div class="p-space-md pt-2 flex flex-col">
+              <div class="flex items-start justify-between gap-space-xs">
+                <div>
+                  <h2 class="font-headline-sm text-headline-sm text-primary leading-tight">
+                    Divididos: 35 Años
+                  </h2>
+                  <div
+                    class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm mt-0.5"
+                  >
+                    <span class="material-symbols-outlined text-[16px] text-secondary"
+                      >stadium</span
+                    >
+                    <span>Estadio Obras Sanitarias · CABA</span>
+                  </div>
+                </div>
+                <span class="font-title-md text-title-md text-primary font-bold">84%</span>
+              </div>
+              <!-- Métrica de Ocupación Visual -->
+              <div class="mt-space-sm">
+                <div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden">
+                  <div
+                    class="h-full bg-primary rounded-full transition-all duration-500"
+                    style="width: 84%"
+                  ></div>
+                </div>
+                <div
+                  class="flex items-center justify-between mt-1.5 font-body-sm text-body-sm text-on-surface-variant"
+                >
+                  <span>Ocupación de sala</span>
+                  <span class="font-medium text-on-surface">840 / 1.000 butacas</span>
+                </div>
+              </div>
+              <!-- Pastillas de Estado Segmentado -->
+              <div class="flex items-center gap-space-xs flex-wrap mt-space-sm pt-space-xs">
+                <span
+                  class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-surface-container text-on-surface font-body-sm text-[11px]"
+                >
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#1b873f]"></span>
+                  835 confirmadas
+                </span>
+                <span
+                  class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-surface-container text-on-surface font-body-sm text-[11px]"
+                >
+                  <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  3 pendientes
+                </span>
+                <span
+                  class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-surface-container text-on-surface font-body-sm text-[11px]"
+                >
+                  <span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                  2 canceladas
+                </span>
+              </div>
+              <!-- Divisor perforado teatral con muescas redondas laterales -->
+              <div class="relative py-space-sm flex items-center justify-center my-1">
+                <div class="w-full border-t border-dashed border-outline-variant/60"></div>
+                <div class="absolute -left-6 w-4 h-4 rounded-full bg-surface"></div>
+                <div class="absolute -right-6 w-4 h-4 rounded-full bg-surface"></div>
+              </div>
+              <!-- Botones de Acción -->
+              <div class="grid grid-cols-2 gap-space-sm">
+                <button
+                  class="flex items-center justify-center gap-1.5 py-2 px-3 rounded-full bg-surface-container text-primary hover:bg-surface-container-high transition-colors font-label-interactive text-label-interactive"
+                >
+                  <span class="material-symbols-outlined text-[17px]">receipt_long</span>
+                  Ver compras
+                </button>
+                <button
+                  class="flex items-center justify-center gap-1.5 py-2 px-3 rounded-full bg-primary text-on-primary hover:bg-primary-container transition-colors font-label-interactive text-label-interactive shadow-sm"
+                >
+                  <span class="material-symbols-outlined text-[17px]">edit_calendar</span>
+                  Editar función
+                </button>
+              </div>
+            </div>
+          </article>
+          <!-- EVENTO 2: Toc Toc -->
+          <article
+            class="relative bg-surface-container-lowest rounded-[18px] overflow-hidden shadow-[0_12px_32px_-8px_rgba(34,25,27,0.07)] flex flex-col"
+          >
+            <!-- Media Header Con Imagen Placeholder Enriquecida -->
+            <div class="relative h-28 w-full bg-surface-container">
+              <div
+                class="w-full h-full bg-cover bg-center"
+                data-alt="Classic Broadway theater interior stage with grand crimson velvet curtains, ornate gilded gold proscenium arch, warm ambient footlights, row of plush red auditorium seats looking at theater set"
+                style="
+                  background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuB8jNJhUd5C6HrKvYend913IOOc1TxqHmwT-FF5BIl8X8YeSPY7Hg6pUpYdQZBQsTD9fUZTd5jx9WLnfW_IFMPqnCgR4EZsKuPXqxEDgT8HqF6JhCzPmXe0tSE3G_QwtYWv3U-NGtabBSPI8T1q1IUKcmCZhBhAKnca-tXigJavP9OYw-pgJjy_6g5X2B_HMzvVUI0U8Ca12hzj-vsfQ7GHoxc3xRiu3sVCibJrlcQ&quot;);
+                "
+              ></div>
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/30 to-transparent"
+              ></div>
+              <div
+                class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-md px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm"
+              >
+                <span class="material-symbols-outlined text-secondary text-[15px]">event</span>
+                <span class="font-label-section text-label-section text-on-surface"
+                  >DOM 23 NOV · 20:30 HS</span
+                >
+              </div>
+              <div
+                class="absolute top-3 right-3 bg-surface-container-highest text-primary px-2 py-0.5 rounded-full font-label-section text-[10px] font-bold tracking-wider"
+              >
+                TEMPORADA 14
+              </div>
+            </div>
+            <!-- Contenido Principal Boleto -->
+            <div class="p-space-md pt-2 flex flex-col">
+              <div class="flex items-start justify-between gap-space-xs">
+                <div>
+                  <h2 class="font-headline-sm text-headline-sm text-primary leading-tight">
+                    Obra "Toc Toc"
+                  </h2>
+                  <div
+                    class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm mt-0.5"
+                  >
+                    <span class="material-symbols-outlined text-[16px] text-secondary"
+                      >theater_comedy</span
+                    >
+                    <span>Multiteatro Comafi · Calle Corrientes</span>
+                  </div>
+                </div>
+                <span class="font-title-md text-title-md text-primary font-bold">77%</span>
+              </div>
+              <!-- Métrica de Ocupación Visual -->
+              <div class="mt-space-sm">
+                <div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden">
+                  <div
+                    class="h-full bg-primary rounded-full transition-all duration-500"
+                    style="width: 77%"
+                  ></div>
+                </div>
+                <div
+                  class="flex items-center justify-between mt-1.5 font-body-sm text-body-sm text-on-surface-variant"
+                >
+                  <span>Ocupación de sala</span>
+                  <span class="font-medium text-on-surface">310 / 400 localidades</span>
+                </div>
+              </div>
+              <!-- Divisor perforado teatral con muescas redondas laterales -->
+              <div class="relative py-space-sm flex items-center justify-center my-1">
+                <div class="w-full border-t border-dashed border-outline-variant/60"></div>
+                <div class="absolute -left-6 w-4 h-4 rounded-full bg-surface"></div>
+                <div class="absolute -right-6 w-4 h-4 rounded-full bg-surface"></div>
+              </div>
+              <!-- Botones de Acción -->
+              <div class="grid grid-cols-2 gap-space-sm">
+                <button
+                  class="flex items-center justify-center gap-1.5 py-2 px-3 rounded-full bg-surface-container text-primary hover:bg-surface-container-high transition-colors font-label-interactive text-label-interactive"
+                >
+                  <span class="material-symbols-outlined text-[17px]">receipt_long</span>
+                  Ver compras
+                </button>
+                <button
+                  class="flex items-center justify-center gap-1.5 py-2 px-3 rounded-full bg-primary text-on-primary hover:bg-primary-container transition-colors font-label-interactive text-label-interactive shadow-sm"
+                >
+                  <span class="material-symbols-outlined text-[17px]">edit_calendar</span>
+                  Editar función
+                </button>
+              </div>
+            </div>
+          </article>
+          <!-- EVENTO 3: Festival de Jazz Porteño (Finalizado y Liquidado) -->
+          <article
+            class="relative bg-surface-container-lowest rounded-[18px] overflow-hidden shadow-[0_10px_28px_-6px_rgba(34,25,27,0.05)] flex flex-col opacity-95"
+          >
+            <div class="p-space-md flex flex-col">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <div
+                    class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-secondary"
+                  >
+                    <span class="material-symbols-outlined text-[22px]">music_note</span>
+                  </div>
+                  <div>
+                    <span
+                      class="font-label-section text-[10px] text-on-surface-variant uppercase tracking-wider block"
+                      >Ciclo Concluido</span
+                    >
+                    <h2 class="font-title-lg text-title-lg text-primary leading-tight">
+                      Festival de Jazz Porteño
+                    </h2>
+                  </div>
+                </div>
+                <span
+                  class="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-section text-[10px] font-semibold"
+                >
+                  FINALIZADO
+                </span>
+              </div>
+              <div
+                class="mt-space-md p-space-sm rounded-xl bg-surface-container-low flex items-center justify-between"
+              >
+                <div class="flex flex-col">
+                  <span class="font-body-sm text-[11px] text-on-surface-variant"
+                    >Liquidación de Sala</span
+                  >
+                  <span class="font-title-md text-title-md text-primary font-bold"
+                    >$12.500.000</span
+                  >
+                </div>
+                <div
+                  class="flex items-center gap-1 text-[#1b873f] font-medium text-[12px] bg-white px-2 py-1 rounded-lg shadow-xs"
+                >
+                  <span
+                    class="material-symbols-outlined text-[15px]"
+                    style="font-variation-settings: &quot;FILL&quot; 1"
+                    >verified</span
+                  >
+                  <span>Liquidado 100%</span>
+                </div>
+              </div>
+              <div class="mt-space-md">
+                <button
+                  class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-full bg-secondary-container/30 text-secondary hover:bg-secondary-container/50 transition-colors font-label-interactive text-label-interactive"
+                >
+                  <span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>
+                  Ver bordereaux final
+                </button>
+              </div>
+            </div>
+          </article>
+        </section>
+        <!-- Paginador Numérico Editorial Interactivo -->
+        <section class="px-margin-mobile pt-space-xs pb-space-lg flex items-center justify-center">
+          <div
+            class="inline-flex items-center gap-1.5 p-1.5 rounded-full bg-surface-container-lowest shadow-sm"
+          >
+            <button
+              aria-label="Página anterior"
+              class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors"
+            >
+              <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+            </button>
+            <button
+              class="w-8 h-8 rounded-full bg-primary text-on-primary font-label-interactive text-label-interactive flex items-center justify-center shadow-xs"
+            >
+              1
+            </button>
+            <button
+              class="w-8 h-8 rounded-full text-on-surface-variant hover:text-primary font-label-interactive text-label-interactive flex items-center justify-center transition-colors"
+            >
+              2
+            </button>
+            <button
+              class="w-8 h-8 rounded-full text-on-surface-variant hover:text-primary font-label-interactive text-label-interactive flex items-center justify-center transition-colors"
+            >
+              3
+            </button>
+            <span class="text-on-surface-variant px-1 font-body-sm text-[12px]">...</span>
+            <button
+              aria-label="Página siguiente"
+              class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors"
+            >
+              <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+            </button>
+          </div>
+        </section>
+        <!-- Botón de Creación Flotante en Terciopelo Burdeos -->
+        <div class="fixed bottom-20 right-4 z-40">
+          <button
+            aria-label="Crear nuevo espectáculo"
+            class="flex items-center gap-2 px-5 py-3 rounded-full bg-primary text-on-primary shadow-[0_8px_24px_rgba(91,4,24,0.4)] hover:bg-primary-container active:scale-95 transition-all"
+          >
+            <span class="material-symbols-outlined text-[20px]">add</span>
+            <span class="font-label-interactive text-label-interactive tracking-wide font-semibold"
+              >+ Crear Evento</span
+            >
+          </button>
+        </div>
+      </div>
+      <script>
+        // Micro-interacción ligera para alternar pestañas
+        (function () {
+          const tabNext = document.getElementById("tab-next");
+          const tabPrev = document.getElementById("tab-prev");
+          if (!tabNext || !tabPrev) return;
+
+          tabNext.addEventListener("click", () => {
+            tabNext.className =
+              "px-space-md py-1.5 rounded-full bg-primary text-on-primary font-label-interactive text-label-interactive transition-all shadow-sm";
+            tabPrev.className =
+              "px-space-md py-1.5 rounded-full text-on-surface-variant hover:text-primary font-label-interactive text-label-interactive transition-all";
+          });
+
+          tabPrev.addEventListener("click", () => {
+            tabPrev.className =
+              "px-space-md py-1.5 rounded-full bg-primary text-on-primary font-label-interactive text-label-interactive transition-all shadow-sm";
+            tabNext.className =
+              "px-space-md py-1.5 rounded-full text-on-surface-variant hover:text-primary font-label-interactive text-label-interactive transition-all";
+          });
+        })();
+      </script>
+    </main>
+    <nav
+      class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-4px_20px_rgba(91,4,24,0.05)]"
+      data-active-classes="text-primary font-semibold"
+    >
+      <div class="h-16 px-space-xs flex items-center justify-around">
+        <a
+          aria-current="page"
+          class="flex flex-col items-center justify-center min-w-[56px] h-12 transition-colors text-primary font-semibold"
+          data-path="eventos"
+          href="#"
+          ><span class="material-symbols-outlined text-[22px]">confirmation_number</span
+          ><span class="font-label-interactive text-[11px] leading-tight mt-0.5">Eventos</span></a
+        ><a
+          class="flex flex-col items-center justify-center min-w-[56px] h-12 text-on-surface-variant transition-colors relative"
+          data-path="mensajes"
+          href="#"
+          ><span class="material-symbols-outlined text-[22px]">forum</span
+          ><span class="font-label-interactive text-[11px] leading-tight mt-0.5">Mensajes</span
+          ><span class="absolute top-1 right-2.5 w-1.5 h-1.5 rounded-full bg-secondary"></span></a
+        ><a
+          class="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-on-primary shadow-[0_4px_14px_rgba(91,4,24,0.35)] -translate-y-2 hover:bg-primary-container transition-transform active:scale-95"
+          data-path="nuevo-evento"
+          href="#"
+          ><span class="material-symbols-outlined text-[26px]">add</span></a
+        ><a
+          class="flex flex-col items-center justify-center min-w-[56px] h-12 text-on-surface-variant transition-colors relative"
+          data-path="avisos"
+          href="#"
+          ><span class="material-symbols-outlined text-[22px]">campaign</span
+          ><span class="font-label-interactive text-[11px] leading-tight mt-0.5">Avisos</span></a
+        ><a
+          class="flex flex-col items-center justify-center min-w-[56px] h-12 text-on-surface-variant transition-colors"
+          data-path="perfil-organizador"
+          href="#"
+          ><span class="material-symbols-outlined text-[22px]">badge</span
+          ><span class="font-label-interactive text-[11px] leading-tight mt-0.5">Perfil</span></a
+        >
+      </div>
+    </nav>
+  </body>
+</html>

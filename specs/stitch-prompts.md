@@ -13,7 +13,7 @@ Exportá cada pantalla a `design/stitch/<nombre>/` (`code.html` + `screen.png`) 
 ```
 Design a mobile app called "AI Ticket It", an event ticketing platform where ORGANIZERS publish events (concerts, theatre, stand-up, festivals, sports, conferences, kids, dance) with several ticket types (e.g. General, Platea, VIP), each with its own price and capacity, and BUYERS discover events, save favourites, buy tickets, pay, cancel, chat with the organizer about each purchase and leave a star review after attending. All UI copy must be in Spanish (Argentina, "vos" form, prices in ARS like "$45.000,00", dates like "sáb 22 nov · 21:00").
 
-VISUAL STYLE — "Velvet curtain": classic theatre (opera house velvet, gold details, ivory programmes) executed in a MODERN, clean, airy way. It must feel elegant and current, never old, worn or retro-kitsch.
+VISUAL STYLE (the app name is always "AI Ticket It"; this is only a style description): classic theatre (opera house velvet, gold details, ivory programmes) executed in a MODERN, clean, airy way. It must feel elegant and current, never old, worn or retro-kitsch.
 - Modern ticket concept: purchase cards, event cards and stat cards are shaped like modern tickets — large rounded corners (16–18px), two semicircular notches cut into the top and bottom edges, and a dashed vertical line separating a narrow STUB on the right. The stub holds the key datum (countdown "FALTAN 5 días", price, or status) and a small serial number "Nº 004817". Soft shadow with a burgundy tint in light mode; 1px inner border in dark mode.
 - Decorative typography: titles in "Playfair Display" (700), highlighting ONE word per title in italic with the accent color (e.g. "Tu próxima *función*", "Esta noche, *en escena*"). Body, data, buttons and pills in "Inter" (400/500/600). Section labels in uppercase Inter 600 with wide letter-spacing, preceded by a gold "✦" ornament (e.g. "✦ PRÓXIMAS FUNCIONES").
 - Avoid anything that looks old: no paper texture, no grain, no sepia, no slab or typewriter fonts, no worn rubber stamps.
@@ -106,7 +106,7 @@ Same design system. Create one reference board screen [componentes] in dark and 
 Usalo en el proyecto de Stitch donde ya tenés pantallas con el estilo anterior. Pegalo tal cual. Si Stitch cambia demasiado una pantalla, repetilo pantalla por pantalla agregando al final: "Apply only to the [nombre] screen".
 
 ```
-Restyle ALL existing screens of this project with the new "Velvet curtain" visual direction. Keep every screen's structure, content, Spanish copy, components, layout order, navigation and accessibility features exactly as they are — change only the visual style described below. Generate light and dark versions of each screen.
+Restyle ALL existing screens of this project with the new classic-theatre visual direction described below. The app name is always "AI Ticket It" (never invent another brand name). Keep every screen's structure, content, Spanish copy, components, layout order, navigation and accessibility features exactly as they are — change only the visual style described below. Generate light and dark versions of each screen.
 
 GOAL: classic theatre (velvet, gold, ivory) executed in a MODERN, airy, elegant way. Remove everything that looks old or worn.
 
@@ -149,3 +149,31 @@ REEMBOLSADA #8a6417/#f7efdc — #d4af37/#2e2512 (rotate-ccw)
 SHAPES: cards and bottom sheets 16–18px radius, inputs 12px, buttons/chips/filters/badges/counters fully rounded pills. Generous spacing. Lucide outline icons 1.75px in text color.
 
 KEEP: ≥4.5:1 text contrast (all colors above are already verified — don't lighten them), visible labels, inline errors, visible focus rings, alt text, icon + text for status, confirmation modals, skeletons, toasts, pagination, carousels, filter bar, "✦ Para vos" pill, chat and bell counters, footer.
+
+---
+
+## Prompt de corrección de contenido (si Stitch se desvió del producto)
+
+Usalo si las pantallas salieron como sitio de escritorio, con otro nombre de marca, en euros o con funcionalidades que no existen (butacas, QR, temporadas).
+
+```
+Keep the current visual style exactly as it is (colors, typography, ticket shapes, light and dark), but fix the content and format of ALL screens:
+
+FORMAT: this is a MOBILE APP (390×844 phone frame), not a desktop website. Convert every screen to a single-column mobile layout: top app bar (logo "AI Ticket It", chat icon with unread counter pill, notification bell with counter pill) and a bottom tab bar. Buyer tabs: Explorar, Mis compras, Favoritos, Mensajes, Perfil. Organizer tabs: Mis eventos, Crear, Mensajes, Notificaciones, Perfil. No top navigation links like "Temporada / Cartelera / Localidades".
+
+BRAND AND LOCALE: the app is called "AI Ticket It" (never "Velvet Curtain" or any other name). Spanish from Argentina using "vos" ("Presentá", "Elegí", "Tenés"). Prices in Argentine pesos: "$45.000,00". Venues and cities in Argentina (Teatro Colón, Teatro Gran Rex, Luna Park, Teatro Ópera, Buenos Aires, Córdoba, Rosario). Events of all categories, not only opera/ballet: recitales, teatro, stand-up, festivales, deportes, conferencias, infantiles, danza.
+
+DOMAIN — only what the product supports:
+- There are NO seats, rows, boxes, QR codes or PDF downloads. A purchase is: event, ticket type (e.g. General, Platea, VIP), quantity, unit price and total.
+- Purchase statuses are exactly: PENDIENTE, CONFIRMADA, UTILIZADA, CANCELADA, REEMBOLSADA (status pills with icon + text). Don't invent others like "Emitido" or "Acceso prioritario".
+- The ticket STUB shows: for CONFIRMADA "FALTAN · 5 · días"; for PENDIENTE "Pagá antes del 18/11"; for others the status; plus serial "Nº 004817".
+- Every purchase card has a chat icon button with unread counter; contextual actions: Pagar (PENDIENTE), Cancelar (PENDIENTE or CONFIRMADA before the event), Calificar (UTILIZADA without review).
+
+SCREEN NAMES (rename screens to match):
+- "Mis Entradas y Pases" → [mis-compras] "Mis compras": status filter pills with counters (Todas, Pendientes, Confirmadas, Utilizadas, Canceladas, Reembolsadas), ticket cards as above, numbered pagination.
+- The screen titled "Detalle y Selección de Localidades" is the EVENT DETAIL → rename to [detalle-evento]: image carousel, category pill, date/time, venue, organizer card with rating, description + dated updates, selectable ticket-type cards with "Quedan 12" / "Agotado", quantity stepper, sticky total + "Comprar", organizer reviews with pagination.
+- Then create [detalle-compra] "Detalle de compra": status header with countdown, event mini-card, purchase data (tipo, cantidad, precio unitario, total, fecha), vertical timeline of status changes (date-time, who: Vos / Organizador / Sistema, detail), buttons "Abrir chat" and "Cancelar compra" with confirmation modal.
+- [checkout]: order summary, "Tenés hasta el lun 18/11 15:30 para pagar", "Pagar" opens the modal "¿Confirmás el pago de $45.000,00?" (Volver / Pagar).
+- [explorar]: "Recomendados para vos" carousel, search with visible label, "✦ Para vos" pill + category pills + "Filtros" button, applied-filter pills, segmented "Próximos | Anteriores", event ticket cards with price in the stub, numbered pagination, footer.
+- [landing]: keep the hero idea, with copy about AI Ticket It (buy and publish event tickets), stats, upcoming events carousel, categories, "Cómo funciona", buyers/organizers section, reviews carousel, footer.
+```

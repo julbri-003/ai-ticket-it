@@ -5,6 +5,8 @@ import categoriasRouter from "./categoriasRoutes.js";
 import eventosRouter from "./eventosRoutes.js";
 import favoritosRouter from "./favoritosRoutes.js";
 import { comprasDeEventoRouter, comprasRouter } from "./comprasRoutes.js";
+import mensajesRouter from "./mensajesRoutes.js";
+import notificacionesRouter from "./notificacionesRoutes.js";
 
 const router = express.Router();
 
@@ -14,6 +16,8 @@ router.use("/categorias", categoriasRouter);
 router.use("/eventos/:eventoId/compras", comprasDeEventoRouter);
 router.use("/eventos", eventosRouter);
 router.use("/favoritos", favoritosRouter);
+router.use("/compras/:id/mensajes", mensajesRouter);
 router.use("/compras", comprasRouter);
+router.use("/notificaciones", notificacionesRouter);
 
 export default router;

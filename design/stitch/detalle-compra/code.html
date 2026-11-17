@@ -1,0 +1,719 @@
+<!doctype html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+      name="viewport"
+    />
+    <meta content="mobile_stack" name="shell-type" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface-variant": "#564242",
+              "surface-container": "#fbeaec",
+              "surface-container-low": "#fff0f2",
+              tertiary: "#3b2700",
+              "inverse-primary": "#ffb2b6",
+              surface: "#fff8f8",
+              "on-surface": "#22191b",
+              "on-background": "#22191b",
+              "on-tertiary-fixed-variant": "#5e4100",
+              "surface-container-lowest": "#ffffff",
+              "primary-fixed-dim": "#ffb2b6",
+              "surface-container-highest": "#efdfe1",
+              primary: "#5b0418",
+              "on-secondary-fixed": "#271900",
+              "on-primary-fixed-variant": "#822431",
+              outline: "#897172",
+              "on-tertiary-fixed": "#271900",
+              "on-tertiary": "#ffffff",
+              "inverse-on-surface": "#fdedef",
+              "surface-container-high": "#f5e4e7",
+              "on-secondary": "#ffffff",
+              "surface-bright": "#fff8f8",
+              background: "#fff8f8",
+              "tertiary-container": "#573c00",
+              "on-error": "#ffffff",
+              "tertiary-fixed-dim": "#f3be5b",
+              "on-secondary-container": "#795505",
+              "secondary-container": "#ffcd76",
+              "on-error-container": "#93000a",
+              "on-tertiary-container": "#d7a545",
+              error: "#ba1a1a",
+              "on-secondary-fixed-variant": "#5f4100",
+              "outline-variant": "#dcc0c0",
+              "secondary-fixed": "#ffdeaa",
+              "inverse-surface": "#372e30",
+              "surface-variant": "#efdfe1",
+              "surface-dim": "#e6d6d9",
+              "on-primary-container": "#ff8a93",
+              "on-primary": "#ffffff",
+              "on-primary-fixed": "#40000d",
+              "secondary-fixed-dim": "#efbf6a",
+              "error-container": "#ffdad6",
+              "tertiary-fixed": "#ffdea9",
+              "primary-container": "#7a1e2c",
+              "primary-fixed": "#ffdada",
+              "surface-tint": "#a13c47",
+              secondary: "#7c5808",
+            },
+            borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+            spacing: {
+              "space-lg": "1.5rem",
+              "space-md": "1rem",
+              gutter: "1.5rem",
+              margin: "2.5rem",
+              "space-xs": "0.25rem",
+              "space-sm": "0.5rem",
+              "space-xl": "2.5rem",
+              "margin-mobile": "1.25rem",
+              "gutter-mobile": "1rem",
+              "space-2xl": "4rem",
+            },
+            fontFamily: {
+              "label-section": ["Inter"],
+              "body-sm": ["Inter"],
+              display: ["Playfair Display"],
+              "display-mobile": ["Playfair Display"],
+              "title-md": ["Inter"],
+              "headline-lg-mobile": ["Playfair Display"],
+              "headline-sm": ["Playfair Display"],
+              "body-lg": ["Inter"],
+              "label-interactive": ["Inter"],
+              "title-lg": ["Playfair Display"],
+              "body-md": ["Inter"],
+              "headline-lg": ["Playfair Display"],
+              "headline-md": ["Playfair Display"],
+            },
+            fontSize: {
+              "label-section": [
+                "11px",
+                { lineHeight: "16px", letterSpacing: "0.12em", fontWeight: "600" },
+              ],
+              "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }],
+              display: ["48px", { lineHeight: "56px", fontWeight: "700" }],
+              "display-mobile": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+              "headline-lg-mobile": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+              "headline-sm": ["22px", { lineHeight: "30px", fontWeight: "700" }],
+              "body-lg": ["16px", { lineHeight: "26px", fontWeight: "400" }],
+              "label-interactive": [
+                "13px",
+                { lineHeight: "18px", letterSpacing: "0.02em", fontWeight: "500" },
+              ],
+              "title-lg": ["20px", { lineHeight: "28px", fontWeight: "700" }],
+              "body-md": ["14px", { lineHeight: "22px", fontWeight: "400" }],
+              "headline-lg": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+              "headline-md": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @layer base {
+        html,
+        body {
+          width: 100vw;
+          margin: 0;
+          padding: 0;
+          background-color: #fff8f8;
+        }
+        body {
+          overscroll-behavior-y: none;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .pb-safe {
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .pt-safe {
+          padding-top: env(safe-area-inset-top, 0px);
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-surface text-on-surface font-body-md text-body-md min-h-screen flex flex-col antialiased selection:bg-secondary-fixed selection:text-on-secondary-fixed"
+  >
+    <header
+      class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_12px_rgba(34,25,27,0.04)]"
+    >
+      <div class="h-16 px-margin-mobile flex items-center justify-between gap-space-sm">
+        <div class="flex items-center gap-space-sm min-w-0">
+          <button
+            aria-label="Volver"
+            class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface hover:text-primary transition-colors active:scale-95"
+            onclick="history.back()"
+          >
+            <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+          </button>
+          <h1 class="font-title-lg text-title-lg text-primary truncate tracking-tight">
+            Detalle De Compra
+          </h1>
+        </div>
+        <div class="flex items-center gap-space-xs shrink-0">
+          <a
+            class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary transition-colors active:scale-95"
+            data-path="notificaciones"
+            href="#"
+            ><span class="material-symbols-outlined text-[22px]">notifications</span></a
+          >
+          <div class="w-11 h-11 flex items-center justify-center">
+            <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-sm">
+              <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="flex-1 w-full bg-surface pt-16 pb-safe">
+      <div class="flex flex-col w-full pb-10">
+        <!-- Top Highlight Banner / Security Bar -->
+        <div class="px-margin-mobile pt-space-sm pb-space-xs">
+          <div
+            class="bg-surface-container-low rounded-xl px-space-md py-space-sm flex items-center justify-between shadow-sm"
+          >
+            <div class="flex items-center gap-space-sm">
+              <span class="w-2.5 h-2.5 rounded-full bg-secondary animate-pulse"></span>
+              <span
+                class="font-label-section text-label-section text-secondary uppercase tracking-wider"
+                >Acceso Digital Activo</span
+              >
+            </div>
+            <span class="font-body-sm text-body-sm text-on-surface-variant font-medium"
+              >Orden #TK-84920</span
+            >
+          </div>
+        </div>
+        <!-- Main Theatrical Ticket Card -->
+        <div class="px-margin-mobile pt-space-xs pb-space-md">
+          <div class="relative bg-surface-container-lowest rounded-xl shadow-xl overflow-hidden">
+            <!-- Velvet Accent Bar -->
+            <div
+              class="h-2 w-full bg-gradient-to-r from-primary via-primary-container to-secondary"
+            ></div>
+            <!-- Performance Header -->
+            <div class="p-space-md flex flex-col gap-space-xs">
+              <div class="flex items-center justify-between">
+                <span
+                  class="font-label-section text-label-section text-secondary uppercase tracking-widest font-semibold"
+                  >Gira Nacional Conmemorativa</span
+                >
+                <span
+                  class="px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-label-section text-label-section font-semibold"
+                  >2 Boletos</span
+                >
+              </div>
+              <h2
+                class="font-headline-sm text-headline-sm text-primary tracking-tight font-display"
+              >
+                Divididos: 35 Años de Rock Nacional
+              </h2>
+              <div class="flex flex-col gap-0.5 text-on-surface-variant pt-space-xs">
+                <div class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[18px] text-secondary"
+                    >theater_comedy</span
+                  >
+                  <span class="font-body-md text-body-md text-on-surface font-semibold"
+                    >Estadio Obras Sanitarias</span
+                  >
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[18px] text-outline">schedule</span>
+                  <span class="font-body-md text-body-md"
+                    >Sábado 22 Noviembre · 21:00 hs (Puertas 19:30 hs)</span
+                  >
+                </div>
+              </div>
+            </div>
+            <!-- Sector & Access Badges -->
+            <div class="px-space-md pb-space-md grid grid-cols-2 gap-space-xs">
+              <div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col">
+                <span
+                  class="font-label-section text-label-section text-on-surface-variant uppercase"
+                  >Ubicación</span
+                >
+                <span class="font-title-md text-title-md text-primary font-bold"
+                  >Campo General</span
+                >
+                <span class="font-body-sm text-body-sm text-on-surface-variant"
+                  >Cantidad: 2 Accesos</span
+                >
+              </div>
+              <div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col">
+                <span
+                  class="font-label-section text-label-section text-on-surface-variant uppercase"
+                  >Ingreso Oficial</span
+                >
+                <span class="font-title-md text-title-md text-primary font-bold"
+                  >Peatonal Norte</span
+                >
+                <span class="font-body-sm text-body-sm text-on-surface-variant"
+                  >Av. del Libertador 7395</span
+                >
+              </div>
+            </div>
+            <!-- Theatrical Notch & Perforation -->
+            <div class="relative w-full h-8 flex items-center justify-between">
+              <!-- Left Notch -->
+              <div class="w-5 h-8 bg-surface rounded-r-full -ml-2.5 shadow-inner"></div>
+              <!-- Perforation dashes using background tokens -->
+              <div class="flex-1 flex justify-evenly items-center px-2">
+                <span class="w-1.5 h-0.5 bg-outline-variant rounded-full"></span>
+                <span class="w-1.5 h-0.5 bg-outline-variant rounded-full"></span>
+                <span class="w-1.5 h-0.5 bg-outline-variant rounded-full"></span>
+                <span class="w-1.5 h-0.5 bg-outline-variant rounded-full"></span>
+                <span class="w-1.5 h-0.5 bg-outline-variant rounded-full"></span>
+                <span class="w-1.5 h-0.5 bg-outline-variant rounded-full"></span>
+                <span class="w-1.5 h-0.5 bg-outline-variant rounded-full"></span>
+                <span class="w-1.5 h-0.5 bg-outline-variant rounded-full"></span>
+                <span class="w-1.5 h-0.5 bg-outline-variant rounded-full"></span>
+                <span class="w-1.5 h-0.5 bg-outline-variant rounded-full"></span>
+                <span class="w-1.5 h-0.5 bg-outline-variant rounded-full"></span>
+                <span class="w-1.5 h-0.5 bg-outline-variant rounded-full"></span>
+                <span class="w-1.5 h-0.5 bg-outline-variant rounded-full"></span>
+                <span class="w-1.5 h-0.5 bg-outline-variant rounded-full"></span>
+              </div>
+              <!-- Right Notch -->
+              <div class="w-5 h-8 bg-surface rounded-l-full -mr-2.5 shadow-inner"></div>
+            </div>
+            <!-- Dynamic QR Gate Access Stub -->
+            <div
+              class="p-space-md bg-surface-container-lowest flex flex-col items-center text-center"
+            >
+              <!-- Interactive High-Res Dynamic QR Area -->
+              <div
+                class="relative p-space-md bg-surface rounded-xl shadow-inner flex flex-col items-center justify-center"
+              >
+                <!-- Ambient Shimmer / Beam Bar -->
+                <div
+                  class="relative w-52 h-52 bg-surface-container-lowest rounded-lg p-2 shadow-sm flex items-center justify-center overflow-hidden"
+                >
+                  <!-- Simulated Laser/Shimmer Scanner line -->
+                  <div
+                    class="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent opacity-75 shadow-[0_0_8px_#7a1e2c] transition-all duration-300"
+                    id="qr-scan-line"
+                  ></div>
+                  <!-- Stylized Crisp High-Tech QR Vector -->
+                  <svg class="w-48 h-48 text-on-surface" fill="currentColor" viewbox="0 0 160 160">
+                    <!-- Top Left Corner Finder -->
+                    <rect fill="#5b0418" height="40" rx="4" width="40" x="10" y="10"></rect>
+                    <rect fill="#fff8f8" height="24" rx="2" width="24" x="18" y="18"></rect>
+                    <rect fill="#5b0418" height="12" rx="1" width="12" x="24" y="24"></rect>
+                    <!-- Top Right Corner Finder -->
+                    <rect fill="#5b0418" height="40" rx="4" width="40" x="110" y="10"></rect>
+                    <rect fill="#fff8f8" height="24" rx="2" width="24" x="118" y="18"></rect>
+                    <rect fill="#5b0418" height="12" rx="1" width="12" x="124" y="24"></rect>
+                    <!-- Bottom Left Corner Finder -->
+                    <rect fill="#5b0418" height="40" rx="4" width="40" x="10" y="110"></rect>
+                    <rect fill="#fff8f8" height="24" rx="2" width="24" x="18" y="118"></rect>
+                    <rect fill="#5b0418" height="12" rx="1" width="12" x="24" y="124"></rect>
+                    <!-- High-density dynamic payload matrix -->
+                    <rect height="8" rx="1" width="8" x="60" y="14"></rect>
+                    <rect height="8" rx="1" width="8" x="76" y="14"></rect>
+                    <rect height="8" rx="1" width="8" x="92" y="14"></rect>
+                    <rect height="8" rx="1" width="16" x="60" y="30"></rect>
+                    <rect height="8" rx="1" width="8" x="84" y="30"></rect>
+                    <rect height="16" rx="1" width="8" x="60" y="46"></rect>
+                    <rect height="8" rx="1" width="24" x="76" y="46"></rect>
+                    <rect height="8" rx="1" width="8" x="14" y="60"></rect>
+                    <rect height="8" rx="1" width="16" x="30" y="60"></rect>
+                    <rect height="8" rx="1" width="8" x="54" y="60"></rect>
+                    <rect height="8" rx="1" width="8" x="70" y="60"></rect>
+                    <rect height="8" rx="1" width="16" x="86" y="60"></rect>
+                    <rect height="8" rx="1" width="8" x="110" y="60"></rect>
+                    <rect height="8" rx="1" width="16" x="134" y="60"></rect>
+                    <rect height="8" rx="1" width="16" x="14" y="76"></rect>
+                    <rect height="8" rx="1" width="8" x="38" y="76"></rect>
+                    <rect height="16" rx="1" width="16" x="54" y="76"></rect>
+                    <rect height="8" rx="1" width="8" x="78" y="76"></rect>
+                    <rect height="8" rx="1" width="16" x="102" y="76"></rect>
+                    <rect height="8" rx="1" width="8" x="126" y="76"></rect>
+                    <rect height="8" rx="1" width="8" x="142" y="76"></rect>
+                    <rect height="8" rx="1" width="8" x="14" y="92"></rect>
+                    <rect height="8" rx="1" width="8" x="30" y="92"></rect>
+                    <rect height="8" rx="1" width="16" x="78" y="92"></rect>
+                    <rect height="16" rx="1" width="8" x="110" y="92"></rect>
+                    <rect height="8" rx="1" width="16" x="126" y="92"></rect>
+                    <rect height="16" rx="1" width="8" x="60" y="110"></rect>
+                    <rect height="8" rx="1" width="16" x="76" y="110"></rect>
+                    <rect height="8" rx="1" width="8" x="102" y="110"></rect>
+                    <rect height="8" rx="1" width="24" x="118" y="110"></rect>
+                    <rect height="8" rx="1" width="16" x="60" y="134"></rect>
+                    <rect height="16" rx="1" width="8" x="84" y="126"></rect>
+                    <rect height="8" rx="1" width="8" x="100" y="134"></rect>
+                    <rect height="8" rx="1" width="8" x="116" y="126"></rect>
+                    <rect height="8" rx="1" width="18" x="132" y="134"></rect>
+                    <!-- Central security token icon -->
+                    <rect fill="#7a1e2c" height="28" rx="6" width="28" x="66" y="66"></rect>
+                    <circle cx="80" cy="80" fill="#fff8f8" r="6"></circle>
+                  </svg>
+                </div>
+                <!-- Dynamic Timer Badge -->
+                <div
+                  class="mt-space-sm inline-flex items-center gap-1.5 px-3 py-1 bg-surface-container rounded-full text-on-surface"
+                >
+                  <span
+                    class="material-symbols-outlined text-[16px] text-primary animate-spin"
+                    style="animation-duration: 4s"
+                    >sync</span
+                  >
+                  <span class="font-label-section text-label-section"
+                    >Actualizando código en
+                    <span class="font-bold text-primary" id="countdown">30</span>s</span
+                  >
+                </div>
+              </div>
+              <!-- Security anti-screenshot warning -->
+              <div class="mt-space-sm flex items-center justify-center gap-1.5 text-secondary">
+                <span class="material-symbols-outlined text-[16px]">verified_user</span>
+                <span class="font-label-section text-label-section tracking-tight"
+                  >QR dinámico protegido · Capturas de pantalla no válidas en molinete</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Action CTAs (Primary & Secondary) -->
+        <div class="px-margin-mobile flex flex-col gap-space-sm pb-space-lg">
+          <button
+            class="w-full py-3.5 px-6 rounded-full bg-primary hover:bg-primary-container text-on-primary font-title-md text-title-md font-semibold flex items-center justify-center gap-2 shadow-md active:scale-[0.98] transition-transform"
+            id="btn-wallet"
+          >
+            <span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+            <span>Descargar Boleto en PDF / Wallet</span>
+          </button>
+          <a
+            class="w-full py-3 px-6 rounded-full bg-surface-container-high hover:bg-surface-container text-primary font-title-md text-title-md font-semibold flex items-center justify-center gap-2 transition-colors active:scale-[0.98]"
+            href="#"
+          >
+            <span class="material-symbols-outlined text-[20px]">chat_bubble</span>
+            <span>Chat con el Organizador (300 Producciones)</span>
+          </a>
+        </div>
+        <!-- Financial Breakdown Section -->
+        <div class="px-margin-mobile pb-space-lg">
+          <div
+            class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm"
+          >
+            <div class="flex items-center justify-between pb-space-xs">
+              <span class="font-title-md text-title-md text-primary font-bold"
+                >Desglose de Pago</span
+              >
+              <span
+                class="px-2 py-0.5 rounded-full bg-surface-container-low text-secondary font-label-section text-label-section font-semibold"
+                >Comprobante Fiscal</span
+              >
+            </div>
+            <div class="flex flex-col gap-2 text-on-surface-variant">
+              <div class="flex items-center justify-between font-body-md text-body-md">
+                <span>Campo General (x2 entradas)</span>
+                <span class="text-on-surface font-medium">$72.000,00</span>
+              </div>
+              <div class="flex items-center justify-between font-body-md text-body-md">
+                <span>Cargo por servicio teatral (AI Concierge)</span>
+                <span class="text-on-surface font-medium">$12.000,00</span>
+              </div>
+              <div class="flex items-center justify-between font-body-md text-body-md">
+                <span>Método de cobro</span>
+                <span class="text-on-surface font-medium flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[16px] text-secondary"
+                    >credit_card</span
+                  >
+                  Mercado Pago / Visa Débito
+                </span>
+              </div>
+            </div>
+            <div
+              class="pt-space-xs mt-space-xs bg-surface-container-low p-space-sm rounded-lg flex items-center justify-between"
+            >
+              <span class="font-title-md text-title-md text-primary font-bold"
+                >Monto Total Abonado</span
+              >
+              <span class="font-headline-sm text-headline-sm text-primary font-bold font-display"
+                >$84.000,00</span
+              >
+            </div>
+            <!-- Legal & AFIP Tax Box -->
+            <div
+              class="mt-space-xs p-space-sm bg-surface rounded-lg flex flex-col gap-1 text-on-surface-variant font-body-sm text-body-sm"
+            >
+              <div
+                class="flex items-center justify-between font-label-section text-label-section text-secondary font-semibold"
+              >
+                <span>FACTURA ELECTRÓNICA 'B'</span>
+                <span>CAE AFIP N° 73928109348123</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span>Fecha Emisión: 14/10/2024 · Vto: 24/10/2024</span>
+                <span>CUIT: 30-71489201-9</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Operational Timeline (Audit Trail) -->
+        <div class="px-margin-mobile pb-space-lg">
+          <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+            <h3 class="font-title-md text-title-md text-primary font-bold mb-space-md">
+              Historial de la Operación
+            </h3>
+            <div class="relative pl-6 flex flex-col gap-space-md">
+              <!-- Vertical rule via subtle background pill line -->
+              <div
+                class="absolute left-2 top-2 bottom-2 w-0.5 bg-surface-container-high rounded-full"
+              ></div>
+              <!-- Step 1 -->
+              <div class="relative flex items-start gap-space-sm">
+                <div
+                  class="absolute -left-6 top-1 w-4 h-4 rounded-full bg-secondary flex items-center justify-center text-on-secondary shadow-sm"
+                >
+                  <span class="material-symbols-outlined text-[11px] font-bold">check</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="font-body-md text-body-md text-on-surface font-semibold"
+                    >Reserva completada por Inteligencia Teatral</span
+                  >
+                  <span class="font-body-sm text-body-sm text-on-surface-variant"
+                    >14 Octubre, 18:24 hs · Bloqueo de butacas preferenciales</span
+                  >
+                </div>
+              </div>
+              <!-- Step 2 -->
+              <div class="relative flex items-start gap-space-sm">
+                <div
+                  class="absolute -left-6 top-1 w-4 h-4 rounded-full bg-secondary flex items-center justify-center text-on-secondary shadow-sm"
+                >
+                  <span class="material-symbols-outlined text-[11px] font-bold">check</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="font-body-md text-body-md text-on-surface font-semibold"
+                    >Confirmación bancaria instantánea</span
+                  >
+                  <span class="font-body-sm text-body-sm text-on-surface-variant"
+                    >14 Octubre, 18:25 hs · Transacción MP-8472910 aprobada</span
+                  >
+                </div>
+              </div>
+              <!-- Step 3 -->
+              <div class="relative flex items-start gap-space-sm">
+                <div
+                  class="absolute -left-6 top-1 w-4 h-4 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm"
+                >
+                  <span class="material-symbols-outlined text-[11px] font-bold"
+                    >confirmation_number</span
+                  >
+                </div>
+                <div class="flex flex-col">
+                  <span class="font-body-md text-body-md text-primary font-semibold"
+                    >Entradas emitidas con Token Dinámico</span
+                  >
+                  <span class="font-body-sm text-body-sm text-on-surface-variant"
+                    >Listas para presentar en molinetes de Estadio Obras</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Repentance / Cancellation Section -->
+        <div class="px-margin-mobile text-center pb-space-md">
+          <button
+            class="font-label-interactive text-label-interactive text-on-surface-variant hover:text-error underline underline-offset-4 transition-colors"
+            id="open-cancel-modal"
+          >
+            Botón de arrepentimiento / Cancelar compra
+          </button>
+          <p class="font-body-sm text-body-sm text-outline mt-1">
+            Conforme a la Ley Nacional de Defensa del Consumidor N° 24.240
+          </p>
+        </div>
+        <!-- Interactive Cancellation Modal Backdrop & Sheet -->
+        <div
+          class="fixed inset-0 z-50 bg-inverse-surface/60 backdrop-blur-sm hidden flex items-end justify-center"
+          id="cancel-modal"
+        >
+          <div
+            class="w-full max-w-lg bg-surface-container-lowest rounded-t-2xl p-space-lg shadow-2xl flex flex-col gap-space-md transform transition-transform duration-300"
+          >
+            <!-- Modal Header -->
+            <div class="flex items-center gap-space-sm text-error">
+              <div
+                class="w-10 h-10 rounded-full bg-error-container text-on-error-container flex items-center justify-center"
+              >
+                <span class="material-symbols-outlined text-[24px]">warning</span>
+              </div>
+              <div class="flex flex-col">
+                <h4 class="font-title-lg text-title-lg text-on-surface font-display leading-tight">
+                  ¿Estás seguro de cancelar tu compra?
+                </h4>
+                <span class="font-label-section text-label-section text-error font-semibold"
+                  >Acción Irreversible</span
+                >
+              </div>
+            </div>
+            <!-- Modal Body -->
+            <div
+              class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-xs text-on-surface"
+            >
+              <p class="font-body-md text-body-md">
+                Se liberarán inmediatamente tus
+                <strong class="text-primary font-semibold">2 entradas de Campo General</strong> para
+                <em>Divididos: 35 Años</em>.
+              </p>
+              <p class="font-body-sm text-body-sm text-on-surface-variant">
+                El reembolso total por
+                <strong class="text-on-surface font-semibold">$84.000,00</strong> se acreditará en
+                tu medio de pago original dentro de las <strong>24 hs hábiles</strong> según lo
+                estipulado por la <strong class="text-on-surface">Ley 24.240</strong>.
+              </p>
+            </div>
+            <!-- Modal Actions -->
+            <div class="flex flex-col gap-space-xs pt-space-xs">
+              <button
+                class="w-full py-3.5 px-6 rounded-full bg-error text-on-error font-title-md text-title-md font-semibold active:scale-[0.98] transition-transform shadow-md"
+                id="confirm-cancel-btn"
+              >
+                Confirmar Cancelación y Reembolso
+              </button>
+              <button
+                class="w-full py-3 px-6 rounded-full bg-surface-container-high text-on-surface font-title-md text-title-md font-semibold active:scale-[0.98] transition-colors"
+                id="close-cancel-modal"
+              >
+                Volver atrás y conservar entradas
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Toast Notification Container for Wallet and Cancellation feedback -->
+        <div
+          class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-inverse-surface text-inverse-on-surface px-5 py-3 rounded-full shadow-lg font-body-md text-body-md flex items-center gap-2 transition-opacity duration-300 opacity-0 pointer-events-none"
+          id="toast"
+        >
+          <span class="material-symbols-outlined text-[20px] text-secondary-fixed" id="toast-icon"
+            >check_circle</span
+          >
+          <span id="toast-msg">Boleto exportado al dispositivo con éxito</span>
+        </div>
+      </div>
+      <script>
+        (function initTicketScreen() {
+          // 30s Dynamic QR Regeneration Counter
+          let timeLeft = 30;
+          const countdownEl = document.getElementById("countdown");
+          const scanLine = document.getElementById("qr-scan-line");
+
+          // Scanner Line Animation Cycle
+          let scanPos = 0;
+          let scanDir = 1;
+          setInterval(() => {
+            if (!scanLine) return;
+            scanPos += 2.5 * scanDir;
+            if (scanPos >= 195) scanDir = -1;
+            if (scanPos <= 5) scanDir = 1;
+            scanLine.style.top = scanPos + "px";
+          }, 25);
+
+          // Countdown Interval
+          setInterval(() => {
+            if (!countdownEl) return;
+            timeLeft--;
+            if (timeLeft < 0) {
+              timeLeft = 30;
+              // Visual refresh pulse
+              countdownEl.classList.add("scale-125");
+              setTimeout(() => countdownEl.classList.remove("scale-125"), 300);
+            }
+            countdownEl.innerText = timeLeft;
+          }, 1000);
+
+          // Toast Utility
+          const toast = document.getElementById("toast");
+          const toastMsg = document.getElementById("toast-msg");
+          const toastIcon = document.getElementById("toast-icon");
+
+          function showToast(msg, icon) {
+            if (!toast) return;
+            toastMsg.innerText = msg;
+            if (icon) toastIcon.innerText = icon;
+            toast.classList.remove("opacity-0", "pointer-events-none");
+            toast.classList.add("opacity-100");
+            setTimeout(() => {
+              toast.classList.add("opacity-0", "pointer-events-none");
+              toast.classList.remove("opacity-100");
+            }, 3500);
+          }
+
+          // Modal Interaction
+          const cancelModal = document.getElementById("cancel-modal");
+          const openCancelBtn = document.getElementById("open-cancel-modal");
+          const closeCancelBtn = document.getElementById("close-cancel-modal");
+          const confirmCancelBtn = document.getElementById("confirm-cancel-btn");
+          const btnWallet = document.getElementById("btn-wallet");
+
+          if (openCancelBtn && cancelModal) {
+            openCancelBtn.addEventListener("click", (e) => {
+              e.preventDefault();
+              cancelModal.classList.remove("hidden");
+            });
+          }
+
+          if (closeCancelBtn && cancelModal) {
+            closeCancelBtn.addEventListener("click", () => {
+              cancelModal.classList.add("hidden");
+            });
+          }
+
+          if (confirmCancelBtn && cancelModal) {
+            confirmCancelBtn.addEventListener("click", () => {
+              cancelModal.classList.add("hidden");
+              showToast(
+                "Solicitud iniciada: Reembolso de $84.000 en curso",
+                "published_with_changes",
+              );
+            });
+          }
+
+          if (btnWallet) {
+            btnWallet.addEventListener("click", () => {
+              showToast("Generando pase digital PKPASS y PDF oficial...", "download_done");
+            });
+          }
+        })();
+      </script>
+    </main>
+  </body>
+</html>

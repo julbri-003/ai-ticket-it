@@ -450,4 +450,43 @@ export const esquemas = {
       },
     },
   },
+  Notificacion: {
+    type: "object",
+    properties: {
+      id: ID,
+      tipo: {
+        type: "string",
+        enum: [
+          "NUEVA_COMPRA",
+          "COMPRA_CONFIRMADA",
+          "COMPRA_CANCELADA",
+          "COMPRA_VENCIDA",
+          "REEMBOLSO_REALIZADO",
+          "ENTRADA_UTILIZADA",
+          "NUEVO_MENSAJE",
+          "NUEVA_RESENIA",
+          "RECORDATORIO_EVENTO",
+        ],
+        example: "COMPRA_CANCELADA",
+      },
+      titulo: { type: "string", example: "Compra cancelada" },
+      mensaje: {
+        type: "string",
+        example:
+          'Bruno Díaz canceló 2 entradas Abono 2 días para "Festival Primavera Sonora". Tenés que reembolsar $104.000,00 antes del 18/11/2026 15:00; si no, el reembolso se hace automáticamente.',
+      },
+      datos: { type: "object", properties: { compraId: ID, eventoId: ID } },
+      fecha: FECHA,
+      leida: { type: "boolean", example: false },
+    },
+  },
+  PaginaNotificaciones: {
+    type: "object",
+    properties: {
+      items: { type: "array", items: { $ref: "#/components/schemas/Notificacion" } },
+      total: { type: "integer", example: 4 },
+      pagina: { type: "integer", example: 1 },
+      limite: { type: "integer", example: 10 },
+    },
+  },
 };

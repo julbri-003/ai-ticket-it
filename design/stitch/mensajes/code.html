@@ -1,0 +1,576 @@
+<!doctype html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+      name="viewport"
+    />
+    <meta content="mobile_tab" name="shell-type" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface-variant": "#564242",
+              "surface-container": "#fbeaec",
+              "surface-container-low": "#fff0f2",
+              tertiary: "#3b2700",
+              "inverse-primary": "#ffb2b6",
+              surface: "#fff8f8",
+              "on-surface": "#22191b",
+              "on-background": "#22191b",
+              "on-tertiary-fixed-variant": "#5e4100",
+              "surface-container-lowest": "#ffffff",
+              "primary-fixed-dim": "#ffb2b6",
+              "surface-container-highest": "#efdfe1",
+              primary: "#5b0418",
+              "on-secondary-fixed": "#271900",
+              "on-primary-fixed-variant": "#822431",
+              outline: "#897172",
+              "on-tertiary-fixed": "#271900",
+              "on-tertiary": "#ffffff",
+              "inverse-on-surface": "#fdedef",
+              "surface-container-high": "#f5e4e7",
+              "on-secondary": "#ffffff",
+              "surface-bright": "#fff8f8",
+              background: "#fff8f8",
+              "tertiary-container": "#573c00",
+              "on-error": "#ffffff",
+              "tertiary-fixed-dim": "#f3be5b",
+              "on-secondary-container": "#795505",
+              "secondary-container": "#ffcd76",
+              "on-error-container": "#93000a",
+              "on-tertiary-container": "#d7a545",
+              error: "#ba1a1a",
+              "on-secondary-fixed-variant": "#5f4100",
+              "outline-variant": "#dcc0c0",
+              "secondary-fixed": "#ffdeaa",
+              "inverse-surface": "#372e30",
+              "surface-variant": "#efdfe1",
+              "surface-dim": "#e6d6d9",
+              "on-primary-container": "#ff8a93",
+              "on-primary": "#ffffff",
+              "on-primary-fixed": "#40000d",
+              "secondary-fixed-dim": "#efbf6a",
+              "error-container": "#ffdad6",
+              "tertiary-fixed": "#ffdea9",
+              "primary-container": "#7a1e2c",
+              "primary-fixed": "#ffdada",
+              "surface-tint": "#a13c47",
+              secondary: "#7c5808",
+            },
+            borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+            spacing: {
+              "space-lg": "1.5rem",
+              "space-md": "1rem",
+              gutter: "1.5rem",
+              margin: "2.5rem",
+              "space-xs": "0.25rem",
+              "space-sm": "0.5rem",
+              "space-xl": "2.5rem",
+              "margin-mobile": "1.25rem",
+              "gutter-mobile": "1rem",
+              "space-2xl": "4rem",
+            },
+            fontFamily: {
+              "label-section": ["Inter"],
+              "body-sm": ["Inter"],
+              display: ["Playfair Display"],
+              "display-mobile": ["Playfair Display"],
+              "title-md": ["Inter"],
+              "headline-lg-mobile": ["Playfair Display"],
+              "headline-sm": ["Playfair Display"],
+              "body-lg": ["Inter"],
+              "label-interactive": ["Inter"],
+              "title-lg": ["Playfair Display"],
+              "body-md": ["Inter"],
+              "headline-lg": ["Playfair Display"],
+              "headline-md": ["Playfair Display"],
+            },
+            fontSize: {
+              "label-section": [
+                "11px",
+                { lineHeight: "16px", letterSpacing: "0.12em", fontWeight: "600" },
+              ],
+              "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }],
+              display: ["48px", { lineHeight: "56px", fontWeight: "700" }],
+              "display-mobile": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+              "headline-lg-mobile": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+              "headline-sm": ["22px", { lineHeight: "30px", fontWeight: "700" }],
+              "body-lg": ["16px", { lineHeight: "26px", fontWeight: "400" }],
+              "label-interactive": [
+                "13px",
+                { lineHeight: "18px", letterSpacing: "0.02em", fontWeight: "500" },
+              ],
+              "title-lg": ["20px", { lineHeight: "28px", fontWeight: "700" }],
+              "body-md": ["14px", { lineHeight: "22px", fontWeight: "400" }],
+              "headline-lg": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+              "headline-md": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @layer base {
+        html,
+        body {
+          width: 100vw;
+          margin: 0;
+          padding: 0;
+          background-color: #fff8f8;
+        }
+        body {
+          overscroll-behavior-y: none;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .pb-safe {
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .pt-safe {
+          padding-top: env(safe-area-inset-top, 0px);
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-surface text-on-surface font-body-md text-body-md min-h-screen flex flex-col antialiased selection:bg-secondary-fixed selection:text-on-secondary-fixed"
+  >
+    <header
+      class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_12px_rgba(34,25,27,0.04)]"
+    >
+      <div class="h-16 px-margin-mobile flex items-center justify-between">
+        <div class="flex flex-col justify-center">
+          <span
+            class="font-label-section text-label-section uppercase text-secondary tracking-widest"
+            >AI TICKET IT</span
+          >
+          <h1 class="font-title-lg text-title-lg text-primary tracking-tight">Mensajes</h1>
+        </div>
+        <div class="flex items-center gap-space-sm">
+          <a
+            class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary transition-colors active:scale-95"
+            data-path="notificaciones"
+            href="#"
+            ><span class="material-symbols-outlined text-[22px]">notifications</span></a
+          ><a class="w-11 h-11 flex items-center justify-center" data-path="perfil" href="#"
+            ><div
+              class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-sm"
+            >
+              <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+            </div></a
+          >
+        </div>
+      </div>
+    </header>
+    <main class="flex-1 w-full bg-surface pt-16 pb-24">
+      <div class="flex flex-col w-full pb-8">
+        <!-- Interactive Search & Live Indicator Header -->
+        <section class="px-margin-mobile pt-space-sm pb-space-xs">
+          <div class="flex items-center justify-between gap-space-sm mb-space-sm">
+            <div class="relative flex-1">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px] pointer-events-none"
+                >search</span
+              >
+              <input
+                class="w-full bg-surface-container-low text-on-surface pl-10 pr-4 py-2.5 rounded-xl font-body-md text-body-md placeholder:text-on-surface-variant/70 focus:outline-none focus:bg-surface-container transition-all shadow-sm"
+                id="chat-search-input"
+                placeholder="Buscar en conversaciones..."
+                type="text"
+              />
+            </div>
+            <div
+              class="flex items-center gap-1.5 px-3 py-2 bg-primary/10 rounded-full shadow-sm shrink-0"
+            >
+              <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+              <span
+                class="font-label-section text-label-section text-primary uppercase font-bold tracking-wider"
+                >2 nuevos</span
+              >
+            </div>
+          </div>
+          <!-- Category Filters -->
+          <div
+            class="flex items-center gap-space-xs overflow-x-auto no-scrollbar py-1"
+            id="filter-container"
+          >
+            <button
+              class="filter-pill shrink-0 px-4 py-1.5 rounded-full font-label-interactive text-label-interactive bg-primary-container text-on-primary shadow-sm transition-transform active:scale-95 flex items-center gap-1.5"
+              data-filter="todas"
+            >
+              <span>Todas</span>
+              <span
+                class="px-1.5 py-0.5 rounded-full bg-primary/40 text-[10px] leading-none font-semibold"
+                >6</span
+              >
+            </button>
+            <button
+              class="filter-pill shrink-0 px-4 py-1.5 rounded-full font-label-interactive text-label-interactive bg-surface-container text-on-surface-variant transition-transform active:scale-95 flex items-center gap-1.5"
+              data-filter="respuestas"
+            >
+              <span>Con respuestas</span>
+              <span
+                class="px-1.5 py-0.5 rounded-full bg-surface-variant text-[10px] leading-none text-on-surface-variant font-semibold"
+                >2</span
+              >
+            </button>
+            <button
+              class="filter-pill shrink-0 px-4 py-1.5 rounded-full font-label-interactive text-label-interactive bg-surface-container text-on-surface-variant transition-transform active:scale-95"
+              data-filter="confirmadas"
+            >
+              <span>Confirmadas</span>
+            </button>
+          </div>
+        </section>
+        <!-- Theatrical Conversation Docket List -->
+        <section
+          class="px-margin-mobile flex flex-col gap-space-sm mt-space-sm"
+          id="conversations-list"
+        >
+          <!-- Conversation 1 -->
+          <article
+            class="conversation-item w-full bg-surface-container-lowest p-4 rounded-[16px] shadow-[0_8px_24px_-6px_rgba(34,25,27,0.06)] transition-all active:scale-[0.99] cursor-pointer"
+            data-status="confirmadas"
+            data-unread="true"
+          >
+            <div class="flex items-start justify-between gap-space-xs mb-1.5">
+              <div class="flex items-center gap-2 min-w-0">
+                <div
+                  class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center shrink-0"
+                >
+                  <span class="material-symbols-outlined text-primary text-[18px]">stadium</span>
+                </div>
+                <div class="min-w-0">
+                  <div class="flex items-center gap-1.5">
+                    <h2 class="font-title-md text-title-md text-on-surface truncate">
+                      300 Producciones
+                    </h2>
+                    <span
+                      class="w-1.5 h-1.5 rounded-full bg-secondary shrink-0"
+                      title="Productora Verificada"
+                    ></span>
+                  </div>
+                  <p
+                    class="font-label-section text-label-section text-primary uppercase tracking-wider truncate"
+                  >
+                    Divididos - Obras Sanitarias
+                  </p>
+                </div>
+              </div>
+              <div class="flex flex-col items-end shrink-0">
+                <span class="font-body-sm text-body-sm text-on-surface-variant font-medium"
+                  >10:12 hs</span
+                >
+                <span
+                  class="mt-1 px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-section text-[10px] uppercase font-bold tracking-wider"
+                  >Confirmada</span
+                >
+              </div>
+            </div>
+            <div class="pt-2 flex items-center justify-between gap-space-sm">
+              <p class="font-body-md text-body-md text-on-surface-variant line-clamp-1 flex-1">
+                <span class="font-semibold text-on-surface">Boletería:</span> Hola Mariano, sí, hay
+                servicio de guardarropas habilitado para abrigos e instrumentos pequeños...
+              </p>
+              <span
+                class="shrink-0 px-2 py-0.5 rounded-full bg-primary text-on-primary font-label-section text-[10px] font-bold tracking-tight shadow-sm flex items-center gap-0.5"
+              >
+                <span class="w-1.5 h-1.5 rounded-full bg-on-primary"></span>
+                2 sin leer
+              </span>
+            </div>
+          </article>
+          <!-- Conversation 2 -->
+          <article
+            class="conversation-item w-full bg-surface-container-lowest p-4 rounded-[16px] shadow-[0_8px_24px_-6px_rgba(34,25,27,0.06)] transition-all active:scale-[0.99] cursor-pointer"
+            data-status="pendientes"
+            data-unread="false"
+          >
+            <div class="flex items-start justify-between gap-space-xs mb-1.5">
+              <div class="flex items-center gap-2 min-w-0">
+                <div
+                  class="w-8 h-8 rounded-full bg-secondary-container/40 flex items-center justify-center shrink-0"
+                >
+                  <span class="material-symbols-outlined text-secondary text-[18px]"
+                    >theater_comedy</span
+                  >
+                </div>
+                <div class="min-w-0">
+                  <h2 class="font-title-md text-title-md text-on-surface truncate">
+                    Rottenberg Teatros
+                  </h2>
+                  <p
+                    class="font-label-section text-label-section text-primary uppercase tracking-wider truncate"
+                  >
+                    Toc Toc - Multiteatro
+                  </p>
+                </div>
+              </div>
+              <div class="flex flex-col items-end shrink-0">
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Ayer</span>
+                <span
+                  class="mt-1 px-2 py-0.5 rounded-full bg-secondary-container/50 text-on-secondary-container font-label-section text-[10px] uppercase font-bold tracking-wider"
+                  >Pendiente</span
+                >
+              </div>
+            </div>
+            <div class="pt-2 flex items-center justify-between gap-space-sm">
+              <p class="font-body-md text-body-md text-on-surface-variant line-clamp-1 flex-1">
+                Recordá validar tu pase antes del 18/11 para no perder la butaca en platea baja fila
+                4...
+              </p>
+              <span
+                class="material-symbols-outlined text-on-surface-variant/40 text-[18px] shrink-0"
+                >done_all</span
+              >
+            </div>
+          </article>
+          <!-- Conversation 3 -->
+          <article
+            class="conversation-item w-full bg-surface-container-lowest p-4 rounded-[16px] shadow-[0_8px_24px_-6px_rgba(34,25,27,0.06)] transition-all active:scale-[0.99] cursor-pointer opacity-90"
+            data-status="utilizada"
+            data-unread="false"
+          >
+            <div class="flex items-start justify-between gap-space-xs mb-1.5">
+              <div class="flex items-center gap-2 min-w-0">
+                <div
+                  class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center shrink-0"
+                >
+                  <span class="material-symbols-outlined text-on-surface-variant text-[18px]"
+                    >festival</span
+                  >
+                </div>
+                <div class="min-w-0">
+                  <h2 class="font-title-md text-title-md text-on-surface truncate">Gonna Go</h2>
+                  <p
+                    class="font-label-section text-label-section text-primary uppercase tracking-wider truncate"
+                  >
+                    Festival Capital 2026
+                  </p>
+                </div>
+              </div>
+              <div class="flex flex-col items-end shrink-0">
+                <span class="font-body-sm text-body-sm text-on-surface-variant">04 Nov</span>
+                <span
+                  class="mt-1 px-2 py-0.5 rounded-full bg-surface-variant text-on-surface-variant font-label-section text-[10px] uppercase font-bold tracking-wider"
+                  >Utilizada</span
+                >
+              </div>
+            </div>
+            <div class="pt-2 flex items-center justify-between gap-space-sm">
+              <p class="font-body-md text-body-md text-on-surface-variant line-clamp-1 flex-1">
+                ¡Gracias por venir vos y tus amigos! Dejanos tu opinión sobre la organización
+                acústica...
+              </p>
+              <span class="material-symbols-outlined text-secondary text-[16px] shrink-0"
+                >grade</span
+              >
+            </div>
+          </article>
+          <!-- Conversation 4 -->
+          <article
+            class="conversation-item w-full bg-surface-container-lowest p-4 rounded-[16px] shadow-[0_8px_24px_-6px_rgba(34,25,27,0.06)] transition-all active:scale-[0.99] cursor-pointer opacity-90"
+            data-status="cancelada"
+            data-unread="false"
+          >
+            <div class="flex items-start justify-between gap-space-xs mb-1.5">
+              <div class="flex items-center gap-2 min-w-0">
+                <div
+                  class="w-8 h-8 rounded-full bg-error-container/30 flex items-center justify-center shrink-0"
+                >
+                  <span class="material-symbols-outlined text-error text-[18px]"
+                    >fitbit_jumping_jacks</span
+                  >
+                </div>
+                <div class="min-w-0">
+                  <h2 class="font-title-md text-title-md text-on-surface truncate">
+                    Filarmónica del Plata
+                  </h2>
+                  <p
+                    class="font-label-section text-label-section text-primary uppercase tracking-wider truncate"
+                  >
+                    Homenaje a Piazzolla
+                  </p>
+                </div>
+              </div>
+              <div class="flex flex-col items-end shrink-0">
+                <span class="font-body-sm text-body-sm text-on-surface-variant">28 Oct</span>
+                <span
+                  class="mt-1 px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-section text-[10px] uppercase font-bold tracking-wider"
+                  >Cancelada / Reembolsado</span
+                >
+              </div>
+            </div>
+            <div class="pt-2 flex items-center justify-between gap-space-sm">
+              <p class="font-body-md text-body-md text-on-surface-variant line-clamp-1 flex-1">
+                El reembolso fue procesado por administración y se verá impactado en su resumen...
+              </p>
+              <span
+                class="material-symbols-outlined text-on-surface-variant/40 text-[18px] shrink-0"
+                >receipt_long</span
+              >
+            </div>
+          </article>
+        </section>
+        <!-- Specator Advisory & Digital Dossier Prompt Card -->
+        <section class="px-margin-mobile mt-space-lg">
+          <div
+            class="w-full bg-surface-container-high rounded-[18px] p-space-md shadow-sm relative overflow-hidden"
+          >
+            <div class="flex items-start gap-space-sm relative z-10">
+              <div
+                class="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0 shadow-sm"
+              >
+                <span class="material-symbols-outlined text-on-primary text-[22px]"
+                  >contact_support</span
+                >
+              </div>
+              <div class="flex-1">
+                <span
+                  class="font-label-section text-label-section uppercase text-secondary font-bold tracking-widest block mb-0.5"
+                  >Asistencia al Espectador</span
+                >
+                <h3 class="font-title-md text-title-md text-on-surface leading-tight mb-1">
+                  ¿Tenés una consulta sobre otra función?
+                </h3>
+                <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                  Podés abrir un canal directo desde el detalle de cada ticket en tu cartelera
+                  personal o consultar con la curaduría teatral mediante AI Concierge.
+                </p>
+                <div class="mt-space-sm flex items-center gap-space-sm">
+                  <button
+                    class="px-4 py-2 rounded-full bg-primary text-on-primary font-label-interactive text-label-interactive shadow-sm transition-transform active:scale-95 flex items-center gap-1.5"
+                  >
+                    <span>Ir a mis Entradas</span>
+                    <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                  </button>
+                  <button
+                    class="px-3 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-interactive text-label-interactive transition-colors hover:text-primary"
+                  >
+                    Preguntas Frecuentes
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Subtle Ambient Decorative Glow -->
+            <div
+              class="absolute -right-10 -bottom-10 w-32 h-32 rounded-full bg-secondary-fixed/30 blur-2xl pointer-events-none"
+            ></div>
+          </div>
+        </section>
+      </div>
+      <script>
+        // Simple client-side filtering micro-interaction
+        document.querySelectorAll(".filter-pill").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            document.querySelectorAll(".filter-pill").forEach((b) => {
+              b.className =
+                "filter-pill shrink-0 px-4 py-1.5 rounded-full font-label-interactive text-label-interactive bg-surface-container text-on-surface-variant transition-transform active:scale-95 flex items-center gap-1.5";
+            });
+            btn.className =
+              "filter-pill shrink-0 px-4 py-1.5 rounded-full font-label-interactive text-label-interactive bg-primary-container text-on-primary shadow-sm transition-transform active:scale-95 flex items-center gap-1.5";
+
+            const filterType = btn.getAttribute("data-filter");
+            const items = document.querySelectorAll(".conversation-item");
+
+            items.forEach((item) => {
+              if (filterType === "todas") {
+                item.style.display = "block";
+              } else if (filterType === "respuestas") {
+                item.style.display = item.getAttribute("data-unread") === "true" ? "block" : "none";
+              } else if (filterType === "confirmadas") {
+                item.style.display =
+                  item.getAttribute("data-status") === "confirmadas" ? "block" : "none";
+              }
+            });
+          });
+        });
+
+        // Client search filter interaction
+        const searchInput = document.getElementById("chat-search-input");
+        if (searchInput) {
+          searchInput.addEventListener("input", (e) => {
+            const val = e.target.value.toLowerCase().trim();
+            document.querySelectorAll(".conversation-item").forEach((item) => {
+              const text = item.innerText.toLowerCase();
+              item.style.display = text.includes(val) ? "block" : "none";
+            });
+          });
+        }
+      </script>
+    </main>
+    <nav
+      class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-4px_20px_rgba(34,25,27,0.05)]"
+      data-active-classes="text-primary font-title-md"
+    >
+      <div class="flex justify-around items-center h-16 px-space-xs">
+        <a
+          class="flex-1 flex flex-col items-center justify-center h-full text-on-surface-variant transition-colors hover:text-primary"
+          data-path="explorar"
+          href="#"
+          ><span class="material-symbols-outlined text-[24px]">theater_comedy</span
+          ><span class="font-label-interactive text-[11px] mt-0.5 leading-none">Explorar</span></a
+        ><a
+          class="flex-1 flex flex-col items-center justify-center h-full text-on-surface-variant transition-colors hover:text-primary"
+          data-path="compras-entradas"
+          href="#"
+          ><span class="material-symbols-outlined text-[24px]">confirmation_number</span
+          ><span class="font-label-interactive text-[11px] mt-0.5 leading-none">Entradas</span></a
+        ><a
+          class="flex-1 flex flex-col items-center justify-center h-full text-on-surface-variant transition-colors hover:text-primary"
+          data-path="favoritos"
+          href="#"
+          ><span class="material-symbols-outlined text-[24px]">bookmark</span
+          ><span class="font-label-interactive text-[11px] mt-0.5 leading-none">Favoritos</span></a
+        ><a
+          aria-current="page"
+          class="flex-1 flex flex-col items-center justify-center h-full transition-colors text-primary font-title-md"
+          data-path="mensajes"
+          href="#"
+          ><span class="material-symbols-outlined text-[24px]">chat_bubble</span
+          ><span class="font-label-interactive text-[11px] mt-0.5 leading-none">Mensajes</span></a
+        ><a
+          class="flex-1 flex flex-col items-center justify-center h-full text-on-surface-variant transition-colors hover:text-primary"
+          data-path="perfil"
+          href="#"
+          ><span class="material-symbols-outlined text-[24px]">account_circle</span
+          ><span class="font-label-interactive text-[11px] mt-0.5 leading-none">Perfil</span></a
+        >
+      </div>
+    </nav>
+  </body>
+</html>

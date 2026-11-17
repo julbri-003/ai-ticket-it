@@ -1,0 +1,540 @@
+<!doctype html>
+
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+      name="viewport"
+    />
+    <meta content="mobile_blank" name="shell-type" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @layer base {
+        html,
+        body {
+          width: 100vw;
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          overscroll-behavior: none;
+        }
+        .pb-safe {
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .pt-safe {
+          padding-top: env(safe-area-inset-top, 0px);
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "v-bg": "#0f0b0d",
+              "v-card": "#1d1417",
+              "v-elevated": "#2a1a1f",
+              "v-border": "#3a2a2e",
+              "v-crimson": "#c8102e",
+              "v-accent": "#ff4757",
+              "v-gold": "#d4af37",
+              "v-cream": "#f5efe6",
+              "v-secondary": "#d8ccc0",
+              "v-muted": "#a8998f",
+              "v-input-border": "#7a6a64",
+            },
+            fontFamily: {
+              display: ["Playfair Display", "serif"],
+              body: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-[#0f0b0d] text-[#f5efe6] font-body text-[14px] flex flex-col min-h-screen pt-safe pb-safe selection:bg-[#c8102e] selection:text-white"
+  >
+    <main class="flex flex-col relative w-full bg-[#0f0b0d] min-h-screen">
+      <div class="flex flex-col w-full px-4 pb-10">
+        <!-- Tarjeta Contenedora Principal Velvet Curtain Modo Platea -->
+        <div
+          class="relative w-full rounded-2xl bg-[#1d1417] border border-[#3a2a2e] p-5 shadow-2xl overflow-hidden mt-3"
+        >
+          <!-- Encabezado con navegación y marca -->
+          <div class="flex items-center justify-between pb-3">
+            <button
+              aria-label="Volver al inicio"
+              class="w-10 h-10 flex items-center justify-center rounded-xl bg-[#2a1a1f] border border-[#3a2a2e] text-[#f5efe6] hover:border-[#ff4757] transition-colors"
+              type="button"
+            >
+              <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+            </button>
+            <!-- Logo Oficial Ticket It -->
+            <div
+              class="h-9 px-3 flex items-center justify-center rounded-lg bg-[#2a1a1f] border border-[#3a2a2e]"
+            >
+              <img
+                alt="AI Ticket It Logo"
+                class="h-6 w-auto object-contain brightness-125 contrast-125"
+                src="https://lh3.googleusercontent.com/aida/ALJJyrAHdFExftQpnSuMjc6CR9Jq62WPyA7GTjk3to8YedLlCSp-HBe4gbBsAyFNWgtWuP3S7t1ZkrzorsknV9EZVE-M1UUbQVzdV2G6k4J8a1_m5FClK5l42kh-jETuN1_UVIzYK3DneHqLDOKHA04X7MQRJ2ywA7bQQP0KT75STdLmXCG4NI7sLTHEeCqbmyM0QZp_KAdo9AwKae67Wsa5kI8EGeXsk6XTQzmAa_3vOVCK"
+              />
+            </div>
+            <!-- Serie / Identificador Platea -->
+            <div
+              class="px-2.5 py-1 rounded-lg bg-[#2a1a1f] border border-[#3a2a2e] flex flex-col items-end"
+            >
+              <span class="text-[10px] tracking-widest text-[#d4af37] font-semibold uppercase"
+                >BOLETERÍA</span
+              >
+              <span class="text-[11px] font-bold text-[#f5efe6] tracking-wider">Nº 804-AR</span>
+            </div>
+          </div>
+          <!-- Eyebrow Ledger Tira de Estado -->
+          <div
+            class="w-full py-1.5 px-3 rounded-lg bg-[#2a1a1f] border border-[#3a2a2e]/60 flex items-center justify-between mb-4"
+          >
+            <div class="flex items-center gap-1.5">
+              <span class="text-[#d4af37] text-[11px]">✦</span>
+              <span class="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#d8ccc0]"
+                >TALÓN DE NUEVO USUARIO</span
+              >
+            </div>
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-[#ff4757]"
+              >SERIE REG-2026</span
+            >
+          </div>
+          <!-- Título Principal y Bajada -->
+          <div class="space-y-2 mb-6">
+            <div
+              class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#2a1a1f] border border-[#c8102e]/50 text-[#ff4757] text-[11px] font-semibold uppercase tracking-wider"
+            >
+              <span class="text-[#d4af37] text-[11px]">✦</span>
+              <span>EMISIÓN DIGITAL</span>
+            </div>
+            <h1 class="font-display font-bold text-[30px] leading-[36px] text-[#f5efe6]">
+              Creá tu cuenta <span class="italic text-[#ff4757]">oficial</span>
+            </h1>
+            <p class="text-[#d8ccc0] text-[14px] leading-relaxed">
+              Sacá tu credencial personalizada para acceder a la cartelera porteña, recitales y
+              teatro independiente sin hacer cola en la ventanilla.
+            </p>
+          </div>
+          <!-- Formulario de Registro -->
+          <form class="space-y-4" onsubmit="event.preventDefault();">
+            <!-- Selector de Rol como Tarjetas de Admisión -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <label
+                  class="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#d8ccc0] flex items-center gap-1.5"
+                >
+                  <span class="text-[#d4af37]">✦</span> TIPO DE ACREDITACIÓN
+                </label>
+                <span class="text-[11px] text-[#ff4757] font-medium tracking-wide"
+                  >* Obligatorio</span
+                >
+              </div>
+              <div class="grid grid-cols-1 gap-2.5 pt-0.5" id="role-selector-container">
+                <!-- Tarjeta 1: Espectador (Activa por defecto) -->
+                <label
+                  class="relative flex items-start gap-3 p-3.5 rounded-[16px] bg-[#1d1417] border-2 border-[#c8102e] shadow-lg cursor-pointer transition-all duration-200"
+                  id="card-buyer"
+                >
+                  <input
+                    checked=""
+                    class="sr-only"
+                    name="user_role"
+                    onchange="updateRoleSelection(this)"
+                    type="radio"
+                    value="buyer"
+                  />
+                  <div
+                    class="w-6 h-6 rounded-full bg-[#ff4757] text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm"
+                    id="check-buyer"
+                  >
+                    <span class="material-symbols-outlined text-[16px] font-bold">check</span>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between">
+                      <span
+                        class="text-[13px] font-semibold uppercase tracking-wider text-[#f5efe6]"
+                        id="text-buyer-title"
+                        >Quiero comprar entradas</span
+                      >
+                      <span
+                        class="material-symbols-outlined text-[#ff4757] text-[20px]"
+                        id="icon-buyer"
+                        >confirmation_number</span
+                      >
+                    </div>
+                    <p class="text-[13px] text-[#a8998f] mt-1 leading-snug">
+                      Acceso prioritario a preventas, reserva directa de butacas en Calle Corrientes
+                      y pases nominales.
+                    </p>
+                  </div>
+                </label>
+                <!-- Tarjeta 2: Organizador -->
+                <label
+                  class="relative flex items-start gap-3 p-3.5 rounded-[16px] bg-[#1d1417] border border-[#3a2a2e] cursor-pointer shadow-sm transition-all duration-200 hover:border-[#7a6a64]"
+                  id="card-organizer"
+                >
+                  <input
+                    class="sr-only"
+                    name="user_role"
+                    onchange="updateRoleSelection(this)"
+                    type="radio"
+                    value="organizer"
+                  />
+                  <div
+                    class="w-6 h-6 rounded-full bg-[#2a1a1f] border border-[#7a6a64] text-[#f5efe6] flex items-center justify-center shrink-0 mt-0.5"
+                    id="check-organizer"
+                  >
+                    <span class="material-symbols-outlined text-[16px] hidden">check</span>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between">
+                      <span
+                        class="text-[13px] font-semibold uppercase tracking-wider text-[#d8ccc0]"
+                        id="text-org-title"
+                        >Quiero organizar eventos</span
+                      >
+                      <span
+                        class="material-symbols-outlined text-[#a8998f] text-[20px]"
+                        id="icon-org"
+                        >theater_comedy</span
+                      >
+                    </div>
+                    <p class="text-[13px] text-[#a8998f] mt-1 leading-snug">
+                      Gestión integral de aforos, tiers de tickets (General, Platea, Palcos VIP) y
+                      control de accesos QR.
+                    </p>
+                  </div>
+                </label>
+              </div>
+            </div>
+            <!-- Campos de Nombre y Apellido -->
+            <div class="grid grid-cols-2 gap-3">
+              <div class="space-y-1.5">
+                <label
+                  class="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#d8ccc0] block"
+                  for="reg-nombre"
+                >
+                  <span class="text-[#d4af37]">✦</span> Nombre *
+                </label>
+                <div class="relative">
+                  <input
+                    class="w-full h-11 px-3.5 bg-[#2a1a1f] border border-[#7a6a64] rounded-[12px] text-[#f5efe6] placeholder:text-[#a8998f]/60 focus:outline-none focus:ring-1 focus:ring-[#f5efe6] focus:border-[#f5efe6] transition-all"
+                    id="reg-nombre"
+                    placeholder="Ej. Mateo"
+                    required=""
+                    type="text"
+                  />
+                </div>
+              </div>
+              <div class="space-y-1.5">
+                <label
+                  class="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#d8ccc0] block"
+                  for="reg-apellido"
+                >
+                  <span class="text-[#d4af37]">✦</span> Apellido *
+                </label>
+                <div class="relative">
+                  <input
+                    class="w-full h-11 px-3.5 bg-[#2a1a1f] border border-[#7a6a64] rounded-[12px] text-[#f5efe6] placeholder:text-[#a8998f]/60 focus:outline-none focus:ring-1 focus:ring-[#f5efe6] focus:border-[#f5efe6] transition-all"
+                    id="reg-apellido"
+                    placeholder="Ej. Arismendi"
+                    required=""
+                    type="text"
+                  />
+                </div>
+              </div>
+            </div>
+            <!-- Campo Correo Electrónico -->
+            <div class="space-y-1.5">
+              <label
+                class="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#d8ccc0] block"
+                for="reg-email"
+              >
+                <span class="text-[#d4af37]">✦</span> Correo Electrónico *
+              </label>
+              <div
+                class="relative flex items-center bg-[#2a1a1f] border border-[#7a6a64] rounded-[12px] px-3 focus-within:ring-1 focus-within:ring-[#f5efe6] focus-within:border-[#f5efe6] transition-all"
+              >
+                <span class="material-symbols-outlined text-[#a8998f] text-[20px] mr-2">mail</span>
+                <input
+                  class="w-full h-11 bg-transparent text-[#f5efe6] placeholder:text-[#a8998f]/60 focus:outline-none text-[14px]"
+                  id="reg-email"
+                  placeholder="mateo.arismendi@tango.com.ar"
+                  required=""
+                  type="email"
+                />
+              </div>
+              <p class="text-[12px] text-[#a8998f] italic">
+                Te enviaremos los comprobantes de tus funciones aquí.
+              </p>
+            </div>
+            <!-- Campo Contraseña con Toggle de Visibilidad -->
+            <div class="space-y-1.5">
+              <label
+                class="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#d8ccc0] block"
+                for="reg-password"
+              >
+                <span class="text-[#d4af37]">✦</span> Contraseña *
+              </label>
+              <div
+                class="relative flex items-center bg-[#2a1a1f] border border-[#7a6a64] rounded-[12px] px-3 focus-within:ring-1 focus-within:ring-[#f5efe6] focus-within:border-[#f5efe6] transition-all"
+              >
+                <span class="material-symbols-outlined text-[#a8998f] text-[20px] mr-2">lock</span>
+                <input
+                  class="w-full h-11 bg-transparent text-[#f5efe6] placeholder:text-[#a8998f]/60 focus:outline-none text-[14px]"
+                  id="reg-password"
+                  oninput="checkPasswordStrength(this.value)"
+                  placeholder="Mínimo 8 caracteres"
+                  required=""
+                  type="password"
+                />
+                <button
+                  aria-label="Ver u ocultar contraseña"
+                  class="w-8 h-8 flex items-center justify-center text-[#a8998f] hover:text-[#f5efe6] transition-colors"
+                  onclick="togglePasswordVisibility()"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[20px]" id="pwd-icon"
+                    >visibility</span
+                  >
+                </button>
+              </div>
+              <!-- Medidor de Seguridad de Contraseña -->
+              <div
+                class="p-2.5 rounded-[12px] bg-[#2a1a1f] border border-[#3a2a2e] mt-2 space-y-1.5"
+              >
+                <div class="flex items-center justify-between text-[11px]">
+                  <span class="font-semibold uppercase tracking-wider text-[#d8ccc0]"
+                    >ROBUSTEZ DEL CÓDIGO:</span
+                  >
+                  <span class="font-bold tracking-wider text-[#ff4757]" id="strength-label"
+                    >MODERADA</span
+                  >
+                </div>
+                <!-- Barra de Segmentos -->
+                <div class="grid grid-cols-4 gap-1.5 h-1.5 w-full">
+                  <div class="h-full rounded-full bg-[#ff4757]" id="bar-1"></div>
+                  <div class="h-full rounded-full bg-[#ff4757]" id="bar-2"></div>
+                  <div class="h-full rounded-full bg-[#3a2a2e]" id="bar-3"></div>
+                  <div class="h-full rounded-full bg-[#3a2a2e]" id="bar-4"></div>
+                </div>
+              </div>
+            </div>
+            <!-- Separador Estilo Platea con Muescas -->
+            <div class="relative w-full py-2 my-1 flex items-center">
+              <div
+                class="w-5 h-5 rounded-full bg-[#0f0b0d] -ml-6 border border-[#3a2a2e] shrink-0"
+              ></div>
+              <div class="flex-1 border-t border-dashed border-[#3a2a2e] mx-2"></div>
+              <div
+                class="w-5 h-5 rounded-full bg-[#0f0b0d] -mr-6 border border-[#3a2a2e] shrink-0"
+              ></div>
+            </div>
+            <!-- Checkbox de Términos y Condiciones -->
+            <label class="flex items-start gap-3 cursor-pointer select-none">
+              <input class="sr-only peer" id="terms-check" required="" type="checkbox" />
+              <div
+                class="w-5 h-5 rounded-[6px] bg-[#2a1a1f] border border-[#7a6a64] peer-checked:bg-[#c8102e] peer-checked:border-[#ff4757] text-white flex items-center justify-center shrink-0 mt-0.5 transition-colors"
+              >
+                <span class="material-symbols-outlined text-[16px] hidden peer-checked:block"
+                  >check</span
+                >
+              </div>
+              <span class="text-[13px] text-[#d8ccc0] leading-snug">
+                Acepto las
+                <span class="text-[#f5efe6] underline decoration-[#c8102e] underline-offset-4"
+                  >Condiciones Generales del Billete</span
+                >, el protocolo de sala y la política de privacidad de la plataforma.
+              </span>
+            </label>
+            <!-- Botón de Envío Principal: Velvet Crimson Pill -->
+            <button
+              class="w-full h-12 rounded-full bg-[#c8102e] hover:bg-[#a60b24] active:scale-[0.99] text-white font-medium text-[15px] tracking-wide flex items-center justify-center gap-2 shadow-lg shadow-[#c8102e]/30 transition-all"
+              type="submit"
+            >
+              <span class="material-symbols-outlined text-[20px]">local_activity</span>
+              <span>Completar Registro y Emitir Pase</span>
+            </button>
+            <!-- Enlace a Login -->
+            <div class="text-center pt-2">
+              <p class="text-[13px] text-[#a8998f]">
+                ¿Ya tenés un pase registrado?
+                <a
+                  class="text-[12px] font-semibold text-[#ff4757] hover:text-[#f5efe6] underline underline-offset-4 uppercase tracking-wider ml-1 transition-colors"
+                  href="#"
+                >
+                  Ingresar a mi cuenta
+                </a>
+              </p>
+            </div>
+          </form>
+          <!-- Talón Inferior de Control Anti-Fraude -->
+          <div class="mt-6 pt-4 border-t border-[#3a2a2e] flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-[#d4af37] text-[22px]"
+                >verified_user</span
+              >
+              <div>
+                <span class="text-[11px] font-bold text-[#f5efe6] block uppercase tracking-wider"
+                  >PROTOCOLO ANTI-REVENTA</span
+                >
+                <span class="text-[10px] text-[#a8998f] block tracking-wide"
+                  >VALIDACIÓN CRIPTOGRÁFICA EN CADENA</span
+                >
+              </div>
+            </div>
+            <!-- Sello de Autenticidad -->
+            <div
+              class="px-3 py-1 rounded-full bg-[#2a1a1f] border border-[#d4af37]/60 text-[#d4af37] text-[11px] font-bold uppercase tracking-wider"
+            >
+              ✦ OFICIAL
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        function updateRoleSelection(radio) {
+          const cardBuyer = document.getElementById("card-buyer");
+          const cardOrg = document.getElementById("card-organizer");
+          const checkBuyer = document.getElementById("check-buyer");
+          const checkOrg = document.getElementById("check-organizer");
+          const iconBuyer = document.getElementById("icon-buyer");
+          const iconOrg = document.getElementById("icon-org");
+          const textBuyerTitle = document.getElementById("text-buyer-title");
+          const textOrgTitle = document.getElementById("text-org-title");
+
+          if (radio.value === "buyer") {
+            // Buyer selected
+            cardBuyer.className =
+              "relative flex items-start gap-3 p-3.5 rounded-[16px] bg-[#1d1417] border-2 border-[#c8102e] shadow-lg cursor-pointer transition-all duration-200";
+            checkBuyer.className =
+              "w-6 h-6 rounded-full bg-[#ff4757] text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm";
+            checkBuyer.innerHTML =
+              '<span class="material-symbols-outlined text-[16px] font-bold">check</span>';
+            iconBuyer.className = "material-symbols-outlined text-[#ff4757] text-[20px]";
+            textBuyerTitle.className =
+              "text-[13px] font-semibold uppercase tracking-wider text-[#f5efe6]";
+
+            // Org unselected
+            cardOrg.className =
+              "relative flex items-start gap-3 p-3.5 rounded-[16px] bg-[#1d1417] border border-[#3a2a2e] cursor-pointer shadow-sm transition-all duration-200 hover:border-[#7a6a64]";
+            checkOrg.className =
+              "w-6 h-6 rounded-full bg-[#2a1a1f] border border-[#7a6a64] text-[#f5efe6] flex items-center justify-center shrink-0 mt-0.5";
+            checkOrg.innerHTML =
+              '<span class="material-symbols-outlined text-[16px] hidden">check</span>';
+            iconOrg.className = "material-symbols-outlined text-[#a8998f] text-[20px]";
+            textOrgTitle.className =
+              "text-[13px] font-semibold uppercase tracking-wider text-[#d8ccc0]";
+          } else {
+            // Org selected
+            cardOrg.className =
+              "relative flex items-start gap-3 p-3.5 rounded-[16px] bg-[#1d1417] border-2 border-[#c8102e] shadow-lg cursor-pointer transition-all duration-200";
+            checkOrg.className =
+              "w-6 h-6 rounded-full bg-[#ff4757] text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm";
+            checkOrg.innerHTML =
+              '<span class="material-symbols-outlined text-[16px] font-bold">check</span>';
+            iconOrg.className = "material-symbols-outlined text-[#ff4757] text-[20px]";
+            textOrgTitle.className =
+              "text-[13px] font-semibold uppercase tracking-wider text-[#f5efe6]";
+
+            // Buyer unselected
+            cardBuyer.className =
+              "relative flex items-start gap-3 p-3.5 rounded-[16px] bg-[#1d1417] border border-[#3a2a2e] cursor-pointer shadow-sm transition-all duration-200 hover:border-[#7a6a64]";
+            checkBuyer.className =
+              "w-6 h-6 rounded-full bg-[#2a1a1f] border border-[#7a6a64] text-[#f5efe6] flex items-center justify-center shrink-0 mt-0.5";
+            checkBuyer.innerHTML =
+              '<span class="material-symbols-outlined text-[16px] hidden">check</span>';
+            iconBuyer.className = "material-symbols-outlined text-[#a8998f] text-[20px]";
+            textBuyerTitle.className =
+              "text-[13px] font-semibold uppercase tracking-wider text-[#d8ccc0]";
+          }
+        }
+
+        function togglePasswordVisibility() {
+          const pwdInput = document.getElementById("reg-password");
+          const pwdIcon = document.getElementById("pwd-icon");
+          if (pwdInput.type === "password") {
+            pwdInput.type = "text";
+            pwdIcon.textContent = "visibility_off";
+          } else {
+            pwdInput.type = "password";
+            pwdIcon.textContent = "visibility";
+          }
+        }
+
+        function checkPasswordStrength(val) {
+          const b1 = document.getElementById("bar-1");
+          const b2 = document.getElementById("bar-2");
+          const b3 = document.getElementById("bar-3");
+          const b4 = document.getElementById("bar-4");
+          const label = document.getElementById("strength-label");
+
+          const resetBars = () => {
+            [b1, b2, b3, b4].forEach((b) => {
+              b.className = "h-full rounded-full bg-[#3a2a2e] transition-colors";
+            });
+          };
+
+          resetBars();
+
+          if (!val || val.length === 0) {
+            label.textContent = "SIN INGRESAR";
+            label.className = "font-bold tracking-wider text-[#a8998f]";
+            return;
+          }
+
+          if (val.length < 6) {
+            b1.className = "h-full rounded-full bg-[#ba1a1a] transition-colors";
+            label.textContent = "DÉBIL";
+            label.className = "font-bold tracking-wider text-[#ba1a1a]";
+          } else if (val.length < 9) {
+            b1.className = "h-full rounded-full bg-[#ff4757] transition-colors";
+            b2.className = "h-full rounded-full bg-[#ff4757] transition-colors";
+            label.textContent = "MODERADA";
+            label.className = "font-bold tracking-wider text-[#ff4757]";
+          } else if (val.length < 12) {
+            b1.className = "h-full rounded-full bg-[#ff4757] transition-colors";
+            b2.className = "h-full rounded-full bg-[#ff4757] transition-colors";
+            b3.className = "h-full rounded-full bg-[#d4af37] transition-colors";
+            label.textContent = "BUENA";
+            label.className = "font-bold tracking-wider text-[#d4af37]";
+          } else {
+            b1.className = "h-full rounded-full bg-[#d4af37] transition-colors";
+            b2.className = "h-full rounded-full bg-[#d4af37] transition-colors";
+            b3.className = "h-full rounded-full bg-[#d4af37] transition-colors";
+            b4.className = "h-full rounded-full bg-[#d4af37] transition-colors";
+            label.textContent = "INVIOLABLE";
+            label.className = "font-bold tracking-wider text-[#d4af37]";
+          }
+        }
+      </script>
+    </main>
+  </body>
+</html>

@@ -51,6 +51,9 @@ const CompraSchema = new mongoose.Schema(
     reembolsoPendiente: { type: Boolean, default: false },
     fechaLimiteReembolso: { type: Date, default: null },
     reseniaId: { type: ObjectId, ref: "Resenia", default: null },
+    ultimaLecturaComprador: { type: Date, default: null },
+    ultimaLecturaOrganizador: { type: Date, default: null },
+    recordatorioEnviado: { type: Boolean, default: false },
   },
   { timestamps: true, collection: "compras" },
 );

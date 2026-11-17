@@ -39,3 +39,21 @@ describe("Los estados solo cambian en el dominio", () => {
     expect(fuente).not.toMatch(/\.estado\s*=(?!=)/);
   });
 });
+
+// Criterio de aceptación (iteración 06): ningún service importa socket.io; solo el adapter
+// (adapter/EmisorSocketAdapter.js) y el montaje del servidor (sockets/index.js) lo conocen.
+describe("socket.io queda detrás del adapter", () => {
+  const raiz = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
+  const archivos = ["services", "controllers", "domain", "repositories", "routes"].flatMap(
+    (carpeta) =>
+      fs
+        .readdirSync(path.join(raiz, carpeta), { recursive: true })
+        .filter((f) => String(f).endsWith(".js"))
+        .map((f) => path.join(carpeta, String(f))),
+  );
+
+  test.each(archivos)("%s no importa socket.io", (archivo) => {
+    const fuente = fs.readFileSync(path.join(raiz, archivo), "utf8");
+    expect(fuente).not.toMatch(/from\s+["']socket\.io/);
+  });
+});

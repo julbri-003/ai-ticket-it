@@ -1,0 +1,582 @@
+<!doctype html>
+
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+      name="viewport"
+    />
+    <meta content="mobile_blank" name="shell-type" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @layer base {
+        html,
+        body {
+          width: 100vw;
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          overscroll-behavior: none;
+        }
+        .pb-safe {
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .pt-safe {
+          padding-top: env(safe-area-inset-top, 0px);
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "marfil-bg": "#faf7f2",
+              "marfil-surface": "#f3ece4",
+              "marfil-border": "#e6dcd0",
+              "marfil-input-border": "#8c7d80",
+              velvet: "#7a1e2c",
+              "velvet-dark": "#5b0418",
+              "velvet-light": "#ffdada",
+              gold: "#8a6417",
+              "gold-light": "#ffcd76",
+              primary: "#5b0418",
+              "primary-container": "#7a1e2c",
+              "on-primary": "#ffffff",
+              surface: "#faf7f2",
+              "on-surface": "#22191b",
+              "on-surface-variant": "#564242",
+              outline: "#8c7d80",
+              "outline-variant": "#e6dcd0",
+            },
+            fontFamily: {
+              display: ["Playfair Display", "serif"],
+              sans: ["Inter", "sans-serif"],
+            },
+            boxShadow: {
+              velvet:
+                "0 8px 24px -4px rgba(122, 30, 44, 0.08), 0 2px 8px -2px rgba(122, 30, 44, 0.04)",
+              "velvet-sm": "0 4px 14px -2px rgba(122, 30, 44, 0.06)",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-marfil-bg text-on-surface font-sans flex flex-col min-h-screen pt-safe pb-safe antialiased"
+  >
+    <main class="flex flex-col relative w-full bg-marfil-bg min-h-screen">
+      <div class="flex flex-col w-full px-4 py-6 max-w-lg mx-auto">
+        <!-- Top Navigation & Series Tag -->
+        <div class="flex items-center justify-between gap-2 mb-5">
+          <a
+            class="inline-flex items-center gap-1.5 text-xs font-semibold text-velvet hover:text-velvet-dark transition-colors"
+            href="#"
+          >
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            <span>Volver al inicio</span>
+          </a>
+          <span
+            class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-marfil-surface text-[11px] font-medium tracking-wider text-on-surface-variant uppercase border border-marfil-border"
+          >
+            <span class="text-gold">✦</span> REG-2026 / Nº 0498
+          </span>
+        </div>
+        <!-- Identity Banner (Modern Velvet Marfil) -->
+        <div
+          class="bg-white p-4 rounded-2xl shadow-velvet border border-marfil-border/70 mb-6 flex items-center justify-between gap-3"
+        >
+          <div class="flex items-center gap-3 min-w-0">
+            <img
+              alt="AI Ticket It Logo"
+              class="h-9 w-auto object-contain shrink-0 rounded"
+              src="https://lh3.googleusercontent.com/aida/ALJJyrAHdFExftQpnSuMjc6CR9Jq62WPyA7GTjk3to8YedLlCSp-HBe4gbBsAyFNWgtWuP3S7t1ZkrzorsknV9EZVE-M1UUbQVzdV2G6k4J8a1_m5FClK5l42kh-jETuN1_UVIzYK3DneHqLDOKHA04X7MQRJ2ywA7bQQP0KT75STdLmXCG4NI7sLTHEeCqbmyM0QZp_KAdo9AwKae67Wsa5kI8EGeXsk6XTQzmAa_3vOVCK"
+            />
+            <div class="flex flex-col min-w-0">
+              <span
+                class="text-[11px] text-gold font-bold uppercase tracking-wider flex items-center gap-1"
+              >
+                <span class="text-xs">✦</span> Boletería Central
+              </span>
+              <span class="text-xs font-semibold text-on-surface truncate tracking-tight"
+                >Acreditación de Nuevo Usuario</span
+              >
+            </div>
+          </div>
+          <div class="shrink-0">
+            <span
+              class="inline-flex items-center gap-1 px-2.5 py-1 bg-marfil-surface text-velvet text-xs font-semibold rounded-full border border-marfil-border"
+            >
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Habilitado
+            </span>
+          </div>
+        </div>
+        <!-- Title & Lead -->
+        <div class="mb-6 px-1">
+          <div
+            class="text-xs font-semibold text-gold uppercase tracking-wider mb-1 flex items-center gap-1.5"
+          >
+            <span>✦</span>
+            <span>Plataforma Federal</span>
+          </div>
+          <h1
+            class="font-display text-3xl font-bold text-on-surface tracking-tight leading-tight mb-2"
+          >
+            Creá tu cuenta <span class="italic text-velvet">oficial</span>
+          </h1>
+          <p class="text-sm text-on-surface-variant leading-relaxed">
+            Sumate a la plataforma federal de espectáculos y entradas directas.
+          </p>
+        </div>
+        <!-- Main Form Container -->
+        <div class="bg-white rounded-2xl shadow-velvet border border-marfil-border/80 p-5 pb-6">
+          <!-- Role Selector Section -->
+          <fieldset class="mb-6">
+            <div class="flex items-center justify-between mb-3 px-0.5">
+              <legend
+                class="text-xs font-semibold uppercase tracking-wider text-on-surface flex items-center gap-1.5"
+              >
+                <span class="text-gold">✦</span>
+                <span>Tipo de acreditación *</span>
+              </legend>
+              <span class="text-[11px] text-velvet font-medium">* Campo obligatorio</span>
+            </div>
+            <div class="flex flex-col gap-3">
+              <!-- Role 1: Buyer (Default Selected) -->
+              <label
+                class="relative flex flex-col p-4 rounded-[16px] border-2 border-velvet bg-marfil-surface/40 cursor-pointer transition-all duration-200 shadow-velvet-sm"
+                id="role-card-buyer"
+              >
+                <input
+                  checked=""
+                  class="sr-only"
+                  name="user_role"
+                  onchange="updateRoleSelection(this)"
+                  type="radio"
+                  value="buyer"
+                />
+                <div class="flex items-start justify-between gap-3 mb-1.5">
+                  <div class="flex items-center gap-2.5">
+                    <span class="material-symbols-outlined text-velvet text-[22px]"
+                      >confirmation_number</span
+                    >
+                    <span class="text-sm font-semibold text-on-surface tracking-tight">
+                      Quiero comprar entradas
+                    </span>
+                  </div>
+                  <div
+                    class="w-5 h-5 rounded-full bg-velvet text-white flex items-center justify-center shrink-0 shadow-sm"
+                    id="check-icon-buyer"
+                  >
+                    <span class="material-symbols-outlined text-[14px] font-bold">check</span>
+                  </div>
+                </div>
+                <p class="text-xs text-on-surface-variant pl-8 leading-relaxed">
+                  Descubrí recitales, obras y festivales. Comprá sin cargos ocultos y guardá tus
+                  pases en el celular.
+                </p>
+                <div
+                  class="mt-3 pt-2 pl-8 border-t border-marfil-border/70 flex items-center gap-2 text-xs font-medium text-on-surface"
+                >
+                  <span class="material-symbols-outlined text-[15px] text-gold">verified_user</span>
+                  <span>Acceso inmediato a plateas y abonos</span>
+                </div>
+              </label>
+              <!-- Role 2: Organizer -->
+              <label
+                class="relative flex flex-col p-4 rounded-[16px] border border-marfil-border bg-white hover:bg-marfil-surface/30 cursor-pointer transition-all duration-200"
+                id="role-card-organizer"
+              >
+                <input
+                  class="sr-only"
+                  name="user_role"
+                  onchange="updateRoleSelection(this)"
+                  type="radio"
+                  value="organizer"
+                />
+                <div class="flex items-start justify-between gap-3 mb-1.5">
+                  <div class="flex items-center gap-2.5">
+                    <span class="material-symbols-outlined text-on-surface-variant text-[22px]"
+                      >campaign</span
+                    >
+                    <span class="text-sm font-semibold text-on-surface tracking-tight">
+                      Quiero organizar eventos
+                    </span>
+                  </div>
+                  <div
+                    class="w-5 h-5 rounded-full border border-marfil-input-border text-transparent flex items-center justify-center shrink-0 transition-colors"
+                    id="check-icon-organizer"
+                  >
+                    <span class="material-symbols-outlined text-[14px]">check</span>
+                  </div>
+                </div>
+                <p class="text-xs text-on-surface-variant pl-8 leading-relaxed">
+                  Publicá tus fechas, gestioná múltiples tipos de ticket (General, Platea, VIP) y
+                  acreditá en puerta con QR.
+                </p>
+                <div
+                  class="mt-3 pt-2 pl-8 border-t border-marfil-border/70 flex items-center gap-2 text-xs font-medium text-on-surface-variant"
+                >
+                  <span class="material-symbols-outlined text-[15px] text-velvet">hub</span>
+                  <span>Boletería digital + Borderaux en vivo</span>
+                </div>
+              </label>
+            </div>
+          </fieldset>
+          <!-- Elegant Subtle Divider -->
+          <div class="my-6 border-t border-marfil-border"></div>
+          <!-- Personal Data Form -->
+          <form
+            class="flex flex-col gap-4"
+            onsubmit="event.preventDefault(); emitRegistrationStub();"
+          >
+            <!-- First Name & Last Name -->
+            <div class="grid grid-cols-2 gap-3">
+              <div class="flex flex-col min-w-0">
+                <label
+                  class="text-xs font-semibold text-on-surface mb-1.5 flex items-center gap-1"
+                  for="first_name"
+                >
+                  <span>Nombre</span>
+                  <span class="text-velvet">*</span>
+                </label>
+                <input
+                  class="w-full h-11 px-3.5 bg-marfil-surface/40 text-on-surface text-sm rounded-[12px] border border-marfil-input-border focus:border-velvet focus:ring-1 focus:ring-velvet focus:bg-white transition-all placeholder:text-on-surface-variant/50"
+                  id="first_name"
+                  name="first_name"
+                  placeholder="Lucía"
+                  required=""
+                  type="text"
+                />
+              </div>
+              <div class="flex flex-col min-w-0">
+                <label
+                  class="text-xs font-semibold text-on-surface mb-1.5 flex items-center gap-1"
+                  for="last_name"
+                >
+                  <span>Apellido</span>
+                  <span class="text-velvet">*</span>
+                </label>
+                <input
+                  class="w-full h-11 px-3.5 bg-marfil-surface/40 text-on-surface text-sm rounded-[12px] border border-marfil-input-border focus:border-velvet focus:ring-1 focus:ring-velvet focus:bg-white transition-all placeholder:text-on-surface-variant/50"
+                  id="last_name"
+                  name="last_name"
+                  placeholder="Méndez"
+                  required=""
+                  type="text"
+                />
+              </div>
+            </div>
+            <!-- Email Address -->
+            <div class="flex flex-col">
+              <div class="flex items-center justify-between mb-1.5">
+                <label
+                  class="text-xs font-semibold text-on-surface flex items-center gap-1"
+                  for="email"
+                >
+                  <span>Correo electrónico</span>
+                  <span class="text-velvet">*</span>
+                </label>
+                <span class="text-[11px] text-on-surface-variant">Para envío de entradas</span>
+              </div>
+              <input
+                autocomplete="email"
+                class="w-full h-11 px-3.5 bg-marfil-surface/40 text-on-surface text-sm rounded-[12px] border border-marfil-input-border focus:border-velvet focus:ring-1 focus:ring-velvet focus:bg-white transition-all placeholder:text-on-surface-variant/50"
+                id="email"
+                name="email"
+                placeholder="tu.correo@ejemplo.com.ar"
+                required=""
+                type="email"
+              />
+            </div>
+            <!-- Password Field & Inline Gauge -->
+            <div class="flex flex-col">
+              <div class="flex items-center justify-between mb-1.5">
+                <label
+                  class="text-xs font-semibold text-on-surface flex items-center gap-1"
+                  for="password"
+                >
+                  <span>Contraseña</span>
+                  <span class="text-velvet">*</span>
+                </label>
+                <span class="text-[11px] text-on-surface-variant">Mínimo 8 caract.</span>
+              </div>
+              <div class="relative flex items-center">
+                <input
+                  class="w-full h-11 pl-3.5 pr-11 bg-marfil-surface/40 text-on-surface text-sm rounded-[12px] border border-marfil-input-border focus:border-velvet focus:ring-1 focus:ring-velvet focus:bg-white transition-all placeholder:text-on-surface-variant/50"
+                  id="password"
+                  name="password"
+                  oninput="checkPasswordStrength(this.value)"
+                  placeholder="••••••••••••"
+                  required=""
+                  type="password"
+                />
+                <button
+                  aria-label="Mostrar u ocultar contraseña"
+                  class="absolute right-0 h-11 w-11 flex items-center justify-center text-on-surface-variant hover:text-velvet transition-colors"
+                  onclick="togglePasswordVisibility()"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[19px]" id="eye-icon"
+                    >visibility</span
+                  >
+                </button>
+              </div>
+              <!-- Inline Password Strength Meter -->
+              <div
+                class="mt-2.5 p-2.5 rounded-[12px] bg-marfil-surface/50 border border-marfil-border"
+              >
+                <div class="flex gap-1.5 h-1.5 w-full mb-1.5">
+                  <div
+                    class="flex-1 bg-velvet rounded-full transition-all duration-300"
+                    id="bar-1"
+                  ></div>
+                  <div
+                    class="flex-1 bg-velvet rounded-full transition-all duration-300"
+                    id="bar-2"
+                  ></div>
+                  <div
+                    class="flex-1 bg-velvet rounded-full transition-all duration-300"
+                    id="bar-3"
+                  ></div>
+                  <div
+                    class="flex-1 bg-marfil-border rounded-full transition-all duration-300"
+                    id="bar-4"
+                  ></div>
+                </div>
+                <div class="flex items-center justify-between text-[11px]">
+                  <span class="font-semibold text-velvet" id="strength-label">
+                    Seguridad: Buena
+                  </span>
+                  <span class="text-on-surface-variant"> Mayúscula y número incluidos </span>
+                </div>
+              </div>
+            </div>
+            <!-- Terms & Conditions Checkbox -->
+            <label class="flex items-start gap-2.5 mt-1 cursor-pointer select-none">
+              <input
+                checked=""
+                class="w-4 h-4 mt-0.5 rounded text-velvet focus:ring-velvet focus:ring-offset-0 border-marfil-input-border cursor-pointer accent-velvet"
+                id="terms"
+                name="terms"
+                required=""
+                type="checkbox"
+              />
+              <span class="text-xs text-on-surface-variant leading-snug">
+                Acepto los
+                <a class="text-velvet hover:underline font-semibold" href="#"
+                  >Términos del Boleto</a
+                >
+                y la
+                <a class="text-velvet hover:underline font-semibold" href="#"
+                  >Política de Privacidad</a
+                >
+                de AI Ticket It.
+              </span>
+            </label>
+            <!-- Primary CTA Button (Velvet Pill Button) -->
+            <button
+              class="w-full min-h-[48px] mt-2 py-3 px-6 bg-velvet text-white text-sm font-semibold rounded-full shadow-velvet hover:bg-velvet-dark active:scale-[0.99] transition-all flex items-center justify-center gap-2"
+              type="submit"
+            >
+              <span class="material-symbols-outlined text-[19px]">fact_check</span>
+              <span>Completar Registro y Emitir Pase</span>
+            </button>
+          </form>
+          <!-- Notification Toast -->
+          <div
+            class="hidden mt-4 p-3 rounded-[12px] bg-marfil-surface border border-marfil-border text-on-surface flex items-center gap-2.5 text-xs shadow-velvet-sm"
+            id="registration-toast"
+          >
+            <span class="material-symbols-outlined text-velvet text-[18px]">check_circle</span>
+            <span class="font-medium">¡Comprobante generado con éxito! Verificá tu correo.</span>
+          </div>
+          <!-- Login Link -->
+          <div class="mt-5 pt-4 text-center border-t border-marfil-border/60">
+            <p class="text-xs text-on-surface-variant">
+              ¿Ya tenés cuenta oficial?
+              <a class="text-velvet font-semibold hover:underline ml-1" href="#"> Ingresá acá </a>
+            </p>
+          </div>
+        </div>
+        <!-- Control & Security Guarantee Section -->
+        <div
+          class="mt-5 p-4 rounded-2xl bg-white border border-marfil-border shadow-velvet flex flex-col gap-3"
+        >
+          <div
+            class="flex items-center justify-between gap-2 border-b border-marfil-border/70 pb-2.5"
+          >
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-velvet text-[17px]">verified</span>
+              <span class="text-[11px] font-bold tracking-wider text-on-surface uppercase">
+                Garantía de Control de Acceso
+              </span>
+            </div>
+            <span
+              class="text-[10px] font-semibold text-gold uppercase tracking-wider bg-marfil-surface px-2 py-0.5 rounded-full border border-marfil-border"
+            >
+              Ley 24.240
+            </span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div>
+              <span
+                class="block text-[10px] uppercase tracking-wider text-on-surface-variant font-medium"
+                >Matrícula Nacional</span
+              >
+              <span class="font-semibold text-on-surface text-[11px]">ARG-BUE-99214-A</span>
+            </div>
+            <div class="text-right">
+              <span
+                class="block text-[10px] uppercase tracking-wider text-on-surface-variant font-medium"
+                >Protocolo de Seguridad</span
+              >
+              <span class="font-semibold text-on-surface text-[11px]">SHA-256 Emisor</span>
+            </div>
+          </div>
+          <div
+            class="pt-2 border-t border-marfil-border/60 flex items-center justify-between text-[11px] text-on-surface-variant"
+          >
+            <span>Plataforma Federal de Entradas Directas</span>
+            <span
+              class="inline-block px-2 py-0.5 rounded-md bg-marfil-surface text-on-surface font-semibold text-[10px] tracking-wider uppercase border border-marfil-border"
+            >
+              Buenos Aires
+            </span>
+          </div>
+        </div>
+      </div>
+      <script>
+        function updateRoleSelection(radioInput) {
+          const isBuyer = radioInput.value === "buyer";
+          const cardBuyer = document.getElementById("role-card-buyer");
+          const cardOrganizer = document.getElementById("role-card-organizer");
+          const checkBuyer = document.getElementById("check-icon-buyer");
+          const checkOrganizer = document.getElementById("check-icon-organizer");
+
+          if (isBuyer) {
+            cardBuyer.className =
+              "relative flex flex-col p-4 rounded-[16px] border-2 border-velvet bg-marfil-surface/40 cursor-pointer transition-all duration-200 shadow-velvet-sm";
+            checkBuyer.className =
+              "w-5 h-5 rounded-full bg-velvet text-white flex items-center justify-center shrink-0 shadow-sm";
+            checkBuyer.innerHTML =
+              '<span class="material-symbols-outlined text-[14px] font-bold">check</span>';
+
+            cardOrganizer.className =
+              "relative flex flex-col p-4 rounded-[16px] border border-marfil-border bg-white hover:bg-marfil-surface/30 cursor-pointer transition-all duration-200";
+            checkOrganizer.className =
+              "w-5 h-5 rounded-full border border-marfil-input-border text-transparent flex items-center justify-center shrink-0 transition-colors";
+            checkOrganizer.innerHTML =
+              '<span class="material-symbols-outlined text-[14px]">check</span>';
+          } else {
+            cardOrganizer.className =
+              "relative flex flex-col p-4 rounded-[16px] border-2 border-velvet bg-marfil-surface/40 cursor-pointer transition-all duration-200 shadow-velvet-sm";
+            checkOrganizer.className =
+              "w-5 h-5 rounded-full bg-velvet text-white flex items-center justify-center shrink-0 shadow-sm";
+            checkOrganizer.innerHTML =
+              '<span class="material-symbols-outlined text-[14px] font-bold">check</span>';
+
+            cardBuyer.className =
+              "relative flex flex-col p-4 rounded-[16px] border border-marfil-border bg-white hover:bg-marfil-surface/30 cursor-pointer transition-all duration-200";
+            checkBuyer.className =
+              "w-5 h-5 rounded-full border border-marfil-input-border text-transparent flex items-center justify-center shrink-0 transition-colors";
+            checkBuyer.innerHTML =
+              '<span class="material-symbols-outlined text-[14px]">check</span>';
+          }
+        }
+
+        function togglePasswordVisibility() {
+          const passwordInput = document.getElementById("password");
+          const eyeIcon = document.getElementById("eye-icon");
+          if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            eyeIcon.innerText = "visibility_off";
+          } else {
+            passwordInput.type = "password";
+            eyeIcon.innerText = "visibility";
+          }
+        }
+
+        function checkPasswordStrength(val) {
+          const bar1 = document.getElementById("bar-1");
+          const bar2 = document.getElementById("bar-2");
+          const bar3 = document.getElementById("bar-3");
+          const bar4 = document.getElementById("bar-4");
+          const label = document.getElementById("strength-label");
+
+          const len = val.length;
+          const hasUpper = /[A-Z]/.test(val);
+          const hasNum = /[0-9]/.test(val);
+
+          if (len === 0) {
+            bar1.className = "flex-1 bg-marfil-border rounded-full";
+            bar2.className = "flex-1 bg-marfil-border rounded-full";
+            bar3.className = "flex-1 bg-marfil-border rounded-full";
+            bar4.className = "flex-1 bg-marfil-border rounded-full";
+            label.innerText = "Sin ingresar";
+            label.className = "font-semibold text-on-surface-variant";
+          } else if (len < 6) {
+            bar1.className = "flex-1 bg-amber-600 rounded-full";
+            bar2.className = "flex-1 bg-marfil-border rounded-full";
+            bar3.className = "flex-1 bg-marfil-border rounded-full";
+            bar4.className = "flex-1 bg-marfil-border rounded-full";
+            label.innerText = "Seguridad: Débil";
+            label.className = "font-semibold text-amber-700";
+          } else if (len >= 6 && (!hasUpper || !hasNum)) {
+            bar1.className = "flex-1 bg-amber-500 rounded-full";
+            bar2.className = "flex-1 bg-amber-500 rounded-full";
+            bar3.className = "flex-1 bg-marfil-border rounded-full";
+            bar4.className = "flex-1 bg-marfil-border rounded-full";
+            label.innerText = "Seguridad: Media";
+            label.className = "font-semibold text-gold";
+          } else if (len >= 8 && hasUpper && hasNum) {
+            bar1.className = "flex-1 bg-emerald-600 rounded-full";
+            bar2.className = "flex-1 bg-emerald-600 rounded-full";
+            bar3.className = "flex-1 bg-emerald-600 rounded-full";
+            bar4.className = "flex-1 bg-emerald-600 rounded-full";
+            label.innerText = "Seguridad: Óptima";
+            label.className = "font-semibold text-emerald-700";
+          } else {
+            bar1.className = "flex-1 bg-velvet rounded-full";
+            bar2.className = "flex-1 bg-velvet rounded-full";
+            bar3.className = "flex-1 bg-velvet rounded-full";
+            bar4.className = "flex-1 bg-marfil-border rounded-full";
+            label.innerText = "Seguridad: Buena";
+            label.className = "font-semibold text-velvet";
+          }
+        }
+
+        function emitRegistrationStub() {
+          const toast = document.getElementById("registration-toast");
+          toast.classList.remove("hidden");
+          setTimeout(() => {
+            toast.classList.add("hidden");
+          }, 4000);
+        }
+      </script>
+    </main>
+  </body>
+</html>

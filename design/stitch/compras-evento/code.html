@@ -1,0 +1,707 @@
+<!doctype html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+      name="viewport"
+    />
+    <meta content="mobile_stack" name="shell-type" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:wght@600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-container": "#ffcd76",
+              "error-container": "#ffdad6",
+              "on-tertiary": "#ffffff",
+              error: "#ba1a1a",
+              "on-secondary-container": "#795505",
+              outline: "#897172",
+              "on-error-container": "#93000a",
+              "surface-dim": "#e6d6d9",
+              "surface-container-lowest": "#ffffff",
+              "surface-tint": "#a13c47",
+              "surface-container-low": "#fff0f2",
+              "on-background": "#22191b",
+              "on-surface": "#22191b",
+              background: "#fff8f8",
+              "surface-bright": "#fff8f8",
+              "on-secondary-fixed-variant": "#5f4100",
+              surface: "#fff8f8",
+              "on-error": "#ffffff",
+              "tertiary-container": "#573c00",
+              "on-primary": "#ffffff",
+              "inverse-on-surface": "#fdedef",
+              "primary-container": "#7a1e2c",
+              "surface-container-high": "#f5e4e7",
+              "outline-variant": "#dcc0c0",
+              "surface-container-highest": "#efdfe1",
+              "surface-container": "#fbeaec",
+              "on-primary-fixed": "#40000d",
+              "surface-variant": "#efdfe1",
+              "inverse-primary": "#ffb2b6",
+              primary: "#5b0418",
+              tertiary: "#3b2700",
+              "on-primary-container": "#ff8a93",
+              "tertiary-fixed": "#ffdea9",
+              "on-surface-variant": "#564242",
+              "on-tertiary-fixed-variant": "#5e4100",
+              "secondary-fixed-dim": "#efbf6a",
+              "on-tertiary-fixed": "#271900",
+              "primary-fixed-dim": "#ffb2b6",
+              "secondary-fixed": "#ffdeaa",
+              "tertiary-fixed-dim": "#f3be5b",
+              "on-secondary-fixed": "#271900",
+              "primary-fixed": "#ffdada",
+              "on-primary-fixed-variant": "#822431",
+              secondary: "#7c5808",
+              "on-secondary": "#ffffff",
+              "inverse-surface": "#372e30",
+              "on-tertiary-container": "#d7a545",
+            },
+            borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+            spacing: {
+              gutter: "1.5rem",
+              "gutter-mobile": "1rem",
+              "margin-mobile": "1.25rem",
+              "space-sm": "0.5rem",
+              "space-2xl": "4rem",
+              margin: "2.5rem",
+              "space-lg": "1.5rem",
+              "space-xs": "0.25rem",
+              "space-md": "1rem",
+              "space-xl": "2.5rem",
+            },
+            fontFamily: {
+              "body-md": ["Inter"],
+              "label-section": ["Inter"],
+              "body-sm": ["Inter"],
+              "title-lg": ["Playfair Display"],
+              "label-interactive": ["Inter"],
+              "title-md": ["Inter"],
+              "headline-lg": ["Playfair Display"],
+              "headline-sm": ["Playfair Display"],
+              "headline-md": ["Playfair Display"],
+              display: ["Playfair Display"],
+              "display-mobile": ["Playfair Display"],
+              "body-lg": ["Inter"],
+              "headline-lg-mobile": ["Playfair Display"],
+            },
+            fontSize: {
+              "body-md": ["14px", { lineHeight: "22px", fontWeight: "400" }],
+              "label-section": [
+                "11px",
+                { lineHeight: "16px", letterSpacing: "0.12em", fontWeight: "600" },
+              ],
+              "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }],
+              "title-lg": ["20px", { lineHeight: "28px", fontWeight: "700" }],
+              "label-interactive": [
+                "13px",
+                { lineHeight: "18px", letterSpacing: "0.02em", fontWeight: "500" },
+              ],
+              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+              "headline-lg": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+              "headline-sm": ["22px", { lineHeight: "30px", fontWeight: "700" }],
+              "headline-md": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+              display: ["48px", { lineHeight: "56px", fontWeight: "700" }],
+              "display-mobile": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+              "body-lg": ["16px", { lineHeight: "26px", fontWeight: "400" }],
+              "headline-lg-mobile": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @layer base {
+        html,
+        body {
+          width: 100vw;
+          min-height: 100vh;
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          overscroll-behavior-y: none;
+        }
+        .pb-safe {
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .pt-safe {
+          padding-top: env(safe-area-inset-top, 0px);
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+  </head>
+  <body class="bg-background font-body-md text-on-surface antialiased flex flex-col min-h-screen">
+    <header
+      class="fixed top-0 w-full z-50 bg-surface/85 backdrop-blur-xl shadow-[0_1px_12px_rgba(34,25,27,0.06)] pt-safe"
+    >
+      <div class="h-16 px-gutter-mobile flex items-center justify-between">
+        <button
+          aria-label="Volver a la pantalla anterior"
+          class="flex items-center gap-1 min-h-[44px] px-2 -ml-2 text-primary hover:text-primary-container transition-colors"
+          onclick="history.back()"
+        >
+          <span class="material-symbols-outlined text-[20px]">arrow_back_ios_new</span
+          ><span class="font-label-interactive text-label-interactive">Volver</span>
+        </button>
+        <h1 class="font-title-lg text-title-md text-on-surface text-center truncate px-2">
+          Liquidacion Bordereau
+        </h1>
+        <div class="flex items-center gap-space-xs">
+          <span
+            class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-section text-[10px] uppercase font-bold tracking-wider"
+            >Activo</span
+          >
+          <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+            <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="flex-1 flex flex-col relative w-full pt-16 bg-surface">
+      <div class="flex flex-col w-full pb-10">
+        <!-- Cabecera de Función (Playbill / Bordereaux Hero Card) -->
+        <section class="px-margin-mobile pt-4 pb-2">
+          <div
+            class="relative overflow-hidden rounded-xl bg-surface-container-lowest shadow-md p-space-md"
+          >
+            <!-- Glow decorativo superior que evoca luminarias de teatro -->
+            <div
+              class="absolute -top-10 -right-10 w-36 h-36 rounded-full bg-secondary-container/20 blur-2xl pointer-events-none"
+            ></div>
+            <div
+              class="absolute -bottom-8 -left-8 w-28 h-28 rounded-full bg-primary-container/10 blur-xl pointer-events-none"
+            ></div>
+            <div class="flex items-center justify-between gap-2 mb-space-xs">
+              <div
+                class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container"
+              >
+                <span
+                  class="w-1.5 h-1.5 rounded-full bg-on-secondary-container animate-pulse"
+                ></span>
+                <span class="font-label-section text-label-section uppercase tracking-wider"
+                  >Arqueo en Vivo</span
+                >
+              </div>
+              <div
+                class="flex items-center gap-1 text-outline font-label-section text-label-section"
+              >
+                <span class="material-symbols-outlined text-[16px] text-secondary"
+                  >theater_comedy</span
+                >
+                <span>BORDEREAUX Nº 1988</span>
+              </div>
+            </div>
+            <h2
+              class="font-headline-lg-mobile text-headline-lg-mobile text-primary tracking-tight mt-1 mb-1"
+            >
+              Divididos: 35 Años
+            </h2>
+            <p class="font-title-md text-title-md text-on-surface font-semibold mb-2">
+              Rock Nacional en Concierto
+            </p>
+            <div
+              class="flex flex-wrap items-center gap-y-1 gap-x-3 text-on-surface-variant font-body-sm text-body-sm pb-space-sm"
+            >
+              <span class="inline-flex items-center gap-1">
+                <span class="material-symbols-outlined text-[16px] text-primary"
+                  >calendar_today</span
+                >
+                Sáb 22 nov · 21:00 hs
+              </span>
+              <span class="inline-flex items-center gap-1">
+                <span class="material-symbols-outlined text-[16px] text-primary">stadium</span>
+                Estadio Obras Sanitarias
+              </span>
+            </div>
+            <!-- Barra de progreso de emisión general -->
+            <div
+              class="mt-2 pt-2 border-t-0 bg-surface-container-low rounded-lg p-2.5 flex items-center justify-between"
+            >
+              <div class="flex items-center gap-2">
+                <div
+                  class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary"
+                >
+                  <span class="material-symbols-outlined text-[18px]">confirmation_number</span>
+                </div>
+                <div>
+                  <p
+                    class="font-label-section text-label-section text-on-surface-variant uppercase"
+                  >
+                    Tickets Emitidos
+                  </p>
+                  <p class="font-title-md text-title-md text-on-surface font-bold">
+                    840
+                    <span class="font-body-sm text-body-sm text-outline font-normal"
+                      >/ 900 cupo total</span
+                    >
+                  </p>
+                </div>
+              </div>
+              <span
+                class="px-2 py-1 rounded bg-secondary-container/60 text-on-secondary-container font-label-section text-label-section font-bold"
+              >
+                93.3% OCUPADO
+              </span>
+            </div>
+          </div>
+        </section>
+        <!-- Métricas de Liquidación (Bento Split) -->
+        <section class="px-margin-mobile py-2">
+          <div class="grid grid-cols-2 gap-space-sm">
+            <!-- Recaudación Bruta -->
+            <div
+              class="relative overflow-hidden rounded-xl bg-surface-container-lowest p-space-md shadow-sm"
+            >
+              <div class="flex items-center justify-between mb-1">
+                <span
+                  class="font-label-section text-label-section text-secondary uppercase font-bold tracking-wider"
+                  >Recaudación Bruta</span
+                >
+                <span class="material-symbols-outlined text-[18px] text-secondary"
+                  >monetization_on</span
+                >
+              </div>
+              <p class="font-title-lg text-title-lg text-primary tracking-tight font-bold">
+                $58.420.000<span class="text-body-sm font-normal text-outline">,00</span>
+              </p>
+              <div
+                class="mt-2 flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm"
+              >
+                <span class="material-symbols-outlined text-[14px] text-secondary font-bold"
+                  >verified</span
+                >
+                <span class="text-[11px] leading-tight">100% cobrado y auditado</span>
+              </div>
+            </div>
+            <!-- Devoluciones en Curso -->
+            <div
+              class="relative overflow-hidden rounded-xl bg-surface-container-high p-space-md shadow-sm"
+            >
+              <div class="flex items-center justify-between mb-1">
+                <span
+                  class="font-label-section text-label-section text-error uppercase font-bold tracking-wider"
+                  >Devoluciones</span
+                >
+                <span class="material-symbols-outlined text-[18px] text-error"
+                  >assignment_return</span
+                >
+              </div>
+              <p class="font-title-lg text-title-lg text-error tracking-tight font-bold">
+                $60.000<span class="text-body-sm font-normal text-error/70">,00</span>
+              </p>
+              <div
+                class="mt-2 flex items-center gap-1 text-on-error-container font-body-sm text-body-sm"
+              >
+                <span class="material-symbols-outlined text-[14px] text-error"
+                  >pending_actions</span
+                >
+                <span class="text-[11px] leading-tight font-medium text-error"
+                  >2 casos pendientes</span
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Desglose por Ubicación (Boleto Theatrical Architecture) -->
+        <section class="px-margin-mobile pt-3 pb-2">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-title-lg text-title-md text-on-surface">Desglose de Localidades</h3>
+            <span
+              class="font-label-section text-label-section text-secondary uppercase tracking-wider"
+              >2 Sectores Habilitados</span
+            >
+          </div>
+          <div class="space-y-3">
+            <!-- Tarjeta Boleto 1: Campo General -->
+            <div
+              class="relative bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-row"
+            >
+              <!-- Notches perforados visuales -->
+              <div
+                class="absolute right-[92px] -top-2 w-4 h-4 rounded-full bg-background z-10"
+              ></div>
+              <div
+                class="absolute right-[92px] -bottom-2 w-4 h-4 rounded-full bg-background z-10"
+              ></div>
+              <div
+                class="absolute right-[99px] top-3 bottom-3 border-r-2 border-dashed border-outline-variant"
+              ></div>
+              <!-- Lado Izquierdo: Datos principales -->
+              <div class="flex-1 p-space-md pr-4">
+                <div class="flex items-center justify-between gap-1 mb-1">
+                  <span
+                    class="font-label-section text-label-section text-primary uppercase font-bold tracking-wider"
+                    >Cat. A · Acceso Puerta 1</span
+                  >
+                  <span
+                    class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-section text-[10px] font-bold uppercase"
+                  >
+                    Agotado
+                  </span>
+                </div>
+                <h4 class="font-title-md text-title-md text-on-surface mb-1">Campo General</h4>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                  Valor unitario: <span class="font-semibold text-on-surface">$42.000,00</span>
+                </p>
+                <div class="mt-2 pt-2 border-t-0 flex items-center justify-between">
+                  <span class="font-body-sm text-body-sm text-outline">Total Lote</span>
+                  <span class="font-title-md text-title-md text-primary font-bold"
+                    >$33.600.000,00</span
+                  >
+                </div>
+              </div>
+              <!-- Lado Derecho: Stub del Boleto -->
+              <div
+                class="w-[96px] bg-surface-container-low p-2.5 flex flex-col justify-between items-center text-center"
+              >
+                <span class="font-label-section text-[10px] text-outline uppercase font-semibold"
+                  >Vendidas</span
+                >
+                <div class="my-auto">
+                  <span class="font-headline-sm text-headline-sm text-primary block leading-none"
+                    >800</span
+                  >
+                  <span class="font-body-sm text-[11px] text-on-surface-variant">de 800</span>
+                </div>
+                <span
+                  class="font-label-section text-[9px] text-secondary font-bold uppercase tracking-tighter"
+                  >0 Libres</span
+                >
+              </div>
+            </div>
+            <!-- Tarjeta Boleto 2: Platea Norte Baja -->
+            <div
+              class="relative bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-row"
+            >
+              <!-- Notches perforados visuales -->
+              <div
+                class="absolute right-[92px] -top-2 w-4 h-4 rounded-full bg-background z-10"
+              ></div>
+              <div
+                class="absolute right-[92px] -bottom-2 w-4 h-4 rounded-full bg-background z-10"
+              ></div>
+              <div
+                class="absolute right-[99px] top-3 bottom-3 border-r-2 border-dashed border-outline-variant"
+              ></div>
+              <!-- Lado Izquierdo: Datos principales -->
+              <div class="flex-1 p-space-md pr-4">
+                <div class="flex items-center justify-between gap-1 mb-1">
+                  <span
+                    class="font-label-section text-label-section text-secondary uppercase font-bold tracking-wider"
+                    >Cat. B · Butacas Numeradas</span
+                  >
+                  <span
+                    class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-section text-[10px] font-bold uppercase"
+                  >
+                    18 Libres
+                  </span>
+                </div>
+                <h4 class="font-title-md text-title-md text-on-surface mb-1">Platea Norte Baja</h4>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                  Valor unitario: <span class="font-semibold text-on-surface">$65.000,00</span>
+                </p>
+                <div class="mt-2 pt-2 border-t-0 flex items-center justify-between">
+                  <span class="font-body-sm text-body-sm text-outline">Total Lote</span>
+                  <span class="font-title-md text-title-md text-primary font-bold"
+                    >$24.820.000,00</span
+                  >
+                </div>
+              </div>
+              <!-- Lado Derecho: Stub del Boleto -->
+              <div
+                class="w-[96px] bg-secondary-container/20 p-2.5 flex flex-col justify-between items-center text-center"
+              >
+                <span class="font-label-section text-[10px] text-outline uppercase font-semibold"
+                  >Vendidas</span
+                >
+                <div class="my-auto">
+                  <span class="font-headline-sm text-headline-sm text-secondary block leading-none"
+                    >82</span
+                  >
+                  <span class="font-body-sm text-[11px] text-on-surface-variant">de 100</span>
+                </div>
+                <span
+                  class="font-label-section text-[9px] text-on-secondary-container font-bold uppercase tracking-tighter"
+                  >18 Disp.</span
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Libro Diario de Entradas -->
+        <section class="px-margin-mobile pt-3 pb-4">
+          <div class="flex items-center justify-between mb-2">
+            <div>
+              <h3 class="font-title-lg text-title-md text-on-surface">Libro Diario de Entradas</h3>
+              <p class="font-body-sm text-body-sm text-outline">Registro nominal y transaccional</p>
+            </div>
+            <button
+              aria-label="Descargar reporte"
+              class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary"
+            >
+              <span class="material-symbols-outlined text-[18px]">download</span>
+            </button>
+          </div>
+          <!-- Filtros de Estado en Pills -->
+          <div class="flex gap-2 overflow-x-auto pb-2 mb-2 no-scrollbar">
+            <button
+              class="px-3.5 py-1.5 rounded-full bg-primary text-on-primary font-label-interactive text-label-interactive whitespace-nowrap shadow-sm"
+            >
+              Todas (840)
+            </button>
+            <button
+              class="px-3.5 py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high font-label-interactive text-label-interactive whitespace-nowrap"
+            >
+              Confirmadas (835)
+            </button>
+            <button
+              class="px-3.5 py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high font-label-interactive text-label-interactive whitespace-nowrap"
+            >
+              Pendientes (3)
+            </button>
+          </div>
+          <!-- Lista de Fichas de Compradores -->
+          <div class="space-y-3">
+            <!-- Comprador 1: Mariano Gómez -->
+            <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <div class="flex items-center gap-2.5">
+                  <div
+                    class="w-9 h-9 rounded-full bg-secondary-container/40 text-on-secondary-container flex items-center justify-center font-title-md font-bold"
+                  >
+                    MG
+                  </div>
+                  <div>
+                    <p class="font-title-md text-title-md text-on-surface font-semibold">
+                      Mariano Gómez
+                    </p>
+                    <p class="font-body-sm text-body-sm text-outline">DNI 34.209.811 · CABA</p>
+                  </div>
+                </div>
+                <!-- Badge Verde Esmeralda Editorial -->
+                <span
+                  class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#e6f4ea] text-[#137333] font-label-section text-[11px] font-bold"
+                >
+                  <span class="material-symbols-outlined text-[14px]">check_circle</span>
+                  Confirmada
+                </span>
+              </div>
+              <div
+                class="bg-surface-container-low rounded-lg p-2.5 mb-3 flex items-center justify-between"
+              >
+                <div>
+                  <p class="font-body-sm text-body-sm font-semibold text-on-surface">
+                    Campo General × 2
+                  </p>
+                  <p class="font-label-section text-[10px] text-outline">Cod: #DIS-882190</p>
+                </div>
+                <span class="font-title-md text-title-md text-primary font-bold">$84.000,00</span>
+              </div>
+              <div class="flex items-center justify-between gap-2">
+                <button
+                  class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-primary font-label-interactive text-label-interactive transition-colors"
+                >
+                  <span class="material-symbols-outlined text-[16px]">chat_bubble_outline</span>
+                  <span>Ver chat de compra (2)</span>
+                </button>
+                <span class="font-body-sm text-body-sm text-outline">Hoy, 14:22 hs</span>
+              </div>
+            </div>
+            <!-- Comprador 2: Laura Benítez -->
+            <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <div class="flex items-center gap-2.5">
+                  <div
+                    class="w-9 h-9 rounded-full bg-error-container text-on-error-container flex items-center justify-center font-title-md font-bold"
+                  >
+                    LB
+                  </div>
+                  <div>
+                    <p class="font-title-md text-title-md text-on-surface font-semibold">
+                      Laura Benítez
+                    </p>
+                    <p class="font-body-sm text-body-sm text-outline">DNI 38.990.114 · Rosario</p>
+                  </div>
+                </div>
+                <!-- Badge Carmesí Terciopelo -->
+                <span
+                  class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-error-container text-on-error-container font-label-section text-[10px] font-bold leading-tight text-right"
+                >
+                  <span class="material-symbols-outlined text-[13px]">cancel</span>
+                  Reembolso pendiente
+                </span>
+              </div>
+              <div
+                class="bg-surface-container-low rounded-lg p-2.5 mb-3 flex items-center justify-between"
+              >
+                <div>
+                  <p class="font-body-sm text-body-sm font-semibold text-on-surface">
+                    Platea Norte Baja × 1
+                  </p>
+                  <p class="font-label-section text-[10px] text-outline">
+                    Fila 4 · Butaca 12 · Solicitud #RM-402
+                  </p>
+                </div>
+                <span class="font-title-md text-title-md text-error font-bold">$30.000,00</span>
+              </div>
+              <div class="flex items-center justify-between gap-2">
+                <button
+                  class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary-container text-on-primary hover:bg-primary font-label-interactive text-label-interactive shadow-sm transition-colors"
+                  id="open-refund-btn"
+                >
+                  <span class="material-symbols-outlined text-[16px]">currency_exchange</span>
+                  <span>Reembolsar ahora</span>
+                </button>
+                <span class="font-body-sm text-body-sm text-error font-medium">Urgente</span>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Modal / Panel de Confirmación de Reembolso (Teatral Backdrop) -->
+        <div
+          class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity duration-200"
+          id="refund-modal"
+        >
+          <div
+            class="w-full max-w-md bg-surface rounded-t-2xl sm:rounded-2xl shadow-2xl p-space-lg flex flex-col"
+          >
+            <!-- Indicador arrastre móvil -->
+            <div class="w-10 h-1 bg-outline-variant rounded-full mx-auto mb-4 sm:hidden"></div>
+            <div
+              class="w-12 h-12 rounded-full bg-error-container text-on-error-container flex items-center justify-center mx-auto mb-3"
+            >
+              <span class="material-symbols-outlined text-[28px]">payments</span>
+            </div>
+            <h3 class="font-headline-sm text-headline-sm text-center text-primary mb-1">
+              Confirmar Reembolso
+            </h3>
+            <p class="font-body-md text-body-md text-center text-on-surface-variant mb-4">
+              ¿Desea autorizar la restitución inmediata de fondos para esta localidad?
+            </p>
+            <!-- Resumen de transacción en tarjeta Marfil -->
+            <div class="bg-surface-container-low rounded-xl p-3.5 mb-5 space-y-2">
+              <div class="flex justify-between items-center text-body-sm font-body-sm">
+                <span class="text-outline">Compradora titular:</span>
+                <span class="font-semibold text-on-surface">Laura Benítez</span>
+              </div>
+              <div class="flex justify-between items-center text-body-sm font-body-sm">
+                <span class="text-outline">Documento:</span>
+                <span class="text-on-surface">DNI 38.990.114</span>
+              </div>
+              <div class="flex justify-between items-center text-body-sm font-body-sm">
+                <span class="text-outline">Ubicación a liberar:</span>
+                <span class="text-on-surface">Platea Norte Baja (Fila 4)</span>
+              </div>
+              <div class="pt-2 border-t-0 flex justify-between items-center font-title-md">
+                <span class="text-on-surface font-bold">Monto a reintegrar:</span>
+                <span class="text-error font-bold text-title-lg">$30.000,00</span>
+              </div>
+            </div>
+            <!-- Acciones de Decisión -->
+            <div class="flex flex-col gap-2">
+              <button
+                class="w-full py-3 rounded-full bg-primary-container text-on-primary hover:bg-primary font-label-interactive text-label-interactive font-semibold shadow-md flex items-center justify-center gap-2 transition-colors"
+                id="confirm-refund-action"
+              >
+                <span class="material-symbols-outlined text-[18px]">verified</span>
+                Confirmar Reembolso
+              </button>
+              <button
+                class="w-full py-2.5 rounded-full bg-transparent hover:bg-surface-container text-on-surface font-label-interactive text-label-interactive transition-colors"
+                id="close-refund-btn"
+              >
+                Volver atrás
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Toast de Notificación Exitoso -->
+        <div
+          class="fixed bottom-6 left-4 right-4 max-w-sm mx-auto z-50 bg-inverse-surface text-inverse-on-surface px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 hidden transition-all"
+          id="toast-success"
+        >
+          <span class="material-symbols-outlined text-[#81c995] text-[22px]">check_circle</span>
+          <div class="flex-1">
+            <p class="font-body-sm text-body-sm font-semibold">Reembolso ejecutado con éxito</p>
+            <p class="font-label-section text-[11px] text-surface-variant">
+              La butaca ha vuelto al stock disponible.
+            </p>
+          </div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const modal = document.getElementById("refund-modal");
+          const openBtn = document.getElementById("open-refund-btn");
+          const closeBtn = document.getElementById("close-refund-btn");
+          const confirmBtn = document.getElementById("confirm-refund-action");
+          const toast = document.getElementById("toast-success");
+
+          function openModal() {
+            modal.classList.remove("hidden");
+          }
+
+          function closeModal() {
+            modal.classList.add("hidden");
+          }
+
+          if (openBtn) openBtn.addEventListener("click", openModal);
+          if (closeBtn) closeBtn.addEventListener("click", closeModal);
+
+          if (modal) {
+            modal.addEventListener("click", function (e) {
+              if (e.target === modal) closeModal();
+            });
+          }
+
+          if (confirmBtn) {
+            confirmBtn.addEventListener("click", function () {
+              closeModal();
+              if (toast) {
+                toast.classList.remove("hidden");
+                setTimeout(function () {
+                  toast.classList.add("hidden");
+                }, 3500);
+              }
+            });
+          }
+        })();
+      </script>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,865 @@
+<!doctype html>
+
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+      name="viewport"
+    />
+    <meta content="mobile_blank" name="shell-type" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @layer base {
+        html,
+        body {
+          width: 100vw;
+          margin: 0;
+          padding: 0;
+          background-color: #0f0b0d;
+        }
+        body {
+          overscroll-behavior: none;
+        }
+        .pb-safe {
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .pt-safe {
+          padding-top: env(safe-area-inset-top, 0px);
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              velvet: {
+                black: "#0f0b0d",
+                dark: "#1d1417",
+                elevated: "#2a1a1f",
+                border: "#3a2a2e",
+                crimson: "#c8102e",
+                accent: "#ff4757",
+                gold: "#d4af37",
+                stub: "#b3122c",
+              },
+              cream: {
+                DEFAULT: "#f5efe6",
+                secondary: "#d8ccc0",
+                muted: "#a8998f",
+              },
+            },
+            fontFamily: {
+              display: ["Playfair Display", "serif"],
+              sans: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              ticket: "18px",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-velvet-black text-cream font-sans min-h-screen pt-safe pb-safe selection:bg-velvet-crimson selection:text-white"
+  >
+    <main class="flex flex-col relative w-full bg-velvet-black min-h-screen">
+      <div class="flex flex-col w-full text-cream">
+        <!-- Skip link -->
+        <a
+          class="sr-only focus:not-sr-only focus:p-2 focus:bg-velvet-crimson focus:text-white focus:z-50 focus:rounded font-sans text-xs"
+          href="#eventos-destacados"
+        >
+          Saltar a eventos destacados
+        </a>
+        <!-- App Header / Top Bar (Velvet Curtain - Modo Platea) -->
+        <header
+          class="w-full bg-[#160f12]/95 backdrop-blur border-b border-velvet-border px-4 py-3 flex items-center justify-between sticky top-0 z-40"
+        >
+          <div class="flex items-center gap-3">
+            <img
+              alt="AI Ticket It Logo"
+              class="h-8 w-auto object-contain brightness-110 drop-shadow"
+              src="https://lh3.googleusercontent.com/aida/ALJJyrAHdFExftQpnSuMjc6CR9Jq62WPyA7GTjk3to8YedLlCSp-HBe4gbBsAyFNWgtWuP3S7t1ZkrzorsknV9EZVE-M1UUbQVzdV2G6k4J8a1_m5FClK5l42kh-jETuN1_UVIzYK3DneHqLDOKHA04X7MQRJ2ywA7bQQP0KT75STdLmXCG4NI7sLTHEeCqbmyM0QZp_KAdo9AwKae67Wsa5kI8EGeXsk6XTQzmAa_3vOVCK"
+            />
+            <span
+              class="font-sans text-[11px] tracking-[0.2em] font-semibold text-velvet-gold uppercase hidden sm:inline-block"
+            >
+              ✦ BOLETERÍA CENTRAL
+            </span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button
+              class="px-5 py-2 rounded-full bg-velvet-crimson hover:bg-[#e01435] text-white font-sans text-xs font-semibold shadow-lg shadow-velvet-crimson/20 transition-all focus:outline-none focus:ring-2 focus:ring-cream flex items-center gap-1.5 active:scale-95"
+              type="button"
+            >
+              <span class="material-symbols-outlined text-[16px]">login</span>
+              <span>Ingresar</span>
+            </button>
+          </div>
+        </header>
+        <!-- Hero Section: Modern Ticket Shape with Velvet Red Stub -->
+        <section class="px-4 py-6 w-full flex flex-col items-center">
+          <div
+            class="w-full max-w-xl bg-velvet-dark border border-velvet-border rounded-[18px] shadow-2xl relative overflow-hidden flex flex-col md:flex-row"
+          >
+            <!-- Semicircular notches at the ticket division -->
+            <div
+              class="hidden md:block absolute right-[136px] -top-3 w-6 h-6 rounded-full bg-velvet-black border-b border-velvet-border z-20"
+            ></div>
+            <div
+              class="hidden md:block absolute right-[136px] -bottom-3 w-6 h-6 rounded-full bg-velvet-black border-t border-velvet-border z-20"
+            ></div>
+            <!-- Main Ticket Body -->
+            <div class="p-6 md:p-7 flex-1 flex flex-col justify-between gap-5 relative">
+              <!-- Header Tagline -->
+              <div
+                class="flex items-center justify-between gap-2 border-b border-velvet-border/80 pb-3"
+              >
+                <span
+                  class="inline-flex items-center gap-1.5 text-[11px] font-semibold tracking-wider text-velvet-gold uppercase"
+                >
+                  ✦ TUS ENTRADAS, SIN FILAS
+                </span>
+                <span class="text-[11px] tracking-widest text-cream-muted uppercase font-medium">
+                  SERIE NOCTURNA 2026
+                </span>
+              </div>
+              <div class="flex flex-col gap-2.5">
+                <div class="flex items-center gap-2">
+                  <span
+                    class="text-[11px] font-semibold tracking-[0.18em] text-velvet-gold uppercase"
+                  >
+                    ✦ CALLE CORRIENTES &amp; FEDERAL
+                  </span>
+                </div>
+                <h1
+                  class="font-display font-bold text-[30px] md:text-[34px] text-cream leading-[1.18] tracking-tight"
+                >
+                  La emoción de cada
+                  <em class="italic text-velvet-accent font-normal">espectáculo</em>, reservada en
+                  segundos.
+                </h1>
+                <p class="font-sans text-sm text-cream-secondary leading-relaxed pt-1">
+                  Accedé a recitales, teatro independiente, festivales y clásicos de culto con
+                  entradas digitales con código de seguridad antifraude.
+                </p>
+              </div>
+              <!-- Action CTAs -->
+              <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                <a
+                  class="px-6 py-3 rounded-full bg-velvet-crimson hover:bg-[#db1334] text-white font-sans text-sm font-semibold text-center shadow-lg shadow-velvet-crimson/25 transition-all focus:outline-none focus:ring-2 focus:ring-cream flex items-center justify-center gap-2 active:scale-95"
+                  href="#eventos-destacados"
+                >
+                  <span class="material-symbols-outlined text-[18px]">confirmation_number</span>
+                  Explorar Cartelera
+                </a>
+                <button
+                  class="px-5 py-3 rounded-full bg-velvet-elevated hover:bg-[#342228] text-cream border border-velvet-border font-sans text-sm font-medium text-center transition-all flex items-center justify-center gap-2 active:scale-95"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[18px] text-velvet-gold"
+                    >storefront</span
+                  >
+                  Crear Evento
+                </button>
+              </div>
+              <!-- Footnote Info -->
+              <div
+                class="pt-3 border-t border-velvet-border/80 flex items-center justify-between text-[11px] text-cream-muted"
+              >
+                <span class="tracking-wide">ADMITE UNO · Nº 000001</span>
+                <span class="text-velvet-gold font-medium">VÁLIDO EN TODO EL PAÍS</span>
+              </div>
+            </div>
+            <!-- Vertical Dashed Line Divider (md+) -->
+            <div
+              class="hidden md:block w-0 border-r border-dashed border-velvet-border/90 relative z-10"
+            ></div>
+            <!-- Horizontal Dashed for mobile -->
+            <div class="block md:hidden border-t border-dashed border-velvet-border/90 relative">
+              <div
+                class="absolute -left-3 -top-3 w-6 h-6 rounded-full bg-velvet-black border-r border-velvet-border z-20"
+              ></div>
+              <div
+                class="absolute -right-3 -top-3 w-6 h-6 rounded-full bg-velvet-black border-l border-velvet-border z-20"
+              ></div>
+            </div>
+            <!-- Narrow Ticket Stub on Right (Velvet Red Accent) -->
+            <div
+              class="w-full md:w-36 bg-velvet-stub p-4 md:py-6 flex md:flex-col items-center justify-between text-white text-center relative"
+            >
+              <div class="flex items-center md:flex-col gap-1.5 md:gap-2">
+                <span class="material-symbols-outlined text-white text-xl">theater_comedy</span>
+                <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-white/90"
+                  >PLATEA VIP</span
+                >
+              </div>
+              <div class="my-auto py-2 flex md:flex-col items-center gap-1">
+                <span class="text-[9px] tracking-widest text-white/70 uppercase"
+                  >CÓDIGO DIGITAL</span
+                >
+                <span
+                  class="font-mono text-xs tracking-widest bg-black/30 px-2 py-0.5 rounded text-white font-semibold"
+                  >#774-PLATEA</span
+                >
+              </div>
+              <div
+                class="flex items-center gap-1 text-[10px] tracking-wider font-semibold text-white/90"
+              >
+                <span class="material-symbols-outlined text-sm">verified</span>
+                <span>OFICIAL</span>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- 4 Stat Cards: Dark Velvet Cards -->
+        <section class="px-4 py-2 w-full">
+          <div class="grid grid-cols-2 gap-3 max-w-xl mx-auto">
+            <!-- Stat 1 -->
+            <div
+              class="bg-velvet-dark border border-velvet-border p-4 rounded-xl flex flex-col justify-between shadow-md relative group hover:border-velvet-crimson/50 transition-colors"
+            >
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-semibold tracking-wider text-velvet-gold uppercase"
+                  >✦ ACTIVOS</span
+                >
+                <span class="material-symbols-outlined text-velvet-accent text-lg"
+                  >theater_comedy</span
+                >
+              </div>
+              <div class="mt-3">
+                <span class="font-display text-2xl md:text-3xl text-cream font-bold">1.420+</span>
+                <p class="text-xs text-cream-muted mt-0.5">En 24 provincias</p>
+              </div>
+            </div>
+            <!-- Stat 2 -->
+            <div
+              class="bg-velvet-dark border border-velvet-border p-4 rounded-xl flex flex-col justify-between shadow-md relative group hover:border-velvet-crimson/50 transition-colors"
+            >
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-semibold tracking-wider text-velvet-gold uppercase"
+                  >✦ BUTACAS</span
+                >
+                <span class="material-symbols-outlined text-velvet-accent text-lg"
+                  >local_activity</span
+                >
+              </div>
+              <div class="mt-3">
+                <span class="font-display text-2xl md:text-3xl text-cream font-bold">850K</span>
+                <p class="text-xs text-cream-muted mt-0.5">Cero reventa fraudulenta</p>
+              </div>
+            </div>
+            <!-- Stat 3 -->
+            <div
+              class="bg-velvet-dark border border-velvet-border p-4 rounded-xl flex flex-col justify-between shadow-md relative group hover:border-velvet-crimson/50 transition-colors"
+            >
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-semibold tracking-wider text-velvet-gold uppercase"
+                  >✦ SALAS</span
+                >
+                <span class="material-symbols-outlined text-velvet-accent text-lg">handshake</span>
+              </div>
+              <div class="mt-3">
+                <span class="font-display text-2xl md:text-3xl text-cream font-bold">380+</span>
+                <p class="text-xs text-cream-muted mt-0.5">Salas y festivales</p>
+              </div>
+            </div>
+            <!-- Stat 4 -->
+            <div
+              class="bg-velvet-dark border border-velvet-border p-4 rounded-xl flex flex-col justify-between shadow-md relative group hover:border-velvet-crimson/50 transition-colors"
+            >
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-semibold tracking-wider text-velvet-gold uppercase"
+                  >✦ RATING</span
+                >
+                <span
+                  class="material-symbols-outlined text-velvet-gold text-lg"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >star</span
+                >
+              </div>
+              <div class="mt-3">
+                <span class="font-display text-2xl md:text-3xl text-cream font-bold">4.9 ★</span>
+                <p class="text-xs text-cream-muted mt-0.5">Reseñas de asistentes</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Carousel / List of Upcoming Events -->
+        <section
+          class="px-4 py-6 w-full flex flex-col gap-4 max-w-xl mx-auto"
+          id="eventos-destacados"
+        >
+          <div class="flex items-end justify-between">
+            <div>
+              <span class="text-[11px] font-semibold tracking-[0.16em] text-velvet-gold uppercase"
+                >✦ CARTELERA PRINCIPAL</span
+              >
+              <h2 class="font-display text-2xl text-cream font-bold mt-0.5">
+                Próximos Estrenos &amp; Conciertos
+              </h2>
+            </div>
+            <span
+              class="text-xs text-cream-muted hover:text-velvet-gold transition-colors underline cursor-pointer"
+              >Ver todos</span
+            >
+          </div>
+          <!-- Event 1 Card -->
+          <article
+            class="bg-velvet-dark border border-velvet-border rounded-[18px] overflow-hidden shadow-xl flex flex-col group hover:border-velvet-border/80 transition-all"
+          >
+            <div class="relative w-full h-48 bg-velvet-elevated overflow-hidden">
+              <img
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                data-alt="Atmospheric dramatic tango jazz quintet performing on a dim vintage theatre stage in Buenos Aires under warm amber spotlights, moody shadows, rich sepia and espresso tones"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbbmbq7WvuCl92BGGDoJVfe3MTIFcy4LyYblvSaVQXQELvNgDFKd9WuJGhdlocfAd9tICRXoNSf80SYsGrlEVl0RGbhkqFIRvuopkvRuoz92vdiBRyXZ7JligYkOmdzQWSbHT8J_Ksnd2ZVTcSw0vXOD1H5NBdWyaYtvg5S6M1iqMD7W11P8DkQRUYqVQxo3uP9-rPZL548ZB8gH8Khrdvclkv2DI__wdZzjzTPz8"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-velvet-dark via-transparent to-black/30"
+              ></div>
+              <div
+                class="absolute top-3 left-3 bg-velvet-crimson text-white px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide uppercase shadow"
+              >
+                Últimas Ubicaciones
+              </div>
+              <div
+                class="absolute bottom-3 right-3 bg-velvet-dark/90 backdrop-blur border border-velvet-border text-cream px-3 py-1 rounded-full text-xs font-medium"
+              >
+                Teatro Gran Rex
+              </div>
+            </div>
+            <div class="p-5 flex flex-col gap-2.5">
+              <div class="flex items-center justify-between text-xs text-cream-muted">
+                <span class="font-medium tracking-wide">VIE 28 NOV · 21:00 HS</span>
+                <span class="text-velvet-gold font-semibold tracking-wider">SALA A · FILA 4</span>
+              </div>
+              <h3 class="font-display text-xl text-cream font-bold">
+                Quinteto Real &amp; Orquesta Filarmónica
+              </h3>
+              <p class="text-xs text-cream-secondary line-clamp-2 leading-relaxed">
+                Homenaje sinfónico a los grandes maestros del tango de oro con más de 40 músicos en
+                escena e invitados especiales.
+              </p>
+              <div
+                class="pt-3 border-t border-velvet-border/80 flex items-center justify-between mt-1"
+              >
+                <div>
+                  <span
+                    class="text-[10px] font-semibold text-cream-muted tracking-wider block uppercase"
+                    >DESDE</span
+                  >
+                  <span class="font-sans text-lg text-cream font-bold">$45.000,00</span>
+                </div>
+                <button
+                  class="px-5 py-2 rounded-full bg-velvet-crimson hover:bg-[#db1334] text-white text-xs font-semibold shadow-md shadow-velvet-crimson/25 transition-all focus:outline-none focus:ring-2 focus:ring-cream flex items-center gap-1.5 active:scale-95"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[16px]">confirmation_number</span>
+                  Reservar
+                </button>
+              </div>
+            </div>
+          </article>
+          <!-- Event 2 Card -->
+          <article
+            class="bg-velvet-dark border border-velvet-border rounded-[18px] overflow-hidden shadow-xl flex flex-col group hover:border-velvet-border/80 transition-all"
+          >
+            <div class="relative w-full h-48 bg-velvet-elevated overflow-hidden">
+              <img
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                data-alt="Indie rock concert inside an intimate heritage hall with warm timber architecture, atmospheric low light, silhouette of lead singer with vintage microphone and espresso backdrop"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZaRjCdDwdKwKGFiHCLprp89qoxr54Kuty8GRiKDzfFgWww87dOVDtcVaEmd4yJW0NJXUXQXYNZU3kZzx6C9gYecCX-RneXGydA7gR3lOyN91LfSD2FLqXY3j34EbjKGpsAnUln6qtKwvkRfsTRXB84uJi2JWohysueyxCTE6_5BNrGEL_vx3cEikEC8GXWQhslOmuBhnp40QPKiDFtBPV44qIYv_pIJ30E2bDl2I"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-velvet-dark via-transparent to-black/30"
+              ></div>
+              <div
+                class="absolute top-3 left-3 bg-velvet-elevated border border-velvet-border text-velvet-gold px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide uppercase shadow"
+              >
+                Preventa Fase 1
+              </div>
+              <div
+                class="absolute bottom-3 right-3 bg-velvet-dark/90 backdrop-blur border border-velvet-border text-cream px-3 py-1 rounded-full text-xs font-medium"
+              >
+                Niceto Club
+              </div>
+            </div>
+            <div class="p-5 flex flex-col gap-2.5">
+              <div class="flex items-center justify-between text-xs text-cream-muted">
+                <span class="font-medium tracking-wide">SÁB 06 DIC · 22:30 HS</span>
+                <span class="text-velvet-gold font-semibold tracking-wider">CAMPO GENERAL</span>
+              </div>
+              <h3 class="font-display text-xl text-cream font-bold">
+                Los Veleros del Tiempo: Gira Cierre de Año
+              </h3>
+              <p class="text-xs text-cream-secondary line-clamp-2 leading-relaxed">
+                La banda revelación del pop alternativo despide su álbum más premiado con visuales
+                analógicas en formato 16mm.
+              </p>
+              <div
+                class="pt-3 border-t border-velvet-border/80 flex items-center justify-between mt-1"
+              >
+                <div>
+                  <span
+                    class="text-[10px] font-semibold text-cream-muted tracking-wider block uppercase"
+                    >DESDE</span
+                  >
+                  <span class="font-sans text-lg text-cream font-bold">$38.000,00</span>
+                </div>
+                <button
+                  class="px-5 py-2 rounded-full bg-velvet-crimson hover:bg-[#db1334] text-white text-xs font-semibold shadow-md shadow-velvet-crimson/25 transition-all focus:outline-none focus:ring-2 focus:ring-cream flex items-center gap-1.5 active:scale-95"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[16px]">confirmation_number</span>
+                  Reservar
+                </button>
+              </div>
+            </div>
+          </article>
+        </section>
+        <!-- Clean Categories Grid -->
+        <section class="px-4 py-4 w-full max-w-xl mx-auto">
+          <div class="flex flex-col gap-1 mb-3">
+            <span class="text-[11px] font-semibold tracking-[0.16em] text-velvet-gold uppercase"
+              >✦ GÉNEROS &amp; RUBROS</span
+            >
+            <h2 class="font-display text-2xl text-cream font-bold">Explorá por Categoría</h2>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <button
+              class="bg-velvet-dark border border-velvet-border p-4 rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-velvet-elevated hover:border-velvet-crimson/40 transition-all group text-center"
+              type="button"
+            >
+              <span
+                class="material-symbols-outlined text-2xl text-cream-secondary group-hover:text-velvet-accent transition-colors"
+                >masks</span
+              >
+              <span class="text-xs font-semibold text-cream">Teatro &amp; Obras</span>
+              <span class="text-[10px] text-cream-muted">142 obras</span>
+            </button>
+            <button
+              class="bg-velvet-dark border border-velvet-border p-4 rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-velvet-elevated hover:border-velvet-crimson/40 transition-all group text-center"
+              type="button"
+            >
+              <span
+                class="material-symbols-outlined text-2xl text-cream-secondary group-hover:text-velvet-accent transition-colors"
+                >graphic_eq</span
+              >
+              <span class="text-xs font-semibold text-cream">Música en Vivo</span>
+              <span class="text-[10px] text-cream-muted">310 toques</span>
+            </button>
+            <button
+              class="bg-velvet-dark border border-velvet-border p-4 rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-velvet-elevated hover:border-velvet-crimson/40 transition-all group text-center"
+              type="button"
+            >
+              <span
+                class="material-symbols-outlined text-2xl text-cream-secondary group-hover:text-velvet-accent transition-colors"
+                >sports_soccer</span
+              >
+              <span class="text-xs font-semibold text-cream">Deportes</span>
+              <span class="text-[10px] text-cream-muted">54 partidos</span>
+            </button>
+            <button
+              class="bg-velvet-dark border border-velvet-border p-4 rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-velvet-elevated hover:border-velvet-crimson/40 transition-all group text-center"
+              type="button"
+            >
+              <span
+                class="material-symbols-outlined text-2xl text-cream-secondary group-hover:text-velvet-accent transition-colors"
+                >celebration</span
+              >
+              <span class="text-xs font-semibold text-cream">Festivales</span>
+              <span class="text-[10px] text-cream-muted">28 eventos</span>
+            </button>
+          </div>
+        </section>
+        <!-- How it Works: 3 Steps -->
+        <section class="px-4 py-6 w-full max-w-xl mx-auto">
+          <div
+            class="bg-velvet-dark border border-velvet-border p-6 rounded-[18px] flex flex-col gap-5 shadow-lg"
+          >
+            <div>
+              <span class="text-[11px] font-semibold tracking-[0.16em] text-velvet-gold uppercase"
+                >✦ PROCESO TRANSPARENTE</span
+              >
+              <h2 class="font-display text-2xl text-cream font-bold mt-0.5">
+                ¿Cómo funciona AI Ticket It?
+              </h2>
+            </div>
+            <div class="flex flex-col gap-4">
+              <!-- Step 1 -->
+              <div class="flex items-start gap-3">
+                <div
+                  class="w-8 h-8 rounded-full bg-velvet-crimson text-white flex items-center justify-center text-xs font-bold flex-shrink-0 shadow"
+                >
+                  01
+                </div>
+                <div>
+                  <h3 class="text-sm font-semibold text-cream">
+                    Elegí tu butaca en el plano interactivo
+                  </h3>
+                  <p class="text-xs text-cream-secondary mt-1 leading-relaxed">
+                    Visualizá el escenario con perspectiva real de visión desde platea, pullman o
+                    campo general.
+                  </p>
+                </div>
+              </div>
+              <!-- Step 2 -->
+              <div class="flex items-start gap-3">
+                <div
+                  class="w-8 h-8 rounded-full bg-velvet-elevated border border-velvet-border text-velvet-gold flex items-center justify-center text-xs font-bold flex-shrink-0"
+                >
+                  02
+                </div>
+                <div>
+                  <h3 class="text-sm font-semibold text-cream">
+                    Pagá con medios locales y sin comisiones ocultas
+                  </h3>
+                  <p class="text-xs text-cream-secondary mt-1 leading-relaxed">
+                    Aceptamos Mercado Pago, tarjetas de débito/crédito en cuotas y transferencias
+                    inmediatas.
+                  </p>
+                </div>
+              </div>
+              <!-- Step 3 -->
+              <div class="flex items-start gap-3">
+                <div
+                  class="w-8 h-8 rounded-full bg-velvet-elevated border border-velvet-border text-cream flex items-center justify-center text-xs font-bold flex-shrink-0"
+                >
+                  03
+                </div>
+                <div>
+                  <h3 class="text-sm font-semibold text-cream">
+                    Disfrutá del ingreso directo con tu boleto offline
+                  </h3>
+                  <p class="text-xs text-cream-secondary mt-1 leading-relaxed">
+                    Tu código QR dinámico funciona aún si perdés conectividad 4G en la puerta del
+                    recinto.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Benefits for Buyers & Organizers -->
+        <section class="px-4 py-3 w-full max-w-xl mx-auto flex flex-col gap-4">
+          <!-- For Buyers -->
+          <div
+            class="bg-velvet-dark border border-velvet-border p-5 rounded-[18px] flex flex-col gap-3 shadow-md"
+          >
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-velvet-gold text-xl"
+                >sentiment_very_satisfied</span
+              >
+              <h3 class="font-display text-lg text-cream font-bold">Para Espectadores</h3>
+            </div>
+            <ul class="flex flex-col gap-2 text-xs text-cream-secondary">
+              <li class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-velvet-accent text-base"
+                  >check_circle</span
+                >
+                <span>Boletos nominativos intransferibles anti-reventa especulativa.</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-velvet-accent text-base"
+                  >check_circle</span
+                >
+                <span>Reembolso garantizado por suspensión o reprogramación de fecha.</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-velvet-accent text-base"
+                  >check_circle</span
+                >
+                <span>Integración a Apple Wallet y Google Wallet en 1 click.</span>
+              </li>
+            </ul>
+          </div>
+          <!-- For Organizers -->
+          <div
+            class="bg-velvet-dark border border-velvet-border p-5 rounded-[18px] flex flex-col gap-3 shadow-md"
+          >
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-velvet-gold text-xl">theater_comedy</span>
+              <h3 class="font-display text-lg text-cream font-bold">
+                Para Salas &amp; Productoras
+              </h3>
+            </div>
+            <ul class="flex flex-col gap-2 text-xs text-cream-secondary">
+              <li class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-velvet-accent text-base"
+                  >check_circle</span
+                >
+                <span>Acreditación a 250 personas por minuto con nuestra app de escaneo.</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-velvet-accent text-base"
+                  >check_circle</span
+                >
+                <span>Liquidación en 24 horas hábiles a cuenta bancaria registrada.</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-velvet-accent text-base"
+                  >check_circle</span
+                >
+                <span>Métricas de conversión y mapa de calor de ocupación en tiempo real.</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+        <!-- Reviews with Gold Stars -->
+        <section class="px-4 py-4 w-full max-w-xl mx-auto">
+          <div class="flex flex-col gap-1 mb-3">
+            <span class="text-[11px] font-semibold tracking-[0.16em] text-velvet-gold uppercase"
+              >✦ TESTIMONIOS REALES</span
+            >
+            <h2 class="font-display text-2xl text-cream font-bold">
+              Lo que dicen quienes ya vivieron la sala
+            </h2>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div
+              class="bg-velvet-dark border border-velvet-border p-5 rounded-xl flex flex-col justify-between gap-3 shadow-md"
+            >
+              <div class="flex items-center gap-1 text-velvet-gold">
+                <span
+                  class="material-symbols-outlined text-base"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >star</span
+                >
+                <span
+                  class="material-symbols-outlined text-base"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >star</span
+                >
+                <span
+                  class="material-symbols-outlined text-base"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >star</span
+                >
+                <span
+                  class="material-symbols-outlined text-base"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >star</span
+                >
+                <span
+                  class="material-symbols-outlined text-base"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >star</span
+                >
+              </div>
+              <p class="text-xs text-cream-secondary italic leading-relaxed">
+                "Sacar entrada para el teatro solía ser una pesadilla de filas virtuales y cargos
+                ocultos. Con AI Ticket It fue instantáneo y entré con el celular sin imprimir nada."
+              </p>
+              <div class="flex items-center gap-2.5 pt-1 border-t border-velvet-border/60">
+                <div
+                  class="w-8 h-8 rounded-full bg-velvet-crimson/20 border border-velvet-crimson/50 text-velvet-accent flex items-center justify-center text-xs font-bold"
+                >
+                  MS
+                </div>
+                <div>
+                  <span class="text-xs font-semibold text-cream block">Mariana S.</span>
+                  <span class="text-[10px] text-cream-muted">Asistente · Abasto Social Club</span>
+                </div>
+              </div>
+            </div>
+            <div
+              class="bg-velvet-dark border border-velvet-border p-5 rounded-xl flex flex-col justify-between gap-3 shadow-md"
+            >
+              <div class="flex items-center gap-1 text-velvet-gold">
+                <span
+                  class="material-symbols-outlined text-base"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >star</span
+                >
+                <span
+                  class="material-symbols-outlined text-base"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >star</span
+                >
+                <span
+                  class="material-symbols-outlined text-base"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >star</span
+                >
+                <span
+                  class="material-symbols-outlined text-base"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >star</span
+                >
+                <span
+                  class="material-symbols-outlined text-base"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >star</span
+                >
+              </div>
+              <p class="text-xs text-cream-secondary italic leading-relaxed">
+                "Como productor independiente, el escaneo offline nos salvó en salas subterráneas
+                donde nunca hay señal. Muy transparentes con las liquidaciones."
+              </p>
+              <div class="flex items-center gap-2.5 pt-1 border-t border-velvet-border/60">
+                <div
+                  class="w-8 h-8 rounded-full bg-velvet-crimson/20 border border-velvet-crimson/50 text-velvet-accent flex items-center justify-center text-xs font-bold"
+                >
+                  GR
+                </div>
+                <div>
+                  <span class="text-xs font-semibold text-cream block">Gonzalo R.</span>
+                  <span class="text-[10px] text-cream-muted">Director · Compañía El Galpón</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Final Call to Action: Modern Velvet Coupon -->
+        <section class="px-4 py-6 w-full max-w-xl mx-auto">
+          <div
+            class="bg-velvet-dark border border-velvet-border rounded-[18px] overflow-hidden shadow-2xl flex flex-col relative"
+          >
+            <!-- Semicircular notches on Coupon -->
+            <div
+              class="absolute -left-3 bottom-[42px] w-6 h-6 rounded-full bg-velvet-black border-r border-velvet-border z-20"
+            ></div>
+            <div
+              class="absolute -right-3 bottom-[42px] w-6 h-6 rounded-full bg-velvet-black border-l border-velvet-border z-20"
+            ></div>
+            <div class="p-6 md:p-8 flex flex-col gap-3 items-center text-center">
+              <span class="text-[11px] font-semibold tracking-[0.2em] text-velvet-gold uppercase">
+                ✦ BENEFICIO DE BIENVENIDA
+              </span>
+              <h2 class="font-display text-2xl md:text-3xl text-cream font-bold max-w-md">
+                Tu primera experiencia tiene
+                <em class="italic text-velvet-accent font-normal">$3.000</em> de cortesía
+              </h2>
+              <p class="text-xs text-cream-secondary max-w-md leading-relaxed">
+                Creá tu cuenta gratuita hoy y canjeá tu cupón troquelado en cualquier espectáculo de
+                la cartelera nacional.
+              </p>
+              <!-- Troche Coupon Code Box -->
+              <div
+                class="bg-velvet-elevated border border-velvet-border p-2.5 rounded-full flex items-center justify-between gap-3 mt-2 w-full max-w-xs shadow-inner"
+              >
+                <span class="font-mono text-sm text-velvet-gold font-bold tracking-widest pl-3">
+                  PRIMERAFILA26
+                </span>
+                <button
+                  class="px-3.5 py-1 bg-velvet-dark hover:bg-velvet-black border border-velvet-border text-cream text-[11px] font-semibold rounded-full transition-colors active:scale-95"
+                  type="button"
+                >
+                  Copiar
+                </button>
+              </div>
+              <button
+                class="w-full max-w-xs px-6 py-3 rounded-full bg-velvet-crimson hover:bg-[#db1334] text-white text-xs font-semibold text-center shadow-lg shadow-velvet-crimson/25 mt-2 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-cream active:scale-95"
+                type="button"
+              >
+                <span>Crear Cuenta Gratuita</span>
+                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+              </button>
+            </div>
+            <!-- Coupon footer with dashed division -->
+            <div
+              class="bg-velvet-elevated px-4 py-2.5 flex items-center justify-center gap-2 border-t border-dashed border-velvet-border"
+            >
+              <span class="material-symbols-outlined text-xs text-velvet-gold">local_activity</span>
+              <span class="text-[10px] font-semibold text-cream-muted uppercase tracking-wider">
+                Válido hasta agotar 1.000 cupones de bienvenida
+              </span>
+            </div>
+          </div>
+        </section>
+        <!-- Footer with Links, Theme Indicator & Copyright -->
+        <footer
+          class="w-full bg-[#140e10] border-t border-velvet-border px-4 py-8 mt-auto text-cream-secondary flex flex-col gap-6 max-w-xl mx-auto"
+        >
+          <div class="flex items-center justify-between">
+            <img
+              alt="AI Ticket It"
+              class="h-8 w-auto object-contain brightness-110 drop-shadow"
+              src="https://lh3.googleusercontent.com/aida/ALJJyrAHdFExftQpnSuMjc6CR9Jq62WPyA7GTjk3to8YedLlCSp-HBe4gbBsAyFNWgtWuP3S7t1ZkrzorsknV9EZVE-M1UUbQVzdV2G6k4J8a1_m5FClK5l42kh-jETuN1_UVIzYK3DneHqLDOKHA04X7MQRJ2ywA7bQQP0KT75STdLmXCG4NI7sLTHEeCqbmyM0QZp_KAdo9AwKae67Wsa5kI8EGeXsk6XTQzmAa_3vOVCK"
+            />
+            <!-- Velvet Curtain status badge -->
+            <div
+              class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-velvet-elevated border border-velvet-border text-cream text-[11px] font-medium shadow-sm"
+            >
+              <span class="material-symbols-outlined text-sm text-velvet-accent"
+                >theater_comedy</span
+              >
+              <span>Modo Platea Activo</span>
+            </div>
+          </div>
+          <!-- Navigation links -->
+          <div class="grid grid-cols-2 gap-4 text-xs">
+            <div class="flex flex-col gap-1.5">
+              <span class="text-[11px] font-semibold text-velvet-gold tracking-wider uppercase"
+                >Cartelera</span
+              >
+              <a
+                class="text-cream-muted hover:text-cream transition-colors"
+                href="#eventos-destacados"
+                >Teatro Clásico</a
+              >
+              <a
+                class="text-cream-muted hover:text-cream transition-colors"
+                href="#eventos-destacados"
+                >Festivales de Música</a
+              >
+              <a
+                class="text-cream-muted hover:text-cream transition-colors"
+                href="#eventos-destacados"
+                >Salas Independientes</a
+              >
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <span class="text-[11px] font-semibold text-velvet-gold tracking-wider uppercase"
+                >Soporte &amp; Legal</span
+              >
+              <a class="text-cream-muted hover:text-cream transition-colors" href="#"
+                >Términos del Boleto</a
+              >
+              <a class="text-cream-muted hover:text-cream transition-colors" href="#"
+                >Boton de Arrepentimiento</a
+              >
+              <a class="text-cream-muted hover:text-cream transition-colors" href="#"
+                >Contacto de Boletería</a
+              >
+            </div>
+          </div>
+          <!-- Divider rule -->
+          <div class="w-full h-px bg-velvet-border/80"></div>
+          <!-- Legal disclaimer and 2026 Copyright -->
+          <div
+            class="flex flex-col sm:flex-row items-center justify-between text-[11px] text-cream-muted gap-2"
+          >
+            <p class="tracking-wide">© 2026 AI TICKET IT · SISTEMA DE BOLETERÍA FEDERAL</p>
+            <span class="tracking-widest uppercase text-velvet-gold/90 text-[10px]">
+              BUENOS AIRES · REPÚBLICA ARGENTINA
+            </span>
+          </div>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>

@@ -7,6 +7,8 @@ import { CategoriasMongoRepository } from "../repositories/mongo/CategoriasMongo
 import { ComprasMongoRepository } from "../repositories/mongo/ComprasMongoRepository.js";
 import { EventosMongoRepository } from "../repositories/mongo/EventosMongoRepository.js";
 import { ReseniasMongoRepository } from "../repositories/mongo/ReseniasMongoRepository.js";
+import { NotificacionesMongoRepository } from "../repositories/mongo/NotificacionesMongoRepository.js";
+import { NotificacionModel } from "../schemas/notificacionSchema.js";
 import { UsuariosMongoRepository } from "../repositories/mongo/UsuariosMongoRepository.js";
 import { CompraModel } from "../schemas/compraSchema.js";
 import { EventoModel } from "../schemas/eventoSchema.js";
@@ -27,6 +29,7 @@ const repos = {
   eventosRepository: new EventosMongoRepository({ reloj }),
   comprasRepository: new ComprasMongoRepository(),
   reseniasRepository: new ReseniasMongoRepository(),
+  notificacionesRepository: new NotificacionesMongoRepository(),
 };
 
 const contar = async () => ({
@@ -35,6 +38,7 @@ const contar = async () => ({
   eventos: await EventoModel.countDocuments().incluirInactivos(),
   compras: await CompraModel.countDocuments().incluirInactivos(),
   resenias: await ReseniaModel.countDocuments().incluirInactivos(),
+  notificaciones: await NotificacionModel.countDocuments().incluirInactivos(),
 });
 
 let resumen;
@@ -47,20 +51,35 @@ afterAll(bajarDB);
 
 describe("Seeds", () => {
   test("cargan los datos de demo", async () => {
-    expect(resumen).toEqual({ categorias: 8, usuarios: 7, eventos: 16, compras: 15, resenias: 3 });
+    expect(resumen).toEqual({
+      categorias: 8,
+      usuarios: 7,
+      eventos: 16,
+      compras: 15,
+      resenias: 3,
+      notificaciones: 59,
+    });
     expect(await contar()).toEqual({
       categorias: 8,
       usuarios: 7,
       eventos: 16,
       compras: 15,
       resenias: 3,
+      notificaciones: 59,
     });
   });
 
   test("correrlos dos veces no duplica nada", async () => {
     const antes = await contar();
     const segunda = await sembrarDatos({ ...repos, reloj });
-    expect(segunda).toEqual({ categorias: 0, usuarios: 0, eventos: 0, compras: 0, resenias: 0 });
+    expect(segunda).toEqual({
+      categorias: 0,
+      usuarios: 0,
+      eventos: 0,
+      compras: 0,
+      resenias: 0,
+      notificaciones: 0,
+    });
     expect(await contar()).toEqual(antes);
   });
 
@@ -184,5 +203,44 @@ describe("Seeds", () => {
       expect(principal.peso).toBeGreaterThan(0.5);
     }
     expect(preferidas["diego@ticketit.test"]).toEqual([]);
+  });
+});
+
+describe("Notificaciones de la semilla", () => {
+  const deUsuario = async (email) => {
+    const usuario = await repos.usuariosRepository.obtenerPorEmail(email);
+    return (await repos.notificacionesRepository.listarPorDestinatario(usuario.id, { limite: 50 }))
+      .items;
+  };
+
+  test("se generan con los mismos templates que el flujo real y las viejas quedan leídas", async () => {
+    const lucia = await deUsuario("lucia@ticketit.test");
+    const reembolso = lucia.find((n) => n.tipo === "COMPRA_CANCELADA");
+    expect(reembolso).toMatchObject({ leida: false, titulo: "Compra cancelada" });
+    expect(reembolso.mensaje).toMatch(
+      /Tenés que reembolsar \$104\.000,00 antes del \d{2}\/\d{2}\/\d{4} \d{2}:\d{2}/,
+    );
+    expect(reembolso.datos).toEqual({ compraId: expect.any(String), eventoId: expect.any(String) });
+
+    const diego = await deUsuario("diego@ticketit.test");
+    expect(diego.find((n) => n.tipo === "REEMBOLSO_REALIZADO").mensaje).toContain(
+      "reembolso automático",
+    );
+
+    const ana = await deUsuario("ana@ticketit.test");
+    const mensaje = ana.find((n) => n.tipo === "NUEVO_MENSAJE");
+    expect(mensaje).toMatchObject({ leida: false });
+    expect(mensaje.mensaje).toContain("Lucía Ferrari te escribió");
+
+    const todas = await NotificacionModel.find().lean();
+    const haceUnDia = ahora.getTime() - 24 * HORA;
+    expect(todas.every((n) => n.leida === n.fecha.getTime() <= haceUnDia)).toBe(true);
+  });
+
+  test("las marcas de lectura del chat quedan guardadas", async () => {
+    const jazz = await repos.eventosRepository.obtenerPorNombre("Noche de Jazz en el Sótano");
+    const [compra] = await repos.comprasRepository.listarPorEvento(jazz.id);
+    expect(compra.mensajesNoLeidosPara(compra.compradorId)).toBe(1);
+    expect(compra.mensajesNoLeidosPara(compra.organizadorId)).toBe(0);
   });
 });

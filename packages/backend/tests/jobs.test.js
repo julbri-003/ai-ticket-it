@@ -91,6 +91,7 @@ describe("Tareas sobre los datos de la semilla", () => {
       vencerComprasPendientes: 2,
       marcarComprasUtilizadas: 0,
       reembolsosAutomaticos: 1,
+      recordarEventosProximos: 0,
       finalizarEventosPasados: 1,
     });
     const folklore = await eventoSemilla("folklore");
@@ -102,6 +103,7 @@ describe("Tareas sobre los datos de la semilla", () => {
       vencerComprasPendientes: 0,
       marcarComprasUtilizadas: 0,
       reembolsosAutomaticos: 0,
+      recordarEventosProximos: 0,
       finalizarEventosPasados: 0,
     });
   });

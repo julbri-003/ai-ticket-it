@@ -51,6 +51,7 @@ export class ComprasMongoRepository extends RepositorioMongoPersistible {
       reembolsoPendiente: compra.reembolsoPendiente,
       fechaLimiteReembolso: compra.fechaLimiteReembolso,
       reseniaId: compra.reseniaId == null ? null : aObjectId(compra.reseniaId),
+      recordatorioEnviado: compra.recordatorioEnviado,
     };
   }
 
@@ -197,6 +198,43 @@ export class ComprasMongoRepository extends RepositorioMongoPersistible {
       ...(estados.length > 0 && { estado: { $in: estados } }),
     });
     return ids.map(aIdDominio);
+  }
+
+  /**
+   * Marca de lectura del chat, atómica y sin retroceder ($max): dos lecturas concurrentes no
+   * pueden dejar una fecha anterior. No reescribe el resto de la compra.
+   */
+  async registrarLectura(compraId, campo, fecha) {
+    if (!["ultimaLecturaComprador", "ultimaLecturaOrganizador"].includes(campo)) {
+      throw new Error(`Campo de lectura inválido: ${campo}`);
+    }
+    await this.model.updateOne({ _id: compraId }, { $max: { [campo]: fecha } });
+  }
+
+  /** CONFIRMADA sin recordatorio cuyo evento ocurre en (ahora, ahora + 24 h]. */
+  async listarParaRecordatorio(ahora) {
+    const limite = new Date(ahora.getTime() + 24 * 60 * 60 * 1000);
+    const docs = await this.model.aggregate([
+      {
+        $match: {
+          estado: EstadoCompra.CONFIRMADA,
+          recordatorioEnviado: { $ne: true },
+          activo: true,
+        },
+      },
+      {
+        $lookup: {
+          from: EventoModel.collection.name,
+          localField: "eventoId",
+          foreignField: "_id",
+          as: "evento",
+          pipeline: [{ $project: { fecha: 1 } }],
+        },
+      },
+      { $match: { "evento.fecha": { $gt: ahora, $lte: limite } } },
+      { $project: { evento: 0 } },
+    ]);
+    return docs.map((doc) => this.hidratar(doc));
   }
 
   /** Agrega un mensaje con $push, sin reescribir la compra. Devuelve el Mensaje con id. */

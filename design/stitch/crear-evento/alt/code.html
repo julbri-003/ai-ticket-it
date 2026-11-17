@@ -1,0 +1,764 @@
+<!doctype html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+      name="viewport"
+    />
+    <meta content="mobile_tab" name="shell-type" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @layer base {
+        html,
+        body {
+          width: 100vw;
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          overscroll-behavior: none;
+        }
+        .pb-safe {
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .pt-safe {
+          padding-top: env(safe-area-inset-top, 0px);
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-container": "#ffcd76",
+              "error-container": "#ffdad6",
+              "on-tertiary": "#ffffff",
+              error: "#ba1a1a",
+              "on-secondary-container": "#795505",
+              outline: "#897172",
+              "on-error-container": "#93000a",
+              "surface-dim": "#e6d6d9",
+              "surface-container-lowest": "#ffffff",
+              "surface-tint": "#a13c47",
+              "surface-container-low": "#fff0f2",
+              "on-background": "#22191b",
+              "on-surface": "#22191b",
+              background: "#fff8f8",
+              "surface-bright": "#fff8f8",
+              "on-secondary-fixed-variant": "#5f4100",
+              surface: "#fff8f8",
+              "on-error": "#ffffff",
+              "tertiary-container": "#573c00",
+              "on-primary": "#ffffff",
+              "inverse-on-surface": "#fdedef",
+              "primary-container": "#7a1e2c",
+              "surface-container-high": "#f5e4e7",
+              "outline-variant": "#dcc0c0",
+              "surface-container-highest": "#efdfe1",
+              "surface-container": "#fbeaec",
+              "on-primary-fixed": "#40000d",
+              "surface-variant": "#efdfe1",
+              "inverse-primary": "#ffb2b6",
+              primary: "#5b0418",
+              tertiary: "#3b2700",
+              "on-primary-container": "#ff8a93",
+              "tertiary-fixed": "#ffdea9",
+              "on-surface-variant": "#564242",
+              "on-tertiary-fixed-variant": "#5e4100",
+              "secondary-fixed-dim": "#efbf6a",
+              "on-tertiary-fixed": "#271900",
+              "primary-fixed-dim": "#ffb2b6",
+              "secondary-fixed": "#ffdeaa",
+              "tertiary-fixed-dim": "#f3be5b",
+              "on-secondary-fixed": "#271900",
+              "primary-fixed": "#ffdada",
+              "on-primary-fixed-variant": "#822431",
+              secondary: "#7c5808",
+              "on-secondary": "#ffffff",
+              "inverse-surface": "#372e30",
+              "on-tertiary-container": "#d7a545",
+            },
+            borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+            spacing: {
+              gutter: "1.5rem",
+              "gutter-mobile": "1rem",
+              "margin-mobile": "1.25rem",
+              "space-sm": "0.5rem",
+              "space-2xl": "4rem",
+              margin: "2.5rem",
+              "space-lg": "1.5rem",
+              "space-xs": "0.25rem",
+              "space-md": "1rem",
+              "space-xl": "2.5rem",
+            },
+            fontFamily: {
+              "body-md": ["Inter"],
+              "label-section": ["Inter"],
+              "body-sm": ["Inter"],
+              "title-lg": ["Playfair Display"],
+              "label-interactive": ["Inter"],
+              "title-md": ["Inter"],
+              "headline-lg": ["Playfair Display"],
+              "headline-sm": ["Playfair Display"],
+              "headline-md": ["Playfair Display"],
+              display: ["Playfair Display"],
+              "display-mobile": ["Playfair Display"],
+              "body-lg": ["Inter"],
+              "headline-lg-mobile": ["Playfair Display"],
+            },
+            fontSize: {
+              "body-md": ["14px", { lineHeight: "22px", fontWeight: "400" }],
+              "label-section": [
+                "11px",
+                { lineHeight: "16px", letterSpacing: "0.12em", fontWeight: "600" },
+              ],
+              "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }],
+              "title-lg": ["20px", { lineHeight: "28px", fontWeight: "700" }],
+              "label-interactive": [
+                "13px",
+                { lineHeight: "18px", letterSpacing: "0.02em", fontWeight: "500" },
+              ],
+              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+              "headline-lg": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+              "headline-sm": ["22px", { lineHeight: "30px", fontWeight: "700" }],
+              "headline-md": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+              display: ["48px", { lineHeight: "56px", fontWeight: "700" }],
+              "display-mobile": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+              "body-lg": ["16px", { lineHeight: "26px", fontWeight: "400" }],
+              "headline-lg-mobile": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+  </head>
+  <body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen">
+    <header
+      class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"
+    >
+      <div class="h-16 px-margin-mobile flex items-center justify-between">
+        <div class="flex items-center gap-space-xs">
+          <button
+            aria-label="Cambiar organización"
+            class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface hover:text-primary transition-colors"
+          >
+            <span class="material-symbols-outlined text-[22px]">theater_comedy</span>
+          </button>
+          <div class="flex flex-col">
+            <span class="font-title-lg text-title-md leading-none text-primary">AI Ticket It</span
+            ><span
+              class="font-label-section text-label-section uppercase tracking-wider text-secondary"
+              >Organizador</span
+            >
+          </div>
+        </div>
+        <div class="flex items-center gap-space-xs">
+          <a
+            aria-label="Avisos y notificaciones"
+            class="w-11 h-11 relative flex items-center justify-center rounded-full text-on-surface-variant hover:text-on-surface transition-colors"
+            data-path="notificaciones"
+            href="#"
+            ><span class="material-symbols-outlined text-[22px]">notifications</span
+            ><span
+              class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-primary ring-2 ring-surface"
+            ></span
+          ></a>
+          <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+            <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface">
+      <div class="flex flex-col w-full text-on-surface">
+        <!-- Stepper de 4 Pasos Teatral -->
+        <section class="px-margin-mobile pt-space-md pb-space-xs">
+          <div class="bg-surface-container rounded-xl p-space-md shadow-sm">
+            <div class="flex items-center justify-between mb-space-sm">
+              <div class="flex items-center gap-space-xs">
+                <span class="material-symbols-outlined text-secondary text-[18px]"
+                  >theater_comedy</span
+                >
+                <span
+                  class="font-label-section text-label-section uppercase tracking-widest text-secondary"
+                  >Paso 2 de 4</span
+                >
+              </div>
+              <span
+                class="font-label-section text-label-section text-on-surface-variant font-medium"
+                >50% Completado</span
+              >
+            </div>
+            <!-- Indicadores de barra y puntos -->
+            <div class="relative flex items-center justify-between my-space-xs">
+              <div
+                class="absolute left-3 right-3 top-1/2 -translate-y-1/2 h-1 bg-surface-container-highest rounded-full z-0"
+              ></div>
+              <div
+                class="absolute left-3 w-1/3 top-1/2 -translate-y-1/2 h-1 bg-primary rounded-full z-0 transition-all duration-500"
+              ></div>
+              <!-- Paso 1: Completo -->
+              <div class="relative z-10 flex flex-col items-center">
+                <div
+                  class="w-7 h-7 rounded-full bg-secondary text-on-secondary flex items-center justify-center shadow-sm"
+                >
+                  <span class="material-symbols-outlined text-[16px]">check</span>
+                </div>
+                <span class="font-label-section text-[10px] text-secondary mt-1 font-semibold"
+                  >General</span
+                >
+              </div>
+              <!-- Paso 2: Activo Carmesí -->
+              <div class="relative z-10 flex flex-col items-center">
+                <div
+                  class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-md animate-pulse"
+                >
+                  <span class="material-symbols-outlined text-[16px]">confirmation_number</span>
+                </div>
+                <span class="font-label-section text-[10px] text-primary mt-1 font-bold"
+                  >Plateas</span
+                >
+              </div>
+              <!-- Paso 3: Pendiente -->
+              <div class="relative z-10 flex flex-col items-center">
+                <div
+                  class="w-7 h-7 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center"
+                >
+                  <span class="font-label-section text-label-section">3</span>
+                </div>
+                <span class="font-label-section text-[10px] text-on-surface-variant mt-1"
+                  >Medios</span
+                >
+              </div>
+              <!-- Paso 4: Pendiente -->
+              <div class="relative z-10 flex flex-col items-center">
+                <div
+                  class="w-7 h-7 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center"
+                >
+                  <span class="font-label-section text-label-section">4</span>
+                </div>
+                <span class="font-label-section text-[10px] text-on-surface-variant mt-1"
+                  >Estreno</span
+                >
+              </div>
+            </div>
+            <div class="mt-space-md pt-space-xs">
+              <h1 class="font-headline-sm text-headline-sm text-primary leading-tight">
+                Configurá los tipos de entrada
+              </h1>
+              <p class="font-title-lg text-body-md text-on-surface-variant mt-1 italic">
+                Definí categorías, precios unitarios y aforo disponible para cada sector.
+              </p>
+            </div>
+          </div>
+        </section>
+        <!-- Formulario de Sectores de Entrada -->
+        <section class="px-margin-mobile flex flex-col gap-space-md mt-space-sm">
+          <!-- SECTOR 01: GENERAL -->
+          <article
+            class="relative bg-surface-container-lowest rounded-xl shadow-md overflow-hidden"
+          >
+            <!-- Decoración troquelada lateral -->
+            <div
+              class="absolute -left-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-surface z-20"
+            ></div>
+            <div
+              class="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-surface z-20"
+            ></div>
+            <!-- Cabecera de Tarjeta -->
+            <div
+              class="bg-surface-container-low px-space-md py-space-sm flex items-center justify-between"
+            >
+              <div class="flex items-center gap-space-xs">
+                <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                <span
+                  class="font-label-section text-label-section uppercase tracking-wider text-secondary"
+                  >Sector 01 · General</span
+                >
+              </div>
+              <div class="flex items-center gap-space-xs text-on-surface-variant">
+                <button
+                  aria-label="Duplicar sector"
+                  class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center transition-colors"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[18px]">content_copy</span>
+                </button>
+                <button
+                  aria-label="Eliminar sector"
+                  class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center transition-colors"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[18px]">delete</span>
+                </button>
+              </div>
+            </div>
+            <!-- Cuerpo del Pase -->
+            <div class="p-space-md flex flex-col gap-space-md">
+              <!-- Campo Nombre -->
+              <div>
+                <label
+                  class="block font-label-section text-label-section uppercase text-on-surface-variant mb-1"
+                  >Nombre del Pase</label
+                >
+                <div
+                  class="bg-surface-container rounded-lg px-space-md py-2.5 flex items-center justify-between shadow-inner"
+                >
+                  <input
+                    class="bg-transparent font-title-md text-title-md text-on-surface w-full focus:outline-none"
+                    placeholder="Ej. Platea Preferencial"
+                    type="text"
+                    value="Campo General"
+                  />
+                  <span class="material-symbols-outlined text-secondary text-[20px] ml-2"
+                    >stars</span
+                  >
+                </div>
+              </div>
+              <!-- Beneficios -->
+              <div>
+                <label
+                  class="block font-label-section text-label-section uppercase text-on-surface-variant mb-1"
+                  >Beneficios y Accesos</label
+                >
+                <div
+                  class="bg-surface-container-low rounded-lg p-space-sm flex items-start gap-space-xs"
+                >
+                  <span class="material-symbols-outlined text-primary text-[18px] mt-0.5"
+                    >verified</span
+                  >
+                  <input
+                    class="bg-transparent font-body-sm text-body-sm text-on-surface w-full focus:outline-none"
+                    type="text"
+                    value="Acceso a campo de pie frente al escenario, ingreso prioritario"
+                  />
+                </div>
+              </div>
+              <!-- Métricas: Precio y Cupo -->
+              <div class="grid grid-cols-2 gap-space-sm pt-space-xs">
+                <div class="bg-surface-container rounded-lg p-space-sm">
+                  <span
+                    class="font-label-section text-label-section uppercase text-on-surface-variant block"
+                    >Precio Unitario</span
+                  >
+                  <div class="flex items-baseline gap-1 mt-1">
+                    <span class="font-body-md text-body-md text-secondary font-bold">$</span>
+                    <input
+                      class="w-full bg-transparent font-title-md text-title-md font-bold text-on-surface focus:outline-none"
+                      type="text"
+                      value="42.000,00"
+                    />
+                  </div>
+                </div>
+                <div class="bg-surface-container rounded-lg p-space-sm">
+                  <span
+                    class="font-label-section text-label-section uppercase text-on-surface-variant block"
+                    >Cupo Disponible</span
+                  >
+                  <div class="flex items-baseline gap-1 mt-1">
+                    <span class="material-symbols-outlined text-on-surface-variant text-[16px]"
+                      >groups</span
+                    >
+                    <input
+                      class="w-full bg-transparent font-title-md text-title-md font-bold text-on-surface focus:outline-none"
+                      type="number"
+                      value="800"
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- Subtotal Estimado -->
+              <div class="flex items-center justify-between pt-space-xs">
+                <span class="font-body-sm text-body-sm text-on-surface-variant"
+                  >Subtotal Proyectado</span
+                >
+                <span class="font-title-md text-title-md text-primary font-bold tracking-tight"
+                  >$ 33.600.000,00</span
+                >
+              </div>
+            </div>
+          </article>
+          <!-- SECTOR 02: BUTACAS -->
+          <article
+            class="relative bg-surface-container-lowest rounded-xl shadow-md overflow-hidden"
+          >
+            <!-- Decoración troquelada lateral -->
+            <div
+              class="absolute -left-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-surface z-20"
+            ></div>
+            <div
+              class="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-surface z-20"
+            ></div>
+            <!-- Cabecera de Tarjeta -->
+            <div
+              class="bg-surface-container-low px-space-md py-space-sm flex items-center justify-between"
+            >
+              <div class="flex items-center gap-space-xs">
+                <span class="w-2 h-2 rounded-full bg-primary"></span>
+                <span
+                  class="font-label-section text-label-section uppercase tracking-wider text-primary"
+                  >Sector 02 · Butacas Premium</span
+                >
+              </div>
+              <div class="flex items-center gap-space-xs text-on-surface-variant">
+                <button
+                  aria-label="Duplicar sector"
+                  class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center transition-colors"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[18px]">content_copy</span>
+                </button>
+                <button
+                  aria-label="Eliminar sector"
+                  class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center transition-colors"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[18px]">delete</span>
+                </button>
+              </div>
+            </div>
+            <!-- Cuerpo del Pase -->
+            <div class="p-space-md flex flex-col gap-space-md">
+              <!-- Campo Nombre -->
+              <div>
+                <label
+                  class="block font-label-section text-label-section uppercase text-on-surface-variant mb-1"
+                  >Nombre del Pase</label
+                >
+                <div
+                  class="bg-surface-container rounded-lg px-space-md py-2.5 flex items-center justify-between shadow-inner"
+                >
+                  <input
+                    class="bg-transparent font-title-md text-title-md text-on-surface w-full focus:outline-none"
+                    type="text"
+                    value="Platea Norte Baja"
+                  />
+                  <span class="material-symbols-outlined text-primary text-[20px] ml-2">chair</span>
+                </div>
+              </div>
+              <!-- Beneficios -->
+              <div>
+                <label
+                  class="block font-label-section text-label-section uppercase text-on-surface-variant mb-1"
+                  >Ubicación y Asientos</label
+                >
+                <div
+                  class="bg-surface-container-low rounded-lg p-space-sm flex items-start gap-space-xs"
+                >
+                  <span class="material-symbols-outlined text-secondary text-[18px] mt-0.5"
+                    >event_seat</span
+                  >
+                  <span class="font-body-sm text-body-sm text-on-surface"
+                    >Butaca numerada central con visual directa preferencial a proscenio</span
+                  >
+                </div>
+              </div>
+              <!-- Métricas: Precio y Cupo -->
+              <div class="grid grid-cols-2 gap-space-sm pt-space-xs">
+                <div class="bg-surface-container rounded-lg p-space-sm">
+                  <span
+                    class="font-label-section text-label-section uppercase text-on-surface-variant block"
+                    >Precio Unitario</span
+                  >
+                  <div class="flex items-baseline gap-1 mt-1">
+                    <span class="font-body-md text-body-md text-secondary font-bold">$</span>
+                    <input
+                      class="w-full bg-transparent font-title-md text-title-md font-bold text-on-surface focus:outline-none"
+                      type="text"
+                      value="65.000,00"
+                    />
+                  </div>
+                </div>
+                <div class="bg-surface-container rounded-lg p-space-sm">
+                  <span
+                    class="font-label-section text-label-section uppercase text-on-surface-variant block"
+                    >Cupo Disponible</span
+                  >
+                  <div class="flex items-baseline gap-1 mt-1">
+                    <span class="material-symbols-outlined text-on-surface-variant text-[16px]"
+                      >airline_seat_recline_extra</span
+                    >
+                    <input
+                      class="w-full bg-transparent font-title-md text-title-md font-bold text-on-surface focus:outline-none"
+                      type="number"
+                      value="200"
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- Subtotal Estimado -->
+              <div class="flex items-center justify-between pt-space-xs">
+                <span class="font-body-sm text-body-sm text-on-surface-variant"
+                  >Subtotal Proyectado</span
+                >
+                <span class="font-title-md text-title-md text-primary font-bold tracking-tight"
+                  >$ 13.000.000,00</span
+                >
+              </div>
+            </div>
+          </article>
+          <!-- SECTOR 03: REVISIÓN REQUERIDA (Alerta) -->
+          <article
+            class="relative bg-surface-container-lowest rounded-xl shadow-lg overflow-hidden ring-0"
+          >
+            <!-- Acento de error de alto contraste mediante background -->
+            <div class="h-1.5 w-full bg-error"></div>
+            <!-- Decoración troquelada lateral -->
+            <div
+              class="absolute -left-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-surface z-20"
+            ></div>
+            <div
+              class="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-surface z-20"
+            ></div>
+            <!-- Cabecera de Alerta -->
+            <div
+              class="bg-error-container px-space-md py-space-sm flex items-center justify-between"
+            >
+              <div class="flex items-center gap-space-xs">
+                <span class="material-symbols-outlined text-on-error-container text-[18px]"
+                  >warning</span
+                >
+                <span
+                  class="font-label-section text-label-section uppercase tracking-wider text-on-error-container font-bold"
+                  >Sector 03 · Revisión Requerida</span
+                >
+              </div>
+              <span
+                class="bg-error text-on-error text-[10px] font-label-section uppercase font-bold px-2 py-0.5 rounded-full shadow-sm"
+              >
+                Nombre Duplicado
+              </span>
+            </div>
+            <!-- Mensaje de Error Explícito -->
+            <div class="bg-error/10 px-space-md py-space-xs flex items-center gap-space-xs">
+              <span class="material-symbols-outlined text-error text-[16px] shrink-0">error</span>
+              <p class="font-body-sm text-[12px] text-error font-medium leading-tight">
+                Ya existe un pase con el nombre 'Campo General'. Ingresá un nombre único para este
+                sector.
+              </p>
+            </div>
+            <!-- Cuerpo del Pase Erróneo -->
+            <div class="p-space-md flex flex-col gap-space-md">
+              <div>
+                <label class="block font-label-section text-label-section uppercase text-error mb-1"
+                  >Nombre Conflictivo</label
+                >
+                <div
+                  class="bg-error-container/40 rounded-lg px-space-md py-2.5 flex items-center justify-between"
+                >
+                  <input
+                    class="bg-transparent font-title-md text-title-md text-on-surface font-semibold w-full focus:outline-none"
+                    type="text"
+                    value="Campo General"
+                  />
+                  <span class="material-symbols-outlined text-error text-[20px] ml-2">cancel</span>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-space-sm pt-space-xs opacity-70">
+                <div class="bg-surface-container rounded-lg p-space-sm">
+                  <span
+                    class="font-label-section text-label-section uppercase text-on-surface-variant block"
+                    >Precio Unitario</span
+                  >
+                  <div class="flex items-baseline gap-1 mt-1">
+                    <span class="font-body-md text-body-md text-on-surface-variant font-bold"
+                      >$</span
+                    >
+                    <input
+                      class="w-full bg-transparent font-title-md text-title-md text-on-surface focus:outline-none"
+                      disabled=""
+                      type="text"
+                      value="38.000,00"
+                    />
+                  </div>
+                </div>
+                <div class="bg-surface-container rounded-lg p-space-sm">
+                  <span
+                    class="font-label-section text-label-section uppercase text-on-surface-variant block"
+                    >Cupo Disponible</span
+                  >
+                  <div class="flex items-baseline gap-1 mt-1">
+                    <span class="material-symbols-outlined text-on-surface-variant text-[16px]"
+                      >group_off</span
+                    >
+                    <input
+                      class="w-full bg-transparent font-title-md text-title-md text-on-surface focus:outline-none"
+                      disabled=""
+                      type="number"
+                      value="150"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-end gap-space-xs pt-1">
+                <button
+                  class="text-error font-label-interactive text-label-interactive flex items-center gap-1 hover:underline"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[16px]">delete_sweep</span>
+                  Descartar este sector
+                </button>
+              </div>
+            </div>
+          </article>
+          <!-- Botón Agregar Nuevo Tipo de Entrada -->
+          <button
+            class="w-full bg-surface-container hover:bg-surface-container-high text-primary py-3.5 px-space-md rounded-xl flex items-center justify-center gap-space-xs transition-all active:scale-[0.98] shadow-sm"
+            type="button"
+          >
+            <span class="material-symbols-outlined text-[20px] text-secondary">add_circle</span>
+            <span class="font-title-md text-title-md font-semibold">+ Agregar tipo de entrada</span>
+          </button>
+        </section>
+        <!-- Resumen de Balance de Sala Teatral -->
+        <section class="px-margin-mobile mt-space-md">
+          <div
+            class="bg-primary-container text-on-primary-container rounded-xl p-space-md shadow-md relative overflow-hidden"
+          >
+            <!-- Resplandor ambiental de escenario -->
+            <div
+              class="absolute -right-8 -bottom-8 w-32 h-32 bg-secondary/20 rounded-full blur-2xl pointer-events-none"
+            ></div>
+            <div class="flex items-center gap-space-xs mb-space-sm">
+              <span class="material-symbols-outlined text-secondary-container text-[20px]"
+                >account_balance_wallet</span
+              >
+              <span
+                class="font-label-section text-label-section uppercase tracking-wider text-on-primary font-bold"
+                >Balance de Sala &amp; Escenario</span
+              >
+            </div>
+            <div class="grid grid-cols-2 gap-space-md py-space-xs">
+              <div>
+                <span class="font-label-section text-label-section text-on-primary block"
+                  >Aforo Total Configurado</span
+                >
+                <span
+                  class="font-headline-sm text-headline-sm text-on-primary font-bold block mt-0.5"
+                  >1.000
+                  <span class="font-body-sm text-[12px] font-normal text-on-primary"
+                    >localidades</span
+                  ></span
+                >
+              </div>
+              <div>
+                <span class="font-label-section text-label-section text-on-primary block"
+                  >Recaudación Potencial (100%)</span
+                >
+                <span
+                  class="font-headline-sm text-headline-sm text-secondary-container font-bold block mt-0.5"
+                  >$ 46.600.000</span
+                >
+              </div>
+            </div>
+            <!-- Barra de distribución visual del aforo -->
+            <div class="mt-space-sm pt-space-xs">
+              <div class="flex justify-between font-label-section text-[10px] text-on-primary mb-1">
+                <span>Campo General: 80%</span>
+                <span>Platea Norte: 20%</span>
+              </div>
+              <div class="w-full h-2 bg-on-primary/20 rounded-full overflow-hidden flex">
+                <div class="h-full bg-secondary-container w-[80%]"></div>
+                <div class="h-full bg-on-primary w-[20%]"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Botonera de Navegación Inferior -->
+        <section class="px-margin-mobile pt-space-md pb-space-lg flex flex-col gap-space-sm">
+          <button
+            class="w-full bg-primary hover:bg-primary-container text-on-primary py-3.5 px-space-lg rounded-full font-label-interactive text-title-md font-semibold flex items-center justify-center gap-space-xs shadow-lg active:scale-95 transition-all"
+            type="button"
+          >
+            <span>Continuar a Multimedia</span>
+            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+          </button>
+          <button
+            class="w-full bg-transparent hover:bg-surface-container text-on-surface-variant py-2.5 px-space-md rounded-full font-label-interactive text-body-md flex items-center justify-center gap-space-xs transition-colors"
+            type="button"
+          >
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            <span>Volver a Detalles del Evento</span>
+          </button>
+        </section>
+      </div>
+    </main>
+    <nav
+      class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_12px_rgba(0,0,0,0.06)]"
+      data-active-classes="text-primary font-semibold"
+    >
+      <div class="flex justify-around items-center h-16 px-space-xs">
+        <a
+          class="flex flex-col items-center justify-center flex-1 h-11 text-on-surface-variant hover:text-primary transition-colors gap-0.5"
+          data-path="eventos"
+          href="#"
+          ><span class="material-symbols-outlined text-[20px]">confirmation_number</span
+          ><span class="font-label-section text-label-section">Eventos</span></a
+        ><a
+          aria-current="page"
+          class="flex flex-col items-center justify-center flex-1 h-11 -mt-4 transition-transform active:scale-95 text-primary font-semibold"
+          data-path="crear-evento"
+          href="#"
+          ><div
+            class="w-11 h-11 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-md"
+          >
+            <span class="material-symbols-outlined text-[24px]">add</span>
+          </div>
+          <span class="font-label-section text-label-section text-primary font-medium mt-0.5"
+            >Crear</span
+          ></a
+        ><a
+          class="flex flex-col items-center justify-center flex-1 h-11 text-on-surface-variant hover:text-primary transition-colors gap-0.5"
+          data-path="mensajes"
+          href="#"
+          ><span class="material-symbols-outlined text-[20px]">chat_bubble</span
+          ><span class="font-label-section text-label-section">Mensajes</span></a
+        ><a
+          class="flex flex-col items-center justify-center flex-1 h-11 text-on-surface-variant hover:text-primary transition-colors gap-0.5"
+          data-path="avisos"
+          href="#"
+          ><span class="material-symbols-outlined text-[20px]">campaign</span
+          ><span class="font-label-section text-label-section">Avisos</span></a
+        ><a
+          class="flex flex-col items-center justify-center flex-1 h-11 text-on-surface-variant hover:text-primary transition-colors gap-0.5"
+          data-path="perfil-organizador"
+          href="#"
+          ><span class="material-symbols-outlined text-[20px]">account_balance</span
+          ><span class="font-label-section text-label-section">Perfil</span></a
+        >
+      </div>
+    </nav>
+  </body>
+</html>

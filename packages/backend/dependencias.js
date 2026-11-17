@@ -8,6 +8,10 @@ import { ComprasMongoRepository } from "./repositories/mongo/ComprasMongoReposit
 import { ReseniasMongoRepository } from "./repositories/mongo/ReseniasMongoRepository.js";
 import { NotificacionesMongoRepository } from "./repositories/mongo/NotificacionesMongoRepository.js";
 import { AlmacenamientoLocalAdapter } from "./adapter/AlmacenamientoLocalAdapter.js";
+import { EmisorSocketAdapter } from "./adapter/EmisorSocketAdapter.js";
+import { AvisosComprasService } from "./services/AvisosComprasService.js";
+import { MensajesService } from "./services/MensajesService.js";
+import { NotificacionesService } from "./services/NotificacionesService.js";
 import { AuthService } from "./services/AuthService.js";
 import { CategoriasService } from "./services/CategoriasService.js";
 import { ComprasService } from "./services/ComprasService.js";
@@ -34,10 +38,13 @@ export const repositoriosSemilla = {
   eventosRepository,
   comprasRepository,
   reseniasRepository,
+  notificacionesRepository,
 };
 
 // ----- Adapters -----
 export const almacenamiento = new AlmacenamientoLocalAdapter();
+// Se conecta a socket.io en index.js (inicializarSockets); hasta entonces no emite nada.
+export const emisorSocket = new EmisorSocketAdapter();
 
 // ----- Services -----
 export const vistasEventos = new VistasEventos({ categoriasRepository, usuariosRepository });
@@ -69,11 +76,31 @@ export const reseniasService = new ReseniasService({
   eventosRepository,
   usuariosRepository,
 });
+export const notificacionesService = new NotificacionesService({
+  notificacionesRepository,
+  emisor: emisorSocket,
+  reloj,
+});
+export const avisosComprasService = new AvisosComprasService({
+  notificacionesService,
+  eventosRepository,
+  emisor: emisorSocket,
+});
 export const comprasService = new ComprasService({
   comprasRepository,
   eventosRepository,
   usuariosRepository,
   reseniasRepository,
+  reloj,
+  alCambiarEstado: (compra, cambio) => avisosComprasService.alCambiarEstado(compra, cambio),
+  alReseniar: (compra, resenia) => avisosComprasService.alReseniar(compra, resenia),
+  alRecordarEvento: (compra, evento) => avisosComprasService.alRecordarEvento(compra, evento),
+});
+export const mensajesService = new MensajesService({
+  comprasRepository,
+  eventosRepository,
+  notificacionesService,
+  emisor: emisorSocket,
   reloj,
 });
 
@@ -85,6 +112,7 @@ export const programadorTareas = new ProgramadorTareas({
     { nombre: "vencerComprasPendientes", ejecutar: () => comprasService.vencerComprasPendientes() },
     { nombre: "marcarComprasUtilizadas", ejecutar: () => comprasService.marcarComprasUtilizadas() },
     { nombre: "reembolsosAutomaticos", ejecutar: () => comprasService.reembolsosAutomaticos() },
+    { nombre: "recordarEventosProximos", ejecutar: () => comprasService.recordarEventosProximos() },
     { nombre: "finalizarEventosPasados", ejecutar: () => eventosService.finalizarEventosPasados() },
   ],
 });

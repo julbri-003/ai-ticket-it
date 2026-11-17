@@ -71,3 +71,18 @@
 - `Compra.mensajesNoLeidosPara(usuarioId, ultimaLectura)` en el dominio.
 - Swagger: endpoints de compras y diagrama de estados en la descripción del tag "Compras".
 - Tests de integración del ciclo completo, permisos, resumen, compras concurrentes y tareas programadas.
+
+## Iteración 06 — Chat por compra y notificaciones in-app
+
+- Chat REST en `/api/compras/:id/mensajes` (`GET ?desde`, `POST`, `POST /leidos`), permitido en cualquier estado.
+  `Compra` guarda `ultimaLecturaComprador` / `ultimaLecturaOrganizador` y `mensajesNoLeidos` las usa.
+- Socket.io sobre el mismo `http.Server` (`sockets/index.js`): auth por JWT en el handshake, salas `usuario:<id>` y
+  `compra:<id>` (`compra:unirse` / `compra:salir` con ack), eventos `mensaje:nuevo`, `compra:estado` y
+  `notificacion:nueva`. `adapter/EmisorSocketAdapter.js` es lo único que conoce socket.io.
+- Notificaciones in-app: 9 templates (`templates/notificacionTemplates.js`), `TemplatesService`,
+  `NotificacionesService` y `AvisosComprasService` conectado a los hooks de compras (cambios de estado, reseña y
+  recordatorio). Tarea programada nueva `recordarEventosProximos` (24 h antes, sin repetir).
+- REST `/api/notificaciones`: listar, cantidad de no leídas, marcar una (solo el destinatario) y marcar todas.
+- La semilla genera las notificaciones de las compras de demo con los mismos services, en orden cronológico.
+- Swagger: tags "Chat" (con los eventos de socket) y "Notificaciones".
+- Tests de templates, chat REST, socket.io (con `socket.io-client`), notificaciones por transición y recordatorio.

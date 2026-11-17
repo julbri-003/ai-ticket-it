@@ -1,0 +1,487 @@
+<!doctype html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+      name="viewport"
+    />
+    <meta content="mobile_stack" name="shell-type" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface-variant": "#564242",
+              "surface-container": "#fbeaec",
+              "surface-container-low": "#fff0f2",
+              tertiary: "#3b2700",
+              "inverse-primary": "#ffb2b6",
+              surface: "#fff8f8",
+              "on-surface": "#22191b",
+              "on-background": "#22191b",
+              "on-tertiary-fixed-variant": "#5e4100",
+              "surface-container-lowest": "#ffffff",
+              "primary-fixed-dim": "#ffb2b6",
+              "surface-container-highest": "#efdfe1",
+              primary: "#5b0418",
+              "on-secondary-fixed": "#271900",
+              "on-primary-fixed-variant": "#822431",
+              outline: "#897172",
+              "on-tertiary-fixed": "#271900",
+              "on-tertiary": "#ffffff",
+              "inverse-on-surface": "#fdedef",
+              "surface-container-high": "#f5e4e7",
+              "on-secondary": "#ffffff",
+              "surface-bright": "#fff8f8",
+              background: "#fff8f8",
+              "tertiary-container": "#573c00",
+              "on-error": "#ffffff",
+              "tertiary-fixed-dim": "#f3be5b",
+              "on-secondary-container": "#795505",
+              "secondary-container": "#ffcd76",
+              "on-error-container": "#93000a",
+              "on-tertiary-container": "#d7a545",
+              error: "#ba1a1a",
+              "on-secondary-fixed-variant": "#5f4100",
+              "outline-variant": "#dcc0c0",
+              "secondary-fixed": "#ffdeaa",
+              "inverse-surface": "#372e30",
+              "surface-variant": "#efdfe1",
+              "surface-dim": "#e6d6d9",
+              "on-primary-container": "#ff8a93",
+              "on-primary": "#ffffff",
+              "on-primary-fixed": "#40000d",
+              "secondary-fixed-dim": "#efbf6a",
+              "error-container": "#ffdad6",
+              "tertiary-fixed": "#ffdea9",
+              "primary-container": "#7a1e2c",
+              "primary-fixed": "#ffdada",
+              "surface-tint": "#a13c47",
+              secondary: "#7c5808",
+            },
+            borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+            spacing: {
+              "space-lg": "1.5rem",
+              "space-md": "1rem",
+              gutter: "1.5rem",
+              margin: "2.5rem",
+              "space-xs": "0.25rem",
+              "space-sm": "0.5rem",
+              "space-xl": "2.5rem",
+              "margin-mobile": "1.25rem",
+              "gutter-mobile": "1rem",
+              "space-2xl": "4rem",
+            },
+            fontFamily: {
+              "label-section": ["Inter"],
+              "body-sm": ["Inter"],
+              display: ["Playfair Display"],
+              "display-mobile": ["Playfair Display"],
+              "title-md": ["Inter"],
+              "headline-lg-mobile": ["Playfair Display"],
+              "headline-sm": ["Playfair Display"],
+              "body-lg": ["Inter"],
+              "label-interactive": ["Inter"],
+              "title-lg": ["Playfair Display"],
+              "body-md": ["Inter"],
+              "headline-lg": ["Playfair Display"],
+              "headline-md": ["Playfair Display"],
+            },
+            fontSize: {
+              "label-section": [
+                "11px",
+                { lineHeight: "16px", letterSpacing: "0.12em", fontWeight: "600" },
+              ],
+              "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }],
+              display: ["48px", { lineHeight: "56px", fontWeight: "700" }],
+              "display-mobile": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+              "headline-lg-mobile": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+              "headline-sm": ["22px", { lineHeight: "30px", fontWeight: "700" }],
+              "body-lg": ["16px", { lineHeight: "26px", fontWeight: "400" }],
+              "label-interactive": [
+                "13px",
+                { lineHeight: "18px", letterSpacing: "0.02em", fontWeight: "500" },
+              ],
+              "title-lg": ["20px", { lineHeight: "28px", fontWeight: "700" }],
+              "body-md": ["14px", { lineHeight: "22px", fontWeight: "400" }],
+              "headline-lg": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+              "headline-md": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @layer base {
+        html,
+        body {
+          width: 100vw;
+          margin: 0;
+          padding: 0;
+          background-color: #fff8f8;
+        }
+        body {
+          overscroll-behavior-y: none;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .pb-safe {
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .pt-safe {
+          padding-top: env(safe-area-inset-top, 0px);
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-surface text-on-surface font-body-md text-body-md min-h-screen flex flex-col antialiased selection:bg-secondary-fixed selection:text-on-secondary-fixed"
+  >
+    <header
+      class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_12px_rgba(34,25,27,0.04)]"
+    >
+      <div class="h-16 px-margin-mobile flex items-center justify-between gap-space-sm">
+        <div class="flex items-center gap-space-sm min-w-0">
+          <button
+            aria-label="Volver"
+            class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface hover:text-primary transition-colors active:scale-95"
+            onclick="history.back()"
+          >
+            <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+          </button>
+          <h1 class="font-title-lg text-title-lg text-primary truncate tracking-tight">
+            Chat Con Organizador
+          </h1>
+        </div>
+        <div class="flex items-center gap-space-xs shrink-0">
+          <a
+            class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary transition-colors active:scale-95"
+            data-path="notificaciones"
+            href="#"
+            ><span class="material-symbols-outlined text-[22px]">notifications</span></a
+          >
+          <div class="w-11 h-11 flex items-center justify-center">
+            <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-sm">
+              <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="flex-1 w-full bg-surface pt-16 pb-safe">
+      <div class="flex flex-col w-full pb-24">
+        <!-- Banner superior del Pase Confirmado -->
+        <section class="px-margin-mobile pt-space-sm pb-space-xs">
+          <div
+            class="bg-surface-container rounded-xl p-space-md shadow-sm relative overflow-hidden flex items-center justify-between gap-space-sm"
+          >
+            <div class="flex items-center gap-space-sm min-w-0">
+              <div
+                class="w-10 h-10 rounded-full bg-primary-container/15 flex items-center justify-center shrink-0 text-primary"
+              >
+                <span
+                  class="material-symbols-outlined text-[20px]"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >confirmation_number</span
+                >
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5">
+                  <span
+                    class="inline-block w-2 h-2 rounded-full bg-secondary animate-pulse shrink-0"
+                  ></span>
+                  <span
+                    class="font-label-section text-label-section text-secondary uppercase tracking-wider truncate"
+                    >Pase Confirmado</span
+                  >
+                </div>
+                <p class="font-title-md text-title-md text-on-surface truncate">
+                  Campo General × 2
+                </p>
+                <p class="font-body-sm text-body-sm text-on-surface-variant truncate">
+                  Estadio Obras Sanitarias
+                </p>
+              </div>
+            </div>
+            <button
+              class="shrink-0 bg-surface-container-lowest text-primary font-label-interactive text-label-interactive px-3 py-1.5 rounded-full shadow-sm hover:bg-surface-container-high transition-transform active:scale-95 flex items-center gap-1"
+              type="button"
+            >
+              <span>Ver ticket</span>
+              <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+            </button>
+          </div>
+        </section>
+        <!-- Organizador Context Card -->
+        <section class="px-margin-mobile py-space-xs">
+          <div
+            class="bg-surface-container-low rounded-xl px-space-md py-space-sm flex items-center justify-between"
+          >
+            <div class="flex items-center gap-space-sm min-w-0">
+              <div class="relative shrink-0">
+                <div
+                  class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary font-display text-headline-sm shadow-inner"
+                >
+                  3
+                </div>
+                <span
+                  class="material-symbols-outlined absolute -bottom-1 -right-1 text-secondary text-[16px] bg-surface-container-low rounded-full"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >verified</span
+                >
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1">
+                  <h2 class="font-title-md text-title-md text-on-surface truncate font-semibold">
+                    300 Producciones
+                  </h2>
+                  <span
+                    class="material-symbols-outlined text-[15px] text-secondary shrink-0"
+                    style="font-variation-settings: &quot;FILL&quot; 1"
+                    >check_circle</span
+                  >
+                </div>
+                <p class="font-body-sm text-body-sm text-on-surface-variant truncate">
+                  Divididos: 35 Años • Productor Oficial
+                </p>
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-1 shrink-0 bg-surface-container-highest px-2.5 py-1 rounded-full text-on-surface-variant"
+            >
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+              <span class="font-label-section text-label-section text-[10px]">EN LÍNEA</span>
+            </div>
+          </div>
+        </section>
+        <!-- Timestamp divisor -->
+        <div class="flex items-center justify-center my-space-md">
+          <span
+            class="bg-surface-container-high text-on-surface-variant font-label-section text-label-section px-3 py-1 rounded-full uppercase tracking-widest text-[10px]"
+          >
+            Hoy • Función 21:00 hs
+          </span>
+        </div>
+        <!-- Chat Log -->
+        <div class="flex flex-col gap-space-md px-margin-mobile" id="chatStream">
+          <!-- Mensaje 1: Organizador -->
+          <div class="flex flex-col items-start max-w-[85%]">
+            <div class="flex items-center gap-1.5 mb-1 px-1">
+              <span class="font-label-section text-label-section text-primary"
+                >300 Producciones</span
+              >
+              <span
+                class="material-symbols-outlined text-[13px] text-secondary"
+                style="font-variation-settings: &quot;FILL&quot; 1"
+                >verified</span
+              >
+              <span class="font-body-sm text-body-sm text-on-surface-variant text-[11px]"
+                >• 14:15</span
+              >
+            </div>
+            <div
+              class="bg-surface-container-lowest text-on-surface p- space-md p-4 rounded-2xl rounded-tl-sm shadow-sm relative"
+            >
+              <p class="font-body-md text-body-md leading-relaxed">
+                ¡Hola Mariano! Gracias por tu compra para Divididos en Obras. Te recordamos que el
+                ingreso es puntual a partir de las 19:30 hs por Av. del Libertador 7395.
+              </p>
+              <div
+                class="mt-2.5 pt-2 flex items-center gap-2 bg-surface-container-low px-3 py-2 rounded-lg"
+              >
+                <span class="material-symbols-outlined text-primary text-[18px]">location_on</span>
+                <span class="font-body-sm text-body-sm text-on-surface font-medium truncate"
+                  >Av. del Libertador 7395, CABA</span
+                >
+              </div>
+            </div>
+          </div>
+          <!-- Mensaje 2: Usuario -->
+          <div class="flex flex-col items-end self-end max-w-[85%]">
+            <div class="flex items-center gap-1.5 mb-1 px-1">
+              <span class="font-body-sm text-body-sm text-on-surface-variant text-[11px]"
+                >14:22</span
+              >
+              <span class="font-label-section text-label-section text-on-surface-variant">Tú</span>
+            </div>
+            <div
+              class="bg-primary-container text-on-primary p-4 rounded-2xl rounded-tr-sm shadow-sm"
+            >
+              <p class="font-body-md text-body-md leading-relaxed text-surface-container-lowest">
+                ¡Hola! Una consulta: ¿se puede ingresar con mochila mediana o hay guardarropas
+                disponible en el estadio?
+              </p>
+            </div>
+            <div class="flex items-center gap-1 mt-1 pr-1 text-on-surface-variant">
+              <span class="material-symbols-outlined text-[14px] text-secondary">done_all</span>
+            </div>
+          </div>
+          <!-- Mensaje 3: Organizador -->
+          <div class="flex flex-col items-start max-w-[85%]">
+            <div class="flex items-center gap-1.5 mb-1 px-1">
+              <span class="font-label-section text-label-section text-primary"
+                >300 Producciones</span
+              >
+              <span
+                class="material-symbols-outlined text-[13px] text-secondary"
+                style="font-variation-settings: &quot;FILL&quot; 1"
+                >verified</span
+              >
+              <span class="font-body-sm text-body-sm text-on-surface-variant text-[11px]"
+                >• 14:24</span
+              >
+            </div>
+            <div
+              class="bg-surface-container-lowest text-on-surface p-4 rounded-2xl rounded-tl-sm shadow-sm"
+            >
+              <p class="font-body-md text-body-md leading-relaxed">
+                Hola Mariano, sí, hay servicio de guardarropas habilitado en el acceso norte por
+                $1.500 en efectivo o Mercado Pago.
+              </p>
+              <div
+                class="mt-2.5 inline-flex items-center gap-1.5 bg-secondary-container/40 text-on-secondary-container px-2.5 py-1 rounded-full text-xs font-semibold"
+              >
+                <span class="material-symbols-outlined text-[15px]">checkroom</span>
+                <span>Guardarropas Norte • $1.500</span>
+              </div>
+            </div>
+          </div>
+          <!-- Mensaje 4: Usuario -->
+          <div class="flex flex-col items-end self-end max-w-[85%]">
+            <div class="flex items-center gap-1.5 mb-1 px-1">
+              <span class="font-body-sm text-body-sm text-on-surface-variant text-[11px]"
+                >14:25</span
+              >
+              <span class="font-label-section text-label-section text-on-surface-variant">Tú</span>
+            </div>
+            <div
+              class="bg-primary-container text-on-primary p-4 rounded-2xl rounded-tr-sm shadow-sm"
+            >
+              <p class="font-body-md text-body-md leading-relaxed text-surface-container-lowest">
+                Bárbaro, muchas gracias por la respuesta tan rápida.
+              </p>
+            </div>
+            <div class="flex items-center gap-1 mt-1 pr-1 text-on-surface-variant">
+              <span class="material-symbols-outlined text-[14px] text-secondary">done_all</span>
+            </div>
+          </div>
+        </div>
+        <!-- Barra de entrada inferior fija -->
+        <div
+          class="fixed bottom-0 left-0 right-0 z-40 bg-surface/90 backdrop-blur-md px-margin-mobile py-space-sm shadow-[0_-4px_20px_rgba(34,25,27,0.06)] pb-safe"
+        >
+          <form
+            class="flex items-center gap-space-sm max-w-2xl mx-auto"
+            id="chatForm"
+            onsubmit="event.preventDefault(); window.sendChatMessage();"
+          >
+            <!-- Botón adjuntar pase / archivo -->
+            <button
+              aria-label="Adjuntar archivo o pase"
+              class="w-11 h-11 shrink-0 rounded-xl bg-surface-container-high text-on-surface-variant flex items-center justify-center hover:text-primary hover:bg-surface-container transition-all active:scale-95 shadow-sm"
+              type="button"
+            >
+              <span class="material-symbols-outlined text-[22px]">attach_file</span>
+            </button>
+            <!-- Input de texto con border-radius de 12px -->
+            <div class="relative flex-1 min-w-0">
+              <input
+                class="w-full h-11 rounded-[12px] bg-surface-container-lowest text-on-surface placeholder:text-on-surface-variant/60 px-4 font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-secondary/40 shadow-inner"
+                id="messageInput"
+                placeholder="Escribe tu mensaje a 300 Producciones..."
+                type="text"
+              />
+            </div>
+            <!-- Botón de envío circular burdeos -->
+            <button
+              aria-label="Enviar mensaje"
+              class="w-11 h-11 shrink-0 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-md hover:bg-primary transition-all active:scale-90"
+              id="sendButton"
+              type="submit"
+            >
+              <span
+                class="material-symbols-outlined text-[20px] text-surface-container-lowest translate-x-0.5"
+                >arrow_forward</span
+              >
+            </button>
+          </form>
+        </div>
+      </div>
+      <script>
+        window.sendChatMessage = function () {
+          const input = document.getElementById("messageInput");
+          const text = (input.value || "").trim();
+          if (!text) return;
+
+          const stream = document.getElementById("chatStream");
+          const now = new Date();
+          const timeStr =
+            now.getHours().toString().padStart(2, "0") +
+            ":" +
+            now.getMinutes().toString().padStart(2, "0");
+
+          const bubbleWrapper = document.createElement("div");
+          bubbleWrapper.className =
+            "flex flex-col items-end self-end max-w-[85%] transition-all duration-300 opacity-0 translate-y-2";
+
+          bubbleWrapper.innerHTML = `
+      <div class="flex items-center gap-1.5 mb-1 px-1">
+        <span class="font-body-sm text-body-sm text-on-surface-variant text-[11px]">${timeStr}</span>
+        <span class="font-label-section text-label-section text-on-surface-variant">T&uacute;</span>
+      </div>
+      <div class="bg-primary-container text-on-primary p-4 rounded-2xl rounded-tr-sm shadow-sm">
+        <p class="font-body-md text-body-md leading-relaxed text-surface-container-lowest">${text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>
+      </div>
+      <div class="flex items-center gap-1 mt-1 pr-1 text-on-surface-variant">
+        <span class="material-symbols-outlined text-[14px]">done</span>
+      </div>
+    `;
+
+          stream.appendChild(bubbleWrapper);
+          input.value = "";
+
+          // Trigger layout animation & scroll
+          requestAnimationFrame(() => {
+            bubbleWrapper.classList.remove("opacity-0", "translate-y-2");
+            window.scrollTo({
+              top: document.body.scrollHeight,
+              behavior: "smooth",
+            });
+          });
+        };
+      </script>
+    </main>
+  </body>
+</html>

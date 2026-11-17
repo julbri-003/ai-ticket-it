@@ -1,0 +1,704 @@
+<!doctype html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+      name="viewport"
+    />
+    <meta content="mobile_stack" name="shell-type" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:wght@600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-container": "#ffcd76",
+              "error-container": "#ffdad6",
+              "on-tertiary": "#ffffff",
+              error: "#ba1a1a",
+              "on-secondary-container": "#795505",
+              outline: "#897172",
+              "on-error-container": "#93000a",
+              "surface-dim": "#e6d6d9",
+              "surface-container-lowest": "#ffffff",
+              "surface-tint": "#a13c47",
+              "surface-container-low": "#fff0f2",
+              "on-background": "#22191b",
+              "on-surface": "#22191b",
+              background: "#fff8f8",
+              "surface-bright": "#fff8f8",
+              "on-secondary-fixed-variant": "#5f4100",
+              surface: "#fff8f8",
+              "on-error": "#ffffff",
+              "tertiary-container": "#573c00",
+              "on-primary": "#ffffff",
+              "inverse-on-surface": "#fdedef",
+              "primary-container": "#7a1e2c",
+              "surface-container-high": "#f5e4e7",
+              "outline-variant": "#dcc0c0",
+              "surface-container-highest": "#efdfe1",
+              "surface-container": "#fbeaec",
+              "on-primary-fixed": "#40000d",
+              "surface-variant": "#efdfe1",
+              "inverse-primary": "#ffb2b6",
+              primary: "#5b0418",
+              tertiary: "#3b2700",
+              "on-primary-container": "#ff8a93",
+              "tertiary-fixed": "#ffdea9",
+              "on-surface-variant": "#564242",
+              "on-tertiary-fixed-variant": "#5e4100",
+              "secondary-fixed-dim": "#efbf6a",
+              "on-tertiary-fixed": "#271900",
+              "primary-fixed-dim": "#ffb2b6",
+              "secondary-fixed": "#ffdeaa",
+              "tertiary-fixed-dim": "#f3be5b",
+              "on-secondary-fixed": "#271900",
+              "primary-fixed": "#ffdada",
+              "on-primary-fixed-variant": "#822431",
+              secondary: "#7c5808",
+              "on-secondary": "#ffffff",
+              "inverse-surface": "#372e30",
+              "on-tertiary-container": "#d7a545",
+            },
+            borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+            spacing: {
+              gutter: "1.5rem",
+              "gutter-mobile": "1rem",
+              "margin-mobile": "1.25rem",
+              "space-sm": "0.5rem",
+              "space-2xl": "4rem",
+              margin: "2.5rem",
+              "space-lg": "1.5rem",
+              "space-xs": "0.25rem",
+              "space-md": "1rem",
+              "space-xl": "2.5rem",
+            },
+            fontFamily: {
+              "body-md": ["Inter"],
+              "label-section": ["Inter"],
+              "body-sm": ["Inter"],
+              "title-lg": ["Playfair Display"],
+              "label-interactive": ["Inter"],
+              "title-md": ["Inter"],
+              "headline-lg": ["Playfair Display"],
+              "headline-sm": ["Playfair Display"],
+              "headline-md": ["Playfair Display"],
+              display: ["Playfair Display"],
+              "display-mobile": ["Playfair Display"],
+              "body-lg": ["Inter"],
+              "headline-lg-mobile": ["Playfair Display"],
+            },
+            fontSize: {
+              "body-md": ["14px", { lineHeight: "22px", fontWeight: "400" }],
+              "label-section": [
+                "11px",
+                { lineHeight: "16px", letterSpacing: "0.12em", fontWeight: "600" },
+              ],
+              "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }],
+              "title-lg": ["20px", { lineHeight: "28px", fontWeight: "700" }],
+              "label-interactive": [
+                "13px",
+                { lineHeight: "18px", letterSpacing: "0.02em", fontWeight: "500" },
+              ],
+              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+              "headline-lg": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+              "headline-sm": ["22px", { lineHeight: "30px", fontWeight: "700" }],
+              "headline-md": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+              display: ["48px", { lineHeight: "56px", fontWeight: "700" }],
+              "display-mobile": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+              "body-lg": ["16px", { lineHeight: "26px", fontWeight: "400" }],
+              "headline-lg-mobile": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @layer base {
+        html,
+        body {
+          width: 100vw;
+          min-height: 100vh;
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          overscroll-behavior-y: none;
+        }
+        .pb-safe {
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .pt-safe {
+          padding-top: env(safe-area-inset-top, 0px);
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+  </head>
+  <body class="bg-background font-body-md text-on-surface antialiased flex flex-col min-h-screen">
+    <header
+      class="fixed top-0 w-full z-50 bg-surface/85 backdrop-blur-xl shadow-[0_1px_12px_rgba(34,25,27,0.06)] pt-safe"
+    >
+      <div class="h-16 px-gutter-mobile flex items-center justify-between">
+        <button
+          aria-label="Volver a la pantalla anterior"
+          class="flex items-center gap-1 min-h-[44px] px-2 -ml-2 text-primary hover:text-primary-container transition-colors"
+          onclick="history.back()"
+        >
+          <span class="material-symbols-outlined text-[20px]">arrow_back_ios_new</span
+          ><span class="font-label-interactive text-label-interactive">Volver</span>
+        </button>
+        <h1 class="font-title-lg text-title-md text-on-surface text-center truncate px-2">
+          Edicion De Funcion
+        </h1>
+        <div class="flex items-center gap-space-xs">
+          <span
+            class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-section text-[10px] uppercase font-bold tracking-wider"
+            >Activo</span
+          >
+          <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+            <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="flex-1 flex flex-col relative w-full pt-16 bg-surface">
+      <div class="flex flex-col w-full pb-safe">
+        <!-- Sub-Header / Legal Safety Shield -->
+        <div class="px-margin-mobile pt-space-md">
+          <div
+            class="bg-surface-container-high rounded-xl p-space-md shadow-sm flex items-start gap-space-sm text-on-surface"
+          >
+            <div
+              class="w-8 h-8 rounded-full bg-secondary-container/60 flex items-center justify-center shrink-0 text-on-secondary-container mt-0.5"
+            >
+              <span
+                class="material-symbols-outlined text-[18px]"
+                style="font-variation-settings: &quot;FILL&quot; 1"
+                >lock</span
+              >
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-space-xs mb-0.5">
+                <span class="inline-block w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                <p class="font-title-md text-title-md text-primary font-bold">
+                  84% aforo emitido · Función blindada
+                </p>
+              </div>
+              <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                Función con entradas vendidas. Por resguardo fiscal y legal al consumidor, ciertos
+                datos estructurales no pueden modificarse.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- Section: Datos del Espectáculo (Bloqueados) -->
+        <section class="px-margin-mobile pt-space-lg">
+          <div class="flex items-center justify-between mb-space-sm">
+            <div class="flex items-center gap-space-xs">
+              <span class="material-symbols-outlined text-secondary text-[20px]">encrypted</span>
+              <h2 class="font-title-lg text-title-md text-on-surface tracking-tight">
+                Datos del Espectáculo
+              </h2>
+            </div>
+            <span
+              class="font-label-section text-label-section text-outline uppercase tracking-wider bg-surface-container-low px-2 py-0.5 rounded-full"
+              >Bloqueado</span
+            >
+          </div>
+          <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-md">
+            <!-- Input 1 -->
+            <div>
+              <label
+                class="block font-label-section text-label-section text-on-surface-variant uppercase tracking-wider mb-1"
+                >Nombre de la Obra</label
+              >
+              <div
+                class="flex items-center justify-between bg-surface-container-low px-space-md py-3 rounded-xl text-on-surface"
+              >
+                <span class="font-title-md text-title-md font-semibold truncate text-on-surface"
+                  >La Noche de los Faroles</span
+                >
+                <span class="material-symbols-outlined text-outline text-[18px] ml-2 shrink-0"
+                  >lock</span
+                >
+              </div>
+            </div>
+            <!-- Grid 2-col inputs -->
+            <div class="grid grid-cols-2 gap-space-sm">
+              <div>
+                <label
+                  class="block font-label-section text-label-section text-on-surface-variant uppercase tracking-wider mb-1"
+                  >Fecha de Función</label
+                >
+                <div
+                  class="flex items-center justify-between bg-surface-container-low px-3 py-3 rounded-xl text-on-surface"
+                >
+                  <span class="font-body-md text-body-md font-medium truncate"
+                    >Sáb 29 Nov, 20:30</span
+                  >
+                  <span class="material-symbols-outlined text-outline text-[16px] shrink-0"
+                    >lock</span
+                  >
+                </div>
+              </div>
+              <div>
+                <label
+                  class="block font-label-section text-label-section text-on-surface-variant uppercase tracking-wider mb-1"
+                  >Sala Asignada</label
+                >
+                <div
+                  class="flex items-center justify-between bg-surface-container-low px-3 py-3 rounded-xl text-on-surface"
+                >
+                  <span class="font-body-md text-body-md font-medium truncate">Teatro Astral</span>
+                  <span class="material-symbols-outlined text-outline text-[16px] shrink-0"
+                    >lock</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Section: Galería Multimedia (Edición Habilitada) -->
+        <section class="px-margin-mobile pt-space-xl">
+          <div class="flex items-center justify-between mb-space-sm">
+            <div class="flex items-center gap-space-xs">
+              <span class="material-symbols-outlined text-primary text-[20px]">photo_library</span>
+              <h2 class="font-title-lg text-title-md text-on-surface">Galería Multimedia</h2>
+            </div>
+            <span
+              class="font-label-section text-label-section text-secondary uppercase tracking-wider bg-secondary-container/40 px-2 py-0.5 rounded-full font-bold"
+              >Edición habilitada</span
+            >
+          </div>
+          <div class="grid grid-cols-2 gap-space-md">
+            <!-- Media Card 1: Portada Oficial -->
+            <div
+              class="bg-surface-container-lowest rounded-xl p-space-xs shadow-sm flex flex-col group"
+            >
+              <div
+                class="relative w-full aspect-[4/5] rounded-lg overflow-hidden bg-surface-container"
+              >
+                <img
+                  class="w-full h-full object-cover"
+                  data-alt="An opulent classical theater stage poster featuring ornate gold candelabras, deep crimson velvet curtains, and warm candle illumination against a dark mahogany opera backdrop in an elegant architectural framing."
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqWPKdz8_0Bt86kdSvRF6goSb9AmKR1IegbwyA9tGuiMeTdupb7zXaBiZWrNQFWJVOlh_4MJpZSGUAIVnZjfs_auR7y8QqEMJ66jez3KWUU97-W1ttYQTRV-MBcwVhUmh95olK-7CgxiY8EkYKgmpy_caRCDjq8A2N48q5ERB5QaI7v3f39RiNr0JqFOo94C-JUynP7944uP2vzX4IhZpyISF_QtnQHwWmvam9D2M"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-on-background/70 via-transparent to-black/20"
+                ></div>
+                <span
+                  class="absolute top-2 left-2 bg-primary/90 text-on-primary font-label-section text-[10px] tracking-wider uppercase px-2 py-0.5 rounded-full shadow-sm backdrop-blur-sm"
+                  >Portada oficial</span
+                >
+                <button
+                  aria-label="Cambiar afiche principal"
+                  class="absolute bottom-2 right-2 w-8 h-8 rounded-full bg-surface-container-lowest text-primary shadow-md flex items-center justify-center hover:bg-surface transition-transform active:scale-90"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[18px]">edit</span>
+                </button>
+              </div>
+              <div class="p-2 flex items-center justify-between">
+                <span class="font-body-sm text-body-sm font-semibold truncate text-on-surface"
+                  >Cartelera_Master.jpg</span
+                >
+                <span
+                  class="material-symbols-outlined text-outline hover:text-error text-[18px] cursor-pointer transition-colors"
+                  >delete</span
+                >
+              </div>
+            </div>
+            <!-- Media Card 2: Disposición Platea -->
+            <div
+              class="bg-surface-container-lowest rounded-xl p-space-xs shadow-sm flex flex-col group"
+            >
+              <div
+                class="relative w-full aspect-[4/5] rounded-lg overflow-hidden bg-surface-container"
+              >
+                <img
+                  class="w-full h-full object-cover"
+                  data-alt="Architectural seating map layout schematic for an antique velvet opera theater, clean ivory tones, golden accents, symmetrical tier layout with burgundy indicators of sold out balconies."
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBE4Q6RleUO59GI-maM34JlXuY5N_Cpb9jlBEsnQcscL6DWpT5ItI7FhE6hv8FwArhrpLOw-v8YT4rWwNJe3Z5gDJNCyHIstYQmpN15qV7VaRCrGAZwuLgXOAafRCELvlz8o50c_9wOSefSVQ4hXMkR2bZ5J9-xyYcSTHMMyPfPuMZn_sYDmbuqoI2JyqABMRl0-mVUqrWoSv_VejPeblIbn7_1KWp_1SIaCE9M2XY"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-on-background/70 via-transparent to-black/20"
+                ></div>
+                <span
+                  class="absolute top-2 left-2 bg-surface-container-highest/90 text-on-surface font-label-section text-[10px] tracking-wider uppercase px-2 py-0.5 rounded-full shadow-sm backdrop-blur-sm"
+                  >Plano Sala</span
+                >
+                <button
+                  aria-label="Cambiar plano de platea"
+                  class="absolute bottom-2 right-2 w-8 h-8 rounded-full bg-surface-container-lowest text-primary shadow-md flex items-center justify-center hover:bg-surface transition-transform active:scale-90"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[18px]">swap_horiz</span>
+                </button>
+              </div>
+              <div class="p-2 flex items-center justify-between">
+                <span class="font-body-sm text-body-sm font-semibold truncate text-on-surface"
+                  >Aforo_Platea_v2.png</span
+                >
+                <span
+                  class="material-symbols-outlined text-outline hover:text-error text-[18px] cursor-pointer transition-colors"
+                  >delete</span
+                >
+              </div>
+            </div>
+          </div>
+          <!-- Upload CTA -->
+          <button
+            class="w-full mt-space-sm py-3 px-space-md bg-surface-container-low hover:bg-surface-container text-primary font-label-interactive text-label-interactive rounded-xl flex items-center justify-center gap-space-xs transition-colors shadow-sm"
+            type="button"
+          >
+            <span class="material-symbols-outlined text-[20px]">add_photo_alternate</span>
+            <span>Subir nueva pieza multimedia o programa digital</span>
+          </button>
+        </section>
+        <!-- Section: Tipos de Entrada y Aforos (Registro Cerrado) -->
+        <section class="px-margin-mobile pt-space-xl">
+          <div class="flex items-center justify-between mb-space-sm">
+            <div class="flex items-center gap-space-xs">
+              <span class="material-symbols-outlined text-secondary text-[20px]"
+                >confirmation_number</span
+              >
+              <h2 class="font-title-lg text-title-md text-on-surface">Tipos de Entrada y Aforos</h2>
+            </div>
+            <span
+              class="font-label-section text-label-section text-outline uppercase tracking-wider bg-surface-container-low px-2 py-0.5 rounded-full"
+              >Auditado</span
+            >
+          </div>
+          <div class="space-y-space-md">
+            <!-- Card 1: Campo General (Agotado) -->
+            <div
+              class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm relative overflow-hidden"
+            >
+              <div class="flex justify-between items-start mb-space-xs">
+                <div>
+                  <div class="flex items-center gap-1.5">
+                    <h3 class="font-title-md text-title-md font-bold text-on-surface">
+                      Campo General
+                    </h3>
+                    <span class="material-symbols-outlined text-outline text-[16px]">lock</span>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Acceso puerta B y palcos perimetrales
+                  </p>
+                </div>
+                <span
+                  class="bg-error-container text-on-error-container font-label-section text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider"
+                  >Agotado</span
+                >
+              </div>
+              <div class="flex items-baseline justify-between mt-space-sm pt-space-sm">
+                <div class="flex items-center gap-1 text-on-surface">
+                  <span class="font-body-sm text-body-sm text-outline">Valor unitario:</span>
+                  <span class="font-title-md text-title-md font-bold text-primary"
+                    >$ 18.500,00</span
+                  >
+                </div>
+                <span
+                  class="font-label-section text-label-section text-on-surface-variant font-bold"
+                  >800 / 800 cupos</span
+                >
+              </div>
+              <!-- Full Progress Bar -->
+              <div class="w-full h-2 bg-surface-container rounded-full mt-2 overflow-hidden">
+                <div class="h-full bg-primary-container rounded-full w-full"></div>
+              </div>
+            </div>
+            <!-- Card 2: Platea Norte Baja -->
+            <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+              <div class="flex justify-between items-start mb-space-xs">
+                <div>
+                  <div class="flex items-center gap-1.5">
+                    <h3 class="font-title-md text-title-md font-bold text-on-surface">
+                      Platea Norte Baja
+                    </h3>
+                    <span class="material-symbols-outlined text-outline text-[16px]">lock</span>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Asientos numerados con visibilidad preferencial
+                  </p>
+                </div>
+                <span
+                  class="bg-secondary-container text-on-secondary-container font-label-section text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider"
+                  >80% Vendido</span
+                >
+              </div>
+              <div class="flex items-baseline justify-between mt-space-sm pt-space-sm">
+                <div class="flex items-center gap-1 text-on-surface">
+                  <span class="font-body-sm text-body-sm text-outline">Valor unitario:</span>
+                  <span class="font-title-md text-title-md font-bold text-primary"
+                    >$ 28.000,00</span
+                  >
+                </div>
+                <span class="font-label-section text-label-section text-secondary font-bold"
+                  >40 disponibles (160 vendidos)</span
+                >
+              </div>
+              <!-- 80% Progress Bar -->
+              <div class="w-full h-2 bg-surface-container rounded-full mt-2 overflow-hidden">
+                <div class="h-full bg-primary rounded-full w-[80%]"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Add tier button -->
+          <button
+            class="w-full mt-space-sm py-3 px-space-md bg-surface-container-lowest hover:bg-surface-container text-primary font-label-interactive text-label-interactive rounded-xl shadow-sm flex items-center justify-center gap-space-xs transition-colors"
+            type="button"
+          >
+            <span class="material-symbols-outlined text-[20px]">add_circle</span>
+            <span>+ Agregar nueva categoría complementaria</span>
+          </button>
+        </section>
+        <!-- Section: Descripción Original (Contractual) -->
+        <section class="px-margin-mobile pt-space-xl">
+          <div class="flex items-center justify-between mb-space-sm">
+            <div class="flex items-center gap-space-xs">
+              <span class="material-symbols-outlined text-secondary text-[20px]">gavel</span>
+              <h2 class="font-title-lg text-title-md text-on-surface">Descripción Original</h2>
+            </div>
+            <span
+              class="font-label-section text-label-section text-outline uppercase tracking-wider bg-surface-container-low px-2 py-0.5 rounded-full"
+              >Contractual</span
+            >
+          </div>
+          <div class="bg-surface-container-low rounded-xl p-space-md shadow-sm relative">
+            <div class="flex items-center gap-space-xs text-outline mb-2">
+              <span class="material-symbols-outlined text-[16px]">lock_clock</span>
+              <span class="font-label-section text-label-section uppercase"
+                >Texto ratificado en boletería fiscal</span
+              >
+            </div>
+            <p
+              class="font-body-md text-body-md text-on-surface-variant leading-relaxed select-none"
+            >
+              «Una experiencia multisensorial ambientada en el siglo XIX lírico donde la orquesta
+              filarmónica y el coro lírico entrelazan pasajes dramáticos bajo una bóveda de más de
+              400 faroles suspendidos. Duración estimada: 110 minutos sin intervalo.»
+            </p>
+          </div>
+        </section>
+        <!-- Section: Avisos a Asistentes (Canal Activo) -->
+        <section class="px-margin-mobile pt-space-xl">
+          <div class="flex items-center justify-between mb-space-sm">
+            <div class="flex items-center gap-space-xs">
+              <span class="material-symbols-outlined text-primary text-[20px]">campaign</span>
+              <h2 class="font-title-lg text-title-md text-on-surface">Avisos a Asistentes</h2>
+            </div>
+            <span
+              class="font-label-section text-label-section text-on-tertiary-container bg-tertiary-container/10 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider"
+              >Canal Activo</span
+            >
+          </div>
+          <!-- Communication History -->
+          <div class="space-y-space-sm mb-space-md">
+            <!-- Item 1 -->
+            <div
+              class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-1.5"
+            >
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-secondary text-[16px]"
+                    >mark_email_read</span
+                  >
+                  <span class="font-label-section text-label-section text-on-surface-variant"
+                    >Hoy · 14:15 hs</span
+                  >
+                </div>
+                <span
+                  class="font-label-section text-[10px] font-bold text-on-secondary-container bg-secondary-container/60 px-2 py-0.5 rounded-full"
+                  >Enviado vía email + app</span
+                >
+              </div>
+              <p class="font-body-md text-body-md text-on-surface">
+                Apertura de puertas adelantada a las 19:45 hs para la degustación de bienvenida en
+                el Foyer Imperial.
+              </p>
+            </div>
+            <!-- Item 2 -->
+            <div
+              class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-1.5"
+            >
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-secondary text-[16px]"
+                    >mark_email_read</span
+                  >
+                  <span class="font-label-section text-label-section text-on-surface-variant"
+                    >24 Nov · 18:00 hs</span
+                  >
+                </div>
+                <span
+                  class="font-label-section text-[10px] font-bold text-on-secondary-container bg-secondary-container/60 px-2 py-0.5 rounded-full"
+                  >Enviado vía email + app</span
+                >
+              </div>
+              <p class="font-body-md text-body-md text-on-surface">
+                Confirmación de estacionamiento oficial con valet parking disponible sobre Av.
+                Corrientes.
+              </p>
+            </div>
+          </div>
+          <!-- Compose New Broadcast -->
+          <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+            <label
+              class="block font-title-md text-title-md font-semibold text-on-surface mb-2"
+              for="broadcast-input"
+              >Redactar nuevo aviso prioritario</label
+            >
+            <div class="relative bg-surface-container-low rounded-xl p-3">
+              <textarea
+                class="w-full bg-transparent border-0 outline-none text-on-surface placeholder:text-outline font-body-md text-body-md resize-none"
+                id="broadcast-input"
+                maxlength="280"
+                placeholder="Escribí un comunicado o aviso para los asistentes..."
+                rows="3"
+              ></textarea>
+              <div class="flex items-center justify-between pt-2">
+                <span class="material-symbols-outlined text-outline text-[18px]">info</span>
+                <span class="font-label-section text-label-section text-outline" id="char-counter"
+                  >0 / 280 caracteres</span
+                >
+              </div>
+            </div>
+            <div class="mt-space-md flex justify-end">
+              <button
+                class="w-full sm:w-auto bg-primary text-on-primary hover:bg-primary-container px-space-lg py-2.5 rounded-full font-label-interactive text-label-interactive flex items-center justify-center gap-2 shadow-md transition-all active:scale-95"
+                id="btn-publish-broadcast"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-[18px]">send</span>
+                <span>Publicar actualización a compradores</span>
+              </button>
+            </div>
+          </div>
+        </section>
+        <!-- Sticky Bottom Actions -->
+        <div
+          class="sticky bottom-0 w-full mt-space-2xl bg-surface/90 backdrop-blur-xl p-margin-mobile shadow-[0_-4px_20px_rgba(34,25,27,0.06)] z-40"
+        >
+          <div class="flex items-center gap-space-sm max-w-lg mx-auto">
+            <button
+              class="flex-1 py-3 px-space-md rounded-full bg-surface-container-high text-on-surface hover:bg-surface-container-highest font-label-interactive text-label-interactive transition-colors text-center active:scale-95"
+              onclick="history.back()"
+              type="button"
+            >
+              Cancelar edición
+            </button>
+            <button
+              class="flex-1 py-3 px-space-md rounded-full bg-primary-container text-on-primary hover:bg-primary font-label-interactive text-label-interactive shadow-md flex items-center justify-center gap-2 transition-all active:scale-95"
+              id="btn-save-changes"
+              type="button"
+            >
+              <span class="material-symbols-outlined text-[18px]">save</span>
+              <span>Guardar cambios</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const textarea = document.getElementById("broadcast-input");
+          const counter = document.getElementById("char-counter");
+          const btnPublish = document.getElementById("btn-publish-broadcast");
+          const btnSave = document.getElementById("btn-save-changes");
+
+          if (textarea && counter) {
+            textarea.addEventListener("input", function () {
+              const len = this.value.length;
+              counter.textContent = `${len} / 280 caracteres`;
+              if (len > 250) {
+                counter.classList.add("text-secondary");
+                counter.classList.remove("text-outline");
+              } else {
+                counter.classList.remove("text-secondary");
+                counter.classList.add("text-outline");
+              }
+            });
+          }
+
+          if (btnPublish && textarea) {
+            btnPublish.addEventListener("click", function () {
+              const val = textarea.value.trim();
+              if (!val) {
+                textarea.focus();
+                return;
+              }
+              const originalText = btnPublish.innerHTML;
+              btnPublish.innerHTML =
+                '<span class="material-symbols-outlined text-[18px] animate-spin">sync</span><span>Transmitiendo...</span>';
+              btnPublish.disabled = true;
+
+              setTimeout(() => {
+                btnPublish.innerHTML =
+                  '<span class="material-symbols-outlined text-[18px]">check_circle</span><span>¡Enviado a compradores!</span>';
+                btnPublish.classList.remove("bg-primary");
+                btnPublish.classList.add("bg-secondary");
+
+                setTimeout(() => {
+                  textarea.value = "";
+                  counter.textContent = "0 / 280 caracteres";
+                  btnPublish.innerHTML = originalText;
+                  btnPublish.disabled = false;
+                  btnPublish.classList.add("bg-primary");
+                  btnPublish.classList.remove("bg-secondary");
+                }, 2000);
+              }, 900);
+            });
+          }
+
+          if (btnSave) {
+            btnSave.addEventListener("click", function () {
+              const originalHtml = btnSave.innerHTML;
+              btnSave.innerHTML =
+                '<span class="material-symbols-outlined text-[18px] animate-spin">refresh</span><span>Guardando...</span>';
+              btnSave.disabled = true;
+              setTimeout(() => {
+                btnSave.innerHTML =
+                  '<span class="material-symbols-outlined text-[18px]">done_all</span><span>Cambios guardados</span>';
+                setTimeout(() => {
+                  btnSave.innerHTML = originalHtml;
+                  btnSave.disabled = false;
+                }, 1500);
+              }, 800);
+            });
+          }
+        })();
+      </script>
+    </main>
+  </body>
+</html>

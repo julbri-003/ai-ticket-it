@@ -9,6 +9,9 @@ import { Evento } from "../domain/eventoDominio.js";
 import { Roles } from "../domain/rolesDominio.js";
 import { Usuario } from "../domain/usuarioDominio.js";
 import { nuevoId } from "../repositories/mongo/ids.js";
+import { AvisosComprasService } from "../services/AvisosComprasService.js";
+import { NotificacionesService } from "../services/NotificacionesService.js";
+import { TiposNotificacion } from "../templates/notificacionTemplates.js";
 import {
   ALT_IMAGENES,
   CATEGORIAS,
@@ -28,6 +31,9 @@ function relojEn(ahora, horas) {
   const fecha = new Date(ahora.getTime() + horas * MS_POR_HORA);
   return { ahora: () => new Date(fecha) };
 }
+
+/** Copia de la compra en un momento dado (para notificar con el estado de ese momento). */
+const foto = (compra) => Object.assign(Object.create(Compra.prototype), structuredClone(compra));
 
 const actor = (usuario) => ({ id: usuario.id, nombre: usuario.nombreCompleto, rol: usuario.rol });
 
@@ -102,12 +108,36 @@ export async function sembrarDatos({
   eventosRepository,
   comprasRepository,
   reseniasRepository,
+  notificacionesRepository = null,
   reloj,
   uploadsDir = process.env.UPLOADS_DIR || "uploads",
   log = () => {},
 }) {
   const ahora = reloj.ahora();
-  const resumen = { categorias: 0, usuarios: 0, eventos: 0, compras: 0, resenias: 0 };
+  const resumen = {
+    categorias: 0,
+    usuarios: 0,
+    eventos: 0,
+    compras: 0,
+    resenias: 0,
+    notificaciones: 0,
+  };
+
+  // Las notificaciones de la demo se generan con los mismos services que el flujo real, con el
+  // reloj en el momento de cada transición. Sin repositorio de notificaciones, no se generan.
+  const relojAvisos = { fecha: ahora, ahora: () => new Date(relojAvisos.fecha) };
+  const sinSocket = { emitirAUsuario() {}, emitirACompra() {} };
+  const notificaciones = notificacionesRepository
+    ? new NotificacionesService({ notificacionesRepository, emisor: sinSocket, reloj: relojAvisos })
+    : null;
+  const avisos = notificaciones
+    ? new AvisosComprasService({
+        notificacionesService: notificaciones,
+        eventosRepository,
+        emisor: sinSocket,
+      })
+    : null;
+  const pendientesDeAviso = [];
 
   copiarImagenes(uploadsDir);
 
@@ -174,15 +204,41 @@ export async function sembrarDatos({
         cantidad: def.cantidad,
         reloj: relojEn(ahora, creadaEn),
       });
+      compra.id = nuevoId();
+      const avisarEstado = (en) => {
+        const snapshot = foto(compra);
+        pendientesDeAviso.push({
+          en,
+          avisar: () => avisos.alCambiarEstado(snapshot, snapshot.historial.at(-1)),
+        });
+      };
+      avisarEstado(creadaEn);
       const acciones = [
         ...def.pasos.slice(1).map(([paso, en]) => ({
           en,
-          aplicar: (r) => aplicarPaso(compra, evento, paso, r, comprador, organizador),
+          aplicar: (r) => {
+            aplicarPaso(compra, evento, paso, r, comprador, organizador);
+            avisarEstado(en);
+          },
         })),
         ...(def.mensajes ?? []).map(([quien, texto, en]) => ({
           en,
-          aplicar: (r) =>
-            compra.agregarMensaje(actor(quien === "comprador" ? comprador : organizador), texto, r),
+          aplicar: (r) => {
+            const autor = quien === "comprador" ? comprador : organizador;
+            const destinatario = quien === "comprador" ? organizador : comprador;
+            compra.agregarMensaje(actor(autor), texto, r);
+            compra.registrarLectura(autor.id, r);
+            pendientesDeAviso.push({
+              en,
+              avisar: () =>
+                notificaciones.notificar(
+                  TiposNotificacion.NUEVO_MENSAJE,
+                  destinatario.id,
+                  { autor: autor.nombreCompleto, evento: evento.nombre, extracto: texto },
+                  { compraId: compra.id, eventoId: evento.id },
+                ),
+            });
+          },
         })),
       ].sort((a, b) => a.en - b.en);
       for (const { en, aplicar } of acciones) aplicar(relojEn(ahora, en));
@@ -199,6 +255,10 @@ export async function sembrarDatos({
     for (const { def, compra, comprador } of compras) {
       let guardada = await comprasRepository.guardar(compra);
       resumen.compras += 1;
+      for (const campo of ["ultimaLecturaComprador", "ultimaLecturaOrganizador"]) {
+        if (compra[campo])
+          await comprasRepository.registrarLectura(compra.id, campo, compra[campo]);
+      }
       if (def.resenia) {
         const resenia = await reseniasRepository.crear(
           guardada.crearResenia({
@@ -213,6 +273,24 @@ export async function sembrarDatos({
         organizador.registrarResenia(resenia.puntuacion);
         await usuariosRepository.guardar(organizador);
         resumen.resenias += 1;
+        const snapshot = foto(guardada);
+        pendientesDeAviso.push({
+          en: def.resenia.en,
+          avisar: () => avisos.alReseniar(snapshot, resenia),
+        });
+      }
+    }
+  }
+
+  // Notificaciones en orden cronológico; las de hace más de 24 h quedan leídas.
+  if (avisos) {
+    pendientesDeAviso.sort((a, b) => a.en - b.en);
+    for (const { en, avisar } of pendientesDeAviso) {
+      relojAvisos.fecha = new Date(ahora.getTime() + en * MS_POR_HORA);
+      const creadas = [await avisar()].flat().filter(Boolean);
+      resumen.notificaciones += creadas.length;
+      if (en <= -24) {
+        await Promise.all(creadas.map((n) => notificacionesRepository.marcarLeida(n.id)));
       }
     }
   }
@@ -228,7 +306,8 @@ export async function sembrarDatos({
 
   log(
     `🌱 Semilla: ${resumen.categorias} categorías, ${resumen.usuarios} usuarios, ` +
-      `${resumen.eventos} eventos, ${resumen.compras} compras y ${resumen.resenias} reseñas nuevas`,
+      `${resumen.eventos} eventos, ${resumen.compras} compras, ${resumen.resenias} reseñas y ` +
+      `${resumen.notificaciones} notificaciones nuevas`,
   );
   return resumen;
 }

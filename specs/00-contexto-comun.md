@@ -96,6 +96,9 @@ En React Native, el equivalente a `aria-*` son las props `accessibilityRole`, `a
 - [ ] El estado nunca se comunica solo con color: siempre ícono + texto. Áreas táctiles ≥ 44×44.
 - [ ] Modo claro y oscuro completos (Sistema / Claro / Oscuro).
 
+## Cómo usar los diseños de `design/stitch/`
+Son **referencia visual** (layout, jerarquía, componentes, tono), no especificación funcional. Si una pantalla muestra algo que el producto no tiene, **se ignora y mandan las specs**: códigos QR, butacas/filas/palcos, descarga de PDF o wallet, facturas/AFIP, cargos de servicio (el total es precio × cantidad), estados distintos de los 5 definidos ("Emitido", "Activo", "Acceso prioritario"), pasos de progreso inventados en lugar del historial real, o cancelar como link chico en vez de botón con confirmación. Los colores y tipografías salen de los tokens de abajo, no de la config de Tailwind del HTML exportado (Stitch generó su propia paleta en `design/stitch/_design-system/DESIGN.md`, con un fondo rosado `#fff8f8` que **no** se usa). En cada pantalla, `screen.png`/`code.html` es la versión principal (clara), `screen-dark.png`/`code-dark.html` la oscura cuando existe, y `alt/` una variante clara alternativa de menor prioridad.
+
 ## Identidad visual: "Telón de terciopelo"
 La **estructura** de la UI (pills, barra de filtros, cards, stat cards, paginación, carruseles, footer, etiquetas en mayúsculas espaciadas) se copia de REPO_REF. La **temática** es teatro clásico con ejecución moderna:
 - **Concepto ticket, moderno**: las tarjetas de compra y de evento tienen forma de entrada, con muescas semicirculares laterales y un **talón** separado por una línea punteada (número de serie "Nº 004817" y dato clave: cuenta regresiva, precio o estado). Bordes muy redondeados (16–18px), mucho aire y una sombra suave con tinte bordó en claro.

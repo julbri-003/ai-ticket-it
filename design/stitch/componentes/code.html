@@ -1,0 +1,1164 @@
+<!doctype html>
+
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+      name="viewport"
+    />
+    <meta content="mobile_blank" name="shell-type" />
+    <title>Catálogo de Componentes UI · Velvet Curtain</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              marfil: "#faf7f2",
+              "marfil-subtle": "#f3ece4",
+              "marfil-stub": "#fbf3ee",
+              velvet: "#7a1e2c",
+              "velvet-dark": "#5b0418",
+              "velvet-light": "#fff0f2",
+              "gold-accent": "#8a6417",
+              "gold-light": "#ffdea9",
+              "crimson-danger": "#a3182b",
+              "crimson-light": "#f9e3e5",
+              charcoal: "#22191b",
+              "muted-body": "#564242",
+              "border-clean": "#eedfdc",
+            },
+            fontFamily: {
+              display: ["Playfair Display", "serif"],
+              sans: ["Inter", "sans-serif"],
+            },
+            boxShadow: {
+              velvet:
+                "0 10px 25px -4px rgba(122, 30, 44, 0.08), 0 4px 10px -2px rgba(122, 30, 44, 0.04)",
+              "velvet-sm": "0 4px 12px -2px rgba(122, 30, 44, 0.06)",
+              "velvet-lg": "0 18px 36px -6px rgba(122, 30, 44, 0.12)",
+            },
+            borderRadius: {
+              ticket: "18px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @layer base {
+        html,
+        body {
+          width: 100vw;
+          margin: 0;
+          padding: 0;
+          background-color: #faf7f2;
+        }
+        body {
+          overscroll-behavior: none;
+        }
+        .pb-safe {
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .pt-safe {
+          padding-top: env(safe-area-inset-top, 0px);
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      .ticket-notch-top {
+        position: absolute;
+        top: -10px;
+        right: 106px;
+        width: 20px;
+        height: 20px;
+        border-radius: 9999px;
+        background-color: #faf7f2;
+        box-shadow: inset 0 -2px 3px rgba(122, 30, 44, 0.06);
+      }
+      .ticket-notch-bottom {
+        position: absolute;
+        bottom: -10px;
+        right: 106px;
+        width: 20px;
+        height: 20px;
+        border-radius: 9999px;
+        background-color: #faf7f2;
+        box-shadow: inset 0 2px 3px rgba(122, 30, 44, 0.06);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-marfil text-charcoal font-sans antialiased min-h-screen pt-safe pb-safe selection:bg-velvet selection:text-white"
+  >
+    <main class="flex flex-col relative w-full bg-marfil min-h-screen">
+      <div class="flex flex-col w-full pb-20 space-y-10 max-w-xl mx-auto">
+        <!-- ==========================================
+           1. HEADER & SYSTEM PRESENTATION
+           ========================================== -->
+        <header class="flex flex-col w-full px-5 pt-6">
+          <!-- System Badge -->
+          <div
+            class="flex items-center gap-2 self-start bg-white border border-border-clean px-3.5 py-1.5 rounded-full shadow-velvet-sm"
+          >
+            <span class="w-2 h-2 rounded-full bg-velvet animate-pulse"></span>
+            <span class="text-[11px] font-semibold tracking-wider text-gold-accent uppercase">
+              ✦ SISTEMA VISUAL VELVET CURTAIN · V 3.0
+            </span>
+          </div>
+          <!-- Title & Subtitle -->
+          <div class="mt-4 pb-2">
+            <h1
+              class="font-display text-[32px] leading-[40px] font-bold text-charcoal tracking-tight"
+            >
+              Catálogo de <span class="italic font-bold text-velvet">Componentes</span>
+            </h1>
+            <p class="font-sans text-[14px] leading-relaxed text-muted-body mt-2.5">
+              Tablero canónico de diseño interactivo para boletería teatral y conciertos. Pureza
+              lumínica en tono Marfil con acento de terciopelo teatral y rigor accesible WCAG
+              AA/AAA.
+            </p>
+          </div>
+          <!-- Specs Badge Row -->
+          <div class="grid grid-cols-2 gap-3 mt-4">
+            <div
+              class="flex flex-col bg-white border border-border-clean p-3.5 rounded-[14px] shadow-velvet-sm"
+            >
+              <span class="text-[11px] font-semibold text-gold-accent uppercase tracking-wider"
+                >MODO VISUAL</span
+              >
+              <span class="text-[14px] font-semibold text-charcoal mt-0.5"
+                >Marfil Claro #FAF7F2</span
+              >
+            </div>
+            <div
+              class="flex flex-col bg-white border border-border-clean p-3.5 rounded-[14px] shadow-velvet-sm"
+            >
+              <span class="text-[11px] font-semibold text-gold-accent uppercase tracking-wider"
+                >CONTRASTE WCAG</span
+              >
+              <span class="text-[14px] font-semibold text-velvet mt-0.5">Ratio ≥ 7.2:1 AAA</span>
+            </div>
+          </div>
+        </header>
+        <!-- ==========================================
+           2. BUTTONS & ACTIONS
+           ========================================== -->
+        <section class="flex flex-col w-full px-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-semibold text-gold-accent tracking-widest uppercase">
+              ✦ 1. BOTONES Y ACCIONABLES
+            </span>
+            <span
+              class="text-[11px] font-medium text-muted-body bg-white px-2.5 py-0.5 rounded-full border border-border-clean"
+            >
+              5 ESTADOS
+            </span>
+          </div>
+          <div
+            class="flex flex-col space-y-5 bg-white p-5 rounded-[18px] border border-border-clean shadow-velvet"
+          >
+            <!-- Primario Velvet -->
+            <div class="flex flex-col space-y-2.5">
+              <span class="text-[11px] font-semibold text-muted-body uppercase tracking-wider"
+                >1.1 Primario · Velvet Burgundy</span
+              >
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <!-- Default -->
+                <button
+                  class="w-full h-11 px-4 bg-velvet hover:bg-velvet-dark text-white font-medium text-[14px] rounded-[12px] flex items-center justify-center gap-2 shadow-velvet-sm transition-all active:scale-[0.98]"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[18px]">local_activity</span>
+                  <span>Comprar entrada</span>
+                </button>
+                <!-- Focused -->
+                <button
+                  class="w-full h-11 px-4 bg-velvet text-white font-medium text-[14px] rounded-[12px] flex items-center justify-center gap-2 shadow-velvet ring-2 ring-velvet ring-offset-2 ring-offset-white"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[18px]">keyboard</span>
+                  <span>En foco activo</span>
+                </button>
+                <!-- Presionado / Active -->
+                <button
+                  class="w-full h-11 px-4 bg-velvet-dark text-white/90 font-medium text-[14px] rounded-[12px] flex items-center justify-center gap-2 shadow-inner"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[18px]">touch_app</span>
+                  <span>Presionado</span>
+                </button>
+                <!-- Loading -->
+                <button
+                  class="w-full h-11 px-4 bg-velvet text-white font-medium text-[14px] rounded-[12px] flex items-center justify-center gap-2 opacity-95"
+                  type="button"
+                >
+                  <svg
+                    class="animate-spin h-4 w-4 text-white"
+                    fill="none"
+                    viewbox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      class="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      stroke-width="4"
+                    ></circle>
+                    <path
+                      class="opacity-75"
+                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                      fill="currentColor"
+                    ></path>
+                  </svg>
+                  <span>Emitiendo boleto...</span>
+                </button>
+                <!-- Disabled -->
+                <button
+                  class="w-full h-11 px-4 bg-marfil-subtle text-muted-body/60 font-medium text-[14px] rounded-[12px] flex items-center justify-center gap-2 cursor-not-allowed border border-border-clean/50 sm:col-span-2"
+                  disabled=""
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[18px]">lock</span>
+                  <span>Acción inhabilitada</span>
+                </button>
+              </div>
+            </div>
+            <!-- Secundarios & Peligro -->
+            <div class="flex flex-col space-y-2.5 pt-2 border-t border-border-clean/60">
+              <span class="text-[11px] font-semibold text-muted-body uppercase tracking-wider"
+                >1.2 Secundario (Marfil) y Destructivo (Carmesí)</span
+              >
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <button
+                  class="w-full h-11 px-4 bg-marfil-subtle hover:bg-marfil text-charcoal border border-border-clean font-medium text-[14px] rounded-[12px] flex items-center justify-center gap-2 transition-colors active:scale-[0.98]"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[18px] text-velvet">bookmark</span>
+                  <span>Reservar ubicación</span>
+                </button>
+                <button
+                  class="w-full h-11 px-4 bg-white text-velvet border border-velvet/30 hover:border-velvet font-medium text-[14px] rounded-[12px] flex items-center justify-center gap-2 shadow-velvet-sm transition-colors active:scale-[0.98]"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[18px]">download</span>
+                  <span>Descargar comprobante</span>
+                </button>
+              </div>
+              <button
+                class="w-full h-11 px-4 bg-crimson-danger hover:bg-crimson-danger/90 text-white font-medium text-[14px] rounded-[12px] flex items-center justify-center gap-2 shadow-velvet-sm transition-all active:scale-[0.98] mt-1"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-[18px]">delete_forever</span>
+                <span>Anular emisión fiscal</span>
+              </button>
+            </div>
+          </div>
+        </section>
+        <!-- ==========================================
+           3. FORM CONTROLS (12PX RADIUS)
+           ========================================== -->
+        <section class="flex flex-col w-full px-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-semibold text-gold-accent tracking-widest uppercase">
+              ✦ 2. FORMULARIOS DE ADMISIÓN
+            </span>
+            <span
+              class="text-[11px] font-medium text-muted-body bg-white px-2.5 py-0.5 rounded-full border border-border-clean"
+            >
+              INPUTS (12PX)
+            </span>
+          </div>
+          <div
+            class="flex flex-col space-y-4 bg-white p-5 rounded-[18px] border border-border-clean shadow-velvet"
+          >
+            <!-- Empty State -->
+            <div class="flex flex-col space-y-1.5">
+              <label
+                class="text-[12px] font-semibold text-charcoal uppercase tracking-wider"
+                for="inp-email"
+              >
+                Correo electrónico del titular <span class="text-velvet">*</span>
+              </label>
+              <div class="relative flex items-center">
+                <input
+                  class="w-full h-12 px-4 bg-marfil text-charcoal placeholder:text-muted-body/60 font-sans text-[14px] rounded-[12px] border border-border-clean focus:outline-none focus:border-velvet focus:bg-white transition-all pr-11"
+                  id="inp-email"
+                  placeholder="ejemplo@teatrocolon.org.ar"
+                  type="email"
+                />
+                <span
+                  class="material-symbols-outlined absolute right-3.5 text-muted-body/60 text-[20px] pointer-events-none"
+                  >mail</span
+                >
+              </div>
+              <p class="text-[12px] text-muted-body">
+                Enviaremos la confirmación digital a esta casilla oficial.
+              </p>
+            </div>
+            <!-- Filled / Valid State -->
+            <div class="flex flex-col space-y-1.5">
+              <label
+                class="text-[12px] font-semibold text-charcoal uppercase tracking-wider"
+                for="inp-valid"
+              >
+                Usuario verificado en sala
+              </label>
+              <div class="relative flex items-center">
+                <input
+                  class="w-full h-12 px-4 bg-white text-charcoal font-sans text-[14px] rounded-[12px] border border-emerald-600/40 pr-11 focus:outline-none"
+                  id="inp-valid"
+                  readonly=""
+                  type="text"
+                  value="mariano.gomez@gmail.com"
+                />
+                <span
+                  class="material-symbols-outlined absolute right-3.5 text-[#1f6b52] text-[20px]"
+                  >check_circle</span
+                >
+              </div>
+            </div>
+            <!-- Focus State -->
+            <div class="flex flex-col space-y-1.5">
+              <label
+                class="text-[12px] font-semibold text-velvet uppercase tracking-wider"
+                for="inp-focus"
+              >
+                Nombre y apellido <span class="text-velvet">*</span> (En foco activo)
+              </label>
+              <div class="relative flex items-center">
+                <input
+                  class="w-full h-12 px-4 bg-white text-charcoal font-sans text-[14px] rounded-[12px] border-2 border-velvet shadow-velvet-sm focus:outline-none pr-11 transition-all"
+                  id="inp-focus"
+                  type="text"
+                  value="Mariano Lisandro Gómez"
+                />
+                <span class="material-symbols-outlined absolute right-3.5 text-velvet text-[20px]"
+                  >person</span
+                >
+              </div>
+            </div>
+            <!-- Error State -->
+            <div class="flex flex-col space-y-1.5">
+              <div class="flex justify-between items-center">
+                <label
+                  class="text-[12px] font-semibold text-crimson-danger uppercase tracking-wider"
+                  for="inp-error"
+                >
+                  Documento Nacional de Identidad (DNI) *
+                </label>
+                <span class="text-[11px] font-bold text-crimson-danger tracking-wider"
+                  >ERROR 402</span
+                >
+              </div>
+              <div class="relative flex items-center">
+                <input
+                  aria-describedby="err-dni"
+                  aria-invalid="true"
+                  class="w-full h-12 px-4 bg-crimson-light/40 text-charcoal font-sans text-[14px] rounded-[12px] border-2 border-crimson-danger pr-11 focus:outline-none"
+                  id="inp-error"
+                  type="text"
+                  value="34.892.1"
+                />
+                <span
+                  class="material-symbols-outlined absolute right-3.5 text-crimson-danger text-[20px]"
+                  >error</span
+                >
+              </div>
+              <div
+                class="flex items-center gap-2 bg-crimson-light/60 p-2.5 rounded-[10px]"
+                id="err-dni"
+              >
+                <span class="material-symbols-outlined text-crimson-danger text-[18px]"
+                  >warning</span
+                >
+                <span class="text-[12px] text-crimson-danger font-medium">
+                  El número de DNI ingresado no es válido. Ingresá 8 dígitos sin puntos ni
+                  separadores.
+                </span>
+              </div>
+            </div>
+            <!-- Select -->
+            <div class="flex flex-col space-y-1.5">
+              <label
+                class="text-[12px] font-semibold text-charcoal uppercase tracking-wider"
+                for="select-cat"
+              >
+                Categoría de espectáculo
+              </label>
+              <div class="relative flex items-center">
+                <select
+                  class="w-full h-12 px-4 bg-marfil text-charcoal font-sans text-[14px] rounded-[12px] border border-border-clean appearance-none focus:outline-none focus:border-velvet focus:bg-white pr-11"
+                  id="select-cat"
+                >
+                  <option value="teatro">Teatro Clásico y Ópera · Calle Corrientes</option>
+                  <option value="rock">Recitales y Filarmónica Nacional</option>
+                  <option value="jazz">Ciclos de Jazz y Música de Cámara</option>
+                </select>
+                <span
+                  class="material-symbols-outlined absolute right-3.5 text-muted-body pointer-events-none text-[20px]"
+                  >expand_more</span
+                >
+              </div>
+            </div>
+            <!-- Textarea with Counter -->
+            <div class="flex flex-col space-y-1.5">
+              <div class="flex justify-between items-center">
+                <label
+                  class="text-[12px] font-semibold text-charcoal uppercase tracking-wider"
+                  for="txt-notes"
+                >
+                  Requerimientos de sala y accesibilidad
+                </label>
+                <span class="text-[11px] font-semibold text-gold-accent">142 / 500</span>
+              </div>
+              <textarea
+                class="w-full p-3.5 bg-marfil text-charcoal font-sans text-[14px] rounded-[12px] border border-border-clean focus:outline-none focus:border-velvet focus:bg-white transition-all"
+                id="txt-notes"
+                rows="3"
+              >
+Preciso ubicación accesible para silla de ruedas en fila central baja, sector platea preferencia izquierda.</textarea
+              >
+              <span class="text-[12px] text-muted-body"
+                >El personal del teatro recibirá este requerimiento con el voucher digital.</span
+              >
+            </div>
+          </div>
+        </section>
+        <!-- ==========================================
+           4. STATUS PILLS & TAXONOMY
+           ========================================== -->
+        <section class="flex flex-col w-full px-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-semibold text-gold-accent tracking-widest uppercase">
+              ✦ 3. PASTILLAS Y ESTADOS FISCALES
+            </span>
+            <span
+              class="text-[11px] font-medium text-muted-body bg-white px-2.5 py-0.5 rounded-full border border-border-clean"
+            >
+              STATUS PILLS
+            </span>
+          </div>
+          <div
+            class="flex flex-col space-y-4 bg-white p-5 rounded-[18px] border border-border-clean shadow-velvet"
+          >
+            <!-- Filter Tags -->
+            <span class="text-[11px] font-semibold text-muted-body uppercase tracking-wider"
+              >3.1 Filtros Dinámicos de Cartelera</span
+            >
+            <div class="flex flex-wrap gap-2">
+              <button
+                class="h-9 px-3.5 rounded-full bg-velvet text-white text-[12px] font-medium flex items-center gap-1.5 shadow-velvet-sm"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-[16px]">check</span>
+                <span>Todos los recitales</span>
+              </button>
+              <button
+                class="h-9 px-3.5 rounded-full bg-marfil hover:bg-marfil-subtle text-charcoal border border-border-clean text-[12px] font-medium flex items-center gap-1.5 transition-colors"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-[16px] text-velvet"
+                  >theater_comedy</span
+                >
+                <span>Teatro clásico</span>
+              </button>
+              <button
+                class="h-9 px-3.5 rounded-full bg-marfil hover:bg-marfil-subtle text-charcoal border border-border-clean text-[12px] font-medium flex items-center gap-1.5 transition-colors"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-[16px] text-gold-accent">piano</span>
+                <span>Conciertos de cámara</span>
+              </button>
+            </div>
+            <!-- Transaction Badges with Specific Hex Tokens -->
+            <span
+              class="text-[11px] font-semibold text-muted-body uppercase tracking-wider pt-2 border-t border-border-clean/60"
+            >
+              3.2 Estados de Transacción (Norma Oficial)
+            </span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <!-- PENDIENTE: #8a5300 sobre #fbf0dc -->
+              <div
+                class="flex items-center gap-2 px-3 py-2 rounded-full w-full border border-[#8a5300]/20"
+                style="background-color: #fbf0dc; color: #8a5300"
+              >
+                <span class="material-symbols-outlined text-[18px]">schedule</span>
+                <span class="text-[12px] font-semibold tracking-wide">PENDIENTE DE PAGO</span>
+              </div>
+              <!-- CONFIRMADA: #1f6b52 sobre #e7f2ec -->
+              <div
+                class="flex items-center gap-2 px-3 py-2 rounded-full w-full border border-[#1f6b52]/20"
+                style="background-color: #e7f2ec; color: #1f6b52"
+              >
+                <span class="material-symbols-outlined text-[18px]">check_circle</span>
+                <span class="text-[12px] font-semibold tracking-wide">CONFIRMADA · VÁLIDA</span>
+              </div>
+              <!-- UTILIZADA: #1f3a5f sobre #e6edf6 -->
+              <div
+                class="flex items-center gap-2 px-3 py-2 rounded-full w-full border border-[#1f3a5f]/20"
+                style="background-color: #e6edf6; color: #1f3a5f"
+              >
+                <span class="material-symbols-outlined text-[18px]">confirmation_number</span>
+                <span class="text-[12px] font-semibold tracking-wide">BOLETO UTILIZADO</span>
+              </div>
+              <!-- CANCELADA: #a3182b sobre #f9e3e5 -->
+              <div
+                class="flex items-center gap-2 px-3 py-2 rounded-full w-full border border-[#a3182b]/20"
+                style="background-color: #f9e3e5; color: #a3182b"
+              >
+                <span class="material-symbols-outlined text-[18px]">cancel</span>
+                <span class="text-[12px] font-semibold tracking-wide">ENTRADA ANULADA</span>
+              </div>
+              <!-- REEMBOLSADA: #8a6417 sobre #f7efdc -->
+              <div
+                class="flex items-center gap-2 px-3 py-2 rounded-full w-full border border-[#8a6417]/20 sm:col-span-2"
+                style="background-color: #f7efdc; color: #8a6417"
+              >
+                <span class="material-symbols-outlined text-[18px]">sync</span>
+                <span class="text-[12px] font-semibold tracking-wide">FONDO REEMBOLSADO</span>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- ==========================================
+           5. MODERN TICKET STUB (TROQUELADO MODERNO)
+           ========================================== -->
+        <section class="flex flex-col w-full px-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-semibold text-gold-accent tracking-widest uppercase">
+              ✦ 4. BOLETO MODERNO TROQUELADO
+            </span>
+            <span
+              class="text-[11px] font-medium text-muted-body bg-white px-2.5 py-0.5 rounded-full border border-border-clean"
+            >
+              TICKET STUB
+            </span>
+          </div>
+          <!-- Modern Ticket Card with Top & Bottom Notches + Vertical Perforated Stub -->
+          <div
+            class="relative flex flex-row w-full bg-white rounded-ticket border border-border-clean shadow-velvet overflow-hidden"
+          >
+            <!-- Semicircular Notches -->
+            <div class="ticket-notch-top"></div>
+            <div class="ticket-notch-bottom"></div>
+            <!-- Main Body (Left side) -->
+            <div class="flex flex-col flex-1 p-4 sm:p-5 justify-between">
+              <div class="flex flex-col">
+                <div class="flex items-center gap-2">
+                  <span class="text-[11px] font-semibold text-gold-accent tracking-wider uppercase"
+                    >TEATRO COLISEO · CABA</span
+                  >
+                  <span class="w-1.5 h-1.5 rounded-full bg-velvet"></span>
+                  <span class="text-[11px] font-medium text-muted-body">SALA PRINCIPAL</span>
+                </div>
+                <h3 class="font-display text-[22px] font-bold text-charcoal mt-1 leading-snug">
+                  Divididos en <span class="italic text-velvet">Concierto</span>
+                </h3>
+                <p class="text-[13px] text-muted-body mt-1">
+                  Platea Baja Central · Fila 08 · Butaca 14
+                </p>
+              </div>
+              <div
+                class="flex items-center justify-between pt-4 mt-3 border-t border-border-clean/60"
+              >
+                <div class="flex flex-col">
+                  <span class="text-[11px] font-semibold text-muted-body uppercase">FECHA</span>
+                  <span class="text-[13px] font-semibold text-charcoal">Sáb 22 Nov · 21:00 hs</span>
+                </div>
+                <div class="flex flex-col items-end">
+                  <span class="text-[11px] font-semibold text-muted-body uppercase"
+                    >IMPORTE TOTAL</span
+                  >
+                  <span class="font-sans text-[18px] font-bold text-velvet">$42.000,00</span>
+                </div>
+              </div>
+            </div>
+            <!-- Vertical Perforated Divider Line -->
+            <div
+              class="relative w-[1px] my-4 border-r border-dashed border-border-clean flex flex-col justify-center"
+            ></div>
+            <!-- Right Stub (#fbf3ee) -->
+            <div
+              class="w-[106px] bg-marfil-stub flex flex-col items-center justify-between p-3.5 text-center"
+            >
+              <div class="flex flex-col items-center">
+                <span class="text-[10px] font-bold uppercase text-gold-accent tracking-wider"
+                  >TALÓN</span
+                >
+                <span class="text-[11px] font-semibold text-charcoal mt-0.5">Nº 004817</span>
+              </div>
+              <!-- Stylized QR Code Icon -->
+              <div
+                class="w-14 h-14 bg-white rounded-[10px] border border-border-clean flex items-center justify-center p-1.5 shadow-velvet-sm"
+              >
+                <span class="material-symbols-outlined text-[34px] text-velvet">qr_code_2</span>
+              </div>
+              <span class="text-[10px] font-semibold text-muted-body uppercase">PUERTA 03</span>
+            </div>
+          </div>
+          <!-- Modern Die-cut Stat Card -->
+          <div
+            class="relative flex items-center justify-between p-4 bg-white rounded-ticket border border-border-clean shadow-velvet-sm"
+          >
+            <div class="flex flex-col">
+              <span class="text-[11px] font-semibold text-gold-accent tracking-wider uppercase"
+                >TAQUILLA EN DIRECTO · SERIE DIGITAL</span
+              >
+              <span class="font-display text-[26px] font-bold text-charcoal mt-0.5"
+                >1.420
+                <span class="text-[14px] font-sans font-medium text-muted-body"
+                  >entradas</span
+                ></span
+              >
+              <span class="text-[12px] text-muted-body"
+                >Emisiones fiscales procesadas en las últimas 24 horas</span
+              >
+            </div>
+            <div
+              class="w-12 h-12 rounded-[14px] bg-velvet-light border border-velvet/20 flex items-center justify-center text-velvet"
+            >
+              <span class="material-symbols-outlined text-[24px]">insights</span>
+            </div>
+          </div>
+        </section>
+        <!-- ==========================================
+           6. SKELETON LOADERS (CONTEMPORARY SHIMMER)
+           ========================================== -->
+        <section class="flex flex-col w-full px-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-semibold text-gold-accent tracking-widest uppercase">
+              ✦ 5. ESTADOS DE CARGA (SKELETONS)
+            </span>
+            <span
+              class="text-[11px] font-medium text-muted-body bg-white px-2.5 py-0.5 rounded-full border border-border-clean"
+            >
+              SHIMMER
+            </span>
+          </div>
+          <div
+            class="flex flex-col space-y-3 bg-white p-5 rounded-[18px] border border-border-clean shadow-velvet"
+          >
+            <span class="text-[11px] font-semibold text-muted-body uppercase tracking-wider"
+              >5.1 Skeleton de Tarjeta en Carga</span
+            >
+            <div
+              class="flex flex-col bg-marfil p-4 rounded-[14px] border border-border-clean space-y-3 animate-pulse"
+            >
+              <div class="w-full h-28 bg-marfil-subtle rounded-[10px]"></div>
+              <div class="flex items-center justify-between">
+                <div class="w-3/5 h-4 bg-marfil-subtle rounded-md"></div>
+                <div class="w-16 h-4 bg-marfil-subtle rounded-full"></div>
+              </div>
+              <div class="w-2/5 h-3 bg-marfil-subtle rounded-md"></div>
+              <div class="flex items-center justify-between pt-2">
+                <div class="w-20 h-5 bg-marfil-subtle rounded-md"></div>
+                <div class="w-28 h-9 bg-marfil-subtle rounded-[10px]"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- ==========================================
+           7. FEEDBACK STATES (EMPTY & SYSTEM ERROR)
+           ========================================== -->
+        <section class="flex flex-col w-full px-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-semibold text-gold-accent tracking-widest uppercase">
+              ✦ 6. PANTALLAS VACÍAS Y DE ERROR
+            </span>
+            <span
+              class="text-[11px] font-medium text-muted-body bg-white px-2.5 py-0.5 rounded-full border border-border-clean"
+            >
+              FEEDBACK
+            </span>
+          </div>
+          <!-- Empty State -->
+          <div
+            class="flex flex-col items-center text-center p-6 bg-white rounded-[18px] border border-border-clean shadow-velvet space-y-3"
+          >
+            <div
+              class="w-14 h-14 rounded-full bg-velvet-light border border-velvet/20 flex items-center justify-center text-velvet shadow-velvet-sm"
+            >
+              <span class="material-symbols-outlined text-[28px]">local_activity</span>
+            </div>
+            <div class="flex flex-col space-y-1">
+              <h3 class="font-display text-[20px] font-bold text-charcoal">
+                Todavía no compraste <span class="italic text-velvet">entradas</span>
+              </h3>
+              <p class="text-[13px] text-muted-body max-w-xs mx-auto leading-relaxed">
+                Tu talonario oficial está esperando. Descubrí obras teatrales, recitales y
+                sinfónicas con preventa disponible hoy.
+              </p>
+            </div>
+            <button
+              class="h-11 px-5 mt-1 bg-velvet text-white font-medium text-[14px] rounded-[12px] flex items-center gap-2 shadow-velvet-sm hover:bg-velvet-dark transition-colors"
+              type="button"
+            >
+              <span class="material-symbols-outlined text-[18px]">explore</span>
+              <span>Explorar cartelera oficial</span>
+            </button>
+          </div>
+          <!-- Error State -->
+          <div
+            class="flex flex-col items-center text-center p-6 bg-white rounded-[18px] border border-crimson-danger/30 shadow-velvet space-y-3"
+          >
+            <div
+              class="w-14 h-14 rounded-full bg-crimson-light flex items-center justify-center text-crimson-danger"
+            >
+              <span class="material-symbols-outlined text-[28px]">sync_problem</span>
+            </div>
+            <div class="flex flex-col space-y-1">
+              <h3 class="font-display text-[20px] font-bold text-crimson-danger">
+                Fallo de conexión con la sala
+              </h3>
+              <p class="text-[13px] text-muted-body max-w-xs mx-auto leading-relaxed">
+                No pudimos validar el bordereaux con el servidor de taquilla central. El sistema
+                reintentará de forma segura.
+              </p>
+            </div>
+            <button
+              class="h-11 px-5 mt-1 bg-crimson-danger hover:bg-crimson-danger/90 text-white font-medium text-[14px] rounded-[12px] flex items-center gap-2 shadow-velvet-sm transition-colors"
+              type="button"
+            >
+              <span class="material-symbols-outlined text-[18px]">refresh</span>
+              <span>Reintentar validación</span>
+            </button>
+          </div>
+        </section>
+        <!-- ==========================================
+           8. FLOATING TOASTS (4 PALETTES)
+           ========================================== -->
+        <section class="flex flex-col w-full px-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-semibold text-gold-accent tracking-widest uppercase">
+              ✦ 7. NOTIFICACIONES FLOTANTES (TOASTS)
+            </span>
+            <span
+              class="text-[11px] font-medium text-muted-body bg-white px-2.5 py-0.5 rounded-full border border-border-clean"
+            >
+              4 VARIANTES
+            </span>
+          </div>
+          <div class="flex flex-col space-y-2.5">
+            <!-- Toast Success -->
+            <div
+              class="flex items-start justify-between p-4 bg-white border border-[#1f6b52]/30 rounded-[14px] shadow-velvet"
+            >
+              <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-[#1f6b52] text-[22px] mt-0.5"
+                  >check_circle</span
+                >
+                <div class="flex flex-col">
+                  <span class="font-sans text-[14px] font-semibold text-charcoal"
+                    >Entrada emitida con éxito</span
+                  >
+                  <span class="text-[12px] text-muted-body mt-0.5"
+                    >El boleto digital #004817 se guardó en tu perfil oficial.</span
+                  >
+                </div>
+              </div>
+              <button
+                aria-label="Cerrar notificación"
+                class="text-muted-body/60 hover:text-charcoal"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-[18px]">close</span>
+              </button>
+            </div>
+            <!-- Toast Warning -->
+            <div
+              class="flex items-start justify-between p-4 bg-white border border-[#8a5300]/30 rounded-[14px] shadow-velvet"
+            >
+              <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-[#8a5300] text-[22px] mt-0.5"
+                  >timer</span
+                >
+                <div class="flex flex-col">
+                  <span class="font-sans text-[14px] font-semibold text-charcoal"
+                    >Reserva temporal por vencer</span
+                  >
+                  <span class="text-[12px] text-muted-body mt-0.5"
+                    >Faltan 15 minutos para que la butaca seleccionada sea liberada.</span
+                  >
+                </div>
+              </div>
+              <button
+                aria-label="Cerrar notificación"
+                class="text-muted-body/60 hover:text-charcoal"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-[18px]">close</span>
+              </button>
+            </div>
+            <!-- Toast Error -->
+            <div
+              class="flex items-start justify-between p-4 bg-white border border-crimson-danger/30 rounded-[14px] shadow-velvet"
+            >
+              <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-crimson-danger text-[22px] mt-0.5"
+                  >error</span
+                >
+                <div class="flex flex-col">
+                  <span class="font-sans text-[14px] font-semibold text-crimson-danger"
+                    >Fallo en la pasarela de pago</span
+                  >
+                  <span class="text-[12px] text-muted-body mt-0.5"
+                    >Fondos insuficientes en la tarjeta o comprobante rechazado por el banco
+                    emisor.</span
+                  >
+                </div>
+              </div>
+              <button
+                aria-label="Cerrar notificación"
+                class="text-muted-body/60 hover:text-charcoal"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-[18px]">close</span>
+              </button>
+            </div>
+            <!-- Toast Info -->
+            <div
+              class="flex items-start justify-between p-4 bg-white border border-velvet/30 rounded-[14px] shadow-velvet"
+            >
+              <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-velvet text-[22px] mt-0.5">info</span>
+                <div class="flex flex-col">
+                  <span class="font-sans text-[14px] font-semibold text-charcoal"
+                    >Aviso oficial de sala</span
+                  >
+                  <span class="text-[12px] text-muted-body mt-0.5"
+                    >La apertura de puertas del recinto fue adelantada excepcionalmente a las 19:30
+                    hs.</span
+                  >
+                </div>
+              </div>
+              <button
+                aria-label="Cerrar notificación"
+                class="text-muted-body/60 hover:text-charcoal"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-[18px]">close</span>
+              </button>
+            </div>
+          </div>
+        </section>
+        <!-- ==========================================
+           9. MICRO-CONTROLS & OVERLAYS
+           ========================================== -->
+        <section class="flex flex-col w-full px-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-semibold text-gold-accent tracking-widest uppercase">
+              ✦ 8. MICRO-CONTROLES Y DIÁLOGOS
+            </span>
+            <span
+              class="text-[11px] font-medium text-muted-body bg-white px-2.5 py-0.5 rounded-full border border-border-clean"
+            >
+              OVERLAYS
+            </span>
+          </div>
+          <!-- Inline Confirmation Modal -->
+          <div
+            class="flex flex-col bg-white p-5 rounded-[18px] border border-border-clean shadow-velvet space-y-3.5"
+          >
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 rounded-full bg-crimson-light flex items-center justify-center text-crimson-danger"
+              >
+                <span class="material-symbols-outlined text-[20px]">help</span>
+              </div>
+              <div>
+                <span class="text-[10px] font-bold text-crimson-danger uppercase tracking-wider"
+                  >CONFIRMACIÓN REQUERIDA</span
+                >
+                <h3 class="font-display text-[17px] font-bold text-charcoal leading-snug">
+                  ¿Confirmás la <span class="italic text-velvet">cancelación</span> de la entrada?
+                </h3>
+              </div>
+            </div>
+            <p class="text-[13px] text-muted-body leading-relaxed">
+              El reintegro del monto total de
+              <span class="font-semibold text-charcoal">$42.000,00</span> se acreditará en el mismo
+              método de pago en un plazo máximo de 24 horas hábiles.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-2 pt-1">
+              <button
+                class="w-full h-11 px-4 bg-crimson-danger hover:bg-crimson-danger/90 text-white font-medium text-[14px] rounded-[12px] flex items-center justify-center gap-2 shadow-velvet-sm transition-all"
+                type="button"
+              >
+                <span>Confirmar cancelación</span>
+              </button>
+              <button
+                class="w-full h-11 px-4 bg-marfil-subtle text-charcoal font-medium text-[14px] rounded-[12px] flex items-center justify-center gap-2 border border-border-clean hover:bg-marfil transition-colors"
+                type="button"
+              >
+                <span>Volver atrás</span>
+              </button>
+            </div>
+          </div>
+          <!-- Modern Pagination & Star Rating Card -->
+          <div
+            class="flex flex-col space-y-4 bg-white p-5 rounded-[18px] border border-border-clean shadow-velvet"
+          >
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-semibold text-muted-body uppercase"
+                >Paginación de sala</span
+              >
+              <span class="text-[12px] font-medium text-charcoal"
+                >Mostrando 1–10 de 87 funciones</span
+              >
+            </div>
+            <div class="flex items-center justify-center gap-1.5 py-1">
+              <button
+                aria-label="Página anterior"
+                class="w-9 h-9 rounded-full bg-marfil text-charcoal border border-border-clean flex items-center justify-center hover:bg-marfil-subtle"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-[16px]">chevron_left</span>
+              </button>
+              <button
+                class="w-9 h-9 rounded-full bg-velvet text-white text-[13px] font-semibold flex items-center justify-center shadow-velvet-sm"
+                type="button"
+              >
+                1
+              </button>
+              <button
+                class="w-9 h-9 rounded-full bg-marfil text-charcoal text-[13px] font-medium flex items-center justify-center hover:bg-marfil-subtle"
+                type="button"
+              >
+                2
+              </button>
+              <button
+                class="w-9 h-9 rounded-full bg-marfil text-charcoal text-[13px] font-medium flex items-center justify-center hover:bg-marfil-subtle"
+                type="button"
+              >
+                3
+              </button>
+              <span class="px-1 text-muted-body text-[13px]">…</span>
+              <button
+                class="w-9 h-9 rounded-full bg-marfil text-charcoal text-[13px] font-medium flex items-center justify-center hover:bg-marfil-subtle"
+                type="button"
+              >
+                9
+              </button>
+              <button
+                aria-label="Página siguiente"
+                class="w-9 h-9 rounded-full bg-marfil text-charcoal border border-border-clean flex items-center justify-center hover:bg-marfil-subtle"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+              </button>
+            </div>
+            <!-- Star Rating & Review Metric -->
+            <div class="flex items-center justify-between pt-3 border-t border-border-clean/60">
+              <div class="flex items-center gap-2">
+                <div class="flex text-gold-accent">
+                  <span
+                    class="material-symbols-outlined text-[20px]"
+                    style="font-variation-settings: &quot;FILL&quot; 1"
+                    >star</span
+                  >
+                  <span
+                    class="material-symbols-outlined text-[20px]"
+                    style="font-variation-settings: &quot;FILL&quot; 1"
+                    >star</span
+                  >
+                  <span
+                    class="material-symbols-outlined text-[20px]"
+                    style="font-variation-settings: &quot;FILL&quot; 1"
+                    >star</span
+                  >
+                  <span
+                    class="material-symbols-outlined text-[20px]"
+                    style="font-variation-settings: &quot;FILL&quot; 1"
+                    >star</span
+                  >
+                  <span class="material-symbols-outlined text-[20px]">star_half</span>
+                </div>
+                <span class="font-sans text-[15px] font-bold text-charcoal">4,5 de 5</span>
+              </div>
+              <span class="text-[11px] font-semibold text-muted-body uppercase"
+                >324 RESEÑAS VERIFICADAS</span
+              >
+            </div>
+            <!-- Modern Chat Bubble Pair -->
+            <div class="flex flex-col space-y-2.5 pt-3 border-t border-border-clean/60">
+              <span class="text-[11px] font-semibold text-muted-body uppercase"
+                >Atención de Taquilla</span
+              >
+              <!-- Host Bubble (Left) -->
+              <div
+                class="flex flex-col self-start max-w-[85%] bg-marfil p-3 rounded-[14px] rounded-tl-sm border border-border-clean space-y-1 shadow-velvet-sm"
+              >
+                <div class="flex items-center gap-2">
+                  <span class="text-[11px] font-bold text-velvet">ORGANIZACIÓN TEATRAL</span>
+                  <span class="text-[10px] text-muted-body">10:42 hs</span>
+                </div>
+                <p class="text-[13px] text-charcoal">
+                  ¡Hola Mariano! Confirmamos que la fila 08 tiene acceso directo por rampa central
+                  sin escalones.
+                </p>
+              </div>
+              <!-- Buyer Bubble (Right) -->
+              <div
+                class="flex flex-col self-end max-w-[85%] bg-velvet text-white p-3 rounded-[14px] rounded-tr-sm space-y-1 shadow-velvet-sm"
+              >
+                <p class="text-[13px] text-white">
+                  ¡Excelente, muchas gracias por confirmar! Ya descargué el boleto de acceso.
+                </p>
+                <div class="flex items-center justify-end gap-1">
+                  <span class="text-[10px] text-white/70">10:45 hs</span>
+                  <span class="material-symbols-outlined text-[14px] text-gold-light"
+                    >done_all</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- ==========================================
+           10. APP CHROME PREVIEWS (BARS & FOOTER)
+           ========================================== -->
+        <section class="flex flex-col w-full px-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-semibold text-gold-accent tracking-widest uppercase">
+              ✦ 9. VISTAS PREVIAS DE CHROME Y SHELL
+            </span>
+            <span
+              class="text-[11px] font-medium text-muted-body bg-white px-2.5 py-0.5 rounded-full border border-border-clean"
+            >
+              APP SHELL
+            </span>
+          </div>
+          <!-- Top App Bar Preview -->
+          <div
+            class="flex items-center justify-between p-3.5 bg-white rounded-[18px] border border-border-clean shadow-velvet"
+          >
+            <div class="flex items-center gap-2.5">
+              <button
+                aria-label="Volver atrás"
+                class="w-10 h-10 rounded-full bg-marfil border border-border-clean flex items-center justify-center text-charcoal hover:bg-marfil-subtle transition-colors"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+              </button>
+              <span class="font-display text-[17px] font-bold text-charcoal"
+                >Boletería <span class="italic text-velvet">Oficial</span></span
+              >
+            </div>
+            <div class="flex items-center gap-2">
+              <div
+                class="relative flex items-center justify-center w-10 h-10 rounded-full bg-marfil border border-border-clean text-charcoal"
+              >
+                <span class="material-symbols-outlined text-[20px]">chat_bubble_outline</span>
+                <span
+                  class="absolute -top-1 -right-1 w-4 h-4 bg-crimson-danger text-white rounded-full text-[10px] flex items-center justify-center font-bold"
+                  >2</span
+                >
+              </div>
+              <div
+                class="relative flex items-center justify-center w-10 h-10 rounded-full bg-marfil border border-border-clean text-charcoal"
+              >
+                <span class="material-symbols-outlined text-[20px]">notifications_none</span>
+                <span
+                  class="absolute -top-1 -right-1 w-4 h-4 bg-velvet text-white rounded-full text-[10px] flex items-center justify-center font-bold"
+                  >3</span
+                >
+              </div>
+            </div>
+          </div>
+          <!-- Bottom Navigation Bar Preview -->
+          <div
+            class="flex items-center justify-around py-3 bg-white rounded-[18px] border border-border-clean shadow-velvet"
+          >
+            <!-- Active Velvet Tab -->
+            <button class="flex flex-col items-center gap-1 text-velvet relative" type="button">
+              <span
+                class="material-symbols-outlined text-[22px]"
+                style="font-variation-settings: &quot;FILL&quot; 1"
+                >theater_comedy</span
+              >
+              <span class="text-[11px] font-bold tracking-tight">Explorar</span>
+              <span class="w-1 h-1 rounded-full bg-velvet mt-0.5"></span>
+            </button>
+            <button
+              class="flex flex-col items-center gap-1 text-muted-body hover:text-charcoal"
+              type="button"
+            >
+              <span class="material-symbols-outlined text-[22px]">confirmation_number</span>
+              <span class="text-[11px] font-medium tracking-tight">Mis Compras</span>
+            </button>
+            <button
+              class="flex flex-col items-center gap-1 text-muted-body hover:text-charcoal"
+              type="button"
+            >
+              <span class="material-symbols-outlined text-[22px]">favorite_border</span>
+              <span class="text-[11px] font-medium tracking-tight">Favoritos</span>
+            </button>
+            <button
+              class="relative flex flex-col items-center gap-1 text-muted-body hover:text-charcoal"
+              type="button"
+            >
+              <span class="material-symbols-outlined text-[22px]">mail_outline</span>
+              <span
+                class="absolute -top-1 right-2 w-3.5 h-3.5 bg-crimson-danger text-white rounded-full text-[9px] flex items-center justify-center font-bold"
+                >2</span
+              >
+              <span class="text-[11px] font-medium tracking-tight">Mensajes</span>
+            </button>
+            <button
+              class="flex flex-col items-center gap-1 text-muted-body hover:text-charcoal"
+              type="button"
+            >
+              <span class="material-symbols-outlined text-[22px]">person_outline</span>
+              <span class="text-[11px] font-medium tracking-tight">Perfil</span>
+            </button>
+          </div>
+          <!-- System Design Footer -->
+          <footer
+            class="flex flex-col p-5 bg-white border border-border-clean rounded-[18px] shadow-velvet space-y-3 mt-4"
+          >
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-velvet text-[22px]"
+                  >local_activity</span
+                >
+                <span class="font-display text-[16px] font-bold text-charcoal"
+                  >AI Ticket It · <span class="italic text-velvet">Curtain</span></span
+                >
+              </div>
+              <span class="text-[11px] font-semibold text-gold-accent uppercase"
+                >MODO CLARO MARFIL</span
+              >
+            </div>
+            <p class="text-[12px] text-muted-body leading-relaxed">
+              Manual de Componentes e Identidad Visual Velvet Curtain. Arquitectura de diseño con
+              contraste garantizado WCAG AA/AAA para pantallas táctiles de alta definición.
+            </p>
+            <div
+              class="flex flex-wrap gap-4 pt-1 text-[11px] font-semibold text-velvet uppercase tracking-wider"
+            >
+              <a class="hover:underline" href="#terminos">Términos de Taquilla</a>
+              <a class="hover:underline" href="#fiscal">Validez Fiscal Oficial</a>
+              <a class="hover:underline" href="#ayuda">Mesa de Ayuda</a>
+            </div>
+          </footer>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

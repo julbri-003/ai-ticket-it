@@ -5,3 +5,5 @@ coverage/
 dist/
 uploads/
 specs/
+# Exportaciones de Stitch: se usan como referencia visual tal cual vienen.
+design/

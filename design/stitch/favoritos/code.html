@@ -1,0 +1,709 @@
+<!doctype html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+      name="viewport"
+    />
+    <meta content="mobile_tab" name="shell-type" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface-variant": "#564242",
+              "surface-container": "#fbeaec",
+              "surface-container-low": "#fff0f2",
+              tertiary: "#3b2700",
+              "inverse-primary": "#ffb2b6",
+              surface: "#fff8f8",
+              "on-surface": "#22191b",
+              "on-background": "#22191b",
+              "on-tertiary-fixed-variant": "#5e4100",
+              "surface-container-lowest": "#ffffff",
+              "primary-fixed-dim": "#ffb2b6",
+              "surface-container-highest": "#efdfe1",
+              primary: "#5b0418",
+              "on-secondary-fixed": "#271900",
+              "on-primary-fixed-variant": "#822431",
+              outline: "#897172",
+              "on-tertiary-fixed": "#271900",
+              "on-tertiary": "#ffffff",
+              "inverse-on-surface": "#fdedef",
+              "surface-container-high": "#f5e4e7",
+              "on-secondary": "#ffffff",
+              "surface-bright": "#fff8f8",
+              background: "#fff8f8",
+              "tertiary-container": "#573c00",
+              "on-error": "#ffffff",
+              "tertiary-fixed-dim": "#f3be5b",
+              "on-secondary-container": "#795505",
+              "secondary-container": "#ffcd76",
+              "on-error-container": "#93000a",
+              "on-tertiary-container": "#d7a545",
+              error: "#ba1a1a",
+              "on-secondary-fixed-variant": "#5f4100",
+              "outline-variant": "#dcc0c0",
+              "secondary-fixed": "#ffdeaa",
+              "inverse-surface": "#372e30",
+              "surface-variant": "#efdfe1",
+              "surface-dim": "#e6d6d9",
+              "on-primary-container": "#ff8a93",
+              "on-primary": "#ffffff",
+              "on-primary-fixed": "#40000d",
+              "secondary-fixed-dim": "#efbf6a",
+              "error-container": "#ffdad6",
+              "tertiary-fixed": "#ffdea9",
+              "primary-container": "#7a1e2c",
+              "primary-fixed": "#ffdada",
+              "surface-tint": "#a13c47",
+              secondary: "#7c5808",
+            },
+            borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+            spacing: {
+              "space-lg": "1.5rem",
+              "space-md": "1rem",
+              gutter: "1.5rem",
+              margin: "2.5rem",
+              "space-xs": "0.25rem",
+              "space-sm": "0.5rem",
+              "space-xl": "2.5rem",
+              "margin-mobile": "1.25rem",
+              "gutter-mobile": "1rem",
+              "space-2xl": "4rem",
+            },
+            fontFamily: {
+              "label-section": ["Inter"],
+              "body-sm": ["Inter"],
+              display: ["Playfair Display"],
+              "display-mobile": ["Playfair Display"],
+              "title-md": ["Inter"],
+              "headline-lg-mobile": ["Playfair Display"],
+              "headline-sm": ["Playfair Display"],
+              "body-lg": ["Inter"],
+              "label-interactive": ["Inter"],
+              "title-lg": ["Playfair Display"],
+              "body-md": ["Inter"],
+              "headline-lg": ["Playfair Display"],
+              "headline-md": ["Playfair Display"],
+            },
+            fontSize: {
+              "label-section": [
+                "11px",
+                { lineHeight: "16px", letterSpacing: "0.12em", fontWeight: "600" },
+              ],
+              "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }],
+              display: ["48px", { lineHeight: "56px", fontWeight: "700" }],
+              "display-mobile": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+              "headline-lg-mobile": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+              "headline-sm": ["22px", { lineHeight: "30px", fontWeight: "700" }],
+              "body-lg": ["16px", { lineHeight: "26px", fontWeight: "400" }],
+              "label-interactive": [
+                "13px",
+                { lineHeight: "18px", letterSpacing: "0.02em", fontWeight: "500" },
+              ],
+              "title-lg": ["20px", { lineHeight: "28px", fontWeight: "700" }],
+              "body-md": ["14px", { lineHeight: "22px", fontWeight: "400" }],
+              "headline-lg": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+              "headline-md": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @layer base {
+        html,
+        body {
+          width: 100vw;
+          margin: 0;
+          padding: 0;
+          background-color: #fff8f8;
+        }
+        body {
+          overscroll-behavior-y: none;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .pb-safe {
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .pt-safe {
+          padding-top: env(safe-area-inset-top, 0px);
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-surface text-on-surface font-body-md text-body-md min-h-screen flex flex-col antialiased selection:bg-secondary-fixed selection:text-on-secondary-fixed"
+  >
+    <header
+      class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_12px_rgba(34,25,27,0.04)]"
+    >
+      <div class="h-16 px-margin-mobile flex items-center justify-between">
+        <div class="flex flex-col justify-center">
+          <span
+            class="font-label-section text-label-section uppercase text-secondary tracking-widest"
+            >AI TICKET IT</span
+          >
+          <h1 class="font-title-lg text-title-lg text-primary tracking-tight">Favoritos</h1>
+        </div>
+        <div class="flex items-center gap-space-sm">
+          <a
+            class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary transition-colors active:scale-95"
+            data-path="notificaciones"
+            href="#"
+            ><span class="material-symbols-outlined text-[22px]">notifications</span></a
+          ><a class="w-11 h-11 flex items-center justify-center" data-path="perfil" href="#"
+            ><div
+              class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-sm"
+            >
+              <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+            </div></a
+          >
+        </div>
+      </div>
+    </header>
+    <main class="flex-1 w-full bg-surface pt-16 pb-24">
+      <div class="flex flex-col w-full pb-8">
+        <div class="px-margin-mobile pt-space-md pb-space-sm flex flex-col gap-space-xs">
+          <div class="flex items-baseline justify-between">
+            <h2
+              class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface tracking-tight"
+            >
+              Tus <span class="italic text-primary-container">Favoritos</span>
+            </h2>
+            <span
+              class="font-label-section text-label-section text-secondary uppercase tracking-widest bg-secondary-container/40 px-2.5 py-1 rounded-full"
+            >
+              Guardados (5)
+            </span>
+          </div>
+          <p class="font-body-md text-body-md text-on-surface-variant">
+            Tu selección curada de funciones líricas, recitales y teatro de cartelera.
+          </p>
+        </div>
+        <div
+          class="px-margin-mobile py-space-sm flex items-center gap-space-xs overflow-x-auto no-scrollbar"
+        >
+          <button
+            class="px-4 py-2 rounded-full bg-primary-container text-on-primary font-label-interactive text-label-interactive shadow-sm flex items-center gap-1.5 transition-transform active:scale-95 whitespace-nowrap"
+          >
+            <span>Todos</span>
+            <span class="opacity-80 text-[11px]">(5)</span>
+          </button>
+          <button
+            class="px-4 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-interactive text-label-interactive hover:text-primary transition-colors whitespace-nowrap"
+          >
+            <span>Próximos</span>
+            <span class="opacity-70 text-[11px]">(4)</span>
+          </button>
+          <button
+            class="px-4 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-interactive text-label-interactive hover:text-primary transition-colors whitespace-nowrap"
+          >
+            <span>Finalizados</span>
+            <span class="opacity-70 text-[11px]">(1)</span>
+          </button>
+        </div>
+        <div class="px-margin-mobile mt-space-md flex flex-col gap-space-md">
+          <!-- Boleta 1: Divididos -->
+          <div
+            class="relative bg-surface-container-lowest rounded-xl shadow-md overflow-hidden flex flex-col group transition-all duration-300"
+          >
+            <div class="flex flex-row">
+              <div class="w-32 sm:w-36 relative overflow-hidden bg-surface-container">
+                <img
+                  class="w-full h-full object-cover object-center"
+                  data-alt="High energy Argentine rock band live performance on stage with dramatic warm stage spotlights, amber and crimson haze, stadium silhouettes, professional editorial concert photography"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHz2LrqgLccXPsehXrRrp-lHQOf_C5ohq2d928E7Xzs8UHeBzRpBzGxDPh4YPPLCRkeyePfdb3KB3VQyts25VwDnpb74WpJ4w287W95Zm0s8pKbH9-7srN3eaZm1Mha9ri26GXspQuzj1Ia7efHvd3S_Xhqfz37BPJaNcYa8fCmi2ZFywp8GQXQXX-vNjF-6CXZia-kMhStb0zdHOnCC2cMwxelgnvHAcWjZqiFyY"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent"
+                ></div>
+                <span
+                  class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-primary text-on-primary font-label-section text-[10px] uppercase tracking-wider"
+                >
+                  Rock
+                </span>
+              </div>
+              <div class="flex-1 p-space-md flex flex-col justify-between">
+                <div class="flex items-start justify-between gap-space-xs">
+                  <div>
+                    <span
+                      class="font-label-section text-label-section text-secondary uppercase block mb-0.5"
+                      >Estadio Obras Sanitarias</span
+                    >
+                    <h3 class="font-title-md text-title-md text-on-surface line-clamp-1">
+                      Divididos: 35 Años
+                    </h3>
+                  </div>
+                  <button
+                    aria-label="Quitar de favoritos"
+                    class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary transition-transform active:scale-90"
+                    onclick="triggerToast('Divididos: 35 Años')"
+                  >
+                    <span
+                      class="material-symbols-outlined text-[18px]"
+                      style="font-variation-settings: &quot;FILL&quot; 1"
+                      >favorite</span
+                    >
+                  </button>
+                </div>
+                <div class="flex items-center gap-1.5 text-on-surface-variant my-1">
+                  <span class="material-symbols-outlined text-[15px] text-secondary"
+                    >calendar_today</span
+                  >
+                  <span class="font-body-sm text-body-sm">Sáb 22 nov · 21:00 hs</span>
+                </div>
+                <div class="flex items-center justify-between pt-1">
+                  <div class="flex flex-col">
+                    <span
+                      class="font-label-section text-[10px] text-outline uppercase tracking-wider"
+                      >Desde</span
+                    >
+                    <span class="font-title-md text-title-md text-primary font-bold tracking-tight"
+                      >$42.000,00</span
+                    >
+                  </div>
+                  <button
+                    class="h-9 px-4 rounded-full bg-primary-container text-on-primary font-label-interactive text-[12px] flex items-center gap-1 shadow-sm active:scale-95 transition-all"
+                  >
+                    <span>Comprar</span>
+                    <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Ticket Perforation styling -->
+            <div class="relative flex items-center px-4 py-1 bg-surface-container-low">
+              <div
+                class="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-surface"
+              ></div>
+              <div class="w-full flex justify-between items-center px-2">
+                <div
+                  class="flex items-center gap-1 text-[11px] text-on-surface-variant font-label-section"
+                >
+                  <span class="material-symbols-outlined text-[13px] text-secondary"
+                    >confirmation_number</span
+                  >
+                  Plateas &amp; Campo disponibles
+                </div>
+                <span
+                  class="text-secondary font-label-section text-[11px] tracking-widest uppercase"
+                  >Fila VIP</span
+                >
+              </div>
+              <div
+                class="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-surface"
+              ></div>
+            </div>
+          </div>
+          <!-- Boleta 2: Toc Toc -->
+          <div
+            class="relative bg-surface-container-lowest rounded-xl shadow-md overflow-hidden flex flex-col group transition-all duration-300"
+          >
+            <div class="flex flex-row">
+              <div class="w-32 sm:w-36 relative overflow-hidden bg-surface-container">
+                <img
+                  class="w-full h-full object-cover object-center"
+                  data-alt="Playbill theater stage illuminated with theatrical warm spotlights, red velvet curtains framing the scene, sophisticated classic theater ambience, sharp focus, refined luxury arts photography"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuADWMMA8F1KPEmBzEYxv9T5dM_Hn3YN2wo41xTsY9KolIEcp26TAziFRXQmqcdsqViLxyX5bcaM7sj0Hg54Rvontd3dOWQE_zC2kK44XaFnsEIvKv7yVEjUJTHGSnWzA4Nfc2v2mWehWQITASRnXG_ETlc8tvVgn5Ak6tKg1VmXg5Le_5-qCh6-F_2T6ycGdtdLZrrDB316TQVMdnmBqw5oJPO7ATKoCpQf7avHhc4"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent"
+                ></div>
+                <span
+                  class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-section text-[10px] uppercase font-semibold"
+                >
+                  Últimas entradas
+                </span>
+                <span
+                  class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-surface-container-highest text-on-surface font-label-section text-[10px] uppercase tracking-wider"
+                >
+                  Comedia
+                </span>
+              </div>
+              <div class="flex-1 p-space-md flex flex-col justify-between">
+                <div class="flex items-start justify-between gap-space-xs">
+                  <div>
+                    <span
+                      class="font-label-section text-label-section text-secondary uppercase block mb-0.5"
+                      >Multiteatro Comafi</span
+                    >
+                    <h3 class="font-title-md text-title-md text-on-surface line-clamp-1">
+                      Obra Toc Toc
+                    </h3>
+                  </div>
+                  <button
+                    aria-label="Quitar de favoritos"
+                    class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary transition-transform active:scale-90"
+                    onclick="triggerToast('Obra Toc Toc')"
+                  >
+                    <span
+                      class="material-symbols-outlined text-[18px]"
+                      style="font-variation-settings: &quot;FILL&quot; 1"
+                      >favorite</span
+                    >
+                  </button>
+                </div>
+                <div class="flex items-center gap-1.5 text-on-surface-variant my-1">
+                  <span class="material-symbols-outlined text-[15px] text-secondary"
+                    >calendar_today</span
+                  >
+                  <span class="font-body-sm text-body-sm">Dom 23 nov · 20:30 hs</span>
+                </div>
+                <div class="flex items-center justify-between pt-1">
+                  <div class="flex flex-col">
+                    <span
+                      class="font-label-section text-[10px] text-outline uppercase tracking-wider"
+                      >Desde</span
+                    >
+                    <span class="font-title-md text-title-md text-primary font-bold tracking-tight"
+                      >$28.000,00</span
+                    >
+                  </div>
+                  <button
+                    class="h-9 px-4 rounded-full bg-primary-container text-on-primary font-label-interactive text-[12px] flex items-center gap-1 shadow-sm active:scale-95 transition-all"
+                  >
+                    <span>Comprar</span>
+                    <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="relative flex items-center px-4 py-1 bg-surface-container-low">
+              <div
+                class="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-surface"
+              ></div>
+              <div class="w-full flex justify-between items-center px-2">
+                <div
+                  class="flex items-center gap-1 text-[11px] text-on-surface-variant font-label-section"
+                >
+                  <span class="material-symbols-outlined text-[13px] text-secondary">pin_drop</span>
+                  Av. Corrientes 1283
+                </div>
+                <span
+                  class="text-error font-label-section text-[11px] uppercase font-bold tracking-wider"
+                  >Pocas butacas</span
+                >
+              </div>
+              <div
+                class="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-surface"
+              ></div>
+            </div>
+          </div>
+          <!-- Boleta 3: El Puente de los Suspiros Porteño -->
+          <div
+            class="relative bg-surface-container-lowest rounded-xl shadow-md overflow-hidden flex flex-col group transition-all duration-300"
+          >
+            <div class="flex flex-row">
+              <div class="w-32 sm:w-36 relative overflow-hidden bg-surface-container">
+                <img
+                  class="w-full h-full object-cover object-center"
+                  data-alt="Dramatic theatrical opera stage set depicting a historic bridge in Buenos Aires at night, moody cinematic lighting, deep crimson velvet shadows, golden atmospheric haze, fine art stage design"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaSp-RpD7FM7tQcIo62gjLvIRWQXKzVWqyF9PngX7IrK8U9jzGZ9VNrxjskb_dzHMz0pEUYj7zzZ3BY45fwIuWNZWtNdfk2TM-_vOz015NQN4E3NtGjkBKB6lL8Gr63EVRn_nhNVnEGS8wIDu_8MOMjTZN9-y5Iogw0S9UBv--64jQSbO1wheuUtNskAIw9MSAQZG6WbejJYN7_xQV287alyZ0dj_V2YcTAbx6gTM"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent"
+                ></div>
+                <span
+                  class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-primary text-on-primary font-label-section text-[10px] uppercase tracking-wider"
+                >
+                  Drama
+                </span>
+              </div>
+              <div class="flex-1 p-space-md flex flex-col justify-between">
+                <div class="flex items-start justify-between gap-space-xs">
+                  <div>
+                    <span
+                      class="font-label-section text-label-section text-secondary uppercase block mb-0.5"
+                      >Teatro Alvear</span
+                    >
+                    <h3 class="font-title-md text-title-md text-on-surface line-clamp-1">
+                      El Puente de los Suspiros
+                    </h3>
+                  </div>
+                  <button
+                    aria-label="Quitar de favoritos"
+                    class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary transition-transform active:scale-90"
+                    onclick="triggerToast('El Puente de los Suspiros')"
+                  >
+                    <span
+                      class="material-symbols-outlined text-[18px]"
+                      style="font-variation-settings: &quot;FILL&quot; 1"
+                      >favorite</span
+                    >
+                  </button>
+                </div>
+                <div class="flex items-center gap-1.5 text-on-surface-variant my-1">
+                  <span class="material-symbols-outlined text-[15px] text-secondary"
+                    >calendar_today</span
+                  >
+                  <span class="font-body-sm text-body-sm">Mar 02 dic · 19:00 hs</span>
+                </div>
+                <div class="flex items-center justify-between pt-1">
+                  <div class="flex flex-col">
+                    <span
+                      class="font-label-section text-[10px] text-outline uppercase tracking-wider"
+                      >Desde</span
+                    >
+                    <span class="font-title-md text-title-md text-primary font-bold tracking-tight"
+                      >$19.500,00</span
+                    >
+                  </div>
+                  <button
+                    class="h-9 px-4 rounded-full bg-primary-container text-on-primary font-label-interactive text-[12px] flex items-center gap-1 shadow-sm active:scale-95 transition-all"
+                  >
+                    <span>Comprar</span>
+                    <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="relative flex items-center px-4 py-1 bg-surface-container-low">
+              <div
+                class="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-surface"
+              ></div>
+              <div class="w-full flex justify-between items-center px-2">
+                <div
+                  class="flex items-center gap-1 text-[11px] text-on-surface-variant font-label-section"
+                >
+                  <span class="material-symbols-outlined text-[13px] text-secondary"
+                    >event_seat</span
+                  >
+                  Platea Baja y Alta
+                </div>
+                <span
+                  class="text-secondary font-label-section text-[11px] uppercase tracking-wider font-semibold"
+                  >Disponible</span
+                >
+              </div>
+              <div
+                class="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-surface"
+              ></div>
+            </div>
+          </div>
+          <!-- Boleta 4: Festival de Jazz Porteño (Finalizado) -->
+          <div
+            class="relative bg-surface-container-high/60 rounded-xl shadow-sm overflow-hidden flex flex-col opacity-80 filter grayscale-[35%] transition-all"
+          >
+            <div class="flex flex-row">
+              <div class="w-32 sm:w-36 relative overflow-hidden bg-surface-container">
+                <img
+                  class="w-full h-full object-cover object-center"
+                  data-alt="Vintage brass saxophone silhouette in a dim moody jazz bar with soft amber lighting, smoky haze, subtle velvet curtains in background, high contrast classical monochrome jazz aesthetics"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtbXDHX3srmbrxGzIoW-ejvMDxmlHanjv-jAWgEADKnOIj8qziP08Gg46HyPZduEjiIte2Xyx4VqrDYOcyaT7xUz71qPiYrqn_SrG9ey5tK3bIg8GCdz7Xd-FcfGxPUS9TPKSi1cybcB4LpLrSVbvJhcpDTkMDuBl4DB0mAq3nhFo3HS4z63a3oryk5gHxLsWSr20IOwW8GUYyvwi9vj_tjvkWMnGXrQOO7EcLwW0"
+                />
+                <div class="absolute inset-0 bg-surface-dim/40"></div>
+                <span
+                  class="absolute top-2 left-2 px-2 py-0.5 rounded bg-on-surface-variant/80 text-surface font-label-section text-[10px] uppercase font-medium"
+                >
+                  Concluido
+                </span>
+              </div>
+              <div class="flex-1 p-space-md flex flex-col justify-between">
+                <div class="flex items-start justify-between gap-space-xs">
+                  <div>
+                    <span
+                      class="font-label-section text-label-section text-outline uppercase block mb-0.5"
+                      >Usina del Arte</span
+                    >
+                    <h3 class="font-title-md text-title-md text-on-surface-variant line-clamp-1">
+                      Festival de Jazz Porteño
+                    </h3>
+                  </div>
+                  <button
+                    aria-label="Quitar de favoritos"
+                    class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center text-outline"
+                    onclick="triggerToast('Festival de Jazz Porteño')"
+                  >
+                    <span class="material-symbols-outlined text-[18px]">favorite</span>
+                  </button>
+                </div>
+                <div class="flex items-center gap-1.5 text-outline my-1">
+                  <span class="material-symbols-outlined text-[15px]">event_busy</span>
+                  <span class="font-body-sm text-body-sm">Finalizó el 10 nov</span>
+                </div>
+                <div class="flex items-center justify-between pt-1">
+                  <div class="flex flex-col">
+                    <span
+                      class="font-label-section text-[10px] text-outline uppercase tracking-wider"
+                      >Histórico</span
+                    >
+                    <span class="font-title-md text-title-md text-outline font-bold"
+                      >$15.000,00</span
+                    >
+                  </div>
+                  <button
+                    class="h-9 px-4 rounded-full bg-surface-container-highest text-outline font-label-interactive text-[12px] flex items-center gap-1 cursor-not-allowed"
+                    disabled=""
+                  >
+                    <span class="material-symbols-outlined text-[14px]">lock</span>
+                    <span>Finalizada</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="relative flex items-center px-4 py-1 bg-surface-container">
+              <div
+                class="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-surface"
+              ></div>
+              <div class="w-full flex justify-between items-center px-2">
+                <span class="text-[11px] text-outline font-label-section"
+                  >Temporada 2024 cerrada</span
+                >
+                <span class="text-outline font-label-section text-[11px] uppercase tracking-wider"
+                  >Archivo</span
+                >
+              </div>
+              <div
+                class="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-surface"
+              ></div>
+            </div>
+          </div>
+        </div>
+        <!-- Paginación Numérica -->
+        <div class="px-margin-mobile mt-space-xl flex items-center justify-center gap-space-xs">
+          <button
+            class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors disabled:opacity-40"
+            disabled=""
+          >
+            <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+          </button>
+          <button
+            class="w-9 h-9 rounded-full bg-primary-container text-on-primary font-label-interactive text-[13px] font-semibold flex items-center justify-center shadow-sm"
+          >
+            1
+          </button>
+          <button
+            class="w-9 h-9 rounded-full bg-surface-container-high text-on-surface font-label-interactive text-[13px] flex items-center justify-center hover:bg-surface-container-highest transition-colors"
+          >
+            2
+          </button>
+          <button
+            class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors"
+          >
+            <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+          </button>
+        </div>
+        <!-- Toast Notificación Flotante -->
+        <div
+          class="fixed bottom-20 left-4 right-4 z-40 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none"
+          id="toastNotification"
+        >
+          <div
+            class="bg-inverse-surface text-inverse-on-surface px-space-md py-3 rounded-xl shadow-xl flex items-center justify-between pointer-events-auto"
+          >
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-secondary-fixed text-[20px]">delete</span>
+              <span class="font-body-sm text-body-sm line-clamp-1" id="toastMessage"
+                >Evento quitado de favoritos</span
+              >
+            </div>
+            <button
+              class="font-label-interactive text-[12px] text-secondary-fixed hover:underline uppercase tracking-wider font-bold ml-3"
+              onclick="dismissToast()"
+            >
+              Deshacer
+            </button>
+          </div>
+        </div>
+      </div>
+      <script>
+        let toastTimer;
+        function triggerToast(eventName) {
+          const toast = document.getElementById("toastNotification");
+          const msg = document.getElementById("toastMessage");
+          if (!toast) return;
+
+          msg.textContent = `${eventName} quitado de favoritos`;
+          toast.classList.remove("translate-y-24", "opacity-0");
+          toast.classList.add("translate-y-0", "opacity-100");
+
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(() => {
+            dismissToast();
+          }, 4000);
+        }
+
+        function dismissToast() {
+          const toast = document.getElementById("toastNotification");
+          if (!toast) return;
+          toast.classList.add("translate-y-24", "opacity-0");
+          toast.classList.remove("translate-y-0", "opacity-100");
+        }
+      </script>
+    </main>
+    <nav
+      class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-4px_20px_rgba(34,25,27,0.05)]"
+      data-active-classes="text-primary font-title-md"
+    >
+      <div class="flex justify-around items-center h-16 px-space-xs">
+        <a
+          class="flex-1 flex flex-col items-center justify-center h-full text-on-surface-variant transition-colors hover:text-primary"
+          data-path="explorar"
+          href="#"
+          ><span class="material-symbols-outlined text-[24px]">theater_comedy</span
+          ><span class="font-label-interactive text-[11px] mt-0.5 leading-none">Explorar</span></a
+        ><a
+          class="flex-1 flex flex-col items-center justify-center h-full text-on-surface-variant transition-colors hover:text-primary"
+          data-path="compras-entradas"
+          href="#"
+          ><span class="material-symbols-outlined text-[24px]">confirmation_number</span
+          ><span class="font-label-interactive text-[11px] mt-0.5 leading-none">Entradas</span></a
+        ><a
+          aria-current="page"
+          class="flex-1 flex flex-col items-center justify-center h-full transition-colors text-primary font-title-md"
+          data-path="favoritos"
+          href="#"
+          ><span class="material-symbols-outlined text-[24px]">bookmark</span
+          ><span class="font-label-interactive text-[11px] mt-0.5 leading-none">Favoritos</span></a
+        ><a
+          class="flex-1 flex flex-col items-center justify-center h-full text-on-surface-variant transition-colors hover:text-primary"
+          data-path="mensajes"
+          href="#"
+          ><span class="material-symbols-outlined text-[24px]">chat_bubble</span
+          ><span class="font-label-interactive text-[11px] mt-0.5 leading-none">Mensajes</span></a
+        ><a
+          class="flex-1 flex flex-col items-center justify-center h-full text-on-surface-variant transition-colors hover:text-primary"
+          data-path="perfil"
+          href="#"
+          ><span class="material-symbols-outlined text-[24px]">account_circle</span
+          ><span class="font-label-interactive text-[11px] mt-0.5 leading-none">Perfil</span></a
+        >
+      </div>
+    </nav>
+  </body>
+</html>

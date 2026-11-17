@@ -154,3 +154,27 @@ false` y `orden=relevancia` cae a `fecha`. Con `categoriaIds`, la intersección 
   (`avanzarReloj`) sin tocar el código productivo.
 - **Bug detectado por los tests**: las tareas informaban 0 cambios porque `#transicion` aplica la transición sobre el
   mismo objeto leído; ahora se compara contra el estado guardado antes de procesar.
+
+## Iteración 06
+
+- **El chat se envía por REST y el socket solo empuja**, como pide la spec: cada mensaje pasa por zod, auth, service y
+  dominio. Quien escribe queda con el chat leído (su marca de lectura se actualiza al enviar).
+- **Marca de lectura atómica** (`$max` en `registrarLectura`): no se reescribe la compra y la fecha nunca retrocede.
+  `guardar` de compras no toca las marcas de lectura (como con los mensajes).
+- **`EmisorSocketAdapter`** es la única pieza que importa socket.io (además de `sockets/index.js`, que monta el
+  servidor). Hasta que se conecta un `io` no emite nada: los tests REST, los scripts y la semilla funcionan igual.
+  Expone `usuarioEnCompra` para no notificar `NUEVO_MENSAJE` a quien ya está mirando el chat.
+- **`AvisosComprasService`** traduce cada transición a `compra:estado` + notificaciones. El nombre del comprador sale
+  del historial (quien creó la compra), así no hace falta otra consulta. Los hooks nunca hacen fallar la operación
+  (un error al avisar se registra).
+- **`NUEVO_MENSAJE` por mensaje** (salvo que el destinatario esté en la sala), como pide la spec, sin agrupar.
+- **Recordatorio**: `recordatorioEnviado` se guarda con condición (`$ne: true`) antes de avisar, así dos corridas
+  no lo repiten.
+- **Fechas en los textos** de las notificaciones en `es-AR` y hora de Argentina (`America/Argentina/Buenos_Aires`),
+  porque el texto se guarda ya armado. La API sigue devolviendo fechas ISO UTC.
+- **Notificaciones de la semilla** generadas con `AvisosComprasService` sobre una foto de cada compra en cada paso y
+  el reloj en ese momento: son exactamente las que habría producido el flujo real. Las de hace 24 h o más quedan
+  leídas.
+- **Los DTOs de notificación y mensaje** se reutilizan como payload de los eventos de socket, para que el front reciba
+  la misma forma por REST y por socket.
+- **`socket.io-client`** pasa a ser devDependency del back (lo usan los tests de sockets).

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-container-lowest": "#ffffff", "surface-container": "#fbeaec", "on-secondary-fixed": "#271900", "error-container": "#ffdad6", "tertiary-container": "#573c00", "tertiary": "#3b2700", "surface-container-high": "#f5e4e7", "secondary": "#7c5808", "secondary-fixed-dim": "#efbf6a", "on-surface-variant": "#564242", "secondary-container": "#ffcd76", "primary": "#5b0418", "on-error-container": "#93000a", "inverse-primary": "#ffb2b6", "on-primary-fixed": "#40000d", "on-primary-fixed-variant": "#822431", "outline-variant": "#dcc0c0", "on-tertiary-fixed-variant": "#5e4100", "on-secondary": "#ffffff", "outline": "#897172", "on-tertiary": "#ffffff", "error": "#ba1a1a", "on-primary-container": "#ff8a93", "surface": "#fff8f8", "on-secondary-container": "#795505", "inverse-on-surface": "#fdedef", "surface-tint": "#a13c47", "secondary-fixed": "#ffdeaa", "tertiary-fixed": "#ffdea9", "on-tertiary-fixed": "#271900", "on-background": "#22191b", "primary-fixed": "#ffdada", "on-secondary-fixed-variant": "#5f4100", "surface-variant": "#efdfe1", "primary-fixed-dim": "#ffb2b6", "surface-container-low": "#fff0f2", "surface-bright": "#fff8f8", "inverse-surface": "#372e30", "primary-container": "#7a1e2c", "on-error": "#ffffff", "surface-dim": "#e6d6d9", "background": "#fff8f8", "on-primary": "#ffffff", "on-tertiary-container": "#d7a545", "tertiary-fixed-dim": "#f3be5b", "on-surface": "#22191b", "surface-container-highest": "#efdfe1" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-xl": "2.5rem", "space-2xl": "4rem", "space-xs": "0.25rem", "gutter": "1.5rem", "margin": "2.5rem", "space-sm": "0.5rem", "space-md": "1rem", "space-lg": "1.5rem", "gutter-mobile": "1rem", "margin-mobile": "1.25rem" }, fontFamily: { "headline-sm": ["Playfair Display"], "headline-lg-mobile": ["Playfair Display"], "title-md": ["Inter"], "headline-lg": ["Playfair Display"], "label-section": ["Inter"], "body-sm": ["Inter"], "display": ["Playfair Display"], "headline-md": ["Playfair Display"], "body-md": ["Inter"], "body-lg": ["Inter"], "display-mobile": ["Playfair Display"], "title-lg": ["Playfair Display"], "label-interactive": ["Inter"] }, fontSize: { "headline-sm": ["22px", { "lineHeight": "30px", "fontWeight": "700" }], "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }], "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }], "headline-lg": ["36px", { "lineHeight": "44px", "fontWeight": "700" }], "label-section": ["11px", { "lineHeight": "16px", "letterSpacing": "0.12em", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "display": ["48px", { "lineHeight": "56px", "fontWeight": "700" }], "headline-md": ["28px", { "lineHeight": "36px", "fontWeight": "700" }], "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "display-mobile": ["36px", { "lineHeight": "44px", "fontWeight": "700" }], "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "700" }], "label-interactive": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "500" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(34,25,27,0.04)]"><div class="h-16 px-space-sm flex items-center justify-between"><div class="flex items-center gap-space-xs"><button aria-label="Volver" class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container transition-colors" onclick="history.back()"><span class="material-symbols-outlined text-[22px]">arrow_back_ios_new</span></button><h1 class="font-headline-sm text-headline-sm text-primary tracking-tight truncate max-w-[200px]">Detalle De Obra</h1></div><div class="flex items-center gap-space-xs"><button aria-label="Compartir" class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[22px]">share</span></button><button aria-label="Guardar en favoritos" class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[22px]">favorite</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center ml-1"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-16 pb-safe bg-surface flex-grow"><div class="flex flex-col w-full pb-32">
+<!-- Hero Media Carousel -->
+<section class="relative w-full overflow-hidden bg-surface-container-highest">
+<div class="flex transition-transform duration-500 ease-out w-full" id="carousel-track">
+<div class="min-w-full relative h-72">
+<img class="w-full h-full object-cover" data-alt="Concert stage photography of Argentine rock band Divididos bathed in warm gold and deep crimson spotlighting. Dramatic haze, silhouetted power trio with electric guitar and drum kit under theatrical rigging at Estadio Obras Sanitarias, cinematic lighting, editorial music luxury photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqdzVn486tG7vZKEug9iOlruzz84Ucfw-JjkUeShU8xXwrcSogSySf0YngfFnaQYvb2twvn6PDd99IlvrKiCp4994f-xSkzJy2bELBUB0eZJACi648W-RM12CFAwAbzAnjRTfncygYvKtlafuScCfuO93l-z3U-oKqnQBAbdh1ce_p-U5RuUGJb3ka18kwPGcbkkyEqLwpx179SnOht2PLbyeTfW3vq41iKg3ZhsA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary-container/80 via-primary-container/20 to-transparent"></div>
+</div>
+<div class="min-w-full relative h-72">
+<img class="w-full h-full object-cover" data-alt="Wide panoramic shot of cheering stadium audience under golden architectural stage lighting at Estadio Obras Sanitarias during a classic rock concert, deep velvet shadows and crimson rim light, ultra crisp atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-1Hn7zwSts75CvKuURMJufRXoE5zl7zAf5me_JclIeZTcazmRT3IxLRDDV-loG6pNTrISWPNl7uEsBRjjhWgna4afIEp6f4QA-eQJzrn5623Pi3V3GCxJjS4vpyWWeEl7Po0HuTKm2jUIuyFu9TuECXeMJSAn0in4Br-1xjnredO_kx1dePYWkdls7nHIufseq6A8vdEWROVf5vMjedjflEROSiiIODSsTwDuqDI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary-container/80 via-primary-container/20 to-transparent"></div>
+</div>
+<div class="min-w-full relative h-72">
+<img class="w-full h-full object-cover" data-alt="Close up dynamic shot of an electric guitar solo on stage with warm vintage tubes glowing in the background, amber stage reflections, atmospheric theatrical depth." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8RFsb13wdzhzop29lzs8IC5ka3x3nWEhLlodv5B7iWritie0ZPBJwUqNWTkQ5amZCC23wP_5DZPg5HNuHCwgAzfNspcA0Ne5m-KPWm3867xlHdODsq52MG8tzSD9MRaArwmfXQ8n5x-F3c2YzYe8wcgPeXy57GwCfkUKb3o0hbnwhtx2IKeXIReP4qeyPw3qQoK1AiNSsD3OtAr27xrK3bc5YeHopgYb5D1xhX6k"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary-container/80 via-primary-container/20 to-transparent"></div>
+</div>
+</div>
+<!-- Category Pill Tag -->
+<div class="absolute top-4 left-4 z-10">
+<span class="inline-flex items-center px-3 py-1 rounded-full text-label-section font-label-section tracking-widest bg-primary text-on-primary shadow-sm backdrop-blur-md">
+        RECITALES
+      </span>
+</div>
+<!-- Position Counter & Pager Dots -->
+<div class="absolute bottom-4 right-4 z-10 flex items-center gap-2 bg-inverse-surface/85 backdrop-blur-md px-3 py-1 rounded-full text-on-primary">
+<span class="material-symbols-outlined text-[14px] text-secondary-fixed">photo_camera</span>
+<span class="font-body-sm text-body-sm tracking-wide" id="carousel-counter">1/6</span>
+</div>
+<div class="absolute bottom-4 left-4 z-10 flex items-center space-x-1.5" id="carousel-dots">
+<span class="w-6 h-1.5 rounded-full bg-secondary-fixed transition-all duration-300"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-surface-container-lowest/60 transition-all duration-300"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-surface-container-lowest/60 transition-all duration-300"></span>
+</div>
+</section>
+<!-- Content Container -->
+<div class="px-space-md mt-space-md flex flex-col space-y-space-lg">
+<!-- Event Metadata -->
+<section class="flex flex-col space-y-space-xs">
+<div class="flex items-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-[16px]">stars</span>
+<span class="font-label-section text-label-section tracking-wider uppercase">Gira Celebración Histórica</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary leading-tight">
+        Divididos: <span class="italic font-display-mobile">35 Años</span> de Rock Nacional
+      </h1>
+<div class="pt-space-xs flex flex-col space-y-2">
+<div class="flex items-start gap-2.5">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center shrink-0 mt-0.5 text-primary">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+</div>
+<div>
+<p class="font-title-md text-title-md text-on-surface">Sábado 22 de noviembre</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">21:00 hs <span class="text-secondary font-medium">(Apertura de puertas 19:30 hs)</span></p>
+</div>
+</div>
+<div class="flex items-start gap-2.5">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center shrink-0 mt-0.5 text-primary">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+</div>
+<div class="flex-1">
+<p class="font-title-md text-title-md text-on-surface">Estadio Obras Sanitarias</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Av. del Libertador 7395, Nuñez, CABA</p>
+</div>
+<a class="inline-flex items-center text-primary font-label-interactive text-label-interactive underline decoration-primary/30" href="#ubicacion">
+            Ver mapa
+          </a>
+</div>
+</div>
+</section>
+<!-- Organizer Card -->
+<section class="bg-surface-container rounded-xl p-space-md flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-primary-container text-on-primary font-headline-sm text-headline-sm flex items-center justify-center">
+          3P
+        </div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1">
+<span class="font-title-md text-title-md text-on-surface">300 Producciones</span>
+<span class="material-symbols-outlined text-secondary text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm">
+<span class="text-secondary font-medium">★ 4.9</span>
+<span>(128 reseñas)</span>
+</div>
+</div>
+</div>
+<button class="px-4 py-2 rounded-full bg-surface-container-lowest text-primary font-label-interactive text-label-interactive shadow-sm active:scale-95 transition-transform" type="button">
+        Contactar
+      </button>
+</section>
+<!-- Description & Narrative -->
+<section class="flex flex-col space-y-space-sm">
+<h2 class="font-title-lg text-title-lg text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-secondary">theater_comedy</span>
+        Sobre la Función
+      </h2>
+<div class="text-on-surface font-body-md text-body-md leading-relaxed space-y-2">
+<p>
+          La Aplanadora del Rock regresa al Templo del Rock para conmemorar tres décadas y media de potencia pura, distorsión lírica e historia colectiva. Ricardo Mollo, Diego Arnedo y Catriel Ciavarella presentan un recorrido sinfónico y visceral por toda su discografía en una puesta de luces de precisión teatral.
+        </p>
+<p class="text-on-surface-variant font-body-sm text-body-sm">
+          Duración aproximada: 150 minutos sin intervalo. Apto para mayores de 4 años con ticket propio.
+        </p>
+</div>
+<!-- Live Updates / Actualizaciones -->
+<div class="mt-space-sm bg-surface-container-low rounded-xl p-space-md flex flex-col space-y-2.5">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-[18px]">campaign</span>
+<span class="font-label-section text-label-section tracking-wider uppercase font-semibold">Actualizaciones del Show</span>
+</div>
+<div class="space-y-2">
+<div class="flex items-start gap-2.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0"></span>
+<p class="font-body-sm text-body-sm text-on-surface">
+<strong class="font-semibold text-primary">15 Nov:</strong> Agotadas Plateas Altas Preferenciales.
+            </p>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary mt-2 shrink-0"></span>
+<p class="font-body-sm text-body-sm text-on-surface">
+<strong class="font-semibold text-secondary">02 Nov:</strong> Confirmada Prueba de Sonido Abierta para abonados del Club Platea.
+            </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Location Preview Map Placeholder -->
+<section class="flex flex-col space-y-2" id="ubicacion">
+<div class="flex justify-between items-center">
+<h3 class="font-title-md text-title-md text-primary">Plano de Acceso y Recinto</h3>
+<span class="font-label-section text-label-section text-on-surface-variant uppercase">Nuñez, CABA</span>
+</div>
+<div class="w-full h-44 rounded-xl bg-surface-container-high relative overflow-hidden flex items-end p-3 shadow-inner" data-location="Estadio Obras Sanitarias, Buenos Aires, Argentina" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDBPdHFGVNZ1VQEn7VVUnIKFJH3nZA_pNW3pXyGPKWQY9S7Ju-3AADfCktKsQ8fwKpGUEZVyyIukLp56Eqa04zlV3C_5UY2aaossjZmXmpH2jB5sDCVGyLB1we83zFRTINY4YXU3xX7W_4mzXgRpCil__RaSbviXjWlut0WcsbwlOjN6GjOLMo9Z_b37rTTVHCzfKslOW0yiN38ppAZvPRmhGZ-GLDLXZP45Ex9-EQ')">
+<div class="bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1.5 rounded-lg flex items-center gap-2 text-on-surface text-body-sm">
+<span class="material-symbols-outlined text-[16px] text-primary">directions_subway</span>
+<span>A 400m de Estación Rivadavia (Línea Mitre)</span>
+</div>
+</div>
+</section>
+<!-- Ticket Selector -->
+<section class="flex flex-col space-y-space-sm pt-2">
+<div class="flex justify-between items-end">
+<div>
+<span class="text-secondary font-label-section text-label-section tracking-widest uppercase">Seleccioná tu ubicación</span>
+<h2 class="font-headline-sm text-headline-sm text-primary">Localidades Disponibles</h2>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Paso 1 de 2</span>
+</div>
+<!-- Cards Container -->
+<div class="flex flex-col space-y-3" id="tickets-container">
+<!-- Ticket Card A: Campo General (Selected) -->
+<div class="ticket-option relative rounded-xl p-4 bg-surface-container-lowest shadow-md cursor-pointer transition-all duration-200" data-max="4" data-price="42000" data-ticket="campo">
+<div class="flex items-start justify-between">
+<div class="flex-1 pr-3">
+<div class="flex items-center gap-2">
+<h3 class="font-title-md text-title-md text-primary">Campo General</h3>
+<span class="px-2 py-0.5 rounded-full bg-primary-container text-on-primary font-label-section text-label-section">
+                  Quedan 12 entradas
+                </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                Ubicación de pie frente al escenario con acceso central por Avenida del Libertador.
+              </p>
+<div class="mt-3 flex items-baseline gap-1.5">
+<span class="font-title-lg text-title-lg text-primary">$42.000,00</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">ARS</span>
+</div>
+</div>
+<!-- Radio Selection Circle -->
+<div class="radio-indicator w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary shrink-0 mt-1">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+</div>
+</div>
+<!-- Ticket Card B: Platea Norte Baja -->
+<div class="ticket-option relative rounded-xl p-4 bg-surface-container shadow-sm cursor-pointer transition-all duration-200" data-max="4" data-price="65000" data-ticket="platea">
+<div class="flex items-start justify-between">
+<div class="flex-1 pr-3">
+<div class="flex items-center gap-2">
+<h3 class="font-title-md text-title-md text-on-surface">Platea Norte Baja</h3>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-section text-label-section">
+                  Últimas 4
+                </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                Butaca numerada con visual preferencial y sonido acústico envolvente.
+              </p>
+<div class="mt-3 flex items-baseline gap-1.5">
+<span class="font-title-lg text-title-lg text-on-surface">$65.000,00</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">ARS</span>
+</div>
+</div>
+<div class="radio-indicator w-6 h-6 rounded-full bg-surface-variant flex items-center justify-center text-transparent shrink-0 mt-1">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+</div>
+</div>
+<!-- Ticket Card C: Palco VIP Lateral (Agotado) -->
+<div class="relative rounded-xl p-4 bg-surface-variant/40 opacity-60 cursor-not-allowed select-none" data-price="90000" data-ticket="palco">
+<div class="flex items-start justify-between">
+<div class="flex-1 pr-3">
+<div class="flex items-center gap-2">
+<h3 class="font-title-md text-title-md text-on-surface-variant">Palco VIP Lateral</h3>
+<span class="px-2 py-0.5 rounded-full bg-surface-dim text-on-surface-variant font-label-section text-label-section">
+                  Agotado
+                </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                Acceso a cocktail de cortesía, catering exclusivo y vista rasante lateral.
+              </p>
+<div class="mt-3 flex items-baseline gap-1.5">
+<span class="font-title-lg text-title-lg line-through text-outline">$90.000,00</span>
+<span class="font-body-sm text-body-sm text-outline">ARS</span>
+</div>
+</div>
+<div class="w-6 h-6 rounded-full bg-surface-dim flex items-center justify-center text-on-surface-variant shrink-0 mt-1">
+<span class="material-symbols-outlined text-[16px]">block</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Quantity Stepper -->
+<div class="bg-surface-container rounded-xl p-space-md flex flex-col space-y-2 mt-2">
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">Cantidad de Entradas</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Máximo 4 entradas por comprador</span>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-lowest px-2 py-1.5 rounded-full shadow-sm">
+<button aria-label="Restar entrada" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary active:scale-90 transition-transform" id="btn-minus" type="button">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<span class="font-title-md text-title-md w-6 text-center text-on-surface" id="ticket-qty">2</span>
+<button aria-label="Sumar entrada" class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center active:scale-90 transition-transform shadow-sm" id="btn-plus" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Reviews Section -->
+<section class="flex flex-col space-y-space-md pt-2">
+<div class="flex items-center justify-between">
+<div>
+<span class="text-secondary font-label-section text-label-section tracking-widest uppercase">Comunidad Platea</span>
+<h2 class="font-headline-sm text-headline-sm text-primary">Reseñas del Productor</h2>
+</div>
+<span class="font-body-sm text-body-sm text-secondary font-semibold">128 opiniones</span>
+</div>
+<!-- Rating Summary Bento -->
+<div class="bg-surface-container rounded-xl p-space-md flex flex-col sm:flex-row gap-4 items-center">
+<!-- Average Score Column -->
+<div class="flex flex-col items-center justify-center text-center px-4 py-2 shrink-0">
+<span class="font-display text-display text-primary leading-none">4.9</span>
+<div class="flex items-center text-secondary my-1">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">de 5 estrellas</span>
+</div>
+<!-- Distribution Bars -->
+<div class="flex-1 w-full space-y-1.5">
+<div class="flex items-center gap-2 text-body-sm font-body-sm">
+<span class="w-4 text-on-surface-variant">5★</span>
+<div class="flex-1 h-2 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 92%;"></div>
+</div>
+<span class="w-8 text-right text-on-surface-variant">92%</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm">
+<span class="w-4 text-on-surface-variant">4★</span>
+<div class="flex-1 h-2 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 6%;"></div>
+</div>
+<span class="w-8 text-right text-on-surface-variant">6%</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm">
+<span class="w-4 text-on-surface-variant">3★</span>
+<div class="flex-1 h-2 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 2%;"></div>
+</div>
+<span class="w-8 text-right text-on-surface-variant">2%</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm">
+<span class="w-4 text-on-surface-variant">2★</span>
+<div class="flex-1 h-2 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 0%;"></div>
+</div>
+<span class="w-8 text-right text-on-surface-variant">0%</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm">
+<span class="w-4 text-on-surface-variant">1★</span>
+<div class="flex-1 h-2 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 0%;"></div>
+</div>
+<span class="w-8 text-right text-on-surface-variant">0%</span>
+</div>
+</div>
+</div>
+<!-- Review Cards List -->
+<div class="flex flex-col space-y-3">
+<!-- Review Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col space-y-2">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-full bg-surface-container-high text-primary font-title-md flex items-center justify-center font-bold">
+                MG
+              </div>
+<div>
+<p class="font-title-md text-title-md text-on-surface leading-snug">Mariano Gómez</p>
+<div class="flex items-center gap-1.5 font-body-sm text-body-sm text-on-surface-variant">
+<span class="text-secondary font-medium">Campo General</span>
+<span>•</span>
+<span>Obras 2023</span>
+</div>
+</div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Hace 2 sem</span>
+</div>
+<div class="flex text-secondary text-[16px]">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface">
+            "Excelente acústica y organización en el ingreso. Escanearon el ticket desde el celular al instante sin demoras. Divididos sonó increíble como siempre."
+          </p>
+</div>
+<!-- Review Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col space-y-2">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-full bg-surface-container-high text-primary font-title-md flex items-center justify-center font-bold">
+                LV
+              </div>
+<div>
+<p class="font-title-md text-title-md text-on-surface leading-snug">Lucía Valenzuela</p>
+<div class="flex items-center gap-1.5 font-body-sm text-body-sm text-on-surface-variant">
+<span class="text-secondary font-medium">Platea Norte Baja</span>
+<span>•</span>
+<span>Luna Park</span>
+</div>
+</div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Hace 1 mes</span>
+</div>
+<div class="flex text-secondary text-[16px]">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface">
+            "La visibilidad desde la platea fue impecable. Muy puntual el inicio del show y el personal del teatro súper atento para guiar las ubicaciones."
+          </p>
+</div>
+</div>
+<!-- Pagination / Ver más -->
+<div class="flex justify-center pt-2">
+<button class="px-6 py-2.5 rounded-full bg-surface-container text-primary font-label-interactive text-label-interactive flex items-center gap-2 active:bg-surface-container-high transition-colors" type="button">
+<span>Ver las 128 reseñas</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+</div>
+</section>
+</div>
+<!-- Sticky Bottom Checkout Bar -->
+<aside class="fixed bottom-0 left-0 right-0 z-40 bg-surface/90 backdrop-blur-xl shadow-[0_-8px_24px_rgba(34,25,27,0.08)] pb-safe">
+<div class="max-w-screen-md mx-auto px-space-md py-3 flex items-center justify-between gap-4">
+<div class="flex flex-col">
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm">
+<span>Total</span>
+<span class="font-medium text-secondary" id="summary-count">(2 entradas)</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-sm text-headline-sm text-primary tracking-tight" id="summary-total">$84.000,00</span>
+</div>
+</div>
+<button class="flex-1 max-w-[240px] h-12 rounded-full bg-primary text-on-primary font-title-md text-title-md flex items-center justify-center gap-2 shadow-lg shadow-primary/25 active:scale-[0.98] transition-transform" id="btn-checkout" type="button">
+<span>Comprar Entradas</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</aside>
+</div>
+<script>
+  (function initEventDetail() {
+    let currentQty = 2;
+    let maxAllowed = 4;
+    let selectedPrice = 42000;
+    
+    const qtyEl = document.getElementById('ticket-qty');
+    const totalEl = document.getElementById('summary-total');
+    const countEl = document.getElementById('summary-count');
+    const btnPlus = document.getElementById('btn-plus');
+    const btnMinus = document.getElementById('btn-minus');
+    const ticketCards = document.querySelectorAll('.ticket-option');
+
+    function formatARS(val) {
+      return '$' + val.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function updateTotal() {
+      const total = selectedPrice * currentQty;
+      totalEl.textContent = formatARS(total);
+      countEl.textContent = `(${currentQty} ${currentQty === 1 ? 'entrada' : 'entradas'})`;
+    }
+
+    btnPlus.addEventListener('click', () => {
+      if (currentQty < maxAllowed) {
+        currentQty++;
+        qtyEl.textContent = currentQty;
+        updateTotal();
+      }
+    });
+
+    btnMinus.addEventListener('click', () => {
+      if (currentQty > 1) {
+        currentQty--;
+        qtyEl.textContent = currentQty;
+        updateTotal();
+      }
+    });
+
+    ticketCards.forEach(card => {
+      card.addEventListener('click', () => {
+        ticketCards.forEach(c => {
+          c.classList.remove('bg-surface-container-lowest', 'shadow-md');
+          c.classList.add('bg-surface-container', 'shadow-sm');
+          const title = c.querySelector('h3');
+          const price = c.querySelector('.font-title-lg');
+          if (title) { title.classList.remove('text-primary'); title.classList.add('text-on-surface'); }
+          if (price) { price.classList.remove('text-primary'); price.classList.add('text-on-surface'); }
+          const radio = c.querySelector('.radio-indicator');
+          if (radio) {
+            radio.classList.remove('bg-primary', 'text-on-primary');
+            radio.classList.add('bg-surface-variant', 'text-transparent');
+          }
+        });
+
+        card.classList.remove('bg-surface-container', 'shadow-sm');
+        card.classList.add('bg-surface-container-lowest', 'shadow-md');
+        const title = card.querySelector('h3');
+        const price = card.querySelector('.font-title-lg');
+        if (title) { title.classList.add('text-primary'); title.classList.remove('text-on-surface'); }
+        if (price) { price.classList.add('text-primary'); price.classList.remove('text-on-surface'); }
+
+        const radio = card.querySelector('.radio-indicator');
+        if (radio) {
+          radio.classList.add('bg-primary', 'text-on-primary');
+          radio.classList.remove('bg-surface-variant', 'text-transparent');
+        }
+
+        selectedPrice = parseInt(card.getAttribute('data-price'), 10);
+        maxAllowed = parseInt(card.getAttribute('data-max') || '4', 10);
+        if (currentQty > maxAllowed) {
+          currentQty = maxAllowed;
+          qtyEl.textContent = currentQty;
+        }
+        updateTotal();
+      });
+    });
+
+    // Simple carousel swipe interaction
+    let currentSlide = 0;
+    const slidesCount = 3;
+    const track = document.getElementById('carousel-track');
+    const counter = document.getElementById('carousel-counter');
+    const dots = document.getElementById('carousel-dots').children;
+
+    function goToSlide(index) {
+      currentSlide = index;
+      track.style.transform = `translateX(-${currentSlide * 100}%)`;
+      counter.textContent = `${currentSlide + 1}/6`;
+      for (let i = 0; i < dots.length; i++) {
+        if (i === currentSlide) {
+          dots[i].className = 'w-6 h-1.5 rounded-full bg-secondary-fixed transition-all duration-300';
+        } else {
+          dots[i].className = 'w-1.5 h-1.5 rounded-full bg-surface-container-lowest/60 transition-all duration-300';
+        }
+      }
+    }
+
+    let interval = setInterval(() => {
+      goToSlide((currentSlide + 1) % slidesCount);
+    }, 4500);
+
+    track.parentElement.addEventListener('touchstart', () => clearInterval(interval), { passive: true });
+  })();
+</script></main></body></html>
