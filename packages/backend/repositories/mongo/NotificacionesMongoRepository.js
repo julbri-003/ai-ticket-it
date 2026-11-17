@@ -71,6 +71,38 @@ export class NotificacionesMongoRepository extends RepositorioMongoPersistible {
     return this.hidratar(doc);
   }
 
+  /**
+   * Marca como leídas las del destinatario de un tipo para una compra (por ejemplo, los
+   * NUEVO_MENSAJE al abrir el chat). Devuelve cuántas cambiaron.
+   */
+  async marcarLeidasDeCompra(destinatarioId, compraId, tipo) {
+    if (!esIdValido(destinatarioId) || !esIdValido(compraId)) return 0;
+    const resultado = await this.model.updateMany(
+      {
+        destinatarioId,
+        activo: true,
+        leida: false,
+        tipo,
+        "datos.compraId": aObjectId(compraId),
+      },
+      { $set: { leida: true } },
+    );
+    return resultado.modifiedCount;
+  }
+
+  /**
+   * "Limpiar": baja lógica de todas las notificaciones activas del destinatario (con la
+   * auditoría del plugin Persistible). Dejan de listarse y de contarse. Devuelve cuántas.
+   */
+  async darDeBajaTodas(destinatarioId, { modificadoPor, fecha }) {
+    if (!esIdValido(destinatarioId)) return 0;
+    const resultado = await this.model.updateMany(
+      { destinatarioId, activo: true },
+      { $set: { activo: false, fechaModificacion: fecha, modificadoPor } },
+    );
+    return resultado.modifiedCount;
+  }
+
   /** Marca como leídas todas las del destinatario. Devuelve cuántas cambiaron. */
   async marcarTodasLeidas(destinatarioId) {
     if (!esIdValido(destinatarioId)) return 0;

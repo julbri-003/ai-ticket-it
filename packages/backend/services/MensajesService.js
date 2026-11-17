@@ -116,7 +116,16 @@ export class MensajesService {
     const compra = await this.verificarParticipante(compraId, usuario);
     const { campo, fecha } = compra.registrarLectura(usuario.id, this.reloj);
     await this.comprasRepository.registrarLectura(compra.id, campo, fecha);
-    return { ultimaLectura: fecha, mensajesNoLeidos: compra.mensajesNoLeidosPara(usuario.id) };
+    // Quien abre el chat ya vio los mensajes: sus avisos NUEVO_MENSAJE de esta compra quedan leídos.
+    const notificacionesLeidas = await this.notificacionesService.marcarLeidosMensajesDeCompra(
+      usuario,
+      compra.id,
+    );
+    return {
+      ultimaLectura: fecha,
+      mensajesNoLeidos: compra.mensajesNoLeidosPara(usuario.id),
+      notificacionesLeidas,
+    };
   }
 
   /** NUEVO_MENSAJE al otro participante, salvo que ya esté mirando el chat (en la sala). */

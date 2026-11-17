@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import styled, { useTheme } from "styled-components/native";
-import { BellOff, CheckCheck } from "lucide-react-native";
+import styled from "styled-components/native";
+import { BellOff, CheckCheck, Trash2 } from "lucide-react-native";
 import { Pantalla } from "../../components/layout/Pantalla";
+import { ItemNotificacion } from "../../components/notificaciones/ItemNotificacion";
 import {
   Button,
-  Card,
   EmptyState,
   ErrorState,
   EtiquetaSeccion,
+  ModalConfirmacion,
   Paginacion,
   SkeletonLista,
   TituloEscena,
@@ -20,16 +21,18 @@ import { notificacionesService } from "../../service/notificacionesService";
 const LIMITE = 15;
 
 /**
- * Centro de notificaciones: lista paginada, no leídas resaltadas, "Marcar todas como leídas" y, al
- * tocar una, se marca leída y navega a la compra (o al chat) o al evento.
+ * Centro de notificaciones: lista paginada con las no leídas resaltadas. Una se marca leída al
+ * tocarla (y abre la compra, el chat o el evento), deslizándola o con su check. Además, "Marcar
+ * todas como leídas" y "Limpiar" (baja lógica de todas, con confirmación: no se recuperan).
  */
 export function Notificaciones({ navigation }) {
-  const theme = useTheme();
   const toast = useToast();
-  const { noLeidas, marcarLeida, marcarTodas, ultima } = useNotificaciones();
+  const { noLeidas, marcarLeida, marcarTodas, limpiar, ultima } = useNotificaciones();
   const [pagina, setPagina] = useState(1);
   const [estado, setEstado] = useState({ cargando: true });
   const [marcando, setMarcando] = useState(false);
+  const [confirmarLimpiar, setConfirmarLimpiar] = useState(false);
+  const [limpiando, setLimpiando] = useState(false);
 
   const cargar = useCallback(async () => {
     setEstado((e) => ({ ...e, cargando: true, error: null }));
@@ -55,17 +58,25 @@ export function Notificaciones({ navigation }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ultima]);
 
-  const abrir = async (n) => {
-    if (!n.leida) {
-      setEstado((e) => ({
-        ...e,
-        datos: {
-          ...e.datos,
-          items: e.datos.items.map((x) => (x.id === n.id ? { ...x, leida: true } : x)),
-        },
-      }));
-      marcarLeida(n.id).catch(() => {});
+  const marcarEnLista = (cambiar) =>
+    setEstado((e) =>
+      e.datos ? { ...e, datos: { ...e.datos, items: e.datos.items.map(cambiar) } } : e,
+    );
+
+  /** Optimista: se ve leída en el acto; si el back falla, vuelve a no leída con un aviso. */
+  const leer = async (n) => {
+    if (n.leida) return;
+    marcarEnLista((x) => (x.id === n.id ? { ...x, leida: true } : x));
+    try {
+      await marcarLeida(n.id);
+    } catch (error) {
+      marcarEnLista((x) => (x.id === n.id ? { ...x, leida: false } : x));
+      toast.error(error.message, "No pudimos marcarla como leída");
     }
+  };
+
+  const abrir = (n) => {
+    leer(n);
     if (n.destino) navigation.navigate(n.destino.pantalla, n.destino.params);
   };
 
@@ -73,10 +84,7 @@ export function Notificaciones({ navigation }) {
     setMarcando(true);
     try {
       await marcarTodas();
-      setEstado((e) => ({
-        ...e,
-        datos: e.datos && { ...e.datos, items: e.datos.items.map((x) => ({ ...x, leida: true })) },
-      }));
+      marcarEnLista((x) => ({ ...x, leida: true }));
     } catch (error) {
       toast.error(error.message, "No pudimos marcarlas como leídas");
     } finally {
@@ -84,7 +92,26 @@ export function Notificaciones({ navigation }) {
     }
   };
 
+  const confirmarLimpieza = async () => {
+    setLimpiando(true);
+    try {
+      const eliminadas = await limpiar();
+      setPagina(1);
+      setEstado({ cargando: false, datos: { items: [], total: 0, pagina: 1, limite: LIMITE } });
+      toast.success(
+        `Se ${eliminadas === 1 ? "borró 1 notificación" : `borraron ${eliminadas} notificaciones`}.`,
+        "Notificaciones limpias",
+      );
+    } catch (error) {
+      toast.error(error.message, "No pudimos limpiar las notificaciones");
+    } finally {
+      setLimpiando(false);
+      setConfirmarLimpiar(false);
+    }
+  };
+
   const { datos } = estado;
+  const vacia = !datos || datos.total === 0;
   return (
     <Pantalla alRefrescar={cargar} refrescando={estado.cargando && Boolean(datos)}>
       <Cabecera>
@@ -92,17 +119,34 @@ export function Notificaciones({ navigation }) {
           <EtiquetaSeccion>Avisos</EtiquetaSeccion>
           <TituloEscena texto="Notificaciones" destacada="Notificaciones" />
         </Textos>
-        <Button
-          variant="outline"
-          size="sm"
-          icono={CheckCheck}
-          onPress={todas}
-          loading={marcando}
-          disabled={noLeidas === 0}
-          testID="marcar-todas"
-        >
-          Marcar todas como leídas
-        </Button>
+        <Acciones>
+          <Button
+            variant="outline"
+            size="sm"
+            icono={CheckCheck}
+            onPress={todas}
+            loading={marcando}
+            disabled={noLeidas === 0}
+            testID="marcar-todas"
+          >
+            Marcar todas como leídas
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            icono={Trash2}
+            onPress={() => setConfirmarLimpiar(true)}
+            disabled={vacia}
+            testID="limpiar-notificaciones"
+          >
+            Limpiar
+          </Button>
+        </Acciones>
+        {!vacia ? (
+          <Ayuda>
+            Deslizá una notificación hacia la izquierda o tocá ✓ para marcarla como leída.
+          </Ayuda>
+        ) : null}
       </Cabecera>
 
       <Lista>
@@ -122,35 +166,25 @@ export function Notificaciones({ navigation }) {
           />
         ) : (
           datos.items.map((n) => (
-            <Card
-              key={n.id}
-              onPress={() => abrir(n)}
-              accessibilityLabel={`${n.leida ? "" : "No leída. "}${n.titulo}. ${n.mensaje}. ${n.fechaTexto}`}
-              accessibilityHint={n.destino ? "Abre la compra o el evento" : undefined}
-              testID={`notificacion-${n.id}`}
-              style={
-                n.leida
-                  ? undefined
-                  : {
-                      borderLeftWidth: 4,
-                      borderLeftColor: theme.colors.primary,
-                      backgroundColor: theme.colors.surfaceSubtle,
-                    }
-              }
-            >
-              <Fila>
-                {!n.leida ? <Punto accessible={false} /> : null}
-                <Titulo $leida={n.leida}>{n.titulo}</Titulo>
-                <Fecha>{n.fechaTexto}</Fecha>
-              </Fila>
-              <Mensaje $leida={n.leida}>{n.mensaje}</Mensaje>
-            </Card>
+            <ItemNotificacion key={n.id} notificacion={n} onAbrir={abrir} onMarcarLeida={leer} />
           ))
         )}
       </Lista>
       {datos ? (
         <Paginacion pagina={pagina} total={datos.total} limite={LIMITE} onCambiar={setPagina} />
       ) : null}
+
+      <ModalConfirmacion
+        visible={confirmarLimpiar}
+        titulo="¿Limpiar las notificaciones?"
+        mensaje="Se van a borrar todas tus notificaciones. Ya no las vas a poder recuperar."
+        textoConfirmar="Limpiar"
+        textoCancelar="Volver"
+        peligro
+        cargando={limpiando}
+        alConfirmar={confirmarLimpieza}
+        alCancelar={() => setConfirmarLimpiar(false)}
+      />
     </Pantalla>
   );
 }
@@ -163,42 +197,20 @@ const Textos = styled.View`
   gap: 6px;
 `;
 
-const Lista = styled.View`
-  gap: 12px;
-`;
-
-const Fila = styled.View`
+const Acciones = styled.View`
   flex-direction: row;
-  align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
 `;
 
-const Punto = styled.View`
-  width: 10px;
-  height: 10px;
-  border-radius: 5px;
-  background-color: ${({ theme }) => theme.colors.primary};
-`;
-
-const Titulo = styled.Text`
-  flex: 1;
-  font-family: ${({ theme, $leida }) =>
-    $leida ? theme.typography.fontBodyMedium : theme.typography.fontBodySemibold};
-  font-size: ${({ theme }) => theme.typography.sizes.body}px;
-  color: ${({ theme }) => theme.colors.textPrimary};
-`;
-
-const Fecha = styled.Text`
+const Ayuda = styled.Text`
   font-family: ${({ theme }) => theme.typography.fontBody};
   font-size: ${({ theme }) => theme.typography.sizes.caption}px;
   color: ${({ theme }) => theme.colors.textMuted};
 `;
 
-const Mensaje = styled.Text`
-  font-family: ${({ theme }) => theme.typography.fontBody};
-  font-size: ${({ theme }) => theme.typography.sizes.bodySm}px;
-  line-height: 20px;
-  color: ${({ theme, $leida }) => ($leida ? theme.colors.textSecondary : theme.colors.textPrimary)};
+const Lista = styled.View`
+  gap: 12px;
 `;
 
 export default Notificaciones;

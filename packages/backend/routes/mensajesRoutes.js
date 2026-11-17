@@ -73,6 +73,7 @@ mensajesRouter.post("/", (req, res) => mensajesController.enviar(req, res));
  * /api/compras/{id}/mensajes/leidos:
  *   post:
  *     summary: Marcar como leídos los mensajes del otro participante
+ *     description: También marca como leídas las notificaciones NUEVO_MENSAJE de esta compra de quien llama.
  *     tags: [Chat]
  *     security: [{ bearerAuth: [] }]
  *     parameters: [{ $ref: "#/components/parameters/CompraId" }]
@@ -86,6 +87,7 @@ mensajesRouter.post("/", (req, res) => mensajesController.enviar(req, res));
  *               properties:
  *                 ultimaLectura: { type: string, format: date-time }
  *                 mensajesNoLeidos: { type: integer, example: 0 }
+ *                 notificacionesLeidas: { type: integer, example: 2, description: "Avisos de mensajes de esta compra que pasaron a leídos" }
  *       400: { $ref: "#/components/responses/Validacion" }
  *       401: { $ref: "#/components/responses/NoAutenticado" }
  *       403: { $ref: "#/components/responses/SinPermiso" }

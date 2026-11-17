@@ -3,6 +3,7 @@ import {
   comprasRepository,
   comprasService,
   notificacionesRepository,
+  notificacionesService,
   usuariosRepository,
 } from "../dependencias.js";
 import {
@@ -406,5 +407,96 @@ describe("Bandeja de conversaciones (GET /api/compras/conversaciones)", () => {
       .set("Authorization", `Bearer ${registro.body.token}`);
     expect(res.status).toBe(200);
     expect(res.body).toMatchObject({ total: 0, totalNoLeidos: 0, items: [] });
+  });
+});
+
+describe("Avisos de mensajes leídos al abrir el chat", () => {
+  test("POST /leidos marca leídos los NUEVO_MENSAJE de esa compra y no los de otras", async () => {
+    const evento = await eventoDeLucia();
+    const compra = await compraDeAna(evento);
+    const otra = await compraDeAna(evento);
+    const escribir = async (compraId, mensaje) =>
+      request(app)
+        .post(`/api/compras/${compraId}/mensajes`)
+        .set(await auth(LUCIA))
+        .send({ mensaje });
+    await escribir(compra.id, "Hola Ana");
+    await escribir(compra.id, "¿Te llegó la entrada?");
+    await escribir(otra.id, "Otro tema");
+
+    const avisos = async (compraId) =>
+      (await notificacionesDe(ANA, compraId)).filter((n) => n.tipo === "NUEVO_MENSAJE");
+    expect((await avisos(compra.id)).map((n) => n.leida)).toEqual([false, false]);
+
+    const res = await request(app)
+      .post(`/api/compras/${compra.id}/mensajes/leidos`)
+      .set(await auth(ANA));
+    expect(res.status).toBe(200);
+    expect(res.body).toMatchObject({ mensajesNoLeidos: 0, notificacionesLeidas: 2 });
+    expect((await avisos(compra.id)).every((n) => n.leida)).toBe(true);
+    expect((await avisos(otra.id)).map((n) => n.leida)).toEqual([false]);
+
+    // Otras notificaciones de la misma compra (por ejemplo, la de la compra creada) no se tocan.
+    expect((await notificacionesDe(LUCIA, compra.id)).some((n) => !n.leida)).toBe(true);
+  });
+});
+
+describe("Limpiar notificaciones (DELETE /api/notificaciones)", () => {
+  test("baja lógica: dejan de listarse y contarse, con auditoría; las nuevas siguen llegando", async () => {
+    const CARLA = "carla@ticketit.test";
+    const headers = await auth(CARLA);
+    const carlaId = (await usuariosRepository.obtenerPorEmail(CARLA)).id;
+    const antes = await request(app).get("/api/notificaciones?limite=50").set(headers);
+    expect(antes.body.total).toBeGreaterThan(0);
+
+    const res = await request(app).delete("/api/notificaciones").set(headers);
+    expect(res.status).toBe(200);
+    expect(res.body.eliminadas).toBe(antes.body.total);
+
+    const despues = await request(app).get("/api/notificaciones").set(headers);
+    expect(despues.body).toMatchObject({ total: 0, items: [] });
+    expect(
+      (await request(app).get("/api/notificaciones/no-leidas/cantidad").set(headers)).body.cantidad,
+    ).toBe(0);
+
+    const enBase = await notificacionesRepository.model
+      .find({ destinatarioId: carlaId })
+      .incluirInactivos()
+      .lean();
+    expect(enBase).toHaveLength(antes.body.total);
+    expect(enBase.every((n) => n.activo === false && n.modificadoPor === carlaId)).toBe(true);
+    expect(enBase.every((n) => n.fechaModificacion instanceof Date)).toBe(true);
+
+    // Una baja ya hecha no cuenta otra vez; una notificación nueva sí aparece.
+    expect((await request(app).delete("/api/notificaciones").set(headers)).body.eliminadas).toBe(0);
+    await notificacionesService.notificar("ENTRADA_UTILIZADA", carlaId, { evento: "Prueba" });
+    expect((await request(app).get("/api/notificaciones").set(headers)).body.total).toBe(1);
+  });
+
+  test("solo limpia las propias; sin sesión → 401; con body → 400", async () => {
+    const deBruno = (
+      await request(app)
+        .get("/api/notificaciones")
+        .set(await auth(BRUNO))
+    ).body.total;
+    await request(app)
+      .delete("/api/notificaciones")
+      .set(await auth(MARTIN));
+    expect(
+      (
+        await request(app)
+          .get("/api/notificaciones")
+          .set(await auth(BRUNO))
+      ).body.total,
+    ).toBe(deBruno);
+    expect((await request(app).delete("/api/notificaciones")).status).toBe(401);
+    expect(
+      (
+        await request(app)
+          .delete("/api/notificaciones")
+          .set(await auth(BRUNO))
+          .send({ todas: true })
+      ).status,
+    ).toBe(400);
   });
 });

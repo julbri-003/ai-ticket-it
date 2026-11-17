@@ -169,3 +169,8 @@
 - Badges de no leídos en el top bar y en las tabs; `compra:estado` refresca las pantallas abiertas.
 - README final (tests, arquitectura y guion del video), decisiones completas y `specs/trazabilidad.md` recorrida.
 - Tests: `useChatCompra`, `NotificacionesContext`, Chat, bandeja y notificaciones.
+- Notificaciones: cada una se marca leída sola deslizándola, con su check (✓) o con la acción accesible, sin abrirla.
+  Botón **Limpiar** con confirmación ("ya no las vas a poder recuperar") → `DELETE /api/notificaciones`, baja lógica
+  de todas las del usuario con la auditoría del plugin Persistible.
+- Al abrir el chat de una compra, `POST /compras/:id/mensajes/leidos` también marca leídos los avisos `NUEVO_MENSAJE`
+  de esa compra (devuelve `notificacionesLeidas`) y el front recalcula la campana.

@@ -39,6 +39,11 @@ export const notificacionesService = {
   async marcarLeida(id) {
     return aNotificacion(await notificacionesApi.marcarLeida(id));
   },
+  /** Limpia todas (baja lógica en el back). Devuelve cuántas se borraron. */
+  async limpiar() {
+    const { eliminadas } = await notificacionesApi.limpiar();
+    return eliminadas;
+  },
   async marcarTodas() {
     const { actualizadas } = await notificacionesApi.marcarTodas();
     return actualizadas;

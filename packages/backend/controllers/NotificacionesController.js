@@ -30,6 +30,11 @@ export class NotificacionesController {
     res.json(notificacionToDTO(await this.notificacionesService.marcarLeida(id, req.user)));
   }
 
+  async limpiar(req, res) {
+    sinCuerpoSchema.parse(req.body ?? {});
+    res.json({ eliminadas: await this.notificacionesService.limpiar(req.user) });
+  }
+
   async marcarTodasLeidas(req, res) {
     sinCuerpoSchema.parse(req.body ?? {});
     res.json({ actualizadas: await this.notificacionesService.marcarTodasLeidas(req.user) });

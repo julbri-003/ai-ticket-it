@@ -69,6 +69,26 @@ notificacionesRouter.patch("/leidas", (req, res) =>
 
 /**
  * @swagger
+ * /api/notificaciones:
+ *   delete:
+ *     summary: Limpiar mis notificaciones (baja lógica)
+ *     description: >
+ *       Da de baja todas las notificaciones del usuario (activo = false, con fechaModificacion y
+ *       modificadoPor). Dejan de listarse y de contarse; no se pueden recuperar desde la app.
+ *     tags: [Notificaciones]
+ *     security: [{ bearerAuth: [] }]
+ *     responses:
+ *       200:
+ *         description: Cuántas se limpiaron
+ *         content:
+ *           application/json:
+ *             schema: { type: object, properties: { eliminadas: { type: integer, example: 5 } } }
+ *       401: { $ref: "#/components/responses/NoAutenticado" }
+ */
+notificacionesRouter.delete("/", (req, res) => notificacionesController.limpiar(req, res));
+
+/**
+ * @swagger
  * /api/notificaciones/{id}/leida:
  *   patch:
  *     summary: Marcar una notificación como leída (solo el destinatario)

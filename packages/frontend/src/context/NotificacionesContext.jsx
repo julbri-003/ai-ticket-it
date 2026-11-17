@@ -19,6 +19,8 @@ export const NotificacionesContext = createContext({
   refrescar: () => {},
   marcarLeida: async () => {},
   marcarTodas: async () => {},
+  limpiar: async () => 0,
+  refrescarMensajes: () => {},
   setChatAbierto: () => {},
   ultima: null,
 });
@@ -92,6 +94,12 @@ export function NotificacionesProvider({ children }) {
     setNoLeidas(0);
   }, []);
 
+  const limpiar = useCallback(async () => {
+    const eliminadas = await notificacionesService.limpiar();
+    setNoLeidas(0);
+    return eliminadas;
+  }, []);
+
   const setChatAbierto = useCallback(
     (compraId) => {
       chatAbierto.current = compraId;
@@ -108,6 +116,7 @@ export function NotificacionesProvider({ children }) {
       refrescarMensajes,
       marcarLeida,
       marcarTodas,
+      limpiar,
       setChatAbierto,
       ultima,
     }),
@@ -118,6 +127,7 @@ export function NotificacionesProvider({ children }) {
       refrescarMensajes,
       marcarLeida,
       marcarTodas,
+      limpiar,
       setChatAbierto,
       ultima,
     ],

@@ -26,7 +26,7 @@ function ultimoConfirmado(mensajes) {
 export function useChatCompra(compraId) {
   const { usuario } = useAuth();
   const { socket, conectado } = useSocket();
-  const { setChatAbierto } = useNotificaciones();
+  const { setChatAbierto, refrescar: refrescarContadores } = useNotificaciones();
   const [mensajes, setMensajes] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
@@ -34,9 +34,16 @@ export function useChatCompra(compraId) {
   mensajesRef.current = mensajes;
   const usuarioId = usuario?.id;
 
+  // El back marca leídos los mensajes y, además, los avisos NUEVO_MENSAJE de esta compra:
+  // si cambió alguno se recalcula la campana. El contador de Mensajes se recalcula al salir.
   const marcarLeidos = useCallback(() => {
-    mensajesService.marcarLeidos(compraId).catch(() => {});
-  }, [compraId]);
+    mensajesService
+      .marcarLeidos(compraId)
+      .then((r) => {
+        if (r?.notificacionesLeidas > 0) refrescarContadores();
+      })
+      .catch(() => {});
+  }, [compraId, refrescarContadores]);
 
   const cargar = useCallback(async () => {
     setCargando(true);

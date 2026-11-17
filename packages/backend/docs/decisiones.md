@@ -288,3 +288,13 @@ false` y `orden=relevancia` cae a `fecha`. Con `categoriaIds`, la intersección 
 - **Adapters**: `AlmacenamientoLocalAdapter` (archivos subidos) y `EmisorSocketAdapter` (socket.io). Ningún service
   importa socket.io ni el sistema de archivos; en los tests se inyectan versiones nulas o espías.
 - **Cancelación de eventos**: reembolso inmediato de todo, resuelto por el dominio y con la evaluación perezosa como red.
+
+### Ajustes al cierre (notificaciones)
+
+- **Limpiar = baja lógica** (`activo: false`, `fechaModificacion`, `modificadoPor`) con un `updateMany`: el plugin
+  Persistible ya excluye las inactivas de listados y conteos, así que no hace falta otro filtro. No hay "deshacer":
+  la confirmación lo dice explícitamente.
+- **Marcar de a una**: optimista en la lista; si el back falla vuelve a no leída con un toast. El swipe solo existe en
+  las no leídas, y el check es un botón aparte de la tarjeta (no anidado) para el lector de pantalla.
+- **Avisos de mensajes**: se marcan leídos en el mismo `POST /leidos` del chat (una sola llamada al abrirlo y al recibir
+  mensajes), solo los `NUEVO_MENSAJE` de esa compra y de quien llama; el resto de avisos de la compra no se toca.

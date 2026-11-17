@@ -456,7 +456,7 @@ describe("Centro de notificaciones", () => {
       "PATCH /notificaciones/n1/leida": () => [200, { ...lista.items[0], leida: true }],
     });
     await renderPantalla(Notificaciones);
-    const noLeida = await screen.findByTestId("notificacion-n1");
+    const noLeida = await screen.findByTestId("abrir-notificacion-n1");
     expect(noLeida.props.accessibilityLabel).toMatch(/^No leída\. Compra confirmada/);
     await fireEvent.press(noLeida);
     expect(await screen.findByText(/destino:DetalleCompra:\{"compraId":"c1"\}/)).toBeTruthy();
@@ -472,7 +472,7 @@ describe("Centro de notificaciones", () => {
       "PATCH /notificaciones/leidas": () => [200, { actualizadas: 1 }],
     });
     await renderPantalla(Notificaciones);
-    await screen.findByTestId("notificacion-n1");
+    await screen.findByTestId("abrir-notificacion-n1");
     await waitFor(() =>
       expect(screen.getByTestId("marcar-todas").props.accessibilityState.disabled).toBe(false),
     );
@@ -480,8 +480,10 @@ describe("Centro de notificaciones", () => {
     await waitFor(() =>
       expect(llamadas.some((l) => l.clave === "PATCH /notificaciones/leidas")).toBe(true),
     );
-    expect(screen.getByTestId("notificacion-n1").props.accessibilityLabel).not.toMatch(/No leída/);
-    await fireEvent.press(screen.getByTestId("notificacion-n2"));
+    expect(screen.getByTestId("abrir-notificacion-n1").props.accessibilityLabel).not.toMatch(
+      /No leída/,
+    );
+    await fireEvent.press(screen.getByTestId("abrir-notificacion-n2"));
     expect(await screen.findByText(/destino:ChatCompra:\{"compraId":"c2"\}/)).toBeTruthy();
   });
 
@@ -492,5 +494,108 @@ describe("Centro de notificaciones", () => {
     });
     await renderPantalla(Notificaciones);
     expect(await screen.findByText("No tenés notificaciones")).toBeTruthy();
+    expect(screen.getByTestId("limpiar-notificaciones").props.accessibilityState.disabled).toBe(
+      true,
+    );
+  });
+
+  test("el check marca una sola como leída sin navegar; las leídas no tienen check ni swipe", async () => {
+    const llamadas = apiFalsa({
+      "GET /notificaciones": () => [200, lista],
+      "GET /notificaciones/no-leidas/cantidad": () => [200, { cantidad: 1 }],
+      "PATCH /notificaciones/n1/leida": () => [200, { ...lista.items[0], leida: true }],
+    });
+    await renderPantalla(Notificaciones);
+    await screen.findByTestId("marcar-leida-n1");
+    expect(screen.queryByTestId("marcar-leida-n2")).toBeNull();
+    expect(screen.queryByTestId("swipe-leida-n2")).toBeNull();
+
+    await fireEvent.press(screen.getByTestId("marcar-leida-n1"));
+    await waitFor(() =>
+      expect(llamadas.some((l) => l.clave === "PATCH /notificaciones/n1/leida")).toBe(true),
+    );
+    expect(screen.queryByTestId("marcar-leida-n1")).toBeNull();
+    expect(screen.getByTestId("abrir-notificacion-n1").props.accessibilityLabel).not.toMatch(
+      /No leída/,
+    );
+    expect(screen.queryByText(/destino:/)).toBeNull();
+  });
+
+  test("deslizar (acción del swipe) también la marca leída; si el back falla vuelve a no leída", async () => {
+    const llamadas = apiFalsa({
+      "GET /notificaciones": () => [200, lista],
+      "GET /notificaciones/no-leidas/cantidad": () => [200, { cantidad: 1 }],
+      "PATCH /notificaciones/n1/leida": () => [500, { message: "Se cayó el servidor" }],
+    });
+    await renderPantalla(Notificaciones);
+    await fireEvent.press(await screen.findByTestId("swipe-leida-n1"));
+    await waitFor(() =>
+      expect(llamadas.some((l) => l.clave === "PATCH /notificaciones/n1/leida")).toBe(true),
+    );
+    expect(await screen.findByText("No pudimos marcarla como leída")).toBeTruthy();
+    expect(screen.getByTestId("abrir-notificacion-n1").props.accessibilityLabel).toMatch(
+      /^No leída/,
+    );
+  });
+
+  test("la acción accesible 'Marcar como leída' de la notificación", async () => {
+    const llamadas = apiFalsa({
+      "GET /notificaciones": () => [200, lista],
+      "GET /notificaciones/no-leidas/cantidad": () => [200, { cantidad: 1 }],
+      "PATCH /notificaciones/n1/leida": () => [200, { ...lista.items[0], leida: true }],
+    });
+    await renderPantalla(Notificaciones);
+    const item = await screen.findByTestId("abrir-notificacion-n1");
+    expect(item.props.accessibilityActions).toEqual([
+      { name: "leida", label: "Marcar como leída" },
+    ]);
+    await fireEvent(item, "accessibilityAction", { nativeEvent: { actionName: "leida" } });
+    await waitFor(() =>
+      expect(llamadas.some((l) => l.clave === "PATCH /notificaciones/n1/leida")).toBe(true),
+    );
+  });
+
+  test("Limpiar pide confirmación (no se recuperan); volver no borra y confirmar las limpia", async () => {
+    const llamadas = apiFalsa({
+      "GET /notificaciones": () => [200, lista],
+      "GET /notificaciones/no-leidas/cantidad": () => [200, { cantidad: 1 }],
+      "DELETE /notificaciones": () => [200, { eliminadas: 2 }],
+    });
+    await renderPantalla(Notificaciones);
+    await screen.findByTestId("abrir-notificacion-n1");
+    await fireEvent.press(screen.getByTestId("limpiar-notificaciones"));
+    expect(screen.getByText("¿Limpiar las notificaciones?")).toBeTruthy();
+    expect(screen.getByText(/Ya no las vas a poder recuperar/)).toBeTruthy();
+    await fireEvent.press(screen.getByRole("button", { name: "Volver" }));
+    expect(llamadas.some((l) => l.clave === "DELETE /notificaciones")).toBe(false);
+
+    await fireEvent.press(screen.getByTestId("limpiar-notificaciones"));
+    await fireEvent.press(screen.getAllByRole("button", { name: "Limpiar" }).at(-1));
+    await waitFor(() =>
+      expect(llamadas.some((l) => l.clave === "DELETE /notificaciones")).toBe(true),
+    );
+    expect(await screen.findByText("No tenés notificaciones")).toBeTruthy();
+    expect(screen.getByText("Se borraron 2 notificaciones.")).toBeTruthy();
+  });
+});
+
+describe("Avisos de mensajes al abrir el chat", () => {
+  test("si el back marcó avisos de esta compra, se recalcula la campana", async () => {
+    jest.spyOn(mensajesService, "listar").mockResolvedValue({ mensajes: [], noLeidos: 0 });
+    jest
+      .spyOn(mensajesService, "marcarLeidos")
+      .mockResolvedValue({ mensajesNoLeidos: 0, notificacionesLeidas: 2 });
+    const cantidad = jest
+      .spyOn(notificacionesService, "cantidadNoLeidas")
+      .mockResolvedValueOnce(5)
+      .mockResolvedValue(3);
+    jest.spyOn(mensajesService, "totalNoLeidos").mockResolvedValue(0);
+    const { result } = await renderHook(
+      () => ({ chat: useChatCompra("c1"), notificaciones: useNotificaciones() }),
+      { wrapper: contextos({ socket: socketFalso(), conectado: true }) },
+    );
+    await waitFor(() => expect(result.current.notificaciones.noLeidas).toBe(3));
+    expect(mensajesService.marcarLeidos).toHaveBeenCalledWith("c1");
+    expect(cantidad.mock.calls.length).toBeGreaterThanOrEqual(2);
   });
 });

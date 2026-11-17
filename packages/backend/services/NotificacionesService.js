@@ -2,6 +2,7 @@ import { notificacionToDTO } from "../controllers/dto/notificacionDTO.js";
 import { Notificacion } from "../domain/notificacionDominio.js";
 import { ForbiddenError, NotFoundError } from "../errors/AppError.js";
 import { mismoId } from "../utils/id.js";
+import { TiposNotificacion } from "../templates/notificacionTemplates.js";
 import { generarContenidoNotificacion } from "./TemplatesService.js";
 
 /**
@@ -54,5 +55,22 @@ export class NotificacionesService {
 
   async marcarTodasLeidas(usuario) {
     return this.notificacionesRepository.marcarTodasLeidas(usuario.id);
+  }
+
+  /** Al abrir el chat de una compra: los avisos de mensajes de esa compra quedan leídos. */
+  async marcarLeidosMensajesDeCompra(usuario, compraId) {
+    return this.notificacionesRepository.marcarLeidasDeCompra(
+      usuario.id,
+      compraId,
+      TiposNotificacion.NUEVO_MENSAJE,
+    );
+  }
+
+  /** Limpiar: baja lógica de todas las notificaciones del usuario. No se pueden recuperar. */
+  async limpiar(usuario) {
+    return this.notificacionesRepository.darDeBajaTodas(usuario.id, {
+      modificadoPor: usuario.id,
+      fecha: this.reloj.ahora(),
+    });
   }
 }
