@@ -26,14 +26,21 @@ const resumenPublicoRouter = Router();
  *                     organizadores: { type: integer, example: 3 }
  *                     puntajePromedio: { type: number, nullable: true, example: 4.5 }
  *                     cantidadResenias: { type: integer, example: 3 }
+ *                 eventosPorCategoria:
+ *                   type: object
+ *                   description: Eventos a la venta por id de categoría (sin las que no tienen)
+ *                   additionalProperties: { type: integer }
+ *                   example: { "665f1c2a9b1e8a0012345678": 4 }
  *                 reseniasDestacadas:
  *                   type: array
  *                   items: { $ref: "#/components/schemas/Resenia" }
  */
 resumenPublicoRouter.get("/", async (req, res) => {
-  const { estadisticas, reseniasDestacadas } = await resumenPublicoService.obtener();
+  const { estadisticas, eventosPorCategoria, reseniasDestacadas } =
+    await resumenPublicoService.obtener();
   res.json({
     estadisticas,
+    eventosPorCategoria,
     reseniasDestacadas: reseniasDestacadas.map(({ resenia, evento }) =>
       reseniaToDTO(resenia, { evento }),
     ),

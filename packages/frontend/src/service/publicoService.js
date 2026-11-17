@@ -16,6 +16,18 @@ const formatoFecha = new Intl.DateTimeFormat("es-AR", {
 export const formatearPrecio = (monto) => formatoPrecio.format(monto);
 export const formatearFecha = (iso) => formatoFecha.format(new Date(iso));
 
+const formatoMes = new Intl.DateTimeFormat("es-AR", { month: "short" });
+
+/**
+ * true si queda el 10 % o menos del cupo total del evento y no está agotado ("Últimas
+ * entradas"). Usa los disponibles por tipo que ya trae el DTO del buscador.
+ */
+export function quedanPocasEntradas(tiposEntrada = []) {
+  const cupo = tiposEntrada.reduce((suma, t) => suma + (t.cupo ?? 0), 0);
+  const disponibles = tiposEntrada.reduce((suma, t) => suma + (t.disponibles ?? 0), 0);
+  return cupo > 0 && disponibles > 0 && disponibles <= cupo * 0.1;
+}
+
 /** Evento del buscador → tarjeta de la landing. */
 function aEventoResumen(dto) {
   return {
@@ -27,14 +39,22 @@ function aEventoResumen(dto) {
     desde: `Desde ${formatearPrecio(dto.precioMinimo)}`,
     imagen: dto.imagen ? { uri: dto.imagen.url, alt: dto.imagen.alt } : null,
     agotado: dto.agotado,
+    quedanPocas: !dto.agotado && quedanPocasEntradas(dto.tiposEntrada),
+    dia: new Date(dto.fecha).getDate(),
+    mes: formatoMes.format(new Date(dto.fecha)).replace(".", "").toUpperCase(),
   };
 }
 
 export const publicoService = {
   async resumen() {
-    const { estadisticas, reseniasDestacadas } = await publicoApi.resumen();
+    const {
+      estadisticas,
+      eventosPorCategoria = {},
+      reseniasDestacadas,
+    } = await publicoApi.resumen();
     return {
       estadisticas,
+      eventosPorCategoria,
       resenias: reseniasDestacadas.map((r) => ({
         id: r.id,
         autor: r.compradorNombre,

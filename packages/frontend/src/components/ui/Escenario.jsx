@@ -10,8 +10,17 @@ import { Theater } from "lucide-react-native";
 /**
  * Card con forma de entrada: radio 18px, muescas semicirculares laterales y línea punteada que
  * separa el talón (fondo `ticketStub`). Base de TarjetaEvento, TarjetaCompra y stat cards.
+ * `perforacion="puntos"` cambia la línea por una fila de agujeritos (hero de la landing).
  */
-export function TicketCard({ children, talon, onPress, accessibilityLabel, testID, ...resto }) {
+export function TicketCard({
+  children,
+  talon,
+  onPress,
+  accessibilityLabel,
+  testID,
+  perforacion = "guiones",
+  ...resto
+}) {
   const contenido = (
     <>
       <Cuerpo>{children}</Cuerpo>
@@ -19,7 +28,15 @@ export function TicketCard({ children, talon, onPress, accessibilityLabel, testI
         <>
           <Perforacion accessible={false}>
             <Muesca $lado="izquierda" />
-            <LineaPunteada />
+            {perforacion === "puntos" ? (
+              <LineaPuntos testID="perforacion-puntos">
+                {Array.from({ length: 22 }, (_, i) => (
+                  <PuntoPerforado key={i} />
+                ))}
+              </LineaPuntos>
+            ) : (
+              <LineaPunteada />
+            )}
             <Muesca $lado="derecha" />
           </Perforacion>
           <Talon>{talon}</Talon>
@@ -102,6 +119,23 @@ const LineaPunteada = styled.View`
   border-color: ${({ theme }) => theme.colors.divider};
 `;
 
+const LineaPuntos = styled.View`
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 8px;
+`;
+
+const PuntoPerforado = styled.View`
+  width: 5px;
+  height: 5px;
+  border-radius: 2.5px;
+  background-color: ${({ theme }) => theme.colors.background};
+  border-width: 1px;
+  border-color: ${({ theme }) => theme.colors.divider};
+`;
+
 const Talon = styled.View`
   padding: 12px 16px;
   background-color: ${({ theme }) => theme.colors.ticketStub};
@@ -121,15 +155,30 @@ export const TextoTalon = styled.Text`
 /**
  * Título en Playfair Display. `destacada` es la palabra (o frase) del texto que va en itálica
  * con el color de acento: <TituloEscena texto="Tu próxima función" destacada="función" />.
+ * `color` y `colorDestacada` permiten usarlo sobre fondos de terciopelo (con contraste testeado).
  */
-export function TituloEscena({ texto, destacada, nivel = "headline", centrado = false, testID }) {
+export function TituloEscena({
+  texto,
+  destacada,
+  nivel = "headline",
+  centrado = false,
+  color,
+  colorDestacada,
+  testID,
+}) {
   const indice = destacada ? texto.indexOf(destacada) : -1;
   return (
-    <Titulo accessibilityRole="header" $nivel={nivel} $centrado={centrado} testID={testID}>
+    <Titulo
+      accessibilityRole="header"
+      $nivel={nivel}
+      $centrado={centrado}
+      $color={color}
+      testID={testID}
+    >
       {indice >= 0 ? (
         <>
           {texto.slice(0, indice)}
-          <Destacada>{destacada}</Destacada>
+          <Destacada $color={colorDestacada}>{destacada}</Destacada>
           {texto.slice(indice + destacada.length)}
         </>
       ) : (
@@ -145,13 +194,13 @@ const Titulo = styled.Text`
     theme.typography.sizes[$nivel] ?? theme.typography.sizes.headline}px;
   line-height: ${({ theme, $nivel }) =>
     Math.round((theme.typography.sizes[$nivel] ?? 28) * 1.25)}px;
-  color: ${({ theme }) => theme.colors.textPrimary};
+  color: ${({ theme, $color }) => $color ?? theme.colors.textPrimary};
   text-align: ${({ $centrado }) => ($centrado ? "center" : "left")};
 `;
 
 const Destacada = styled.Text`
   font-family: ${({ theme }) => theme.typography.fontDisplayItalic};
-  color: ${({ theme }) => theme.colors.accentText};
+  color: ${({ theme, $color }) => $color ?? theme.colors.accentText};
 `;
 
 // ----- EtiquetaSeccion -----

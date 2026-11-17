@@ -5,6 +5,7 @@ import styled, { useTheme } from "styled-components/native";
 /**
  * Contenedor de cada pantalla: safe area, fondo del tema, scroll y pull-to-refresh opcional.
  * `edges` por defecto deja afuera el borde superior (lo cubre el header del navegador).
+ * `alScroll` recibe el evento de scroll (throttle de 32 ms).
  */
 export function Pantalla({
   children,
@@ -15,6 +16,7 @@ export function Pantalla({
   sinPadding = false,
   stickyHeaderIndices,
   refScroll,
+  alScroll,
   testID,
 }) {
   const theme = useTheme();
@@ -24,6 +26,8 @@ export function Pantalla({
         <Scroll
           ref={refScroll}
           stickyHeaderIndices={stickyHeaderIndices}
+          onScroll={alScroll}
+          scrollEventThrottle={alScroll ? 32 : undefined}
           contentContainerStyle={{ padding: sinPadding ? 0 : 20, gap: 20, paddingBottom: 40 }}
           keyboardShouldPersistTaps="handled"
           refreshControl={

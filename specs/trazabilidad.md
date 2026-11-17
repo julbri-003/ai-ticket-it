@@ -58,6 +58,7 @@ Cada requisito, dónde se implementa y cómo se verifica. Se usa en tres momento
 | Componentes consistentes | 07 `components/ui` | Ninguna pantalla usa variantes ad hoc | ✅ todas las pantallas usan `components/ui` (Button, Card, Badge, Modal, Input…); `componentes.test` |
 | Confirmación o deshacer en acciones destructivas | 07 Modal/Toast | Cancelar compra, quitar imagen, cerrar sesión, quitar favorito | ✅ front `compras.test` › cancelar con modal, `navegacion.test` › "Perfil: cerrar sesión pide confirmación", `favoritos.test` › Deshacer; quitar imagen, cancelar evento y limpiar notificaciones con modal (`chat.test` › "Limpiar pide confirmación…") |
 | Modo claro y oscuro completos | 07 ThemeContext | Cambiar el tema en Perfil y recorrer todo | ✅ front `componentes.test` › "en modo oscuro también renderiza" y `theme.test` (paleta oscura). 🔍 Manual pendiente: cambiar el tema en Perfil y recorrer todas las pantallas |
+| Movimiento reducido y decorativos ocultos al lector (landing) | 07b `useMovimientoReducido`, decorativos con `accessible={false}` | Activar "Reducir movimiento" y recorrer la landing con TalkBack/VoiceOver | ✅ front `landing.test` › "con movimiento reducido muestra los valores finales…" y "los adornos no están en el árbol de accesibilidad"; `theme.test` (texto sobre el reflector y el terciopelo). 🔍 Manual pendiente: "Reducir movimiento" activado y TalkBack/VoiceOver en el celular |
 
 ## Resumen del cierre (spec 10)
 

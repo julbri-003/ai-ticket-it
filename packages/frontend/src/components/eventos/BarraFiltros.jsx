@@ -3,6 +3,7 @@ import styled, { useTheme } from "styled-components/native";
 import { SlidersHorizontal, X } from "lucide-react-native";
 import { Chip } from "../ui";
 import { useFoco } from "../ui/foco";
+import { iconoCategoria } from "./iconosCategoria";
 
 /**
  * Barra de filtros (pills horizontales): "✦ Para vos", "Todas" + categorías (multi-selección)
@@ -73,6 +74,7 @@ export function BarraFiltros({
             <Chip
               key={c.id}
               etiqueta={c.nombre}
+              icono={iconoCategoria(c.nombre)}
               seleccionado={filtros.categoriaIds.includes(c.id)}
               onPress={() => onCategoria(c.id)}
             />

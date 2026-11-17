@@ -27,8 +27,23 @@ export function SelectorTema() {
   );
 }
 
-/** Pie de la Landing y de Explorar: links, cambio de tema y ©. */
-export function Footer({ links = [] }) {
+function ListaLinks({ links }) {
+  return (
+    <Links>
+      {links.map(({ etiqueta, alPresionar }) => (
+        <Link key={etiqueta} onPress={alPresionar} accessibilityRole="link">
+          <TextoLink>{etiqueta}</TextoLink>
+        </Link>
+      ))}
+    </Links>
+  );
+}
+
+/**
+ * Pie de la Landing y de Explorar: links, cambio de tema y ©. Con `secciones`
+ * ([{ titulo, links }]) agrupa los links en columnas con título (landing).
+ */
+export function Footer({ links = [], secciones }) {
   return (
     <Contenedor>
       <Marca accessibilityRole="header">AI Ticket It</Marca>
@@ -36,14 +51,21 @@ export function Footer({ links = [] }) {
         La boletería digital de Argentina: entradas seguras, transparentes y al instante para
         recitales, teatro y festivales.
       </Texto>
-      {links.length > 0 ? (
-        <Links>
-          {links.map(({ etiqueta, alPresionar }) => (
-            <Link key={etiqueta} onPress={alPresionar} accessibilityRole="link">
-              <TextoLink>{etiqueta}</TextoLink>
-            </Link>
+      {secciones?.length ? (
+        <Columnas>
+          {secciones.map(({ titulo, links: linksSeccion }) => (
+            <Columna key={titulo}>
+              <TituloColumna accessibilityRole="header">{titulo}</TituloColumna>
+              {linksSeccion.map(({ etiqueta, alPresionar }) => (
+                <Link key={etiqueta} onPress={alPresionar} accessibilityRole="link">
+                  <TextoLink>{etiqueta}</TextoLink>
+                </Link>
+              ))}
+            </Columna>
           ))}
-        </Links>
+        </Columnas>
+      ) : links.length > 0 ? (
+        <ListaLinks links={links} />
       ) : null}
       <SelectorTema />
       <Copyright>© {new Date().getFullYear()} AI Ticket It · CABA, Argentina</Copyright>
@@ -75,6 +97,24 @@ const Links = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
   gap: 4px 16px;
+`;
+
+const Columnas = styled.View`
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px 32px;
+`;
+
+const Columna = styled.View`
+  min-width: 140px;
+`;
+
+const TituloColumna = styled.Text`
+  font-family: ${({ theme }) => theme.typography.fontBodySemibold};
+  font-size: ${({ theme }) => theme.typography.sizes.label}px;
+  letter-spacing: ${({ theme }) => theme.typography.letterSpacingLabel}px;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.gold};
 `;
 
 const Link = styled.Pressable`

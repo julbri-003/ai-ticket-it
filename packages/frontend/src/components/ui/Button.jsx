@@ -17,6 +17,8 @@ function colores(variant, { colors }) {
       return { fondo: "transparent", texto: colors.textPrimary, borde: colors.borderInput };
     case "ghost":
       return { fondo: "transparent", texto: colors.accentText, borde: "transparent" };
+    case "invertido": // sobre terciopelo (banner final de la landing)
+      return { fondo: colors.onVelvet, texto: colors.velvet, borde: colors.onVelvet };
     case "danger":
       return { fondo: colors.error, texto: colors.onError, borde: colors.error };
     default:
@@ -25,7 +27,7 @@ function colores(variant, { colors }) {
 }
 
 /**
- * Botón pill (misma API que REPO_REF): variant primary | secondary | outline | ghost | danger,
+ * Botón pill (misma API que REPO_REF): variant primary | secondary | outline | ghost | danger | invertido,
  * size sm | md | lg, loading (deshabilita y marca busy), icono (componente de lucide).
  * Si el botón es solo ícono, `accessibilityLabel` es obligatorio.
  */

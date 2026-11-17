@@ -148,6 +148,18 @@ export class EventosMongoRepository extends RepositorioMongoPersistible {
     return { eventosActivos, entradasVendidas: fila?.entradasVendidas ?? 0 };
   }
 
+  /**
+   * Cantidad de eventos que muestra el buscador por categoría (activos, futuros y no
+   * cancelados): { [categoriaId]: cantidad }. Las categorías sin eventos no aparecen.
+   */
+  async contarPorCategoria(ahora = this.reloj.ahora()) {
+    const filas = await this.model.aggregate([
+      { $match: { cancelacion: null, activo: true, fecha: { $gt: ahora } } },
+      { $group: { _id: "$categoriaId", cantidad: { $sum: 1 } } },
+    ]);
+    return Object.fromEntries(filas.map(({ _id, cantidad }) => [String(_id), cantidad]));
+  }
+
   /** Búsqueda exacta por nombre (incluye finalizados). La usan los seeds para ser idempotentes. */
   async obtenerPorNombre(nombre) {
     const doc = await this.model.findOne({ nombre }).incluirInactivos().lean();

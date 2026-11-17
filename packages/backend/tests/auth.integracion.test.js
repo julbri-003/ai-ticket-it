@@ -149,3 +149,19 @@ test("GET /api/resumen-publico: estadísticas y reseñas destacadas para la land
   expect(res.body.reseniasDestacadas[0].evento.nombre).toBe("Recital Acústico de Otoño");
   expect(sinCamposInternos(res.body)).toBe(true);
 });
+
+test("GET /api/resumen-publico: eventosPorCategoria coincide con lo que muestra el buscador", async () => {
+  const { body } = await request(app).get("/api/resumen-publico");
+  const categorias = (await request(app).get("/api/categorias")).body;
+  const porCategoria = body.eventosPorCategoria;
+  let suma = 0;
+  for (const categoria of categorias) {
+    const { total } = (await request(app).get("/api/eventos").query({ categoriaIds: categoria.id }))
+      .body;
+    expect(porCategoria[categoria.id] ?? 0).toBe(total);
+    suma += total;
+  }
+  // Solo trae categorías con eventos y suma lo mismo que el buscador sin filtros.
+  expect(Object.values(porCategoria).every((n) => n > 0)).toBe(true);
+  expect(suma).toBe((await request(app).get("/api/eventos")).body.total);
+});

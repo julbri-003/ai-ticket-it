@@ -26,6 +26,7 @@ Specs para construir **AI Ticket It** con un agente de IA (Claude Code, Cline, C
 | 05 | `05-back-compras.md` | Compras, máquina de estados, tareas programadas, reseñas |
 | 06 | `06-back-chat-notificaciones.md` | Chat (REST + socket.io) y notificaciones in-app con templates |
 | 07 | `07-front-base.md` | Theme, contexts, componentes UI, navegación, auth |
+| 07b | `07b-front-landing-detalles.md` | Landing con telón, marquesina, contadores y adornos (opcional, se puede correr en cualquier momento después de la 07) |
 | 08 | `08-front-comprador.md` | Explorar, detalle, checkout, mis compras, favoritos, reseñas |
 | 09 | `09-front-organizador.md` | Mis eventos, crear y editar evento, compras por evento, reembolsos |
 | 10 | `10-front-chat-notificaciones-cierre.md` | Chat, notificaciones, pulido final y datos para el video |

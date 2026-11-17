@@ -1,6 +1,9 @@
 import { Roles } from "../domain/rolesDominio.js";
 
-/** Datos públicos de la landing: estadísticas generales y reseñas destacadas. */
+/**
+ * Datos públicos de la landing: estadísticas generales, cantidad de eventos por categoría y
+ * reseñas destacadas.
+ */
 export class ResumenPublicoService {
   constructor({ eventosRepository, usuariosRepository, reseniasRepository }) {
     this.eventosRepository = eventosRepository;
@@ -9,8 +12,9 @@ export class ResumenPublicoService {
   }
 
   async obtener({ cantidadResenias = 6 } = {}) {
-    const [eventos, organizadores, puntaje, destacadas] = await Promise.all([
+    const [eventos, porCategoria, organizadores, puntaje, destacadas] = await Promise.all([
       this.eventosRepository.estadisticas(),
+      this.eventosRepository.contarPorCategoria(),
       this.usuariosRepository.contarPorRol(Roles.ORGANIZADOR),
       this.reseniasRepository.promedioGeneral(),
       this.reseniasRepository.destacadas(cantidadResenias),
@@ -26,6 +30,7 @@ export class ResumenPublicoService {
         puntajePromedio: puntaje.promedio == null ? null : Math.round(puntaje.promedio * 10) / 10,
         cantidadResenias: puntaje.cantidad,
       },
+      eventosPorCategoria: porCategoria,
       reseniasDestacadas: destacadas.map((resenia) => ({
         resenia,
         evento: eventoPorId.get(resenia.eventoId) ?? null,

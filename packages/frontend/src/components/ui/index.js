@@ -23,3 +23,15 @@ export { Carrusel } from "./Carrusel";
 export { Paginacion, paginasVisibles } from "./Paginacion";
 export { useFoco } from "./foco";
 export { Segmentos } from "./Segmentos";
+export {
+  ConTelon,
+  DECORATIVO,
+  Fleco,
+  Marquesina,
+  Ornamento,
+  PerforacionVertical,
+  Reflector,
+  Revelar,
+  Sello,
+  TexturaPliegues,
+} from "./Teatro";
