@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { ComprasController } from "../controllers/ComprasController.js";
 import { Roles } from "../domain/rolesDominio.js";
-import { comprasService, reloj } from "../dependencias.js";
+import { MensajesController } from "../controllers/MensajesController.js";
+import { comprasService, mensajesService, reloj } from "../dependencias.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { authorizeRole } from "../middlewares/authorizeRole.js";
 
@@ -90,6 +91,64 @@ comprasRouter.post("/", ...soloComprador, (req, res) => comprasController.crear(
  *       403: { $ref: "#/components/responses/SinPermiso" }
  */
 comprasRouter.get("/mias", ...soloComprador, (req, res) => comprasController.mias(req, res));
+
+const mensajesController = new MensajesController({ mensajesService });
+
+/**
+ * @swagger
+ * /api/compras/conversaciones:
+ *   get:
+ *     summary: Bandeja de mensajes (comprador u organizador)
+ *     description: >
+ *       Compras del usuario, como comprador u organizador, con al menos un mensaje, de la
+ *       conversación más reciente a la más vieja. Incluye el último mensaje, los no leídos de
+ *       cada una y el total de no leídos de todas (para el ícono de mensajería).
+ *     tags: [Chat]
+ *     security: [{ bearerAuth: [] }]
+ *     parameters:
+ *       - { $ref: "#/components/parameters/Pagina" }
+ *       - { $ref: "#/components/parameters/Limite" }
+ *     responses:
+ *       200:
+ *         description: Conversaciones paginadas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 items:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       compraId: { type: string }
+ *                       estado: { type: string, example: CONFIRMADA }
+ *                       tipoEntrada: { type: string, example: General }
+ *                       cantidad: { type: integer, example: 2 }
+ *                       evento:
+ *                         type: object
+ *                         properties:
+ *                           id: { type: string }
+ *                           nombre: { type: string }
+ *                           fecha: { type: string, format: date-time }
+ *                           imagen: { $ref: "#/components/schemas/Multimedia" }
+ *                       otro:
+ *                         type: object
+ *                         properties:
+ *                           nombre: { type: string, example: Lucía }
+ *                           rol: { type: string, example: ORGANIZADOR }
+ *                       ultimoMensaje: { $ref: "#/components/schemas/MensajeChat" }
+ *                       mensajesNoLeidos: { type: integer, example: 1 }
+ *                 total: { type: integer }
+ *                 pagina: { type: integer }
+ *                 limite: { type: integer }
+ *                 totalNoLeidos: { type: integer, example: 3 }
+ *       400: { $ref: "#/components/responses/Validacion" }
+ *       401: { $ref: "#/components/responses/NoAutenticado" }
+ */
+comprasRouter.get("/conversaciones", authMiddleware, (req, res) =>
+  mensajesController.conversaciones(req, res),
+);
 
 /**
  * @swagger

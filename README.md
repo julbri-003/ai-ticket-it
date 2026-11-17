@@ -51,8 +51,9 @@ Las specs de cada iteración están en [`specs/`](specs/README.md).
    npm run start:frontend
    ```
 
-7. **Abrir la app**: escanear el QR con Expo Go (Android) o con la cámara (iOS). La pantalla debería
-   mostrar **"✓ ok"**. Si muestra un error, revisá la IP, que estén en la misma red y el firewall.
+7. **Abrir la app**: escanear el QR con Expo Go (Android) o con la cámara (iOS). Aparece la landing con
+   los eventos destacados; si muestra un error de conexión, revisá la IP, que estén en la misma red y el
+   firewall. El chat y las notificaciones en tiempo real usan el mismo host y puerto (socket.io).
 
 Para levantar back y front juntos: `npm run start:dev`.
 
@@ -103,3 +104,53 @@ siempre se corre con `npm run start:frontend` en la PC.
 
 La base vive en memoria: **los datos se pierden al reiniciar el back** y se vuelven a sembrar al arrancar.
 Para depurar con una base real, completá `MONGO_URI` en `packages/backend/.env`.
+
+## Tests
+
+```bash
+npm test          # back + front
+npm run lint      # ESLint en todo el monorepo
+```
+
+- **Back** (`packages/backend/tests`): Jest (ESM) + supertest sobre MongoDB en memoria. Hay tests unitarios del
+  dominio con reloj fijo (`*.Dominio.test.js`) y de integración por API (`*.integracion.test.js`), incluido el socket
+  con `socket.io-client`. Las tareas programadas se prueban adelantando el reloj.
+  Cobertura del dominio: `npm run test:coverage -w packages/backend` (umbral 90 %).
+- **Front** (`packages/frontend/__tests__`): jest-expo + React Native Testing Library. Un adapter de axios falso
+  (`pruebas/apiFalsa.js`) hace correr los interceptores reales y un socket falso (`pruebas/pantallas.jsx`) simula el
+  tiempo real.
+
+## Arquitectura
+
+```
+packages/backend
+  routes → controllers (zod + DTO) → services (casos de uso, titularidad) → domain (reglas puras)
+                                                ↘ repositories/mongo (mongoose)   ↘ adapter (archivos, socket)
+  jobs/ProgramadorTareas   sockets/index.js   templates/   seeds/
+packages/frontend
+  features (pantallas) → service (DTO → modelo de UI) → service/apis → apiCaller → api (axios + JWT)
+  context (Auth, Theme, Toast, Socket, Notificaciones)   hooks   components/ui (sistema de diseño)
+```
+
+Las decisiones de cada iteración están en [`packages/backend/docs/decisiones.md`](packages/backend/docs/decisiones.md)
+y el detalle de cambios en [`changelog.md`](packages/backend/docs/changelog.md). La API está documentada con Swagger
+en `/api-docs`.
+
+## Guion sugerido para el video
+
+Usar dos dispositivos (o celular + emulador): **Ana** (`ana@ticketit.test`, comprador) y **Lucía**
+(`lucia@ticketit.test`, organizadora). Contraseña `Ticket123!`.
+
+| #   | Paso en la app                                                                                             | Back                                                                                                                             | Front                                                                                                       |
+| --- | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| 1   | Ana busca "jazz" y filtra por Recitales y precio                                                           | `routes/eventosRoutes.js` → `EventosController.buscar` → `EventosService.buscar` → `EventosMongoRepository.buscar` (aggregation) | `features/eventos/Explorar.jsx`, `hooks/useFiltrosEventos.js`, `components/eventos/PanelFiltros.jsx`        |
+| 2   | Abre el evento: tipos con "Quedan N", elige cantidad y confirma la reserva en el modal                     | `ComprasService.crear` → `Compra.crear` (dominio) → `EventosMongoRepository.reservarCupo` (atómico, sin sobreventa)              | `features/eventos/DetalleEvento.jsx`, `components/compras/SelectorCantidad.jsx`                             |
+| 3   | Paga (pago simulado con modal)                                                                             | `POST /compras/:id/pagar` → `Compra.pagar` → `guardarTransicion` (optimista) → hook `alCambiarEstado`                            | `features/compras/Checkout.jsx`                                                                             |
+| 4   | Lucía recibe la notificación al instante (badge + toast)                                                   | `AvisosComprasService` → `NotificacionesService.notificar` → `EmisorSocketAdapter` (`notificacion:nueva`)                        | `context/NotificacionesContext.jsx`, `components/layout/Encabezado.jsx`                                     |
+| 5   | Ana escribe por el chat; Lucía responde sin refrescar                                                      | `POST /compras/:id/mensajes` → `MensajesService.enviar` → `mensaje:nuevo` a la sala `compra:<id>` (`sockets/index.js`)           | `features/compras/Chat.jsx`, `hooks/useChatCompra.js`, `features/mensajes/Mensajes.jsx`                     |
+| 6   | (Opcional) Apagar el wifi de un dispositivo: el chat avisa y sigue por polling; al volver se recupera solo | `GET /compras/:id/mensajes?desde=`                                                                                               | `useChatCompra` (polling cada 10 s y recuperación al reconectar), `context/SocketContext.jsx`               |
+| 7   | Ana cancela la compra: queda CANCELADA con reembolso pendiente y el cupo vuelve                            | `Compra.cancelar` (tabla de transiciones) → `EventosMongoRepository.liberarCupo`                                                 | `features/compras/DetalleCompra.jsx`, `components/compras/TimelineEstados.jsx`                              |
+| 8   | Lucía ve la alerta de reembolsos y reembolsa desde Compras del evento; Ana la ve REEMBOLSADA en vivo       | `POST /compras/:id/reembolsar` → `Compra.reembolsar`; si no lo hace en 24 h, `ProgramadorTareas` → `reembolsosAutomaticos`       | `features/organizador/MisEventos.jsx`, `features/organizador/ComprasEvento.jsx`, `hooks/useEstadoCompra.js` |
+| 9   | Cierre: Lucía crea un evento (4 pasos, imágenes con alt) o cancela uno (reembolso automático de todo)      | `EventosService.crear`, `agregarMultimedia` (multer + `AlmacenamientoLocalAdapter`), `EventosService.cancelar`                   | `features/organizador/CrearEvento.jsx`, `features/organizador/EditarEvento.jsx`                             |
+
+Tip: mostrar el modo oscuro desde Perfil y el historial de estados en el detalle de la compra.

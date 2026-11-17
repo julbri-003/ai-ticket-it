@@ -20,7 +20,7 @@ jest.mock(
   () => require("react-native-safe-area-context/jest/mock").default,
 );
 
-// El socket no se usa todavía (iteración 10).
+// socket.io-client: los tests inyectan un socket falso por SocketContext (pruebas/pantallas.jsx).
 jest.mock("socket.io-client", () => ({
   io: jest.fn(() => ({ connect: jest.fn(), on: jest.fn() })),
 }));

@@ -14,10 +14,12 @@ export class MensajesService {
     comprasRepository,
     eventosRepository,
     notificacionesService,
+    usuariosRepository = null,
     emisor,
     reloj,
     log = console,
   }) {
+    this.usuariosRepository = usuariosRepository;
     this.comprasRepository = comprasRepository;
     this.eventosRepository = eventosRepository;
     this.notificacionesService = notificacionesService;
@@ -68,6 +70,45 @@ export class MensajesService {
     });
     await this.#avisarAlOtro(compra, usuario, guardado);
     return guardado;
+  }
+
+  /**
+   * Bandeja: conversaciones del usuario (paginadas, por último mensaje) con el evento, el otro
+   * participante, el último mensaje y los no leídos; más el total de no leídos de todas.
+   */
+  async conversaciones(usuario, { pagina = 1, limite = 10 } = {}) {
+    const [{ items, total }, totalNoLeidos] = await Promise.all([
+      this.comprasRepository.listarConversaciones(usuario.id, { pagina, limite }),
+      this.comprasRepository.contarMensajesNoLeidos(usuario.id),
+    ]);
+    const [eventos, organizadores] = await Promise.all([
+      this.eventosRepository.obtenerVarios(items.map((c) => c.eventoId)),
+      this.usuariosRepository
+        ? this.usuariosRepository.obtenerVarios(items.map((c) => c.organizadorId))
+        : [],
+    ]);
+    const eventoPorId = new Map(eventos.map((e) => [String(e.id), e]));
+    const organizadorPorId = new Map(organizadores.map((o) => [String(o.id), o]));
+    return {
+      items: items.map((compra) => {
+        const soyComprador = mismoId(compra.compradorId, usuario.id);
+        const organizador = organizadorPorId.get(String(compra.organizadorId));
+        const ultimoMensaje = [...compra.mensajes].sort((a, b) => b.enviado - a.enviado)[0];
+        return {
+          compra,
+          evento: eventoPorId.get(String(compra.eventoId)) ?? null,
+          otro: soyComprador
+            ? { nombre: organizador?.nombre ?? "Organizador", rol: "ORGANIZADOR" }
+            : { nombre: compra.historial[0]?.quien.nombre ?? "Comprador", rol: "COMPRADOR" },
+          ultimoMensaje,
+          mensajesNoLeidos: compra.mensajesNoLeidosPara(usuario.id),
+        };
+      }),
+      total,
+      pagina,
+      limite,
+      totalNoLeidos,
+    };
   }
 
   /** Marca como leídos los mensajes del otro participante (hasta ahora). */

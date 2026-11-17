@@ -154,3 +154,18 @@
 - Front: botón "Cancelar evento" en Editar con modal de motivo; pill "Cancelado" (organizador y comprador), sección
   **Cancelados** en Mis eventos y aviso "Evento cancelado" en Mis compras.
 - Cupo restante: cada tipo de entrada muestra siempre lo que queda ("Quedan N", "¡Es la última!" o "Agotado").
+
+## Iteración 10 — Front: chat, notificaciones y cierre
+
+- Back: `GET /api/compras/conversaciones?pagina=` (bandeja: compras con mensajes por último mensaje, no leídos por
+  conversación y total), con Swagger y tests de integración.
+- Front: `SocketContext` (conecta con sesión, reconecta al volver a primer plano) y `NotificacionesContext` (no leídas por
+  REST + `notificacion:nueva`, toast, mensajes sin leer, marcar una o todas).
+- Chat por compra (`features/compras/Chat`, `hooks/useChatCompra`, `components/chat/*`): historial, tiempo real sin
+  duplicados, polling cada 10 s sin socket, mensaje optimista con reintento, leídos, separadores por día, contador de
+  1000 caracteres y cabecera con el estado en vivo. Disponible en cualquier estado de la compra.
+- Bandeja `features/mensajes/Mensajes` y centro de notificaciones `features/notificaciones/Notificaciones` (paginados,
+  no leídas resaltadas, navegación a la compra, el chat o el evento).
+- Badges de no leídos en el top bar y en las tabs; `compra:estado` refresca las pantallas abiertas.
+- README final (tests, arquitectura y guion del video), decisiones completas y `specs/trazabilidad.md` recorrida.
+- Tests: `useChatCompra`, `NotificacionesContext`, Chat, bandeja y notificaciones.

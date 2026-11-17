@@ -11,6 +11,8 @@ import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold } from "@expo-goog
 import { ThemeProvider, useTheme } from "./src/context/ThemeContext";
 import { ToastProvider } from "./src/context/ToastContext";
 import { AuthProvider } from "./src/context/AuthContext";
+import { NotificacionesProvider } from "./src/context/NotificacionesContext";
+import { SocketProvider } from "./src/context/SocketContext";
 import { AppNavigator } from "./src/routes/AppNavigator";
 import { LimiteDeError } from "./src/features/errors/PantallaError";
 
@@ -19,7 +21,7 @@ function BarraDeEstado() {
   return <StatusBar style={mode === "dark" ? "light" : "dark"} />;
 }
 
-/** Raíz: fuentes, safe area, tema, avisos, sesión y navegación por rol. */
+/** Raíz: fuentes, safe area, tema, avisos, sesión, socket, notificaciones y navegación por rol. */
 export default function App() {
   const [fuentesListas] = useFonts({
     PlayfairDisplay_700Bold,
@@ -39,7 +41,11 @@ export default function App() {
           <LimiteDeError>
             <ToastProvider>
               <AuthProvider>
-                <AppNavigator />
+                <SocketProvider>
+                  <NotificacionesProvider>
+                    <AppNavigator />
+                  </NotificacionesProvider>
+                </SocketProvider>
               </AuthProvider>
             </ToastProvider>
           </LimiteDeError>

@@ -20,6 +20,7 @@ import {
 } from "../../components/ui";
 import { useAuth } from "../../context/AuthContext";
 import { useToast } from "../../context/ToastContext";
+import { useEstadoCompra } from "../../hooks/useEstadoCompra";
 import { comprasService } from "../../service/comprasService";
 
 /** Texto del modal de cancelación según el estado de la compra. */
@@ -52,6 +53,9 @@ export function DetalleCompra({ route, navigation }) {
       setEstado((e) => ({ ...e, cargando: false, error }));
     }
   }, [compraId, usuario.id]);
+
+  // compra:estado (socket): otra persona o el sistema cambió una compra → se recarga.
+  useEstadoCompra(compraId, cargar);
 
   useFocusEffect(
     useCallback(() => {

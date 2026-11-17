@@ -1,7 +1,9 @@
 import { z } from "zod";
 import { MAX_CARACTERES_MENSAJE } from "../domain/mensajeDominio.js";
+import { multimediaToDTO } from "./dto/eventoDTO.js";
 import { mensajeToDTO } from "./dto/mensajeDTO.js";
-import { fechaIso, objectId } from "./validaciones.js";
+import { baseUrlDe } from "./dto/urls.js";
+import { fechaIso, objectId, paginadoSchema } from "./validaciones.js";
 
 export const compraParamSchema = z.object({ id: objectId("El id de la compra") });
 
@@ -44,6 +46,39 @@ export class MensajesController {
     const { id } = compraParamSchema.parse(req.params);
     const { mensaje } = enviarMensajeSchema.parse(req.body);
     res.status(201).json(mensajeToDTO(await this.mensajesService.enviar(id, req.user, mensaje)));
+  }
+
+  /** Bandeja de conversaciones del usuario (comprador u organizador). */
+  async conversaciones(req, res) {
+    const { pagina, limite } = paginadoSchema.strict().parse(req.query);
+    const r = await this.mensajesService.conversaciones(req.user, { pagina, limite });
+    const baseUrl = baseUrlDe(req);
+    res.json({
+      items: r.items.map(({ compra, evento, otro, ultimoMensaje, mensajesNoLeidos }) => {
+        const imagen = evento?.imagenPrincipal;
+        return {
+          compraId: compra.id,
+          estado: compra.estado,
+          tipoEntrada: compra.tipoEntradaNombre,
+          cantidad: compra.cantidad,
+          evento: evento
+            ? {
+                id: evento.id,
+                nombre: evento.nombre,
+                fecha: evento.fecha,
+                imagen: imagen ? multimediaToDTO(imagen, baseUrl) : null,
+              }
+            : { id: compra.eventoId, nombre: "Evento", fecha: null, imagen: null },
+          otro,
+          ultimoMensaje: mensajeToDTO(ultimoMensaje),
+          mensajesNoLeidos,
+        };
+      }),
+      total: r.total,
+      pagina: r.pagina,
+      limite: r.limite,
+      totalNoLeidos: r.totalNoLeidos,
+    });
   }
 
   async marcarLeidos(req, res) {

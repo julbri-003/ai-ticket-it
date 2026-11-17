@@ -2,6 +2,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Text } from "react-native";
 import { AuthContext } from "../src/context/AuthContext";
+import { NotificacionesProvider } from "../src/context/NotificacionesContext";
+import { SocketContext } from "../src/context/SocketContext";
 import { usuarioComprador, usuarioOrganizador } from "./apiFalsa";
 import { renderConTema } from "./helpers";
 
@@ -44,19 +46,26 @@ function Destino({ route }) {
 
 /**
  * Renderiza una pantalla dentro de un stack real (para useFocusEffect, navigate y replace),
- * con sesión de comprador. Los destinos de navegación muestran "destino:<Nombre>:<params>".
+ * con sesión de comprador. `socket` (ver socketFalso) y `conectado` simulan el tiempo real. Los destinos de navegación muestran "destino:<Nombre>:<params>".
  */
-export function renderPantalla(Componente, { params, sesion = sesionComprador } = {}) {
+export function renderPantalla(
+  Componente,
+  { params, sesion = sesionComprador, socket = null, conectado = false } = {},
+) {
   return renderConTema(
     <AuthContext.Provider value={sesion}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Pantalla" component={Componente} initialParams={params} />
-          {DESTINOS.map((nombre) => (
-            <Stack.Screen key={nombre} name={nombre} component={Destino} />
-          ))}
-        </Stack.Navigator>
-      </NavigationContainer>
+      <SocketContext.Provider value={{ socket, conectado }}>
+        <NotificacionesProvider>
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen name="Pantalla" component={Componente} initialParams={params} />
+              {DESTINOS.map((nombre) => (
+                <Stack.Screen key={nombre} name={nombre} component={Destino} />
+              ))}
+            </Stack.Navigator>
+          </NavigationContainer>
+        </NotificacionesProvider>
+      </SocketContext.Provider>
     </AuthContext.Provider>,
   );
 }
@@ -148,5 +157,28 @@ export function compraDto(extra = {}) {
       puedeReembolsar: false,
     },
     ...extra,
+  };
+}
+
+/** Socket falso: registra on/off/emit y `disparar(evento, payload)` llama a los manejadores. */
+export function socketFalso({ conectado = true } = {}) {
+  const manejadores = new Map();
+  return {
+    connected: conectado,
+    emitidos: [],
+    on: jest.fn((evento, fn) => {
+      if (!manejadores.has(evento)) manejadores.set(evento, new Set());
+      manejadores.get(evento).add(fn);
+    }),
+    off: jest.fn((evento, fn) => manejadores.get(evento)?.delete(fn)),
+    emit: jest.fn(function emit(evento, payload) {
+      this.emitidos.push([evento, payload]);
+    }),
+    connect: jest.fn(),
+    disconnect: jest.fn(),
+    disparar(evento, payload) {
+      for (const fn of manejadores.get(evento) ?? []) fn(payload);
+    },
+    escuchando: (evento) => (manejadores.get(evento)?.size ?? 0) > 0,
   };
 }

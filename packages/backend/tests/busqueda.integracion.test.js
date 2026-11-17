@@ -58,6 +58,18 @@ describe("GET /api/eventos (buscador)", () => {
     expect(nombres(await buscar({ q }))).toEqual(esperado);
   });
 
+  test("CU3: buscar por texto (sin mayúsculas ni acentos) y explorar por categoría", async () => {
+    expect(nombres(await buscar({ q: "HAMLET" }))).toEqual(["Hamlet, versión de bolsillo"]);
+    expect(nombres(await buscar({ q: "bolsillo", categoriaIds: cat.Teatro }))).toEqual([
+      "Hamlet, versión de bolsillo",
+    ]);
+    expect(nombres(await buscar({ q: "hamlet", categoriaIds: cat.Recitales }))).toEqual([]);
+    expect(nombres(await buscar({ categoriaIds: cat.Teatro }))).toEqual([
+      "Hamlet, versión de bolsillo",
+      "La Casa de Bernarda Alba",
+    ]);
+  });
+
   test("varias categorías (CSV)", async () => {
     const body = await buscar({ categoriaIds: `${cat.Teatro},${cat.Danza}` });
     expect(nombres(body)).toEqual([
@@ -72,7 +84,9 @@ describe("GET /api/eventos (buscador)", () => {
     const todos = (await buscar({ limite: 50 })).items;
     const esperados = (min, max) =>
       todos
-        .filter((e) => (min == null || e.precioMinimo >= min) && (max == null || e.precioMinimo <= max))
+        .filter(
+          (e) => (min == null || e.precioMinimo >= min) && (max == null || e.precioMinimo <= max),
+        )
         .map((e) => e.nombre);
 
     for (const [min, max] of [

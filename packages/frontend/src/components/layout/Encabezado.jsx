@@ -1,29 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styled, { useTheme } from "styled-components/native";
 import { Bell, MessageCircle } from "lucide-react-native";
-import { notificacionesService } from "../../service/notificacionesService";
+import { useNotificaciones } from "../../context/NotificacionesContext";
 import { useFoco } from "../ui/foco";
-
-const INTERVALO_MS = 60000;
-
-/** Cantidad de notificaciones sin leer (se actualiza al volver a la pantalla y cada minuto). */
-function useNoLeidas() {
-  const [cantidad, setCantidad] = useState(0);
-  const actualizar = useCallback(() => {
-    notificacionesService
-      .cantidadNoLeidas()
-      .then(setCantidad)
-      .catch(() => {});
-  }, []);
-  useFocusEffect(actualizar);
-  useEffect(() => {
-    const id = setInterval(actualizar, INTERVALO_MS);
-    return () => clearInterval(id);
-  }, [actualizar]);
-  return cantidad;
-}
 
 function BotonConContador({ icono: Icono, etiqueta, cantidad, onPress }) {
   const theme = useTheme();
@@ -49,11 +29,11 @@ function BotonConContador({ icono: Icono, etiqueta, cantidad, onPress }) {
 
 /**
  * Top app bar de las tabs: título de la pantalla + mensajería y campana, cada una con su contador.
- * El contador de mensajes llega con la iteración 10 (GET /compras/conversaciones).
+ * Los contadores salen de NotificacionesContext (socket + REST).
  */
-export function Encabezado({ titulo, mensajesNoLeidos = 0 }) {
+export function Encabezado({ titulo }) {
   const navigation = useNavigation();
-  const notificaciones = useNoLeidas();
+  const { noLeidas: notificaciones, mensajesNoLeidos } = useNotificaciones();
 
   return (
     <Barra edges={["top", "left", "right"]}>

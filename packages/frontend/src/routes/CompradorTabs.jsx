@@ -3,7 +3,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useTheme } from "styled-components/native";
 import { Compass, Heart, MessageCircle, Ticket, UserRound } from "lucide-react-native";
 import { Encabezado } from "../components/layout/Encabezado";
-import { EnConstruccion } from "../components/layout/EnConstruccion";
+import { useNotificaciones } from "../context/NotificacionesContext";
+import { Chat } from "../features/compras/Chat";
+import { Mensajes } from "../features/mensajes/Mensajes";
+import { Notificaciones } from "../features/notificaciones/Notificaciones";
 import { Perfil } from "../features/perfil/Perfil";
 import { Explorar } from "../features/eventos/Explorar";
 import { DetalleEvento } from "../features/eventos/DetalleEvento";
@@ -16,9 +19,8 @@ import { opcionesStack, opcionesTabs } from "./opcionesNavegacion";
 const Tabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const Mensajes = () => <EnConstruccion titulo="Mensajes" iteracion="10" />;
-const Notificaciones = () => <EnConstruccion titulo="Notificaciones" iteracion="10" />;
-const ChatCompra = () => <EnConstruccion titulo="Chat con el organizador" iteracion="10" />;
+/** Número del badge de una tab (nada si es 0). */
+const insignia = (n) => (n > 0 ? (n > 99 ? "99+" : n) : undefined);
 
 const icono = (Icono) =>
   function IconoTab({ color, size }) {
@@ -28,6 +30,7 @@ const icono = (Icono) =>
 /** Tabs del comprador: Explorar, Mis compras, Favoritos, Mensajes y Perfil. */
 function TabsComprador() {
   const theme = useTheme();
+  const { mensajesNoLeidos } = useNotificaciones();
   return (
     <Tabs.Navigator
       screenOptions={({ route }) => ({
@@ -53,7 +56,13 @@ function TabsComprador() {
       <Tabs.Screen
         name="Mensajes"
         component={Mensajes}
-        options={{ title: "Mensajes", tabBarIcon: icono(MessageCircle) }}
+        options={{
+          title: "Mensajes",
+          tabBarIcon: icono(MessageCircle),
+          tabBarBadge: insignia(mensajesNoLeidos),
+          tabBarAccessibilityLabel:
+            mensajesNoLeidos > 0 ? `Mensajes, ${mensajesNoLeidos} sin leer` : "Mensajes",
+        }}
       />
       <Tabs.Screen
         name="Perfil"
@@ -81,7 +90,7 @@ export function CompradorTabs() {
         component={DetalleCompra}
         options={{ title: "Tu compra" }}
       />
-      <Stack.Screen name="ChatCompra" component={ChatCompra} options={{ title: "Chat" }} />
+      <Stack.Screen name="ChatCompra" component={Chat} options={{ title: "Chat" }} />
       <Stack.Screen
         name="Notificaciones"
         component={Notificaciones}

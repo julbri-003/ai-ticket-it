@@ -248,3 +248,43 @@ false` y `orden=relevancia` cae a `fecha`. Con `categoriaIds`, la intersección 
   organizador (que fue quien canceló).
 - **Cupo restante**: se muestra siempre el número ("Quedan N"), con "¡Es la última!" para 1, en vez de "Disponible"
   cuando quedaban más de 20.
+
+## Iteración 10
+
+- **Chat por REST + socket**: el mensaje se envía por `POST` (zod, auth, service y dominio como cualquier operación) y el
+  socket solo empuja `mensaje:nuevo`. En el front, `useChatCompra` agrega un mensaje optimista "Enviando…" que se
+  reemplaza por el real (o queda con error y "Reintentar"), y deduplica por id lo que llega por socket y por REST.
+- **Fallback por polling**: sin socket, `GET ?desde=<último>` cada 10 s (con aviso en el chat). Al reconectar se pide lo
+  mismo una vez, para no perder lo que llegó mientras el socket estaba caído. El `SocketContext` reconecta al volver la
+  app a primer plano.
+- **Contadores en un solo lugar**: `NotificacionesContext` carga por REST las notificaciones y los mensajes no leídos,
+  suma con `notificacion:nueva` y recalcula al reconectar. Reemplaza el polling cada minuto del `Encabezado`.
+- **Toast de notificaciones**: siempre, salvo los `NUEVO_MENSAJE` del chat que está abierto (el back ya no los manda si
+  el usuario está en la sala; el front lo filtra igual).
+- **Badge de notificaciones**: en la campana del top bar para los dos roles y en la tab Notificaciones del organizador.
+  El comprador no tiene esa tab (ya tiene 5); su centro de notificaciones se abre desde la campana. La tab Mensajes de
+  ambos roles muestra los mensajes sin leer.
+- **Bandeja** (`GET /compras/conversaciones`): una aggregation ordena por el último mensaje y pagina; otra suma los no
+  leídos de todas las conversaciones (con la última lectura del rol que corresponde) para el ícono de mensajería.
+- **`compra:estado`** refresca Mis compras, el detalle, Compras del evento y la cabecera del chat (`useEstadoCompra`).
+
+## Resumen de la arquitectura
+
+- **mongodb-memory-server**: la base vive en memoria y se siembra al arrancar, así el proyecto corre sin instalar
+  MongoDB. Con `MONGO_URI` se usa una base real (y `npm run seed` la siembra). El plugin `Persistible` agrega
+  `activo`, `fechaModificacion` y `modificadoPor` (baja lógica) a todos los schemas.
+- **Capas**: routes → controllers (zod + DTO, sin reglas de negocio) → services (casos de uso, titularidad, 403) →
+  domain (clases puras, sin infraestructura, con un test que lo verifica). `dependencias.js` es el composition root.
+- **Edición restringida**: un único `Evento.editar(cambios)` acepta solo multimedia, tipos nuevos y ampliaciones de la
+  descripción; cualquier otro campo es 400. Los endpoints específicos delegan en él.
+- **Reserva de cupo**: el dominio valida en memoria y la base garantiza la atomicidad con un `updateOne` condicionado
+  (`disponibles >= cantidad`), con compensación si falla el guardado. Test de 20 compras concurrentes sin sobreventa.
+- **Transiciones de compra**: tabla por disparador en el dominio y guardado optimista
+  (`guardarTransicion(compra, estadoAnterior)`), así un job y una petición en paralelo no aplican dos veces lo mismo ni
+  liberan el cupo dos veces.
+- **Tareas programadas + evaluación perezosa**: `ProgramadorTareas` vence, marca utilizadas, reembolsa y recuerda
+  periódicamente; además, cada lectura de una compra aplica primero las transiciones que ya correspondían. Si el job
+  no corrió, el usuario igual ve el estado correcto.
+- **Adapters**: `AlmacenamientoLocalAdapter` (archivos subidos) y `EmisorSocketAdapter` (socket.io). Ningún service
+  importa socket.io ni el sistema de archivos; en los tests se inyectan versiones nulas o espías.
+- **Cancelación de eventos**: reembolso inmediato de todo, resuelto por el dominio y con la evaluación perezosa como red.

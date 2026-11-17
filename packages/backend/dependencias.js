@@ -102,6 +102,7 @@ export const comprasService = new ComprasService({
 export const mensajesService = new MensajesService({
   comprasRepository,
   eventosRepository,
+  usuariosRepository,
   notificacionesService,
   emisor: emisorSocket,
   reloj,

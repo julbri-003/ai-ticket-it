@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import { AuthContext } from "../src/context/AuthContext";
+import { NotificacionesProvider } from "../src/context/NotificacionesContext";
 import { AppNavigator } from "../src/routes/AppNavigator";
 import { apiFalsa, usuarioComprador, usuarioOrganizador } from "../pruebas/apiFalsa";
 import { renderConTema } from "../pruebas/helpers";
@@ -18,7 +19,9 @@ const sesion = (usuario) => ({
 function renderNavegador(valor) {
   return renderConTema(
     <AuthContext.Provider value={valor}>
-      <AppNavigator />
+      <NotificacionesProvider>
+        <AppNavigator />
+      </NotificacionesProvider>
     </AuthContext.Provider>,
   );
 }
@@ -26,6 +29,10 @@ function renderNavegador(valor) {
 beforeEach(() => {
   apiFalsa({
     "GET /notificaciones/no-leidas/cantidad": () => [200, { cantidad: 3 }],
+    "GET /compras/conversaciones": () => [
+      200,
+      { items: [], total: 0, pagina: 1, limite: 1, totalNoLeidos: 2 },
+    ],
     "GET /resumen-publico": () => [
       200,
       {
@@ -62,6 +69,8 @@ describe("AppNavigator", () => {
     }
     expect(screen.queryByText("Mis eventos")).toBeNull();
     expect(await screen.findByLabelText("Notificaciones, 3 sin leer")).toBeTruthy();
+    // Top bar y tab de Mensajes.
+    expect(await screen.findAllByLabelText("Mensajes, 2 sin leer")).toHaveLength(2);
   });
 
   test("el organizador ve sus tabs", async () => {

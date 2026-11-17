@@ -12,6 +12,7 @@ import {
   SkeletonLista,
   TituloEscena,
 } from "../../components/ui";
+import { useEstadoCompra } from "../../hooks/useEstadoCompra";
 import { comprasService, FILTROS_ESTADO } from "../../service/comprasService";
 
 /** Mis compras: segmentos por estado con contador, tarjetas con su acción, refresco al volver. */
@@ -30,6 +31,9 @@ export function MisCompras({ navigation }) {
   }, []);
 
   // Se recarga cada vez que se vuelve a la pantalla (después de pagar, cancelar o calificar).
+  // compra:estado (socket): otra persona o el sistema cambió una compra → se recarga.
+  useEstadoCompra(null, cargar);
+
   useFocusEffect(
     useCallback(() => {
       cargar();

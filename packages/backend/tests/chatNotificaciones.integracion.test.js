@@ -336,3 +336,75 @@ describe("REST /api/notificaciones", () => {
     ).toBe(400);
   });
 });
+
+describe("Bandeja de conversaciones (GET /api/compras/conversaciones)", () => {
+  const enviar = async (email, compraId, mensaje) =>
+    request(app)
+      .post(`/api/compras/${compraId}/mensajes`)
+      .set(await auth(email))
+      .send({ mensaje });
+  const bandeja = async (email, query = "") =>
+    request(app)
+      .get(`/api/compras/conversaciones${query}`)
+      .set(await auth(email));
+
+  test("solo compras con mensajes, por último mensaje, con no leídos y total", async () => {
+    const evento = await eventoDeLucia();
+    const vieja = await compraDeAna(evento);
+    const nueva = await compraDeAna(evento);
+    await compraDeAna(evento); // sin mensajes: no aparece
+
+    await enviar(ANA, vieja.id, "Hola, ¿hay estacionamiento?");
+    await avanzarReloj(60 * 1000);
+    await enviar(LUCIA, nueva.id, "Gracias por tu compra");
+    await avanzarReloj(60 * 1000);
+    await enviar(LUCIA, nueva.id, "Abrimos a las 20 h");
+
+    const deAna = await bandeja(ANA);
+    expect(deAna.status).toBe(200);
+    const propias = deAna.body.items.filter((i) => [vieja.id, nueva.id].includes(i.compraId));
+    expect(propias.map((i) => i.compraId)).toEqual([nueva.id, vieja.id]);
+    expect(propias[0]).toMatchObject({
+      estado: "PENDIENTE",
+      evento: { id: evento.id, nombre: evento.nombre },
+      otro: { rol: "ORGANIZADOR", nombre: "Lucía" },
+      ultimoMensaje: { mensaje: "Abrimos a las 20 h", rol: "ORGANIZADOR" },
+      mensajesNoLeidos: 2,
+    });
+    expect(propias[1].mensajesNoLeidos).toBe(0);
+    expect(deAna.body.totalNoLeidos).toBeGreaterThanOrEqual(2);
+
+    const deLucia = await bandeja(LUCIA, "?limite=50");
+    const vistaLucia = deLucia.body.items.find((i) => i.compraId === vieja.id);
+    expect(vistaLucia).toMatchObject({ otro: { rol: "COMPRADOR" }, mensajesNoLeidos: 1 });
+
+    const antes = deAna.body.totalNoLeidos;
+    await request(app)
+      .post(`/api/compras/${nueva.id}/mensajes/leidos`)
+      .set(await auth(ANA));
+    expect((await bandeja(ANA)).body.totalNoLeidos).toBe(antes - 2);
+  });
+
+  test("paginada; sin sesión → 401; parámetro desconocido → 400", async () => {
+    const pagina = await bandeja(ANA, "?pagina=1&limite=1");
+    expect(pagina.body.items).toHaveLength(1);
+    expect(pagina.body.total).toBeGreaterThanOrEqual(2);
+    expect((await request(app).get("/api/compras/conversaciones")).status).toBe(401);
+    expect((await bandeja(ANA, "?foo=1")).status).toBe(400);
+  });
+
+  test("un usuario sin conversaciones recibe la bandeja vacía", async () => {
+    const registro = await request(app).post("/api/auth/registro").send({
+      nombre: "Nora",
+      apellido: "Paz",
+      email: "nora.bandeja@test.com",
+      password: "unaClaveLarga",
+      rol: "COMPRADOR",
+    });
+    const res = await request(app)
+      .get("/api/compras/conversaciones")
+      .set("Authorization", `Bearer ${registro.body.token}`);
+    expect(res.status).toBe(200);
+    expect(res.body).toMatchObject({ total: 0, totalNoLeidos: 0, items: [] });
+  });
+});

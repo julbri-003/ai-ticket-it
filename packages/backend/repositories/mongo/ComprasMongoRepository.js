@@ -121,6 +121,81 @@ export class ComprasMongoRepository extends RepositorioMongoPersistible {
     return docs.map((doc) => this.hidratar(doc));
   }
 
+  /**
+   * Compras del usuario (como comprador u organizador) con al menos un mensaje, de la conversación
+   * más reciente a la más vieja. Devuelve { items: Compra[], total }.
+   */
+  async listarConversaciones(usuarioId, { pagina = 1, limite = 10 } = {}) {
+    if (!esIdValido(usuarioId)) return { items: [], total: 0 };
+    const id = aObjectId(usuarioId);
+    const [resultado] = await this.model.aggregate([
+      {
+        $match: {
+          $or: [{ compradorId: id }, { organizadorId: id }],
+          "mensajes.0": { $exists: true },
+        },
+      },
+      { $addFields: { ultimoEnviado: { $max: "$mensajes.enviado" } } },
+      { $sort: { ultimoEnviado: -1, _id: -1 } },
+      {
+        $facet: {
+          items: [{ $skip: (pagina - 1) * limite }, { $limit: limite }],
+          total: [{ $count: "n" }],
+        },
+      },
+    ]);
+    return {
+      items: resultado.items.map((doc) => this.hidratar(doc)),
+      total: resultado.total[0]?.n ?? 0,
+    };
+  }
+
+  /** Total de mensajes no leídos del usuario en todas sus conversaciones (para el top app bar). */
+  async contarMensajesNoLeidos(usuarioId) {
+    if (!esIdValido(usuarioId)) return 0;
+    const id = aObjectId(usuarioId);
+    const ultimaLectura = {
+      $ifNull: [
+        {
+          $cond: [
+            { $eq: ["$compradorId", id] },
+            "$ultimaLecturaComprador",
+            "$ultimaLecturaOrganizador",
+          ],
+        },
+        new Date(0),
+      ],
+    };
+    const [resultado] = await this.model.aggregate([
+      {
+        $match: {
+          $or: [{ compradorId: id }, { organizadorId: id }],
+          "mensajes.0": { $exists: true },
+        },
+      },
+      {
+        $project: {
+          noLeidos: {
+            $size: {
+              $filter: {
+                input: "$mensajes",
+                as: "m",
+                cond: {
+                  $and: [
+                    { $ne: ["$$m.usuarioId", String(usuarioId)] },
+                    { $gt: ["$$m.enviado", ultimaLectura] },
+                  ],
+                },
+              },
+            },
+          },
+        },
+      },
+      { $group: { _id: null, total: { $sum: "$noLeidos" } } },
+    ]);
+    return resultado?.total ?? 0;
+  }
+
   async listarPorEvento(eventoId, { estado } = {}) {
     if (!esIdValido(eventoId)) return [];
     const docs = await this.model

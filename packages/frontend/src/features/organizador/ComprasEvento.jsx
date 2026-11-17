@@ -19,6 +19,7 @@ import {
 import { useAuth } from "../../context/AuthContext";
 import { useToast } from "../../context/ToastContext";
 import { FILTROS_ESTADO } from "../../service/comprasService";
+import { useEstadoCompra } from "../../hooks/useEstadoCompra";
 import { organizadorService } from "../../service/organizadorService";
 import { ETIQUETAS_ESTADO } from "../../utils/estadosCompra";
 
@@ -46,6 +47,9 @@ export function ComprasEvento({ route, navigation }) {
       setEstado((e) => ({ ...e, cargando: false, error }));
     }
   }, [eventoId, filtro]);
+
+  // compra:estado (socket): otra persona o el sistema cambió una compra → se recarga.
+  useEstadoCompra(null, cargar);
 
   useFocusEffect(
     useCallback(() => {
