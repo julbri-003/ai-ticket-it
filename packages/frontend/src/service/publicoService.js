@@ -1,4 +1,5 @@
 import { publicoApi } from "./apis/publicoApi";
+import { chipFecha } from "../utils/fechas";
 
 const formatoPrecio = new Intl.NumberFormat("es-AR", {
   style: "currency",
@@ -15,8 +16,6 @@ const formatoFecha = new Intl.DateTimeFormat("es-AR", {
 
 export const formatearPrecio = (monto) => formatoPrecio.format(monto);
 export const formatearFecha = (iso) => formatoFecha.format(new Date(iso));
-
-const formatoMes = new Intl.DateTimeFormat("es-AR", { month: "short" });
 
 /**
  * true si queda el 10 % o menos del cupo total del evento y no está agotado ("Últimas
@@ -40,8 +39,7 @@ function aEventoResumen(dto) {
     imagen: dto.imagen ? { uri: dto.imagen.url, alt: dto.imagen.alt } : null,
     agotado: dto.agotado,
     quedanPocas: !dto.agotado && quedanPocasEntradas(dto.tiposEntrada),
-    dia: new Date(dto.fecha).getDate(),
-    mes: formatoMes.format(new Date(dto.fecha)).replace(".", "").toUpperCase(),
+    ...chipFecha(dto.fecha),
   };
 }
 

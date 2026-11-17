@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useIsFocused } from "@react-navigation/native";
 import styled from "styled-components/native";
 import { SearchX } from "lucide-react-native";
 import { Footer } from "../../components/layout/Footer";
@@ -8,9 +9,19 @@ import { Buscador } from "../../components/eventos/Buscador";
 import { CarruselRecomendados } from "../../components/eventos/CarruselRecomendados";
 import { PanelFiltros } from "../../components/eventos/PanelFiltros";
 import { TarjetaEvento } from "../../components/eventos/TarjetaEvento";
-import { EmptyState, ErrorState, Paginacion, Segmentos, SkeletonCard } from "../../components/ui";
+import {
+  EmptyState,
+  ErrorState,
+  ListaEscalonada,
+  Marquesina,
+  Ornamento,
+  Paginacion,
+  Segmentos,
+  SkeletonCard,
+} from "../../components/ui";
 import { useAuth } from "../../context/AuthContext";
 import { useFavorito } from "../../hooks/useFavorito";
+import { useMovimientoReducido } from "../../hooks/useMovimientoReducido";
 import { pillsAplicadas, useFiltrosEventos } from "../../hooks/useFiltrosEventos";
 import { eventosService } from "../../service/eventosService";
 
@@ -58,6 +69,8 @@ export function Explorar({ navigation }) {
   const [panelAbierto, setPanelAbierto] = useState(false);
   const [versionRecomendados, setVersionRecomendados] = useState(0);
   const scroll = useRef(null);
+  const reducido = useMovimientoReducido();
+  const enFoco = useIsFocused();
 
   const favoritos = useFavorito({ alCambiar: () => setVersionRecomendados((v) => v + 1) });
 
@@ -96,15 +109,19 @@ export function Explorar({ navigation }) {
         stickyHeaderIndices={[2]}
         refScroll={scroll}
       >
+        {/* Un solo hijo antes del buscador: la barra de filtros sigue en el índice fijo 2. */}
         {esComprador ? (
-          <CarruselRecomendados
-            onVerTodos={() => {
-              if (!filtros.paraVos) toggleParaVos();
-            }}
-            onAbrirEvento={abrirEvento}
-            onDisponibilidad={setParaVosDisponible}
-            recargarCon={versionRecomendados}
-          />
+          <BloqueRecomendados>
+            <CarruselRecomendados
+              onVerTodos={() => {
+                if (!filtros.paraVos) toggleParaVos();
+              }}
+              onAbrirEvento={abrirEvento}
+              onDisponibilidad={setParaVosDisponible}
+              recargarCon={versionRecomendados}
+            />
+            <Ornamento />
+          </BloqueRecomendados>
         ) : (
           <Vacio />
         )}
@@ -135,13 +152,15 @@ export function Explorar({ navigation }) {
         />
 
         {datos && !error ? (
-          <Resumen
-            accessibilityRole="header"
-            accessibilityLiveRegion="polite"
-            testID="cantidad-resultados"
-          >
-            {encabezado}
-          </Resumen>
+          <Marquesina reducido={reducido} animar={enFoco}>
+            <Resumen
+              accessibilityRole="header"
+              accessibilityLiveRegion="polite"
+              testID="cantidad-resultados"
+            >
+              {encabezado}
+            </Resumen>
+          </Marquesina>
         ) : null}
 
         <Lista>
@@ -166,15 +185,17 @@ export function Explorar({ navigation }) {
               }
             />
           ) : (
-            datos.items.map((evento) => (
-              <TarjetaEvento
-                key={evento.id}
-                evento={evento}
-                onPress={() => abrirEvento(evento)}
-                esFavorito={favoritos.esFavorito(evento)}
-                onFavorito={esComprador ? () => favoritos.alternar(evento) : undefined}
-              />
-            ))
+            <ListaEscalonada reducido={reducido} testID="lista-eventos">
+              {datos.items.map((evento) => (
+                <TarjetaEvento
+                  key={evento.id}
+                  evento={evento}
+                  onPress={() => abrirEvento(evento)}
+                  esFavorito={favoritos.esFavorito(evento)}
+                  onFavorito={esComprador ? () => favoritos.alternar(evento) : undefined}
+                />
+              ))}
+            </ListaEscalonada>
           )}
         </Lista>
 
@@ -206,11 +227,16 @@ export function Explorar({ navigation }) {
 
 const Vacio = styled.View``;
 
+const BloqueRecomendados = styled.View`
+  gap: 16px;
+`;
+
 const Resumen = styled.Text`
   font-family: ${({ theme }) => theme.typography.fontBodySemibold};
   font-size: ${({ theme }) => theme.typography.sizes.label}px;
   letter-spacing: ${({ theme }) => theme.typography.letterSpacingLabel}px;
   text-transform: uppercase;
+  text-align: center;
   color: ${({ theme }) => theme.colors.gold};
 `;
 

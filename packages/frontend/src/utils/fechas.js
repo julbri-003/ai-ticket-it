@@ -90,3 +90,28 @@ export function atajoFechas(atajo, hoy = new Date()) {
   const finDeMes = new Date(base.getFullYear(), base.getMonth() + 1, 0);
   return { desde: fechaATexto(base), hasta: fechaATexto(finDeMes) };
 }
+
+// ----- Detalles de "Telón de terciopelo" (chip de talón y cuenta regresiva) -----
+
+const mesCorto = formato({ month: "short" });
+
+/** Día y mes para el chip de talón: { dia: 22, mes: "NOV" } (o null sin fecha). */
+export function chipFecha(iso) {
+  if (!iso) return null;
+  const fecha = new Date(iso);
+  if (Number.isNaN(fecha.getTime())) return null;
+  return { dia: fecha.getDate(), mes: mesCorto.format(fecha).replace(".", "").toUpperCase() };
+}
+
+/**
+ * Cuenta regresiva en días calendario hasta un evento: "Hoy", "Mañana", "Faltan N días".
+ * Si la fecha ya pasó (o no hay fecha), null.
+ */
+export function faltanTexto(iso, ahora = new Date()) {
+  if (!iso) return null;
+  const fecha = new Date(iso);
+  if (Number.isNaN(fecha.getTime()) || fecha < ahora) return null;
+  const inicio = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  const dias = Math.round((inicio(fecha) - inicio(ahora)) / 86400000);
+  return diasRestantesTexto(dias);
+}

@@ -133,6 +133,7 @@ La **estructura** de la UI (pills, barra de filtros, cards, stat cards, paginaci
 | velvet / velvetShade (telón y banner de la landing) | `#7a1e2c` / `#4f111c` | `#7a0f1f` / `#3d0710` |
 | onVelvet · goldOnVelvet (texto sobre terciopelo, ≥ 4,5:1) | `#ffffff` · `#f2d58a` | `#ffffff` · `#f2d58a` |
 | reflector (opacidad del halo dorado del hero; el texto encima sigue ≥ 4,5:1) | `0.18` | `0.08` |
+| Sello "Cancelado" (spec 07c): usa `estados.CANCELADA.texto` sobre `surface` (≥ 4,5:1, en `theme.test`); no es un token nuevo | — | — |
 | success | `#1f6b52` | `#6fc3a0` |
 | warning | `#8a5300` | `#e8b04a` |
 | error | `#a3182b` | `#ff8a8a` |

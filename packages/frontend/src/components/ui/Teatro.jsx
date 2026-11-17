@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { Children, useEffect, useRef, useState } from "react";
 import { Animated, Easing } from "react-native";
 import Svg, { Defs, LinearGradient, Path, RadialGradient, Rect, Stop } from "react-native-svg";
 import styled, { useTheme } from "styled-components/native";
@@ -178,16 +178,31 @@ const CapaReflector = styled.View`
 
 // ----- Sello -----
 
-/** Sello dorado rotado, con borde doble ("Estreno"). */
-export function Sello({ children = "Estreno" }) {
+/**
+ * Sello rotado con borde doble ("Estreno", "Para vos", "Sala llena"). `variante="cancelado"`
+ * lo pinta con el texto del estado CANCELADA (contraste testeado sobre surface). `style`
+ * permite reubicarlo (por defecto, arriba a la derecha de su contenedor).
+ */
+export function Sello({
+  children = "Estreno",
+  variante = "dorado",
+  chico = false,
+  style,
+  testID = "sello",
+}) {
   return (
-    <SelloExterior {...DECORATIVO} testID="sello">
-      <SelloInterior>
-        <TextoSello>{children}</TextoSello>
+    <SelloExterior {...DECORATIVO} testID={testID} $variante={variante} style={style}>
+      <SelloInterior $variante={variante} $chico={chico}>
+        <TextoSello $variante={variante} $chico={chico}>
+          {children}
+        </TextoSello>
       </SelloInterior>
     </SelloExterior>
   );
 }
+
+const colorSello = ({ theme, $variante }) =>
+  $variante === "cancelado" ? theme.colors.estados.CANCELADA.texto : theme.colors.goldOrnament;
 
 const SelloExterior = styled.View`
   position: absolute;
@@ -196,21 +211,24 @@ const SelloExterior = styled.View`
   padding: 2px;
   border-width: 1.5px;
   border-radius: 8px;
-  border-color: ${({ theme }) => theme.colors.goldOrnament};
-  transform: rotate(-8deg);
+  border-color: ${colorSello};
+  background-color: ${({ theme }) => theme.colors.surface};
+  transform: rotate(${({ $variante }) => ($variante === "cancelado" ? -14 : -8)}deg);
 `;
 
 const SelloInterior = styled.View`
-  padding: 2px 10px;
+  padding: ${({ $chico }) => ($chico ? "1px 5px" : "2px 10px")};
   border-width: 1px;
   border-radius: 6px;
-  border-color: ${({ theme }) => theme.colors.goldOrnament};
+  border-color: ${colorSello};
 `;
 
 const TextoSello = styled.Text`
   font-family: ${({ theme }) => theme.typography.fontDisplayItalic};
-  font-size: ${({ theme }) => theme.typography.sizes.bodySm}px;
-  color: ${({ theme }) => theme.colors.gold};
+  font-size: ${({ theme, $chico }) =>
+    $chico ? theme.typography.sizes.caption : theme.typography.sizes.bodySm}px;
+  color: ${({ theme, $variante }) =>
+    $variante === "cancelado" ? theme.colors.estados.CANCELADA.texto : theme.colors.gold};
 `;
 
 // ----- Marquesina -----
@@ -469,6 +487,127 @@ export function Revelar({ children, visible, reducido, alMedir, testID }) {
       }}
     >
       {children}
+    </Animated.View>
+  );
+}
+
+// ----- Telón cerrado (estados vacíos) -----
+
+/** Telón cerrado en miniatura (sin animación): fondo de la escena de los estados vacíos. */
+export function TelonCerrado({ testID = "telon-cerrado" }) {
+  return (
+    <CapaAbsoluta {...DECORATIVO} testID={testID}>
+      <PanoFijo style={{ left: 0 }}>
+        <Pano lado="izquierda" id="pano-vacio-izquierdo" />
+      </PanoFijo>
+      <PanoFijo style={{ right: 0 }}>
+        <Pano lado="derecha" id="pano-vacio-derecho" />
+      </PanoFijo>
+      <Cenefa />
+    </CapaAbsoluta>
+  );
+}
+
+const PanoFijo = styled.View`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+`;
+
+// ----- Tarjetas que se hunden -----
+
+/**
+ * Feedback al presionar: escala 0,97 y vuelve (resorte, driver nativo). Con `reducido` no escala.
+ * Devuelve el estilo para un Animated.View y los handlers para el Pressable.
+ */
+export function useHundir(reducido) {
+  const escala = useRef(new Animated.Value(1)).current;
+  const hundir = (valor) => {
+    if (reducido !== false) return;
+    Animated.spring(escala, {
+      toValue: valor,
+      speed: 40,
+      bounciness: 4,
+      useNativeDriver: true,
+    }).start();
+  };
+  return {
+    estilo: { transform: [{ scale: escala }] },
+    alPresionar: { onPressIn: () => hundir(0.97), onPressOut: () => hundir(1) },
+  };
+}
+
+// ----- Entrada escalonada de listas -----
+
+export const MAX_ESCALONADOS = 6;
+
+function ItemEscalonado({ children, estado, indice, testID }) {
+  const progreso = useRef(new Animated.Value(estado === "fijo" ? 1 : 0)).current;
+  const hecho = useRef(estado === "fijo");
+
+  useEffect(() => {
+    if (hecho.current || estado === "pendiente") return;
+    hecho.current = true;
+    if (estado === "fijo") {
+      progreso.setValue(1);
+      return;
+    }
+    Animated.timing(progreso, {
+      toValue: 1,
+      duration: 380,
+      delay: indice * 60,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: true,
+    }).start();
+  }, [estado, indice, progreso]);
+
+  return (
+    <Animated.View
+      testID={testID}
+      style={{
+        opacity: progreso,
+        transform: [
+          { translateY: progreso.interpolate({ inputRange: [0, 1], outputRange: [12, 0] }) },
+        ],
+      }}
+    >
+      {children}
+    </Animated.View>
+  );
+}
+
+/**
+ * Lista cuyos primeros ítems (hasta 6) aparecen con fade + subida de 12 px, escalonados 60 ms.
+ * Solo anima lo que muestra la primera vez: lo que llega después (otra página, un refresco) se
+ * muestra directo. Con `reducido` o `animar=false` no anima nada.
+ */
+export function ListaEscalonada({ children, reducido, animar = true, gap = 16, testID }) {
+  const items = Children.toArray(children);
+  const claves = useRef(null);
+  if (claves.current === null && (reducido != null || !animar) && items.length > 0) {
+    claves.current =
+      reducido || !animar
+        ? new Set()
+        : new Set(items.slice(0, MAX_ESCALONADOS).map((item) => item.key));
+  }
+
+  return (
+    <Animated.View style={{ gap }} testID={testID}>
+      {items.map((item, indice) => {
+        const estado =
+          claves.current === null ? "pendiente" : claves.current.has(item.key) ? "animar" : "fijo";
+        return (
+          <ItemEscalonado
+            key={item.key}
+            estado={estado}
+            indice={indice}
+            testID={testID ? `${testID}-item-${indice}` : undefined}
+          >
+            {item}
+          </ItemEscalonado>
+        );
+      })}
     </Animated.View>
   );
 }

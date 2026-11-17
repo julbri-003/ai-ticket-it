@@ -1,6 +1,9 @@
+import { Animated } from "react-native";
 import { Image } from "expo-image";
 import styled, { useTheme } from "styled-components/native";
 import { Theater } from "lucide-react-native";
+import { useMovimientoReducido } from "../../hooks/useMovimientoReducido";
+import { useHundir } from "./Teatro";
 
 // Piezas de la identidad "Telón de terciopelo": TicketCard, TituloEscena, EtiquetaSeccion e
 // ImagenEvento.
@@ -46,21 +49,33 @@ export function TicketCard({
   );
   if (onPress) {
     return (
-      <TicketPresionable
+      <TicketPresionableQueSeHunde
         onPress={onPress}
-        accessibilityRole="button"
         accessibilityLabel={accessibilityLabel}
         testID={testID}
         {...resto}
       >
         {contenido}
-      </TicketPresionable>
+      </TicketPresionableQueSeHunde>
     );
   }
   return (
     <Ticket accessibilityLabel={accessibilityLabel} testID={testID} {...resto}>
       {contenido}
     </Ticket>
+  );
+}
+
+/** Ticket presionable que se hunde (escala 0,97) al tocarlo; quieto con "Reducir movimiento". */
+function TicketPresionableQueSeHunde({ children, ...props }) {
+  const reducido = useMovimientoReducido();
+  const { estilo, alPresionar } = useHundir(reducido);
+  return (
+    <Animated.View style={estilo}>
+      <TicketPresionable accessibilityRole="button" {...alPresionar} {...props}>
+        {children}
+      </TicketPresionable>
+    </Animated.View>
   );
 }
 

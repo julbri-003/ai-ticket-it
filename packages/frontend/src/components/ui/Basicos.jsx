@@ -11,6 +11,7 @@ import {
 } from "lucide-react-native";
 import { Button } from "./Button";
 import { useFoco } from "./foco";
+import { DECORATIVO, Ornamento, TelonCerrado } from "./Teatro";
 import { ETIQUETAS_ESTADO } from "../../utils/estadosCompra";
 
 // ----- Card -----
@@ -216,10 +217,18 @@ export function EmptyState({ icono: Icono, titulo, mensaje, accion }) {
   const theme = useTheme();
   return (
     <Estado>
-      {Icono ? (
-        <Icono size={44} color={theme.colors.goldOrnament} strokeWidth={1.5} accessible={false} />
-      ) : null}
+      <EscenaVacia {...DECORATIVO} testID="escena-vacia">
+        <TelonCerrado />
+        <AroIcono>
+          {Icono ? (
+            <Icono size={28} color={theme.colors.goldOrnament} strokeWidth={1.5} />
+          ) : (
+            <Estrella>✦</Estrella>
+          )}
+        </AroIcono>
+      </EscenaVacia>
       <TituloEstado accessibilityRole="header">{titulo}</TituloEstado>
+      <Ornamento />
       {mensaje ? <MensajeEstado>{mensaje}</MensajeEstado> : null}
       {accion ? <Button onPress={accion.alPresionar}>{accion.etiqueta}</Button> : null}
     </Estado>
@@ -251,6 +260,32 @@ const Estado = styled.View`
   align-items: center;
   gap: 12px;
   padding: 32px 16px;
+`;
+
+const EscenaVacia = styled.View`
+  width: 148px;
+  height: 104px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: ${({ theme }) => theme.borderRadius.md}px;
+`;
+
+const AroIcono = styled.View`
+  width: 60px;
+  height: 60px;
+  margin-top: 18px;
+  border-radius: 30px;
+  align-items: center;
+  justify-content: center;
+  border-width: 1.5px;
+  border-color: ${({ theme }) => theme.colors.goldOrnament};
+  background-color: ${({ theme }) => theme.colors.surface};
+`;
+
+const Estrella = styled.Text`
+  font-size: 18px;
+  color: ${({ theme }) => theme.colors.goldOrnament};
 `;
 
 const TituloEstado = styled.Text`

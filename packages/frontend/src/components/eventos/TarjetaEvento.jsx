@@ -1,7 +1,16 @@
 import styled, { useTheme } from "styled-components/native";
 import { CalendarDays, Heart, MapPin } from "lucide-react-native";
-import { Badge, EventoCanceladoBadge, ImagenEvento, Rating, TextoTalon, TicketCard } from "../ui";
+import {
+  Badge,
+  EventoCanceladoBadge,
+  ImagenEvento,
+  Rating,
+  Sello,
+  TextoTalon,
+  TicketCard,
+} from "../ui";
 import { useFoco } from "../ui/foco";
+import { ChipFecha } from "./ChipFecha";
 
 /** Corazón de favorito (toggle accesible). */
 export function BotonFavorito({ activo, onPress, nombre }) {
@@ -32,6 +41,8 @@ export function BotonFavorito({ activo, onPress, nombre }) {
 /**
  * Tarjeta de evento: imagen, nombre, categoría, fecha, lugar, "desde $X", estrellas del
  * organizador y corazón. Los eventos anteriores se ven en gris, con badge "Finalizado".
+ * Chip de talón con la fecha sobre la imagen, badge "Últimas entradas" (≤ 10 % del cupo) y, con
+ * `sello`, un sello decorativo (por ejemplo "Para vos" en el carrusel de recomendados).
  */
 export function TarjetaEvento({
   evento,
@@ -40,11 +51,13 @@ export function TarjetaEvento({
   onFavorito,
   accionesAccesibles,
   onAccionAccesible,
+  sello,
 }) {
   const theme = useTheme();
   const anterior = evento.anterior;
   const cerrado = anterior || evento.cancelado;
   const estadoTexto = evento.cancelado ? "Cancelado" : anterior ? "Finalizado" : null;
+  const ultimas = Boolean(evento.quedanPocas) && !cerrado && !evento.agotado;
   return (
     <Contenedor $anterior={cerrado}>
       <TicketCard
@@ -54,7 +67,7 @@ export function TarjetaEvento({
         onAccessibilityAction={onAccionAccesible}
         accessibilityLabel={`${evento.nombre}. ${evento.categoria.nombre}. ${evento.fechaTexto}, ${evento.lugar}. ${
           estadoTexto ?? evento.desdeTexto
-        }`}
+        }${ultimas ? ". Últimas entradas" : ""}`}
         talon={
           <FilaTalon>
             <TextoTalon>
@@ -64,18 +77,25 @@ export function TarjetaEvento({
           </FilaTalon>
         }
       >
-        <ImagenEvento
-          uri={evento.imagen?.uri}
-          alt={evento.imagen?.alt ?? `Imagen de ${evento.nombre}`}
-        />
+        <ConImagen>
+          <ImagenEvento
+            uri={evento.imagen?.uri}
+            alt={evento.imagen?.alt ?? `Imagen de ${evento.nombre}`}
+          />
+          <ChipFecha dia={evento.dia} mes={evento.mes} testID={`chip-fecha-${evento.id}`} />
+          {sello ? <Sello testID={`sello-${evento.id}`}>{sello}</Sello> : null}
+        </ConImagen>
         <FilaSuperior>
-          {evento.cancelado ? (
-            <EventoCanceladoBadge />
-          ) : (
-            <Badge variant={anterior ? "neutral" : "primary"}>
-              {anterior ? "Finalizado" : evento.categoria.nombre}
-            </Badge>
-          )}
+          <Badges>
+            {evento.cancelado ? (
+              <EventoCanceladoBadge />
+            ) : (
+              <Badge variant={anterior ? "neutral" : "primary"}>
+                {anterior ? "Finalizado" : evento.categoria.nombre}
+              </Badge>
+            )}
+            {ultimas ? <Badge variant="warning">Últimas entradas</Badge> : null}
+          </Badges>
           {onFavorito ? (
             <BotonFavorito activo={esFavorito} onPress={onFavorito} nombre={evento.nombre} />
           ) : null}
@@ -104,6 +124,15 @@ export function TarjetaEvento({
 
 const Contenedor = styled.View`
   opacity: ${({ $anterior }) => ($anterior ? 0.62 : 1)};
+`;
+
+const ConImagen = styled.View``;
+
+const Badges = styled.View`
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 6px;
 `;
 
 const FilaSuperior = styled.View`

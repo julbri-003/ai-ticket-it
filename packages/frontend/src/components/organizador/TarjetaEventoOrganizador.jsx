@@ -1,6 +1,7 @@
 import styled, { useTheme } from "styled-components/native";
-import { AlertTriangle, CalendarDays } from "lucide-react-native";
-import { Badge, EventoCanceladoBadge, ImagenEvento, TextoTalon, TicketCard } from "../ui";
+import { AlertTriangle, CalendarDays, Hourglass } from "lucide-react-native";
+import { Badge, EventoCanceladoBadge, ImagenEvento, Sello, TextoTalon, TicketCard } from "../ui";
+import { ChipFecha } from "../eventos/ChipFecha";
 import { ETIQUETAS_ESTADO } from "../../utils/estadosCompra";
 import { BarraOcupacion } from "./BarraOcupacion";
 
@@ -8,7 +9,8 @@ const ORDEN_ESTADOS = ["PENDIENTE", "CONFIRMADA", "UTILIZADA", "CANCELADA", "REE
 
 /**
  * Evento en "Mis eventos": imagen, nombre, fecha, ocupación total, conteo por estado y alerta
- * de reembolsos pendientes. Los anteriores se ven en gris.
+ * de reembolsos pendientes. Los anteriores se ven en gris. Detalles de teatro (spec 07c): chip de
+ * fecha, "Faltan N días", sello "Sala llena" o "Cancelado" y badge "Últimas entradas".
  */
 export function TarjetaEventoOrganizador({ evento, onPress, onEditar }) {
   const theme = useTheme();
@@ -19,9 +21,11 @@ export function TarjetaEventoOrganizador({ evento, onPress, onEditar }) {
       <TicketCard
         onPress={onPress}
         testID={`evento-org-${evento.id}`}
-        accessibilityLabel={`${evento.cancelado ? "Cancelado. " : ""}${evento.nombre}, ${evento.fechaTexto}. ${evento.vendidasTotal} de ${evento.cupoTotal} vendidas.${
-          evento.reembolsos.texto ? ` ${evento.reembolsos.texto}.` : ""
-        }`}
+        accessibilityLabel={`${evento.cancelado ? "Cancelado. " : ""}${evento.nombre}, ${evento.fechaTexto}.${
+          evento.faltanTexto ? ` ${evento.faltanTexto}.` : ""
+        } ${evento.vendidasTotal} de ${evento.cupoTotal} vendidas.${evento.salaLlena ? " Sala llena." : ""}${
+          evento.quedanPocas ? " Últimas entradas." : ""
+        }${evento.reembolsos.texto ? ` ${evento.reembolsos.texto}.` : ""}`}
         talon={
           <FilaTalon>
             <TextoTalon>
@@ -60,20 +64,45 @@ export function TarjetaEventoOrganizador({ evento, onPress, onEditar }) {
               alt={evento.imagen?.alt ?? evento.nombre}
               relacion={1}
             />
+            <ChipFecha dia={evento.dia} mes={evento.mes} chico testID={`chip-fecha-${evento.id}`} />
+            {evento.cancelado ? (
+              <Sello
+                variante="cancelado"
+                chico
+                style={SELLO_CANCELADO}
+                testID={`sello-cancelado-${evento.id}`}
+              >
+                Cancelado
+              </Sello>
+            ) : null}
           </Miniatura>
           <Datos>
-            {evento.cancelado ? (
-              <EventoCanceladoBadge />
-            ) : (
-              <Badge variant={evento.anterior ? "neutral" : "primary"}>
-                {evento.anterior ? "Finalizado" : evento.categoria.nombre}
-              </Badge>
-            )}
+            <FilaBadges>
+              {evento.cancelado ? (
+                <EventoCanceladoBadge />
+              ) : (
+                <Badge variant={evento.anterior ? "neutral" : "primary"}>
+                  {evento.anterior ? "Finalizado" : evento.categoria.nombre}
+                </Badge>
+              )}
+              {evento.quedanPocas ? <Badge variant="warning">Últimas entradas</Badge> : null}
+              {evento.salaLlena ? (
+                <Sello chico style={SELLO_EN_FILA} testID={`sello-sala-llena-${evento.id}`}>
+                  Sala llena
+                </Sello>
+              ) : null}
+            </FilaBadges>
             <Nombre numberOfLines={2}>{evento.nombre}</Nombre>
             <FilaIcono>
               <CalendarDays size={14} color={theme.colors.textSecondary} accessible={false} />
               <Secundario>{evento.fechaTexto}</Secundario>
             </FilaIcono>
+            {evento.faltanTexto ? (
+              <FilaIcono testID={`faltan-${evento.id}`}>
+                <Hourglass size={14} color={theme.colors.textSecondary} accessible={false} />
+                <Secundario>{evento.faltanTexto}</Secundario>
+              </FilaIcono>
+            ) : null}
           </Datos>
         </Fila>
         {evento.cancelado && evento.motivoCancelacion ? (
@@ -95,6 +124,17 @@ export function TarjetaEventoOrganizador({ evento, onPress, onEditar }) {
     </Contenedor>
   );
 }
+
+// El sello "Sala llena" va en la fila de badges; el de "Cancelado", cruzado sobre la miniatura.
+const SELLO_EN_FILA = { position: "relative", top: 0, right: 0 };
+const SELLO_CANCELADO = { top: 24, left: -4, right: undefined };
+
+const FilaBadges = styled.View`
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+`;
 
 const Contenedor = styled.View`
   opacity: ${({ $anterior }) => ($anterior ? 0.62 : 1)};

@@ -71,6 +71,10 @@ describe.each([
     },
   );
 
+  test('sello "Cancelado" (texto del estado CANCELADA) sobre surface ≥ 4,5:1', () => {
+    expect(contraste(colors.estados.CANCELADA.texto, colors.surface)).toBeGreaterThanOrEqual(4.5);
+  });
+
   test("el anillo de foco se distingue del fondo (≥ 3:1)", () => {
     expect(contraste(colors.focusRing, colors.background)).toBeGreaterThanOrEqual(3);
   });

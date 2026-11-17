@@ -1,7 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components/native";
 import { Heart } from "lucide-react-native";
-import { Button, Carrusel, EmptyState, EtiquetaSeccion, SkeletonCard, TituloEscena } from "../ui";
+import {
+  Button,
+  Carrusel,
+  EmptyState,
+  EtiquetaSeccion,
+  Reflector,
+  SkeletonCard,
+  TituloEscena,
+} from "../ui";
 import { eventosService } from "../../service/eventosService";
 import { TarjetaEvento } from "./TarjetaEvento";
 
@@ -44,6 +52,7 @@ export function CarruselRecomendados({ onVerTodos, onAbrirEvento, onDisponibilid
 
   return (
     <Seccion testID="recomendados">
+      <Reflector alto={150} />
       <Cabecera>
         <EtiquetaSeccion>Recomendados para vos</EtiquetaSeccion>
         <Button variant="ghost" size="sm" onPress={onVerTodos}>
@@ -57,7 +66,7 @@ export function CarruselRecomendados({ onVerTodos, onAbrirEvento, onDisponibilid
           items={estado.items}
           etiqueta="Recomendados para vos"
           renderItem={(evento) => (
-            <TarjetaEvento evento={evento} onPress={() => onAbrirEvento(evento)} />
+            <TarjetaEvento evento={evento} onPress={() => onAbrirEvento(evento)} sello="Para vos" />
           )}
         />
       ) : (

@@ -53,6 +53,31 @@ export function unirMensajes(actuales, nuevos) {
   return [...porId.values()].sort((a, b) => Date.parse(a.enviado) - Date.parse(b.enviado));
 }
 
+const GRUPOS = ["Hoy", "Ayer", "Esta semana", "Antes"];
+
+/** Grupo de la bandeja según la fecha del último mensaje: Hoy, Ayer, Esta semana o Antes. */
+function grupoDe(iso, ahora) {
+  const inicio = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  const dias = Math.round((inicio(ahora) - inicio(new Date(iso))) / 86400000);
+  if (dias <= 0) return "Hoy";
+  if (dias === 1) return "Ayer";
+  if (dias < 7) return "Esta semana";
+  return "Antes";
+}
+
+/**
+ * Agrupa las conversaciones (ya ordenadas por último mensaje) bajo "Hoy", "Ayer", "Esta semana"
+ * y "Antes". Respeta el orden de entrada dentro de cada grupo y omite los grupos vacíos.
+ */
+export function agruparConversaciones(items = [], ahora = new Date()) {
+  const porGrupo = new Map(GRUPOS.map((g) => [g, []]));
+  for (const c of items) porGrupo.get(grupoDe(c.enviado, ahora)).push(c);
+  return GRUPOS.filter((g) => porGrupo.get(g).length > 0).map((titulo) => ({
+    titulo,
+    items: porGrupo.get(titulo),
+  }));
+}
+
 function aConversacion(dto, usuarioId) {
   return {
     compraId: dto.compraId,
@@ -66,6 +91,7 @@ function aConversacion(dto, usuarioId) {
     detalleTexto: `${dto.cantidad} × ${dto.tipoEntrada}`,
     otro: { nombre: dto.otro.nombre, rolTexto: ROLES[dto.otro.rol] ?? dto.otro.rol },
     ultimoMensaje: aMensaje(dto.ultimoMensaje, usuarioId),
+    enviado: dto.ultimoMensaje.enviado,
     cuandoTexto:
       textoDia(dto.ultimoMensaje.enviado) === "Hoy"
         ? horaTexto(dto.ultimoMensaje.enviado)

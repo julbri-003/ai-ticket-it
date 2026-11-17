@@ -3,7 +3,7 @@ import { eventosApi } from "./apis/eventosApi";
 import { aCompraDetalle } from "./comprasService";
 import { aEvento, quedanTexto } from "./eventosService";
 import { ETIQUETAS_ESTADO } from "../utils/estadosCompra";
-import { diaHoraTexto, tiempoRestanteTexto } from "../utils/fechas";
+import { diaHoraTexto, faltanTexto, tiempoRestanteTexto } from "../utils/fechas";
 import { montoTexto } from "../utils/montos";
 
 const MB = 1024 * 1024;
@@ -100,10 +100,15 @@ export function aEventoOrganizador(dto) {
   const cupoTotal = dto.tiposEntrada.reduce((s, t) => s + t.cupo, 0);
   const vendidasTotal = dto.tiposEntrada.reduce((s, t) => s + t.vendidas, 0);
   const reembolsos = dto.reembolsosPendientes ?? { cantidad: 0, proximoVencimiento: null };
+  const enCartel = !base.cancelado && !base.anterior;
+  const quedan = cupoTotal - vendidasTotal;
   return {
     ...base,
     cupoTotal,
     vendidasTotal,
+    salaLlena: !base.cancelado && cupoTotal > 0 && quedan <= 0,
+    quedanPocas: enCartel && cupoTotal > 0 && quedan > 0 && quedan <= cupoTotal * 0.1,
+    faltanTexto: enCartel ? faltanTexto(dto.fecha) : null,
     ocupacion: cupoTotal ? vendidasTotal / cupoTotal : 0,
     porEstado: dto.comprasPorEstado ?? {},
     reembolsos: {
@@ -118,6 +123,21 @@ export function aEventoOrganizador(dto) {
       cupo: dto.tiposEntrada[i].cupo,
       vendidas: dto.tiposEntrada[i].vendidas,
     })),
+  };
+}
+
+/**
+ * Resumen de "Mis eventos": entradas vendidas y ocupación promedio (sobre el cupo total) de los
+ * próximos, y reembolsos pendientes de todos los eventos. Ocupación en % entero.
+ */
+export function resumenOrganizador(eventos = []) {
+  const proximos = eventos.filter((e) => !e.cancelado && !e.anterior);
+  const vendidas = proximos.reduce((s, e) => s + e.vendidasTotal, 0);
+  const cupo = proximos.reduce((s, e) => s + e.cupoTotal, 0);
+  return {
+    vendidas,
+    ocupacion: cupo ? Math.round((vendidas / cupo) * 100) : 0,
+    reembolsos: eventos.reduce((s, e) => s + (e.reembolsos?.cantidad ?? 0), 0),
   };
 }
 

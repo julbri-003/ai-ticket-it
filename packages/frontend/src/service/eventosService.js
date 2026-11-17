@@ -1,7 +1,14 @@
 import { categoriasApi } from "./apis/categoriasApi";
 import { eventosApi } from "./apis/eventosApi";
 import { reseniasApi } from "./apis/reseniasApi";
-import { diaMesTexto, fechaHoraTexto, fechaLargaTexto, horaTexto } from "../utils/fechas";
+import { quedanPocasEntradas } from "./publicoService";
+import {
+  chipFecha,
+  diaMesTexto,
+  fechaHoraTexto,
+  fechaLargaTexto,
+  horaTexto,
+} from "../utils/fechas";
 import { montoTexto, precioTexto } from "../utils/montos";
 
 /** Cupo que le queda a un tipo de entrada: "Agotado", "¡Es la última!" o "Quedan N". */
@@ -51,6 +58,9 @@ export function aEvento(dto) {
     precioMinimo: dto.precioMinimo,
     desdeTexto: `Desde ${precioTexto(dto.precioMinimo)}`,
     agotado: dto.agotado,
+    // "Últimas entradas": ≤ 10 % del cupo total y no agotado (misma regla que la landing).
+    quedanPocas: !dto.agotado && quedanPocasEntradas(dto.tiposEntrada),
+    ...chipFecha(dto.fecha),
     yaOcurrio: dto.yaOcurrio,
     finalizado: dto.finalizado,
     cancelado: dto.cancelado ?? false,

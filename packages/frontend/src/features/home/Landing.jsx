@@ -14,6 +14,7 @@ import {
   Sparkles,
   Ticket,
 } from "lucide-react-native";
+import { ChipFecha } from "../../components/eventos/ChipFecha";
 import { iconoCategoria } from "../../components/eventos/iconosCategoria";
 import { Footer } from "../../components/layout/Footer";
 import { Pantalla } from "../../components/layout/Pantalla";
@@ -45,6 +46,7 @@ import {
 import { useContador } from "../../hooks/useContador";
 import { useMovimientoReducido } from "../../hooks/useMovimientoReducido";
 import { publicoService } from "../../service/publicoService";
+import { iniciales } from "../../utils/textos";
 import { SinConexion } from "../errors/PantallaError";
 
 const PASOS = [
@@ -90,16 +92,6 @@ export function textoCantidadEventos(cantidad) {
   if (cantidad == null) return null;
   if (cantidad === 0) return "Próximamente";
   return cantidad === 1 ? "1 evento" : `${cantidad} eventos`;
-}
-
-/** Iniciales para el avatar de una reseña: "Martín G." → "MG". */
-export function iniciales(nombre = "") {
-  const partes = nombre
-    .replace(/[^A-Za-zÀ-ÖØ-öø-ÿ\s]/g, " ")
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean);
-  return ((partes[0]?.[0] ?? "") + (partes.length > 1 ? partes.at(-1)[0] : "")).toUpperCase();
 }
 
 function useDatosLanding() {
@@ -176,12 +168,7 @@ function TarjetaEventoLanding({ evento, onPress }) {
           uri={evento.imagen?.uri}
           alt={evento.imagen?.alt ?? `Imagen de ${evento.nombre}`}
         />
-        {evento.dia ? (
-          <ChipFecha {...DECORATIVO} testID={`chip-fecha-${evento.id}`}>
-            <DiaChip>{evento.dia}</DiaChip>
-            <MesChip>{evento.mes}</MesChip>
-          </ChipFecha>
-        ) : null}
+        <ChipFecha dia={evento.dia} mes={evento.mes} testID={`chip-fecha-${evento.id}`} />
       </ConChip>
       <FilaBadges>
         <Badge variant="primary">{evento.categoria}</Badge>
@@ -698,31 +685,6 @@ const TextoVerTodos = styled.Text`
 `;
 
 const ConChip = styled.View``;
-
-const ChipFecha = styled.View`
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  min-width: 52px;
-  padding: 6px 10px;
-  align-items: center;
-  border-radius: ${({ theme }) => theme.borderRadius.md}px;
-  background-color: ${({ theme }) => theme.colors.ticketStub};
-`;
-
-const DiaChip = styled.Text`
-  font-family: ${({ theme }) => theme.typography.fontDisplay};
-  font-size: ${({ theme }) => theme.typography.sizes.title}px;
-  line-height: 26px;
-  color: ${({ theme }) => theme.colors.onTicketStub};
-`;
-
-const MesChip = styled.Text`
-  font-family: ${({ theme }) => theme.typography.fontBodySemibold};
-  font-size: ${({ theme }) => theme.typography.sizes.label}px;
-  letter-spacing: 1.5px;
-  color: ${({ theme }) => theme.colors.onTicketStub};
-`;
 
 const FilaBadges = styled.View`
   flex-direction: row;
