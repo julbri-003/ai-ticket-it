@@ -120,3 +120,37 @@ false` y `orden=relevancia` cae a `fecha`. Con `categoriaIds`, la intersección 
   que desde el celular ya es la IP LAN de la PC.
 - **Favoritos**: se puede marcar un evento finalizado; `GET /api/favoritos` los lista del último marcado al primero.
 - **Afiches de la semilla** regenerados con la paleta "Telón de terciopelo" (cambió en el contexto común).
+
+## Iteración 05
+
+- **Sin transacciones de Mongo.** Requieren un replica set; con mongodb-memory-server eso implica
+  `MongoMemoryReplSet`, más lento de levantar y más frágil en los tests y en Docker. En su lugar:
+  - **Crear**: `reservarCupo` atómico (la base impide la sobreventa) y después `guardar` la compra; si el guardado
+    falla, `liberarCupo` (compensación).
+  - **Transiciones con control optimista**: `guardarTransicion(compra, estadoAnterior)` solo escribe si la compra
+    sigue en el estado leído. El cupo se libera **después** de ese guardado exitoso, así un mismo vencimiento o
+    cancelación aplicados en paralelo (job + evaluación perezosa + petición) no lo liberan dos veces. Quien pierde
+    recibe 409 (acción del usuario) o relee la compra (job / evaluación perezosa).
+  - **Reseña**: 1) se crea (índice único por compra), 2) se suma al puntaje del organizador con el dominio y un
+    guardado condicional sobre `cantidadResenias` (3 reintentos), 3) se vincula a la compra. Si falla el paso 2, se
+    borra la reseña.
+- **Evaluación perezosa** en todo caso de uso que lee u opera sobre compras (detalle, mis compras, compras por evento,
+  pagar, cancelar, reembolsar, reseñar). El job y la evaluación perezosa comparten el mismo código
+  (`#transicionAutomatica` + `#transicion`).
+- **Pagar una compra vencida**: si al operar ya venció, primero se aplica `vencer()` y se responde 409
+  "La compra venció" (también si ya estaba vencida de antes).
+- **Reembolso manual fuera de plazo**: primero corre la evaluación perezosa; si ya correspondía el reembolso
+  automático, el organizador recibe 409 "La compra ya fue reembolsada automáticamente" y el historial lo refleja.
+- **"Mis compras"**: primero las de eventos futuros (la más próxima arriba) y después las de eventos pasados (la más
+  reciente arriba).
+- **Recaudación confirmada** = total de las compras CONFIRMADA y UTILIZADA (cobrado y no devuelto).
+- **`mensajesNoLeidos`**: mensajes del otro participante posteriores a su última lectura. La marca de lectura llega
+  en la iteración 06; hasta entonces cuentan todos.
+- **Las acciones devuelven el detalle completo** (`pagar`, `cancelar`, `reembolsar`), con historial y acciones
+  disponibles al día, para que el front no tenga que volver a pedirlo.
+- **Tareas programadas**: cada compra se procesa por separado (un error se registra y no frena a las demás) y dos
+  corridas no se solapan. El temporizador usa `unref()` para no impedir el apagado del proceso.
+- **Tests con reloj adelantado**: todos los services comparten el objeto `reloj`; los tests espían `reloj.ahora`
+  (`avanzarReloj`) sin tocar el código productivo.
+- **Bug detectado por los tests**: las tareas informaban 0 cambios porque `#transicion` aplica la transición sobre el
+  mismo objeto leído; ahora se compara contra el estado guardado antes de procesar.

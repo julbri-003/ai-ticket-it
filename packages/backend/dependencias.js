@@ -10,6 +10,8 @@ import { NotificacionesMongoRepository } from "./repositories/mongo/Notificacion
 import { AlmacenamientoLocalAdapter } from "./adapter/AlmacenamientoLocalAdapter.js";
 import { AuthService } from "./services/AuthService.js";
 import { CategoriasService } from "./services/CategoriasService.js";
+import { ComprasService } from "./services/ComprasService.js";
+import { ProgramadorTareas } from "./jobs/ProgramadorTareas.js";
 import { EventosService } from "./services/EventosService.js";
 import { FavoritosService } from "./services/FavoritosService.js";
 import { RecomendacionesService } from "./services/RecomendacionesService.js";
@@ -66,4 +68,23 @@ export const reseniasService = new ReseniasService({
   reseniasRepository,
   eventosRepository,
   usuariosRepository,
+});
+export const comprasService = new ComprasService({
+  comprasRepository,
+  eventosRepository,
+  usuariosRepository,
+  reseniasRepository,
+  reloj,
+});
+
+// ----- Tareas programadas (transiciones automáticas) -----
+export const programadorTareas = new ProgramadorTareas({
+  reloj,
+  intervaloMs: Number(process.env.INTERVALO_JOBS_MS) || 60000,
+  tareas: [
+    { nombre: "vencerComprasPendientes", ejecutar: () => comprasService.vencerComprasPendientes() },
+    { nombre: "marcarComprasUtilizadas", ejecutar: () => comprasService.marcarComprasUtilizadas() },
+    { nombre: "reembolsosAutomaticos", ejecutar: () => comprasService.reembolsosAutomaticos() },
+    { nombre: "finalizarEventosPasados", ejecutar: () => eventosService.finalizarEventosPasados() },
+  ],
 });

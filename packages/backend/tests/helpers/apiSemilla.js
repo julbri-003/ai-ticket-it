@@ -39,3 +39,23 @@ export function sinCamposInternos(body) {
   const json = JSON.stringify(body);
   return !/"(passwordHash|_id|__v|textoBusqueda|nombreBusqueda)"/.test(json);
 }
+
+// ----- Reloj controlable -----
+// Todos los services comparten el objeto `reloj` de dependencias.js: se espía su método `ahora`
+// para adelantar el tiempo sin tocar el código productivo.
+let desfaseMs = 0;
+let espia = null;
+
+export async function avanzarReloj(ms) {
+  if (!espia) {
+    const { jest } = await import("@jest/globals");
+    espia = jest.spyOn(reloj, "ahora").mockImplementation(() => new Date(Date.now() + desfaseMs));
+  }
+  desfaseMs += ms;
+}
+
+export function restaurarReloj() {
+  desfaseMs = 0;
+  espia?.mockRestore();
+  espia = null;
+}

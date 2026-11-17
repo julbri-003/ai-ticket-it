@@ -535,6 +535,19 @@ describe("Dominio Compra", () => {
       },
     );
 
+    test("mensajesNoLeidosPara cuenta los del otro participante posteriores a la última lectura", () => {
+      const { compra, reloj } = crearCompra();
+      compra.agregarMensaje(comprador, "Hola", reloj);
+      reloj.avanzar(HORA);
+      compra.agregarMensaje(organizador, "¡Hola!", reloj);
+      reloj.avanzar(HORA);
+      compra.agregarMensaje(organizador, "¿Algo más?", reloj);
+      expect(compra.mensajesNoLeidosPara(comprador.id)).toBe(2);
+      expect(compra.mensajesNoLeidosPara(organizador.id)).toBe(1);
+      expect(compra.mensajesNoLeidosPara(comprador.id, new Date(AHORA.getTime() + HORA))).toBe(1);
+      expect(compra.mensajesNoLeidosPara(comprador.id, reloj.ahora())).toBe(0);
+    });
+
     test("otra persona no puede escribir", () => {
       const { compra, reloj } = crearCompra();
       expect(() => compra.agregarMensaje(otroComprador, "Hola", reloj)).toThrow(ForbiddenError);

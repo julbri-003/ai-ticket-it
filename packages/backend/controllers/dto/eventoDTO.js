@@ -1,7 +1,7 @@
 import { urlAbsoluta } from "./urls.js";
 import { organizadorToDTO } from "./usuarioDTO.js";
 
-function multimediaToDTO(item, baseUrl) {
+export function multimediaToDTO(item, baseUrl) {
   return { url: urlAbsoluta(item.ruta, baseUrl), ruta: item.ruta, tipo: item.tipo, alt: item.alt };
 }
 

@@ -46,6 +46,16 @@ export class UsuariosMongoRepository extends RepositorioMongoPersistible {
     }
   }
 
+  /** Guarda solo si en la base sigue cumpliendo `condicion` (control optimista). null si no. */
+  async guardarSi(usuario, condicion) {
+    const doc = await this.model.findOneAndUpdate(
+      { _id: usuario.id, ...condicion },
+      { $set: this.mapearParaPersistir(usuario) },
+      { new: true, runValidators: true },
+    );
+    return this.hidratar(doc);
+  }
+
   async obtenerPorEmail(email, { incluirInactivos = false } = {}) {
     if (typeof email !== "string") return null;
     const consulta = this.model.findOne({ email: email.trim().toLowerCase() });

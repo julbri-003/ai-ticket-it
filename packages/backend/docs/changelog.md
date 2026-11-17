@@ -57,3 +57,17 @@
 - Swagger con ejemplos para todos los endpoints (`docs/swaggerEsquemas.js` + JSDoc en `routes/`).
 - Afiches de la semilla regenerados con la paleta "Telón de terciopelo".
 - Tests de integración (supertest) sobre los datos de la semilla.
+
+## Iteración 05 — Compras, estados automáticos y reseñas
+
+- `/api/compras`: crear (reserva atómica de cupo), `GET /mias`, `GET /:id`, `POST /:id/pagar`, `/cancelar`,
+  `/reembolsar` y `/resenia`. `GET /api/eventos/:eventoId/compras` con resumen de ocupación, conteo por estado,
+  recaudación confirmada y reembolsos pendientes.
+- `ComprasService` con evaluación perezosa de transiciones automáticas y hook `alCambiarEstado` para la iteración 06.
+- `jobs/ProgramadorTareas.js` con las tareas `vencerComprasPendientes`, `marcarComprasUtilizadas`,
+  `reembolsosAutomaticos` y `finalizarEventosPasados` (cada `INTERVALO_JOBS_MS`; no corre con `NODE_ENV=test`).
+- Guardado condicional (`guardarTransicion` / `guardarSi`) en compras y usuarios para evitar dobles transiciones y
+  dobles liberaciones de cupo con procesos concurrentes.
+- `Compra.mensajesNoLeidosPara(usuarioId, ultimaLectura)` en el dominio.
+- Swagger: endpoints de compras y diagrama de estados en la descripción del tag "Compras".
+- Tests de integración del ciclo completo, permisos, resumen, compras concurrentes y tareas programadas.

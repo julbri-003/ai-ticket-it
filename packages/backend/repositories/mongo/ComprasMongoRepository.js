@@ -93,6 +93,24 @@ export class ComprasMongoRepository extends RepositorioMongoPersistible {
     return this.hidratar(doc);
   }
 
+  /**
+   * Guarda la compra solo si en la base sigue cumpliendo `condicion` (control optimista).
+   * Devuelve la compra guardada, o null si otro proceso la cambió primero. No toca los mensajes.
+   */
+  async guardarSi(compra, condicion) {
+    const doc = await this.model.findOneAndUpdate(
+      { _id: compra.id, ...condicion },
+      { $set: this.mapearParaPersistir(compra) },
+      { new: true, runValidators: true },
+    );
+    return this.hidratar(doc);
+  }
+
+  /** Persiste una transición solo si la compra sigue en `estadoAnterior` (ver guardarSi). */
+  async guardarTransicion(compra, estadoAnterior) {
+    return this.guardarSi(compra, { estado: estadoAnterior });
+  }
+
   async listarPorComprador(compradorId, { estado } = {}) {
     if (!esIdValido(compradorId)) return [];
     const docs = await this.model

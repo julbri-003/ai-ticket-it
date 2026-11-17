@@ -249,4 +249,205 @@ export const esquemas = {
     type: "object",
     properties: { favoritos: { type: "array", items: ID } },
   },
+  CambioEstado: {
+    type: "object",
+    properties: {
+      estadoAnterior: { type: "string", nullable: true, example: "PENDIENTE" },
+      estadoNuevo: { type: "string", example: "CONFIRMADA" },
+      quien: {
+        type: "object",
+        properties: {
+          id: ID,
+          nombre: { type: "string", example: "Ana Gómez" },
+          rol: {
+            type: "string",
+            enum: ["COMPRADOR", "ORGANIZADOR", "SISTEMA"],
+            example: "COMPRADOR",
+          },
+        },
+      },
+      fechaHora: FECHA,
+      detalle: { type: "string", example: "Pago confirmado por $84.000,00" },
+    },
+  },
+  MensajeChat: {
+    type: "object",
+    properties: {
+      id: ID,
+      usuarioId: ID,
+      usuarioNombre: { type: "string", example: "Lucía Ferrari" },
+      rol: { type: "string", example: "ORGANIZADOR" },
+      mensaje: { type: "string", example: "Hola Ana, sí: hay estacionamiento a media cuadra." },
+      enviado: FECHA,
+    },
+  },
+  EventoDeCompra: {
+    type: "object",
+    properties: {
+      id: ID,
+      nombre: { type: "string", example: "Noche de Jazz en el Sótano" },
+      fecha: FECHA,
+      lugar: { type: "string", example: "Club del Sótano, San Telmo, CABA" },
+      imagen: { $ref: "#/components/schemas/Multimedia" },
+      yaOcurrio: { type: "boolean", example: false },
+    },
+  },
+  CompraResumen: {
+    type: "object",
+    properties: {
+      id: ID,
+      evento: { $ref: "#/components/schemas/EventoDeCompra" },
+      tipoEntrada: {
+        type: "object",
+        properties: { id: ID, nombre: { type: "string", example: "VIP" } },
+      },
+      cantidad: { type: "integer", example: 2 },
+      precioUnitario: { type: "number", example: 42000 },
+      total: { type: "number", example: 84000 },
+      estado: {
+        type: "string",
+        enum: ["PENDIENTE", "CONFIRMADA", "UTILIZADA", "CANCELADA", "REEMBOLSADA"],
+        example: "CONFIRMADA",
+      },
+      motivoCancelacion: {
+        type: "string",
+        nullable: true,
+        enum: ["CANCELADA_POR_COMPRADOR", "VENCIDA", null],
+        example: null,
+      },
+      fechaCompra: FECHA,
+      diasParaElEvento: {
+        type: "integer",
+        nullable: true,
+        example: 5,
+        description: "Solo CONFIRMADA (0 = el evento ya empezó)",
+      },
+      fechaLimitePago: { ...FECHA, nullable: true, description: "Solo PENDIENTE" },
+      reembolsoPendiente: { type: "boolean", example: false },
+      fechaLimiteReembolso: { ...FECHA, nullable: true },
+      puedeCancelar: { type: "boolean", example: true },
+      puedePagar: { type: "boolean", example: false },
+      puedeReseniar: { type: "boolean", example: false },
+      mensajesNoLeidos: { type: "integer", example: 1 },
+    },
+  },
+  CompraDetalle: {
+    type: "object",
+    properties: {
+      id: ID,
+      evento: { $ref: "#/components/schemas/EventoDeCompra" },
+      tipoEntrada: {
+        type: "object",
+        properties: { id: ID, nombre: { type: "string", example: "VIP" } },
+      },
+      cantidad: { type: "integer", example: 2 },
+      precioUnitario: { type: "number", example: 42000 },
+      total: { type: "number", example: 84000 },
+      estado: { type: "string", example: "CONFIRMADA" },
+      motivoCancelacion: { type: "string", nullable: true, example: null },
+      fechaCompra: FECHA,
+      diasParaElEvento: { type: "integer", nullable: true, example: 5 },
+      fechaLimitePago: { ...FECHA, nullable: true },
+      reembolsoPendiente: { type: "boolean", example: false },
+      fechaLimiteReembolso: { ...FECHA, nullable: true },
+      organizadorId: ID,
+      historial: { type: "array", items: { $ref: "#/components/schemas/CambioEstado" } },
+      mensajes: { type: "array", items: { $ref: "#/components/schemas/MensajeChat" } },
+      mensajesNoLeidos: { type: "integer", example: 0 },
+      resenia: { allOf: [{ $ref: "#/components/schemas/Resenia" }], nullable: true },
+      acciones: {
+        type: "object",
+        description: "Lo que puede hacer quien consulta (comprador u organizador)",
+        properties: {
+          puedePagar: { type: "boolean", example: false },
+          puedeCancelar: { type: "boolean", example: true },
+          puedeReseniar: { type: "boolean", example: false },
+          puedeReembolsar: { type: "boolean", example: false },
+        },
+      },
+    },
+  },
+  ComprasDeEvento: {
+    type: "object",
+    properties: {
+      evento: {
+        type: "object",
+        properties: {
+          id: ID,
+          nombre: { type: "string", example: "Noche de Jazz en el Sótano" },
+          fecha: FECHA,
+        },
+      },
+      resumen: {
+        type: "object",
+        properties: {
+          tiposEntrada: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                id: ID,
+                nombre: { type: "string", example: "VIP" },
+                cupo: { type: "integer", example: 20 },
+                vendidas: { type: "integer", example: 2 },
+                disponibles: { type: "integer", example: 18 },
+              },
+            },
+          },
+          porEstado: {
+            type: "object",
+            example: { PENDIENTE: 0, CONFIRMADA: 1, UTILIZADA: 0, CANCELADA: 0, REEMBOLSADA: 0 },
+          },
+          recaudacionConfirmada: {
+            type: "number",
+            example: 84000,
+            description: "Total de las compras CONFIRMADA y UTILIZADA",
+          },
+          reembolsosPendientes: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                compraId: ID,
+                total: { type: "number", example: 104000 },
+                fechaLimiteReembolso: FECHA,
+              },
+            },
+          },
+        },
+      },
+      compras: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            id: ID,
+            comprador: {
+              type: "object",
+              properties: {
+                id: ID,
+                nombre: { type: "string", example: "Ana" },
+                apellido: { type: "string", example: "Gómez" },
+              },
+            },
+            tipoEntrada: {
+              type: "object",
+              properties: { id: ID, nombre: { type: "string", example: "VIP" } },
+            },
+            cantidad: { type: "integer", example: 2 },
+            total: { type: "number", example: 84000 },
+            estado: { type: "string", example: "CONFIRMADA" },
+            motivoCancelacion: { type: "string", nullable: true, example: null },
+            fechaCompra: FECHA,
+            reembolsoPendiente: { type: "boolean", example: false },
+            fechaLimiteReembolso: { ...FECHA, nullable: true },
+            acciones: {
+              type: "object",
+              properties: { puedeReembolsar: { type: "boolean", example: false } },
+            },
+          },
+        },
+      },
+    },
+  },
 };

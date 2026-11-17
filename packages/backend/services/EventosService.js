@@ -1,3 +1,4 @@
+import { ACTOR_SISTEMA } from "../domain/estadoCompraDominio.js";
 import { Evento, TipoMultimedia } from "../domain/eventoDominio.js";
 import { BadRequestError, ForbiddenError, NotFoundError } from "../errors/AppError.js";
 import { OrdenEventos } from "../repositories/mongo/EventosMongoRepository.js";
@@ -91,6 +92,17 @@ export class EventosService {
       this.comprasRepository.contarPorEstado(eventos.map((e) => e.id)),
     ]);
     return vistas.map((vista) => ({ ...vista, comprasPorEstado: conteos[vista.evento.id] }));
+  }
+
+  /** Tarea programada: baja lógica de los eventos activos que ya ocurrieron. */
+  async finalizarEventosPasados() {
+    let finalizados = 0;
+    for (const evento of await this.eventosRepository.listarParaFinalizar(this.reloj.ahora())) {
+      evento.finalizar(ACTOR_SISTEMA, this.reloj);
+      await this.eventosRepository.guardar(evento);
+      finalizados += 1;
+    }
+    return finalizados;
   }
 
   // ----- Edición restringida (solo el organizador dueño) -----

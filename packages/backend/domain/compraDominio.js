@@ -384,6 +384,17 @@ export class Compra extends Persistible {
     return mismoId(this.compradorId, usuarioId) || mismoId(this.organizadorId, usuarioId);
   }
 
+  /**
+   * Mensajes del otro participante posteriores a la última lectura de `usuarioId`.
+   * Sin lectura registrada (null) cuentan todos. La marca de lectura se guarda desde la iteración 06.
+   */
+  mensajesNoLeidosPara(usuarioId, ultimaLectura = null) {
+    const desde = ultimaLectura ? new Date(ultimaLectura).getTime() : -Infinity;
+    return this.mensajes.filter(
+      (m) => !mismoId(m.usuarioId, usuarioId) && m.enviado.getTime() > desde,
+    ).length;
+  }
+
   /** Solo el comprador o el organizador del evento, en cualquier estado de la compra. */
   agregarMensaje(usuario, texto, reloj) {
     if (!this.esParticipante(usuario?.id)) {

@@ -50,6 +50,12 @@ export class ReseniasMongoRepository extends RepositorioMongoPersistible {
     }
   }
 
+  /** Borrado físico: solo para compensar una reseña que no se pudo completar. */
+  async eliminar(id) {
+    if (!esIdValido(id)) return false;
+    return (await this.model.deleteOne({ _id: id })).deletedCount === 1;
+  }
+
   async existeParaCompra(compraId) {
     if (!esIdValido(compraId)) return false;
     return (await this.model.exists({ compraId }).incluirInactivos()) != null;

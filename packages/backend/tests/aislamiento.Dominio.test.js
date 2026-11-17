@@ -22,3 +22,20 @@ describe("Aislamiento del dominio", () => {
     expect(prohibidos).toEqual([]);
   });
 });
+
+// Criterio de aceptación (iteración 05): ningún service cambia `estado` directamente; las
+// transiciones pasan siempre por los métodos del dominio.
+describe("Los estados solo cambian en el dominio", () => {
+  const raiz = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
+  const archivosDe = (carpeta) =>
+    fs
+      .readdirSync(path.join(raiz, carpeta))
+      .filter((f) => f.endsWith(".js"))
+      .map((f) => path.join(carpeta, f));
+  const capas = [...archivosDe("services"), ...archivosDe("controllers"), ...archivosDe("jobs")];
+
+  test.each(capas)("%s no asigna `estado`", (archivo) => {
+    const fuente = fs.readFileSync(path.join(raiz, archivo), "utf8");
+    expect(fuente).not.toMatch(/\.estado\s*=(?!=)/);
+  });
+});
