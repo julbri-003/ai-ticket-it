@@ -1,8 +1,16 @@
 import express from "express";
 import healthRouter from "./healthRoutes.js";
+import authRouter from "./authRoutes.js";
+import categoriasRouter from "./categoriasRoutes.js";
+import eventosRouter from "./eventosRoutes.js";
+import favoritosRouter from "./favoritosRoutes.js";
 
 const router = express.Router();
 
 router.use("/health", healthRouter);
+router.use("/auth", authRouter);
+router.use("/categorias", categoriasRouter);
+router.use("/eventos", eventosRouter);
+router.use("/favoritos", favoritosRouter);
 
 export default router;

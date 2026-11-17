@@ -2,12 +2,15 @@ import "dotenv/config";
 import http from "node:http";
 import app from "./app.js";
 import { conectarDB, desconectarDB } from "./db.js";
+import { reloj, repositoriosSemilla } from "./dependencias.js";
+import { sembrarDatos } from "./seeds/sembrar.js";
 
 const port = process.env.PORT || 8000;
 
 await conectarDB();
 
-// TODO iteración 03: sembrar los datos iniciales acá (seeds/sembrar.js).
+// Siempre: con Mongo en memoria la base arranca vacía. Es idempotente si se usa MONGO_URI.
+await sembrarDatos({ ...repositoriosSemilla, reloj, log: console.log });
 
 // Se crea el http.Server a mano para poder montar socket.io más adelante.
 const server = http.createServer(app);

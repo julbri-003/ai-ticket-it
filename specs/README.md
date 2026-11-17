@@ -30,6 +30,9 @@ Specs para construir **AI Ticket It** con un agente de IA (Claude Code, Cline, C
 | 09 | `09-front-organizador.md` | Mis eventos, crear y editar evento, compras por evento, reembolsos |
 | 10 | `10-front-chat-notificaciones-cierre.md` | Chat, notificaciones, pulido final y datos para el video |
 
+## Chequeo de cobertura
+`trazabilidad.md` lista cada caso de uso del enunciado y cada funcionalidad agregada, con la spec que lo implementa, la pantalla de Stitch y cómo verificarlo. Al terminar cada spec, pedile al agente: "Marcá en specs/trazabilidad.md las filas que completa esta spec, con su evidencia".
+
 ## Diseños de Stitch (opcional, desde la iteración 07)
 
 Exportá cada pantalla a `design/stitch/<nombre-pantalla>/` con `code.html` + `screen.png`. Las specs de front le indican al agente que los use como referencia visual cuando existan. Los prompts para generarlas están en `stitch-prompts.md`. Nombres esperados: `landing`, `login`, `registro`, `explorar`, `filtros`, `detalle-evento`, `checkout`, `mis-compras`, `detalle-compra`, `chat`, `mensajes`, `calificar`, `favoritos`, `notificaciones`, `mis-eventos`, `crear-evento`, `editar-evento`, `compras-evento`, `perfil`, `componentes`.

@@ -6,16 +6,16 @@ import { obtenerEstadoBackend } from "./src/service/healthService";
 import { API_URL } from "./src/service/api";
 
 // Placeholder de la iteración 01: prueba la conectividad celular → back.
-// Los tokens de color salen de la paleta "Ticket vintage" (modo claro); theme.js llega en la 07.
+// Los tokens de color salen de la paleta "Telón de terciopelo" (modo claro); theme.js llega en la 07.
 const colores = {
-  background: "#f6efe2",
-  surface: "#fffaf0",
-  textPrimary: "#2b1d14",
-  textSecondary: "#5c4033",
-  primary: "#1f3a5f",
-  success: "#2f6b4f",
-  error: "#8f1d1d",
-  onFilled: "#fffaf0",
+  background: "#faf7f2",
+  surface: "#ffffff",
+  textPrimary: "#1c1416",
+  textSecondary: "#4a3a3e",
+  primary: "#7a1e2c",
+  success: "#1f6b52",
+  error: "#a3182b",
+  onFilled: "#ffffff",
 };
 
 export default function App() {

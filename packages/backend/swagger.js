@@ -1,6 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import swaggerJsdoc from "swagger-jsdoc";
+import { esquemas } from "./docs/swaggerEsquemas.js";
 
 const puerto = process.env.PORT || 8000;
 const serverUrl = `http://localhost:${puerto}`;
@@ -23,13 +24,66 @@ const options = {
           bearerFormat: "JWT",
         },
       },
-      schemas: {
-        Error: {
-          type: "object",
-          properties: {
-            status: { type: "string", example: "fail" },
-            message: { type: "string", example: "Ruta /api/inexistente no encontrada" },
-            timestamp: { type: "string", format: "date-time" },
+      schemas: esquemas,
+      responses: {
+        Validacion: {
+          description: "Datos inválidos (zod)",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ErrorValidacion" },
+            },
+          },
+        },
+        NoAutenticado: {
+          description: "Falta el token o es inválido",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/Error" },
+              example: {
+                status: "fail",
+                message: "Token no proporcionado",
+                timestamp: "2026-11-20T15:00:00.000Z",
+              },
+            },
+          },
+        },
+        SinPermiso: {
+          description: "No tiene permiso (rol o titularidad)",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/Error" },
+              example: {
+                status: "fail",
+                message: "Solo el organizador del evento puede modificarlo",
+                timestamp: "2026-11-20T15:00:00.000Z",
+              },
+            },
+          },
+        },
+        NoEncontrado: {
+          description: "No existe",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/Error" },
+              example: {
+                status: "fail",
+                message: "No existe el evento indicado",
+                timestamp: "2026-11-20T15:00:00.000Z",
+              },
+            },
+          },
+        },
+        Conflicto: {
+          description: "Conflicto con el estado actual",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/Error" },
+              example: {
+                status: "fail",
+                message: "El evento ya ocurrió y no se puede editar",
+                timestamp: "2026-11-20T15:00:00.000Z",
+              },
+            },
           },
         },
       },

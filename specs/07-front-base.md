@@ -11,7 +11,7 @@ Si existen, `design/stitch/login/`, `design/stitch/registro/` y cualquier otra c
 | REPO_REF (web) | Este proyecto (RN) |
 |---|---|
 | `styled.div` / `styled.span` / `styled.button` | `styled.View` / `styled.Text` / `styled.Pressable` de `styled-components/native` |
-| `theme.js` | **Misma estructura de tokens** (colors, typography, borderRadius, espaciados) con unidades numéricas, pero con los **valores de la paleta "Ticket vintage"** de `00-contexto-comun.md` |
+| `theme.js` | **Misma estructura de tokens** (colors, typography, borderRadius, espaciados) con unidades numéricas, pero con los **valores de la paleta "Telón de terciopelo"** de `00-contexto-comun.md` |
 | `localStorage` | `expo-secure-store` (token) + estado en memoria |
 | `window.location.href = '/login'` en el interceptor 401 | `AuthContext.cerrarSesion()` → la navegación vuelve sola al AuthStack |
 | framer-motion | `Animated` / `LayoutAnimation` de RN |
@@ -35,14 +35,14 @@ Se mantienen: el nombre de cada componente, sus props y variantes, y la API de l
 - `AuthContext`: `usuario`, `token`, `cargando`, `iniciarSesion`, `registrarse`, `cerrarSesion`, `esComprador`, `esOrganizador`. Al abrir la app restaura la sesión validando `/auth/me`.
 
 ### `components/ui/`
-**TicketCard** (card con muescas laterales y línea de perforación opcional que separa un "talón"; base de TarjetaEvento, TarjetaCompra y stat cards), **Sello** (estado destacado estilo sello de goma, levemente rotado), Button (variantes primary, secondary, outline, ghost, danger; loading; icono), Input (label, error, secure), Textarea, Select (modal con lista), Card, Badge, **EstadoCompraBadge** (color e icono por estado: según la tabla de estados de `00-contexto-comun.md`), Modal (con variante de confirmación: título, texto, confirmar/cancelar, loading), **Skeleton** (shimmer animado + presets `SkeletonCard`, `SkeletonLista`, `SkeletonDetalle`), Spinner, EmptyState, ErrorState (con reintentar), Rating (estrellas de lectura e input de 0.5), Chip (filtros), ImagenEvento (expo-image con placeholder).
+**TicketCard** (card moderna con radio 18px, muescas laterales y línea punteada que separa el **talón** con `ticketStub` de fondo; base de TarjetaEvento, TarjetaCompra y stat cards), **TituloEscena** (Playfair Display con prop `destacada` para la palabra en itálica `accentText`), **EtiquetaSeccion** (mayúsculas espaciadas en dorado con ✦), Button (variantes primary, secondary, outline, ghost, danger; loading; icono), Input (label, error, secure), Textarea, Select (modal con lista), Card, Badge, **EstadoCompraBadge** (color e icono por estado: según la tabla de estados de `00-contexto-comun.md`), Modal (con variante de confirmación: título, texto, confirmar/cancelar, loading), **Skeleton** (shimmer animado + presets `SkeletonCard`, `SkeletonLista`, `SkeletonDetalle`), Spinner, EmptyState, ErrorState (con reintentar), Rating (estrellas de lectura e input de 0.5), Chip (filtros), ImagenEvento (expo-image con placeholder).
 
 ### `components/layout/`
 `Pantalla` (SafeArea + scroll + pull-to-refresh opcional), `Encabezado`.
 
 ### `routes/`
 - `AppNavigator`: sin sesión → `AuthStack` (**Landing**, Login, Registro); COMPRADOR → `CompradorTabs` (Explorar, Mis compras, Favoritos, Mensajes, Perfil); ORGANIZADOR → `OrganizadorTabs` (Mis eventos, Crear, Mensajes, Notificaciones, Perfil). Top app bar con íconos de mensajería y campana, cada uno con su contador. Pantallas de detalle en stacks anidados.
-- `features/home/Landing` (sin sesión): hero con forma de entrada antigua (muescas, talón perforado "ADMITE UNO · Nº 000001"), pill de tagline, título slab con una palabra en rojo ladrillo, CTAs, stat cards tipo talón, carrusel de próximos eventos (público), grilla de categorías, "Cómo funciona", sección compradores/organizadores, carrusel de reseñas destacadas, banner final y `Footer`.
+- `features/home/Landing` (sin sesión): hero con un ticket grande destacado (muescas, talón con "Nº 000001"), pill de tagline, título Playfair con una palabra en itálica de acento, CTAs, stat cards tipo talón, carrusel de próximos eventos (público), grilla de categorías, "Cómo funciona", sección compradores/organizadores, carrusel de reseñas destacadas, banner final y `Footer`.
 - `components/layout/Footer`: al final de Landing y de Explorar (links, toggle de tema, ©).
 - Componentes compartidos adicionales: `Carrusel` (swipe, dots, contador "3/8", flechas enfocables, visor a pantalla completa) y `Paginacion` (pills numeradas + "Mostrando 1–10 de 87"), usados en toda lista larga. Los servicios de front piden páginas al back (`pagina`, `limite`).
 - En las tabs que corresponden a iteraciones futuras, poner una pantalla placeholder.

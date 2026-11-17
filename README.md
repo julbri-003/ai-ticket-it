@@ -35,6 +35,9 @@ Las specs de cada iteración están en [`specs/`](specs/README.md).
    `http://0.0.0.0:8000`. Probá `http://localhost:8000/api/health` y la documentación en
    `http://localhost:8000/api-docs`.
 
+   Opcional: en `packages/backend/.env` definí `PUBLIC_BASE_URL=http://<IP-de-la-PC>:8000` para que las URLs
+   de imágenes y videos siempre apunten a la IP LAN (si no, se infieren de cada request).
+
 4. **Averiguar la IP LAN de la PC**: en Windows, `ipconfig` → "Dirección IPv4" del adaptador Wi-Fi
    (por ejemplo `192.168.0.10`). Si el firewall de Windows pregunta, permití Node en redes privadas.
 
@@ -65,6 +68,24 @@ Para levantar back y front juntos: `npm run start:dev`.
 | `npm run format`         | Prettier sobre todo el repo                               |
 | `npm test`               | Tests del back (Jest + supertest) y del front (jest-expo) |
 | `npm run seed`           | Siembra una base externa (`MONGO_URI`)                    |
+
+## Usuarios de prueba
+
+Al arrancar, el back siembra datos de demo (categorías, eventos futuros y pasados, compras en todos los
+estados con chat y reseñas). **Todos los usuarios tienen la contraseña `Ticket123!`**.
+
+| Rol         | Email                  | Para qué sirve en la demo                                                                                                                           |
+| ----------- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Organizador | `lucia@ticketit.test`  | Recitales y festivales; tiene un reembolso pendiente por hacer                                                                                      |
+| Organizador | `martin@ticketit.test` | Teatro, stand-up y danza                                                                                                                            |
+| Organizador | `sofia@ticketit.test`  | Deportes, conferencias e infantiles                                                                                                                 |
+| Comprador   | `ana@ticketit.test`    | Favoritos de Recitales ("Recomendados para vos"); compra confirmada con chat, una pendiente que vence en menos de 48 h y una utilizada para reseñar |
+| Comprador   | `bruno@ticketit.test`  | Favoritos de Stand-up; compra pendiente, cancelada con reembolso pendiente y reseña hecha                                                           |
+| Comprador   | `carla@ticketit.test`  | Compra vencida, reembolsada por el organizador y reseña hecha                                                                                       |
+| Comprador   | `diego@ticketit.test`  | Sin favoritos (estado vacío); reembolso automático y una utilizada para reseñar                                                                     |
+
+Las imágenes de los eventos son afiches de relleno generados con `node packages/backend/scripts/generarImagenesSemilla.js`
+(`packages/backend/seeds/assets/`). Se pueden reemplazar por fotos reales con el mismo nombre de archivo.
 
 ## Docker
 

@@ -85,7 +85,7 @@ src/
 
 ## Accesibilidad y UX (obligatorio en todo el front)
 En React Native, el equivalente a `aria-*` son las props `accessibilityRole`, `accessibilityLabel`, `accessibilityHint`, `accessibilityState` y `accessibilityLiveRegion` (o las props `aria-*` / `role` que RN ya soporta). Checklist de revisión, a cumplir en cada pantalla:
-- [ ] **Contraste** ≥ 4,5:1 en texto normal y botones (3:1 en texto grande, íconos y bordes de inputs), en **modo claro y oscuro**. Usar solo los tokens de la paleta "Ticket vintage" de abajo, que ya están verificados; no inventar tintes más claros para texto.
+- [ ] **Contraste** ≥ 4,5:1 en texto normal y botones (3:1 en texto grande, íconos y bordes de inputs), en **modo claro y oscuro**. Usar solo los tokens de la paleta "Telón de terciopelo" de abajo, que ya están verificados; no inventar tintes más claros para texto.
 - [ ] **Cada campo tiene etiqueta visible** (nunca solo placeholder) asociada con `accessibilityLabel`/`aria-labelledby`; los obligatorios se marcan con `*` y una leyenda "* Obligatorio".
 - [ ] **Los errores aparecen junto al campo** (debajo, con ícono y color de error), dicen qué pasó y cómo resolverlo, y se anuncian (`accessibilityLiveRegion="polite"` / `role="alert"`).
 - [ ] **Feedback en toda acción importante**: cargando (Skeleton o spinner en el botón, `accessibilityState={{ busy: true }}`), éxito y error (Toast anunciado al lector de pantalla).
@@ -96,34 +96,47 @@ En React Native, el equivalente a `aria-*` son las props `accessibilityRole`, `a
 - [ ] El estado nunca se comunica solo con color: siempre ícono + texto. Áreas táctiles ≥ 44×44.
 - [ ] Modo claro y oscuro completos (Sistema / Claro / Oscuro).
 
-## Identidad visual: "Ticket vintage"
-La **estructura** de la UI (pills, barra de filtros, cards, stat cards, paginación, carruseles, footer, tipografía mono para etiquetas) se copia de REPO_REF, pero la **temática** cambia: entradas impresas antiguas (tickets de teatro y cine de los 50–70). Cards con muescas laterales y línea de perforación, números de serie en mono ("Nº 004817"), sellos para estados destacados y fondo de papel con grano muy sutil. Moderno y ordenado, no kitsch.
+## Identidad visual: "Telón de terciopelo"
+La **estructura** de la UI (pills, barra de filtros, cards, stat cards, paginación, carruseles, footer, etiquetas en mayúsculas espaciadas) se copia de REPO_REF. La **temática** es teatro clásico con ejecución moderna:
+- **Concepto ticket, moderno**: las tarjetas de compra y de evento tienen forma de entrada, con muescas semicirculares laterales y un **talón** separado por una línea punteada (número de serie "Nº 004817" y dato clave: cuenta regresiva, precio o estado). Bordes muy redondeados (16–18px), mucho aire y una sombra suave con tinte bordó en claro.
+- **Letra con adornos**: títulos en **Playfair Display** (itálica 700 para destacar una palabra: "Tu próxima *función*"). Cuerpo, datos y pills en **Inter** (400/500/600). Etiquetas de sección en mayúsculas espaciadas (`letter-spacing` amplio), con el ornamento "✦" en dorado.
+- **Nada de "viejo"**: sin textura de papel, sin tipografía slab ni de máquina de escribir, sin sellos gastados ni sepia.
+- Pills y botones totalmente redondos (9999px). Las pills de estado van con **fondo tintado + texto del mismo tono + ícono**.
 
-Para que **no parezca navidad**: crema/espresso + azul marino + café dominan (~85 %), el rojo ladrillo es acento (~10 %) y el verde solo indica éxito/CONFIRMADA (~5 %). Nunca grandes áreas rojas y verdes juntas, ni rojo + verde + dorado como decoración.
-
-| Token | Claro ("papel") | Oscuro ("espresso") |
+| Token | Claro ("marfil") | Oscuro ("platea") |
 |---|---|---|
-| background | `#f6efe2` | `#1a120d` |
-| surface | `#fffaf0` | `#261b14` |
-| surfaceSubtle / elevated | `#efe4d0` | `#33251b` |
-| textPrimary | `#2b1d14` | `#f3e9d7` |
-| textSecondary | `#5c4033` | `#d9c8ad` |
-| textMuted | `#6f5442` | `#b09a80` |
-| primary (azul marino) | `#1f3a5f` | `#8fb3de` |
-| accent (rojo ladrillo) | `#9e2f2a` | `#e8867a` |
-| success (verde botella) | `#2f6b4f` | `#7fbf9a` |
-| warning (ocre) | `#7a5200` | `#e0b84a` |
-| error | `#8f1d1d` | `#f19a8f` |
-| borderInput | `#8a7058` | `#7d6650` (solo sobre background/surface; sobre elevated da 2,7:1) |
-| divider | `#e2d4bc` | `#3d2d22` |
-| onFilled (texto de botón relleno) | `#fffaf0` | `#1a120d` |
-| ornamento (no texto) | `#c9a227` | `#c9a227` |
+| background | `#faf7f2` | `#0f0b0d` |
+| surface (cards) | `#ffffff` | `#1d1417` |
+| surfaceSubtle / elevated | `#f3ece4` | `#2a1a1f` |
+| ticketStub (talón) | `#fbf3ee` | `#b3122c` (texto `#ffffff` / `#f5efe6`) |
+| textPrimary | `#1c1416` | `#f5efe6` |
+| textSecondary | `#4a3a3e` | `#d8ccc0` |
+| textMuted | `#6b5a5e` | `#a8998f` |
+| primary (relleno de botón principal, tab activa) | `#7a1e2c` + texto `#ffffff` | `#c8102e` + texto `#ffffff` |
+| accentText (palabra destacada, tipo de entrada, cuenta regresiva) | `#7a1e2c` | `#ff4757` |
+| gold (etiquetas, ✦, botón secundario en oscuro) | `#8a6417` | `#d4af37` (botón: texto `#0f0b0d`) |
+| goldOrnament (filetes, solo decorativo) | `#b8892b` | `#d4af37` |
+| success | `#1f6b52` | `#6fc3a0` |
+| warning | `#8a5300` | `#e8b04a` |
+| error | `#a3182b` | `#ff8a8a` |
+| info | `#1f3a5f` | `#8fb3de` |
+| borderInput | `#8c7d80` | `#7a6a64` |
+| divider | `#e6dcd0` | `#3a2a2e` |
+| focusRing | `#7a1e2c` | `#f5efe6` |
 
-Contrastes verificados (WCAG): todo texto ≥ 5:1 sobre background/surface/subtle en su tema; botones rellenos ≥ 6:1; bordes de input ≥ 3:1 (ver la nota del oscuro). El dorado da 2,1:1 sobre crema: **solo** para ornamentos, o con texto espresso encima (6,7:1).
+**Estados de compra** (pill con fondo tintado, texto del mismo tono e ícono):
 
-Estados de compra: PENDIENTE ocre (reloj), CONFIRMADA verde (check), UTILIZADA azul marino (ticket), CANCELADA rojo ladrillo (x), REEMBOLSADA café `textSecondary` (flecha circular). Siempre ícono + texto.
+| Estado | Claro (texto / fondo) | Oscuro (texto / fondo) | Ícono |
+|---|---|---|---|
+| PENDIENTE | `#8a5300` / `#fbf0dc` | `#e8b04a` / `#33270f` | reloj |
+| CONFIRMADA | `#1f6b52` / `#e7f2ec` | `#6fc3a0` / `#16302a` | check |
+| UTILIZADA | `#1f3a5f` / `#e6edf6` | `#8fb3de` / `#172433` | ticket |
+| CANCELADA | `#a3182b` / `#f9e3e5` | `#ff4757` / `#3a1219` | x |
+| REEMBOLSADA | `#8a6417` / `#f7efdc` | `#d4af37` / `#2e2512` | flecha circular |
 
-Tipografía: slab serif para títulos y números (Zilla Slab / Roboto Slab), sans para el cuerpo (Work Sans / Inter), mono tipo máquina de escribir para etiquetas, seriales y precios (IBM Plex Mono / Courier Prime), cargadas con `expo-font`.
+**Contrastes verificados (WCAG)**: todo texto ≥ 4,6:1 sobre su fondo (la mayoría > 5,5), botones rellenos ≥ 5,9:1 y bordes de input ≥ 3,5:1. Los rellenos rojos del oscuro (`#b3122c`, `#c8102e`) contrastan poco contra el fondo negro (2,8–3,3:1), así que los botones rojos del oscuro llevan **anillo de foco crema** (`#f5efe6`, 17:1) y el talón queda delimitado por las muescas y la línea punteada. El dorado ornamental `#b8892b` **no** se usa para texto en claro.
+
+**Uso del rojo en oscuro**: el relleno rojo solo va en el talón, el botón principal y la tab activa; el resto de los acentos son texto `#ff4757` o dorado. Así el modo oscuro es teatral sin saturar.
 
 ## Definición de terminado (toda iteración)
 - `npm run lint` y los tests de la iteración pasan.

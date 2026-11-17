@@ -4,6 +4,8 @@ Uso: en Stitch elegí **App (mobile)**. Pegá primero el **Prompt principal**: d
 
 Exportá cada pantalla a `design/stitch/<nombre>/` (`code.html` + `screen.png`) usando los nombres entre corchetes.
 
+**Claro y oscuro**: alcanza con exportar **todas en claro** y **en oscuro solo las representativas**, guardadas como `screen-dark.png` (y `code-dark.html` si está) en la misma carpeta: `componentes`, `explorar`, `detalle-evento`, `detalle-compra`, `chat` y `crear-evento`. El modo oscuro se arma con los tokens del theme, así que el agente lo deriva para el resto. Si en alguna pantalla Stitch hizo algo especial en oscuro que querés conservar, exportala también.
+
 ---
 
 ## Prompt principal
@@ -11,32 +13,32 @@ Exportá cada pantalla a `design/stitch/<nombre>/` (`code.html` + `screen.png`) 
 ```
 Design a mobile app called "AI Ticket It", an event ticketing platform where ORGANIZERS publish events (concerts, theatre, stand-up, festivals, sports, conferences, kids, dance) with several ticket types (e.g. General, Platea, VIP), each with its own price and capacity, and BUYERS discover events, save favourites, buy tickets, pay, cancel, chat with the organizer about each purchase and leave a star review after attending. All UI copy must be in Spanish (Argentina, "vos" form, prices in ARS like "$45.000,00", dates like "sáb 22 nov · 21:00").
 
-VISUAL STYLE — "vintage paper ticket" theme: inspired by old printed admission tickets, theatre stubs and 1950s–70s box-office tickets, but modern, clean, information-dense and well organized (not skeuomorphic clutter, not retro-kitsch).
-- Ticket motifs, used with restraint: cards shaped like ticket stubs (small semicircular notches on the left/right edges and a dashed perforation line separating the "stub" section), monospaced serial numbers like "Nº 004817" on purchase cards, subtle paper grain texture on the background (very low opacity, never behind text in a way that lowers contrast), a rubber-stamp style for status highlights (e.g. a slightly rotated outlined "CONFIRMADA" stamp on the purchase detail), thin double-rule borders on section headers like old printed tickets.
-- Light ("paper") is the default, with a full dark ("espresso") counterpart for every screen (generate both).
-- Light mode ("paper"): background cream #f6efe2, surface #fffaf0, subtle surface #efe4d0, borders #8a7058 (inputs) / #e2d4bc (dividers), text espresso #2b1d14 / coffee #5c4033 / muted #6f5442. Primary NAVY #1f3a5f (links, primary buttons, focus ring, active tab), accent BRICK RED #9e2f2a (highlights, hero accent word, sale/price emphasis, CANCELADA), BOTTLE GREEN #2f6b4f (success, CONFIRMADA), warning ochre #7a5200, error #8f1d1d. Decorative mustard gold #c9a227 ONLY for non-text ornaments (rules, stars background, stamp borders) or with espresso text on top.
-- Dark mode ("espresso"): background #1a120d, surface #261b14, elevated #33251b, borders #7d6650, text cream #f3e9d7 / #d9c8ad / muted #b09a80. Primary soft navy-blue #8fb3de, brick red #e8867a, bottle green #7fbf9a, warning/gold #e0b84a, error #f19a8f. Filled buttons in dark mode use espresso text (#1a120d) on the colored fill.
-- Color balance so it never looks like Christmas: cream/espresso + navy + coffee dominate (~85%), brick red is an accent (~10%), green appears only for success/confirmed states (~5%). Never place large red and green areas next to each other, never use red+green+gold together as decoration, no ornaments, snowflakes or holly-like shapes.
-- All listed text/background pairs were checked: every text color meets ≥4.5:1 on background and surfaces in its theme, and button labels on filled buttons meet ≥6:1. Keep it that way: don't introduce lighter tints for text.
-- Typography: a sturdy slab serif for titles and big numbers ("Zilla Slab" or "Roboto Slab", bold), a clean sans for body ("Work Sans" or "Inter"), and a typewriter-like mono ("IBM Plex Mono" or "Courier Prime") for small uppercase section labels (e.g. "PRÓXIMOS EVENTOS"), serial numbers, dates, counters and prices on tickets.
-- Shapes: small radii (4–8px) on cards, inputs and buttons; fully rounded PILLS (9999px) for every chip, tag, filter, status badge and counter, styled like small printed tags (1.5px border, mono uppercase text for status pills).
-- Icons: Lucide-style outline icons, 1.75px stroke, in text color (never in gold).
-- Cards: surface color, 1px border, generous padding, clear hierarchy (image → title → meta row with icons → price/rating row → actions).
+VISUAL STYLE — "Velvet curtain": classic theatre (opera house velvet, gold details, ivory programmes) executed in a MODERN, clean, airy way. It must feel elegant and current, never old, worn or retro-kitsch.
+- Modern ticket concept: purchase cards, event cards and stat cards are shaped like modern tickets — large rounded corners (16–18px), two semicircular notches cut into the top and bottom edges, and a dashed vertical line separating a narrow STUB on the right. The stub holds the key datum (countdown "FALTAN 5 días", price, or status) and a small serial number "Nº 004817". Soft shadow with a burgundy tint in light mode; 1px inner border in dark mode.
+- Decorative typography: titles in "Playfair Display" (700), highlighting ONE word per title in italic with the accent color (e.g. "Tu próxima *función*", "Esta noche, *en escena*"). Body, data, buttons and pills in "Inter" (400/500/600). Section labels in uppercase Inter 600 with wide letter-spacing, preceded by a gold "✦" ornament (e.g. "✦ PRÓXIMAS FUNCIONES").
+- Avoid anything that looks old: no paper texture, no grain, no sepia, no slab or typewriter fonts, no worn rubber stamps.
+- Light ("ivory") and dark ("stalls") modes, generate both for every screen.
+- Light mode: background ivory #faf7f2, cards #ffffff, subtle surface #f3ece4, ticket stub #fbf3ee, dividers #e6dcd0, input borders #8c7d80, text #1c1416 / #4a3a3e / muted #6b5a5e. Primary VELVET BURGUNDY #7a1e2c (primary buttons with white text, active tab, accent word in titles, ticket type name, countdown number, focus ring). Gold #8a6417 for labels and the ✦ ornament (decorative gold #b8892b only for thin rules, never text). Success #1f6b52, warning #8a5300, error #a3182b, info #1f3a5f.
+- Dark mode: background #0f0b0d, cards #1d1417 with 1px border #3a2a2e, elevated #2a1a1f, input borders #7a6a64, text #f5efe6 / #d8ccc0 / muted #a8998f. The ticket STUB is filled with saturated velvet red #b3122c with white/cream text. Primary buttons are crimson #c8102e with white text and a cream (#f5efe6) focus ring. Accent words, ticket type names and highlights in saturated red #ff4757. Gold #d4af37 for labels, ✦ ornaments and secondary buttons (dark text #0f0b0d on gold). Success #6fc3a0, warning #e8b04a, error #ff8a8a, info #8fb3de. Use solid red fills ONLY for the stub, the primary button and the active tab, so dark mode is dramatic without being saturated everywhere.
+- All listed text/background pairs were checked: every text color meets ≥4.5:1 on its background in its theme and filled buttons ≥5.9:1. Don't introduce lighter tints for text.
+- Shapes: 16–18px radius on cards and sheets, 12px on inputs, fully rounded PILLS (9999px) for buttons, chips, filters, status badges and counters.
+- Icons: Lucide-style outline icons, 1.75px stroke, in text color.
+- Cards: generous padding, clear hierarchy (image → title in Playfair → meta row with icons → price/rating row → actions).
 
 REUSABLE COMPONENTS (must look and behave identically on every screen):
-- Pills: category pills, filter pills (selected = filled primary container + primary border + check icon; unselected = outline), tagline pill with primary border and mono text.
-- Purchase status badges as pills, always icon + text (never color alone): PENDIENTE ochre (clock), CONFIRMADA bottle green (check-circle), UTILIZADA navy (ticket-check), CANCELADA brick red (x-circle), REEMBOLSADA coffee (rotate-ccw).
+- Pills: category pills, filter pills (selected = filled primary + check icon; unselected = outline), tagline pill with gold border and "✦".
+- Purchase status badges as pills with tinted background + same-hue text + icon (never color alone). Light (text/bg): PENDIENTE #8a5300/#fbf0dc (clock), CONFIRMADA #1f6b52/#e7f2ec (check-circle), UTILIZADA #1f3a5f/#e6edf6 (ticket), CANCELADA #a3182b/#f9e3e5 (x-circle), REEMBOLSADA #8a6417/#f7efdc (rotate-ccw). Dark: PENDIENTE #e8b04a/#33270f, CONFIRMADA #6fc3a0/#16302a, UTILIZADA #8fb3de/#172433, CANCELADA #ff4757/#3a1219, REEMBOLSADA #d4af37/#2e2512.
 - Search + filter bar: sticky search input with a visible label "Buscar eventos, lugares u organizadores", search icon, clear button and recent searches; below it a horizontal scroll of pills starting with a highlighted "✦ Para vos" toggle pill (recommendations based on the categories of the user's favourites; disabled state with hint when the user has no favourites), then "Todas" + category pills (multi-select), and a "Filtros" button with a counter badge. Applied filters show as removable pills (with ✕) under the bar plus "Limpiar todo".
 - Filters bottom sheet: sort (Fecha / Precio / Puntaje del organizador / Relevancia) with asc/desc toggle, price range min–max, date range with shortcuts ("Este finde", "Este mes"), switch "Solo con entradas disponibles", minimum organizer rating pills (3+, 4+, 4,5+), "Limpiar" and "Aplicar (N resultados)".
 - Image carousel for events with many images: swipeable, dot indicators + "3/8" counter pill, arrows visible on focus, full-screen viewer on tap.
-- Pagination: numbered pagination pills (‹ 1 2 3 … 9 ›) under every long list (events, purchases, reviews, notifications), with the current page filled and a "Mostrando 1–10 de 87" mono caption.
+- Pagination: numbered pagination pills (‹ 1 2 3 … 9 ›) under every long list (events, purchases, reviews, notifications), with the current page filled and a "Mostrando 1–10 de 87" muted caption.
 - Messaging icon: a chat-bubble icon button with an unread counter pill, shown in the top app bar and on each purchase card that has unread messages. Notification bell with counter pill in the top app bar.
 - Bottom tab bar per role. Buyer: Explorar, Mis compras, Favoritos, Mensajes, Perfil. Organizer: Mis eventos, Crear, Mensajes, Notificaciones, Perfil.
 - Footer: at the end of the landing page and the explore screen, a footer with logo, short tagline, links (Cómo funciona, Para organizadores, Ayuda, Términos, Privacidad), a light/dark mode toggle and "© 2026 AI Ticket It".
 - Feedback states for every list and action: skeleton loaders with shimmer (same shape as the real cards), empty states with an illustration-style icon, a message and a CTA, error states with "Reintentar", toasts (success / error / warning / info, icon + title + message + close button, top of screen), buttons with inline loading spinner.
 - Confirmation modal for destructive or payment actions: title, explanation of consequences, amount when relevant, secondary "Volver" and primary/danger confirm button.
 - Star rating component (read-only and input, half stars).
-- Stat cards shaped like small ticket stubs (notched edges, perforation line), big slab-serif number and mono label.
+- Stat cards shaped like small modern tickets (notches, dashed line), big Playfair number and uppercase gold label.
 
 ACCESSIBILITY (mandatory, design for it visibly):
 - Minimum 4.5:1 contrast for all normal text and button labels in BOTH themes; 3:1 for large text, icons and input borders.
@@ -50,7 +52,7 @@ ACCESSIBILITY (mandatory, design for it visibly):
 - Destructive actions (cancel purchase, remove image, log out) ask for confirmation; removing a favourite shows an "Deshacer" toast.
 
 Start by generating these screens, each in dark and light mode:
-1. [landing] Landing / welcome page for logged-out users: hero styled like a large vintage admission ticket (notched edges, perforated stub with "ADMITE UNO · Nº 000001"), tagline pill ("Tus entradas, sin filas"), big slab-serif title with one accent word in brick red, subtitle, two CTAs ("Explorar eventos" primary, "Publicar mi evento" outline), a row of 4 stat cards (eventos activos, entradas vendidas, organizadores, puntaje promedio), "Próximos eventos" horizontal carousel of event cards, category grid with icons, a "Cómo funciona" 3-step section (Elegí → Pagá → Disfrutá) and a two-column section "Para compradores / Para organizadores" with checklists, featured reviews carousel, final CTA banner and the footer.
+1. [landing] Landing / welcome page for logged-out users: hero with a large featured modern ticket (notches, red/ivory stub with "Nº 000001"), tagline pill ("✦ Tus entradas, sin filas"), big Playfair title with one italic accent word ("Esta noche, *en escena*"), subtitle, two CTAs ("Explorar eventos" primary, "Publicar mi evento" outline), a row of 4 stat cards (eventos activos, entradas vendidas, organizadores, puntaje promedio), "Próximos eventos" horizontal carousel of event cards, category grid with icons, a "Cómo funciona" 3-step section (Elegí → Pagá → Disfrutá) and a two-column section "Para compradores / Para organizadores" with checklists, featured reviews carousel, final CTA banner and the footer.
 2. [login] Login: logo, email and password fields with visible labels, show/hide password, inline errors, primary button with loading state, link to register.
 3. [registro] Register: name, surname, email, password with strength hint, and a role selector as two large selectable cards ("Quiero comprar entradas" / "Quiero organizar eventos") with radio semantics.
 ```
@@ -61,7 +63,7 @@ Start by generating these screens, each in dark and light mode:
 
 ```
 Using exactly the same design system, components and accessibility rules of this project, generate these buyer screens in dark and light mode:
-4. [explorar] Explore: top app bar with logo, chat icon with unread pill and bell with counter pill; a "Recomendados para vos" horizontal carousel at the top with the reason as subtitle ("Porque guardaste eventos de Recitales y Teatro") and "Ver todos" link, plus its empty variant ("Guardá eventos en favoritos y te recomendamos según lo que te gusta"); sticky search + filter bar ("✦ Para vos" pill, category pills, "Filtros" button with counter) and applied-filter pills; segmented control "Próximos | Anteriores"; result count in mono ("87 eventos"); list of event cards (image with category pill overlay and heart favourite button, title, date + venue with icons, "desde $12.000", organizer name with stars); numbered pagination; footer. Also show the "Anteriores" variant where past event cards are greyed out (desaturated image, reduced opacity, "Finalizado" pill, no buy action) and the skeleton loading variant.
+4. [explorar] Explore: top app bar with logo, chat icon with unread pill and bell with counter pill; a "Recomendados para vos" horizontal carousel at the top with the reason as subtitle ("Porque guardaste eventos de Recitales y Teatro") and "Ver todos" link, plus its empty variant ("Guardá eventos en favoritos y te recomendamos según lo que te gusta"); sticky search + filter bar ("✦ Para vos" pill, category pills, "Filtros" button with counter) and applied-filter pills; segmented control "Próximos | Anteriores"; result count as an uppercase gold label ("✦ 87 EVENTOS"); list of event cards (image with category pill overlay and heart favourite button, title, date + venue with icons, "desde $12.000", organizer name with stars); numbered pagination; footer. Also show the "Anteriores" variant where past event cards are greyed out (desaturated image, reduced opacity, "Finalizado" pill, no buy action) and the skeleton loading variant.
 5. [filtros] Filters bottom sheet: sort options as radio pills (Fecha, Precio, Puntaje del organizador, Relevancia — only enabled with "Para vos") with asc/desc toggle, price range with two labelled numeric inputs and inline validation ("El mínimo no puede superar al máximo. Corregí alguno de los dos valores."), date range "Desde / Hasta" with shortcut pills ("Este finde", "Este mes"), switch "Solo con entradas disponibles", minimum organizer rating pills (3+, 4+, 4,5+), category pills multi-select, "Limpiar" and "Aplicar (24 resultados)". Also show the results state with "12 eventos para vos" and the applied-filter pills.
 6. [detalle-evento] Event detail: image/video carousel with dots and "1/6" counter; category pill, title, date/time, venue, organizer card (avatar initials, name, stars 4.6, "128 reseñas"); description plus "Actualizaciones" list with dates; ticket types as selectable cards (name, description, price, "Quedan 12" pill, "Agotado" disabled state); quantity stepper limited by availability with helper text; sticky bottom bar with total and "Comprar" button; organizer reviews section with rating summary (average + distribution bars), review cards (stars, comment, buyer name, ticket type, event name, date) and pagination.
 7. [checkout] Checkout: order summary card, countdown pill "Tenés hasta el lun 18/11 15:30 para pagar", "Pagar" primary button and "Pagar más tarde" ghost button; plus the confirmation modal "¿Confirmás el pago de $45.000,00?" with Volver / Pagar and the success toast.
@@ -96,3 +98,54 @@ Same design system and accessibility rules. Generate the ORGANIZER screens in da
 ```
 Same design system. Create one reference board screen [componentes] in dark and light mode showing all reusable components side by side with their states: buttons (primary, secondary, outline, ghost, danger × default, focused with visible focus ring, pressed, disabled, loading), inputs (empty, filled, focused, error with message, disabled, required marker), select, textarea with counter, pills (category, filter selected/unselected, status badges for the 5 purchase states), cards, stat card, skeletons (event card, purchase card, detail), empty state, error state with retry, 4 toast variants, confirmation modal, pagination, carousel with dots, star rating, chat bubble, tab bar with badge, top app bar with chat and bell counters, footer.
 ```
+
+---
+
+## Prompt de corrección (para pantallas ya generadas)
+
+Usalo en el proyecto de Stitch donde ya tenés pantallas con el estilo anterior. Pegalo tal cual. Si Stitch cambia demasiado una pantalla, repetilo pantalla por pantalla agregando al final: "Apply only to the [nombre] screen".
+
+```
+Restyle ALL existing screens of this project with the new "Velvet curtain" visual direction. Keep every screen's structure, content, Spanish copy, components, layout order, navigation and accessibility features exactly as they are — change only the visual style described below. Generate light and dark versions of each screen.
+
+GOAL: classic theatre (velvet, gold, ivory) executed in a MODERN, airy, elegant way. Remove everything that looks old or worn.
+
+REMOVE: paper/grain textures, cream-yellow backgrounds, sepia/espresso browns, slab and typewriter/monospace fonts, rubber stamps, double-rule borders, navy as primary color, brick red, bottle green as a decorative color.
+
+TYPOGRAPHY:
+- Titles: "Playfair Display" 700. In each main title highlight ONE word in italic with the accent color (e.g. "Tu próxima *función*", "Esta noche, *en escena*", "Mis *entradas*").
+- Everything else (body, data, prices, buttons, pills, inputs): "Inter" 400/500/600.
+- Section labels: uppercase Inter 600, wide letter-spacing, preceded by a gold "✦" (e.g. "✦ PRÓXIMAS FUNCIONES").
+
+MODERN TICKET SHAPE (keep the ticket concept, modernized):
+- Event cards, purchase cards and stat cards become modern tickets: 16–18px rounded corners, two semicircular notches cut into the top and bottom edges, and a dashed vertical line separating a narrow STUB on the right.
+- The stub holds the key datum: countdown ("FALTAN · 5 · días") on confirmed purchases, price ("desde $12.000") on event cards, the status on other purchases; plus a small serial "Nº 004817".
+- Light mode: white card on ivory, soft burgundy-tinted shadow, stub background #fbf3ee. Dark mode: card #1d1417 with 1px border #3a2a2e, stub filled with velvet red #b3122c and white/cream text.
+
+COLORS — LIGHT ("ivory"):
+background #faf7f2 · cards #ffffff · subtle #f3ece4 · dividers #e6dcd0 · input borders #8c7d80
+text #1c1416 · secondary #4a3a3e · muted #6b5a5e
+primary velvet burgundy #7a1e2c (filled buttons with white text, active tab, accent italic word, ticket type name, countdown, focus ring)
+gold #8a6417 for labels and ✦ (decorative gold #b8892b only for thin rules, never for text)
+success #1f6b52 · warning #8a5300 · error #a3182b · info #1f3a5f
+
+COLORS — DARK ("stalls"):
+background #0f0b0d · cards #1d1417 · elevated #2a1a1f · borders #3a2a2e · input borders #7a6a64
+text #f5efe6 · secondary #d8ccc0 · muted #a8998f
+primary buttons crimson #c8102e with white text and a cream #f5efe6 focus ring
+ticket stub #b3122c with white/cream text
+accent italic word, ticket type names and highlights in saturated red #ff4757
+gold #d4af37 for labels, ✦ and secondary buttons (text #0f0b0d on gold)
+success #6fc3a0 · warning #e8b04a · error #ff8a8a · info #8fb3de
+Solid red fills ONLY on the stub, the primary button and the active tab.
+
+STATUS PILLS (tinted background + same-hue text + icon), light text/bg — dark text/bg:
+PENDIENTE #8a5300/#fbf0dc — #e8b04a/#33270f (clock)
+CONFIRMADA #1f6b52/#e7f2ec — #6fc3a0/#16302a (check-circle)
+UTILIZADA #1f3a5f/#e6edf6 — #8fb3de/#172433 (ticket)
+CANCELADA #a3182b/#f9e3e5 — #ff4757/#3a1219 (x-circle)
+REEMBOLSADA #8a6417/#f7efdc — #d4af37/#2e2512 (rotate-ccw)
+
+SHAPES: cards and bottom sheets 16–18px radius, inputs 12px, buttons/chips/filters/badges/counters fully rounded pills. Generous spacing. Lucide outline icons 1.75px in text color.
+
+KEEP: ≥4.5:1 text contrast (all colors above are already verified — don't lighten them), visible labels, inline errors, visible focus rings, alt text, icon + text for status, confirmation modals, skeletons, toasts, pagination, carousels, filter bar, "✦ Para vos" pill, chat and bell counters, footer.

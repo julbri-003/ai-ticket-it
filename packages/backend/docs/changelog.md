@@ -27,3 +27,33 @@
 - Tests unitarios `tests/*.Dominio.test.js` con reloj fijo, más un test que verifica que `domain/` no importe
   infraestructura. Script `test:coverage` con umbral del 90 % sobre `domain/`.
 - Diagrama de clases en `docs/diagrama-clases.puml`.
+
+## Iteración 03 — Persistencia
+
+- `schemas/`: `persistiblePlugin` (copiado de REPO_REF) aplicado a todos los schemas raíz (`Usuario`, `Categoria`,
+  `Evento` con `TipoEntrada` embebido, `Compra` con historial y mensajes embebidos, `Resenia`, `Notificacion`),
+  `timestamps: true` y los índices de la spec.
+- `repositories/`: `RepositorioPersistible` y `RepositorioMongoPersistible` (devuelven entidades de dominio) y los
+  repos de Mongo de usuarios, categorías, eventos (búsqueda con aggregation, `reservarCupo`/`liberarCupo` atómicos),
+  compras, reseñas y notificaciones.
+- `dependencias.js` como composition root (sin modo mock).
+- Seeds idempotentes que se ejecutan al arrancar: 8 categorías, 3 organizadores, 4 compradores, 16 eventos (3 pasados,
+  uno en menos de 48 h, uno agotado), 15 compras en todos los estados con historial, chat y 3 reseñas. Afiches de
+  relleno en `seeds/assets/` generados por `scripts/generarImagenesSemilla.js` y copiados a `UPLOADS_DIR`.
+- Tests: plugin, cada repositorio, reservas concurrentes, buscador y seeds.
+
+## Iteración 04 — Auth, categorías, eventos, búsqueda, multimedia y favoritos
+
+- Auth: `POST /api/auth/registro`, `POST /api/auth/login`, `GET /api/auth/me` (JWT con `{ id, rol, nombre }`).
+- `GET /api/categorias`.
+- Eventos: buscador con filtros combinables (`q`, `categoriaIds`, precio, fechas, `conDisponibilidad`, `puntajeMin`,
+  `paraVos`, `orden=fecha|precio|puntaje|relevancia`, paginación, `anteriores`), `GET /recomendados`, detalle,
+  reseñas del organizador, `GET /mios`, alta y edición restringida (`/multimedia`, `/tipos-entrada`, `/ampliaciones`).
+- Favoritos: `GET /api/favoritos`, `PUT` y `DELETE /api/favoritos/:eventoId` (idempotentes).
+- `authOpcionalMiddleware`, `uploadMiddleware` (multer en memoria), `AlmacenamientoLocalAdapter` y traducción de
+  errores de zod y multer a 400 en `errorHandler`.
+- Services: `AuthService`, `CategoriasService`, `EventosService`, `FavoritosService`, `RecomendacionesService`,
+  `ReseniasService` y `VistasEventos`. DTOs sin `passwordHash` ni campos internos, con URLs absolutas de multimedia.
+- Swagger con ejemplos para todos los endpoints (`docs/swaggerEsquemas.js` + JSDoc en `routes/`).
+- Afiches de la semilla regenerados con la paleta "Telón de terciopelo".
+- Tests de integración (supertest) sobre los datos de la semilla.

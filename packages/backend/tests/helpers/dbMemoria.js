@@ -8,6 +8,8 @@ let servidor = null;
 export async function levantarDB() {
   servidor = await MongoMemoryServer.create();
   await mongoose.connect(servidor.getUri(), { dbName: "ai-ticket-it-test" });
+  // Construye los índices (únicos, de texto) antes de que los tests dependan de ellos.
+  await Promise.all(Object.values(mongoose.models).map((modelo) => modelo.init()));
 }
 
 export async function limpiarDB() {

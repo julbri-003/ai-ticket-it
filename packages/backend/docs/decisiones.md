@@ -56,3 +56,67 @@ Decisiones no obvias tomadas en cada iteración.
   módulo, porque los documentos de mongoose cargados con `loadClass` no pueden acceder a `#privados`.
 - **`Persistible.darDeBaja/darDeAlta` aceptan un reloj opcional** para que la auditoría sea testeable.
 - **Cobertura con `coverageProvider: "v8"`**: la instrumentación de babel no funciona con ESM nativo.
+
+## Iteración 03
+
+- **Los repos devuelven entidades de dominio** (`new Evento({...})`), no documentos con `loadClass` como REPO_REF:
+  los services trabajan con objetos puros y las reglas viven en un solo lugar.
+- **Ids**: `ObjectId` en Mongo, `string` en el dominio. Un id con formato inválido en una búsqueda devuelve `null`
+  (404 en el service) en lugar de un `CastError`.
+- **`RepositorioPersistible.delete(id, usuarioActual, reloj)` exige quién da de baja.** No se copió el
+  `ProveedorUsuarioActual` de REPO_REF (vive en `services/` y dependía del modo mock).
+- **`EventosMongoRepository.guardar` nunca reescribe `disponibles` de tipos existentes**: en una modificación hace
+  `$set` de los campos editables y `$push` de los tipos nuevos (los que no tienen id). Así guardar un evento editado
+  no pisa una reserva concurrente. El dominio ya prohíbe modificar tipos existentes.
+- **`ComprasMongoRepository.guardar` no reescribe `mensajes`** al modificar: los mensajes entran solo por
+  `agregarMensaje` (`$push`), para no perder uno enviado mientras otra operación guardaba la compra.
+- **`reservarCupo`**: `updateOne` con `$elemMatch: { _id, disponibles: { $gte: cantidad } }` + `$inc` con
+  `arrayFilters`, en una sola operación atómica. **`liberarCupo`** usa un update con pipeline
+  (`$min: [cupo, disponibles + cantidad]`) para no superar el cupo, también atómico.
+- **Búsqueda por texto**: además del índice `$text` (nombre + descripción) que pide la spec, `q` busca con regex sobre
+  un campo normalizado `textoBusqueda` (nombre, descripción, ampliaciones y lugar, en minúsculas y sin acentos) y
+  sobre `nombreBusqueda` de los organizadores. `$text` solo encuentra palabras completas ("jaz" no encuentra "jazz")
+  y no cubre el lugar ni el organizador, que pide la spec 04.
+- **Orden por defecto**: fecha ascendente; con `anteriores=true`, fecha descendente; por puntaje, descendente.
+  Desempate estable por fecha y `_id`.
+- **Seeds con el dominio**: cada compra se arma con `Compra.crear`, `pagar`, `cancelar`, etc., avanzando un reloj
+  simulado. El historial, el cupo, los mensajes y las reseñas quedan coherentes con las reglas reales. Son idempotentes
+  por nombre (categorías y eventos) y email (usuarios); las compras de un evento solo se crean junto con él. Los
+  favoritos se cargan solo a compradores creados en esa corrida.
+- **Imágenes de la semilla**: afiches abstractos generados por `scripts/generarImagenesSemilla.js` (PNG sin
+  dependencias), servidos como `/uploads/semilla/<categoria>.png`.
+- **Tests de persistencia**: cada suite levanta su propio MongoMemoryServer y construye los índices (`Model.init()`)
+  antes de empezar, para que los índices únicos se respeten desde el primer test.
+
+## Iteración 04
+
+- **Errores de zod en el `errorHandler`**: `{ status: "fail", message, timestamp, detalles: [{ campo, mensaje }] }`.
+  Mantiene el formato común (REPO_REF respondía `{ error, detalles }` desde cada controller) y el `message` ya trae
+  el detalle legible. Los controllers no tienen try/catch: Express 5 propaga los errores de los handlers async.
+- **`MulterError` traducidos a 400** con mensajes en castellano; un tipo de archivo no permitido se rechaza en el
+  `fileFilter` con `BadRequestError`. Multer guarda en memoria: el service recibe el buffer y lo guarda vía
+  `AlmacenamientoLocalAdapter` (no conoce multer ni fs). El límite de 5 MB de imágenes se valida por tipo después
+  de multer, que solo admite un límite global (el de video, 20 MB).
+- **Compensación al subir multimedia**: si el dominio o la base rechazan el cambio, se borran los archivos ya
+  guardados. El adapter solo borra lo que él subió (`/uploads/eventos/…`), nunca las imágenes de la semilla, que
+  son compartidas entre eventos.
+- **`alts` en multipart**: campo repetido en el mismo orden que `archivos`; obligatorio para imágenes.
+- **Auth opcional**: con un token inválido o vencido, los endpoints públicos responden como anónimo (no 401), para
+  que una sesión vencida no rompa la exploración.
+- **Validación de queries**: `limite > 50` → 400 (no se recorta); `orden=relevancia` sin `paraVos=true` → 400;
+  `fechaHasta` con solo fecha incluye todo ese día. Los bodies usan `.strict()`; las queries no, para tolerar
+  parámetros extra (cache busting).
+- **`paraVos` sin efecto** (anónimo, organizador o comprador sin favoritos): se ignora, `filtrosAplicados.paraVos =
+false` y `orden=relevancia` cae a `fecha`. Con `categoriaIds`, la intersección vacía devuelve 0 resultados.
+- **Relevancia**: el repositorio calcula el peso de la categoría con `$switch` sobre `pesosCategorias` y ordena por
+  peso desc y fecha asc. Lo usan `/recomendados` y `paraVos`.
+- **Recomendados**: las categorías preferidas respetan el orden en que se marcaron los favoritos (desempate);
+  `obtenerVarios` devuelve en orden de la base, así que el service los reordena.
+- **Detalle de evento** incluye los finalizados ("Eventos anteriores"). Un id con formato inválido en la ruta → 400;
+  inexistente → 404. Categoría inexistente al crear → 400.
+- **`VistasEventos`** arma categoría, organizador y `esFavorito` para una lista de eventos con 2–3 consultas en total
+  (no una por evento). `esFavorito` solo aparece con sesión de comprador.
+- **URL absoluta de multimedia**: `PUBLIC_BASE_URL` si está definida; si no, se infiere del request (protocolo + host),
+  que desde el celular ya es la IP LAN de la PC.
+- **Favoritos**: se puede marcar un evento finalizado; `GET /api/favoritos` los lista del último marcado al primero.
+- **Afiches de la semilla** regenerados con la paleta "Telón de terciopelo" (cambió en el contexto común).

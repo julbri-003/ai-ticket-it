@@ -38,8 +38,12 @@ Lista paginada de las compras con conversación: imagen del evento, último mens
 ## Tests
 `useChatCompra` (deduplica, cae a polling sin socket, reintento ante error), NotificacionesContext (incrementa al recibir y resetea al marcar todas), pantalla Chat (enviar vacío deshabilitado).
 
+## Chequeo final de cobertura
+Recorrer `specs/trazabilidad.md` fila por fila. En la columna Estado, poner ✅ con la evidencia (nombre del test o pasos manuales) o ❌ con lo que falta. Las filas ❌ se resuelven antes de dar la spec por terminada. Entregar un resumen: cuántas filas ✅, cuáles ❌ y por qué.
+
 ## Criterios de aceptación
 - [ ] Con dos dispositivos (o celular + emulador), un mensaje del comprador aparece en el organizador sin refrescar, y viceversa.
 - [ ] Cortando el socket (apagando y prendiendo el wifi), el chat sigue funcionando por polling y se recupera solo.
 - [ ] Cada transición de una compra genera una notificación visible para quien corresponde.
 - [ ] `npm run lint` y `npm test` (back + front) pasan en CI.
+- [ ] Todas las filas de `trazabilidad.md` en ✅.
