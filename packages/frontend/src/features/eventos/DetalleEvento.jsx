@@ -7,6 +7,7 @@ import { BotonFavorito } from "../../components/eventos/TarjetaEvento";
 import { SelectorCantidad, MAX_POR_COMPRA } from "../../components/compras/SelectorCantidad";
 import {
   Badge,
+  EventoCanceladoBadge,
   Button,
   Card,
   Carrusel,
@@ -210,7 +211,7 @@ export function DetalleEvento({ route, navigation }) {
 
   return (
     <Pantalla alRefrescar={cargar} refrescando={estado.cargando}>
-      <Atenuado $anterior={anterior}>
+      <Atenuado $anterior={anterior || evento.cancelado}>
         {evento.imagenes.length > 1 ? (
           <Carrusel
             items={evento.imagenes.map((img, i) => ({ ...img, id: `${img.uri}-${i}` }))}
@@ -238,9 +239,13 @@ export function DetalleEvento({ route, navigation }) {
       ))}
 
       <Cabecera>
-        <Badge variant={anterior ? "neutral" : "primary"}>
-          {anterior ? "Finalizado" : evento.categoria.nombre}
-        </Badge>
+        {evento.cancelado ? (
+          <EventoCanceladoBadge />
+        ) : (
+          <Badge variant={anterior ? "neutral" : "primary"}>
+            {anterior ? "Finalizado" : evento.categoria.nombre}
+          </Badge>
+        )}
         {esComprador ? (
           <BotonFavorito
             activo={favoritos.esFavorito(evento)}

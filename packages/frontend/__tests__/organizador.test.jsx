@@ -1,5 +1,10 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/react-native";
+import { TarjetaCompra } from "../src/components/compras/TarjetaCompra";
 import { DetalleCompra } from "../src/features/compras/DetalleCompra";
+import { DetalleEvento } from "../src/features/eventos/DetalleEvento";
+import { aCompra } from "../src/service/comprasService";
+import { quedanTexto } from "../src/service/eventosService";
+import { renderConTema } from "../pruebas/helpers";
 import { ComprasEvento } from "../src/features/organizador/ComprasEvento";
 import { CrearEvento } from "../src/features/organizador/CrearEvento";
 import { EditarEvento } from "../src/features/organizador/EditarEvento";
@@ -318,5 +323,136 @@ describe("DetalleCompra (organizador)", () => {
       expect(llamadas.some((l) => l.clave === "POST /compras/c1/reembolsar")).toBe(true),
     );
     expect(await screen.findByText("Reembolso registrado")).toBeTruthy();
+  });
+});
+
+describe("Cupo restante por tipo de entrada", () => {
+  test("Agotado, ¡Es la última! o Quedan N (siempre con el número)", () => {
+    expect(quedanTexto(0)).toBe("Agotado");
+    expect(quedanTexto(1)).toBe("¡Es la última!");
+    expect(quedanTexto(5)).toBe("Quedan 5");
+    expect(quedanTexto(250)).toBe("Quedan 250");
+  });
+
+  test("el detalle del evento muestra lo que queda de cada tipo", async () => {
+    apiFalsa({
+      "GET /eventos/e1": () => [
+        200,
+        eventoDto({
+          tiposEntrada: [
+            { ...eventoDto().tiposEntrada[0], disponibles: 1, vendidas: 99 },
+            { ...eventoDto().tiposEntrada[1], disponibles: 0, vendidas: 10 },
+            {
+              id: "t3",
+              nombre: "Platea",
+              descripcion: "",
+              precio: 9000,
+              cupo: 300,
+              disponibles: 120,
+              vendidas: 180,
+              agotado: false,
+            },
+          ],
+        }),
+      ],
+      "GET /eventos/e1/resenias": () => [200, { items: [], total: 0, pagina: 1, limite: 5 }],
+    });
+    await renderPantalla(DetalleEvento, { params: { eventoId: "e1" } });
+    expect(await screen.findByText("¡Es la última!")).toBeTruthy();
+    expect(screen.getByText("Agotado")).toBeTruthy();
+    expect(screen.getByText("Quedan 120")).toBeTruthy();
+  });
+});
+
+describe("Cancelar un evento", () => {
+  const cancelado = (extra = {}) =>
+    eventoDto({
+      cancelado: true,
+      cancelacion: { motivo: "La sala cerró por obras", fecha: "2030-11-01T12:00:00.000Z" },
+      ...extra,
+    });
+
+  test("Mis eventos: el cancelado va en 'Cancelados' con la pill y el motivo", async () => {
+    apiFalsa({
+      "GET /auth/me": () => [200, usuarioOrganizador],
+      "GET /eventos/mios": () => [
+        200,
+        [
+          eventoDto({ comprasPorEstado: {}, reembolsosPendientes: { cantidad: 0 } }),
+          cancelado({ id: "e3", nombre: "Obra suspendida", comprasPorEstado: { REEMBOLSADA: 2 } }),
+        ],
+      ],
+    });
+    await comoOrganizador(MisEventos);
+    expect(await screen.findByTestId("evento-org-e1")).toBeTruthy();
+    expect(screen.queryByTestId("evento-org-e3")).toBeNull();
+    await fireEvent.press(screen.getByText("Cancelados"));
+    const tarjeta = await screen.findByTestId("evento-org-e3");
+    expect(within(tarjeta).getByText("Cancelado")).toBeTruthy();
+    expect(within(tarjeta).getByText("Motivo: La sala cerró por obras")).toBeTruthy();
+    expect(within(tarjeta).queryByLabelText(/Editar/)).toBeNull();
+    expect(screen.queryByTestId("evento-org-e1")).toBeNull();
+  });
+
+  test("Editar: el motivo es obligatorio y confirmar llama a /cancelar", async () => {
+    const llamadas = apiFalsa({
+      "GET /eventos/e1": () => [200, eventoDto()],
+      "POST /eventos/e1/cancelar": () => [200, { ...cancelado(), comprasResueltas: 3 }],
+    });
+    await comoOrganizador(EditarEvento, { eventoId: "e1" });
+    await fireEvent.press(await screen.findByTestId("cancelar-evento"));
+    expect(screen.getByText(/las pagas se reembolsan automáticamente/)).toBeTruthy();
+    await fireEvent.press(screen.getByTestId("confirmar-cancelar-evento"));
+    expect(screen.getByText("Contá el motivo: lo van a ver los compradores.")).toBeTruthy();
+    expect(llamadas.some((l) => l.clave === "POST /eventos/e1/cancelar")).toBe(false);
+
+    await fireEvent.changeText(screen.getByTestId("motivo-cancelacion-input"), " Lluvia ");
+    await fireEvent.press(screen.getByTestId("confirmar-cancelar-evento"));
+    await waitFor(() =>
+      expect(llamadas.some((l) => l.clave === "POST /eventos/e1/cancelar")).toBe(true),
+    );
+    const envio = llamadas.find((l) => l.clave === "POST /eventos/e1/cancelar");
+    expect(JSON.parse(envio.config.data)).toEqual({ motivo: "Lluvia" });
+    expect(await screen.findByText(/Se cancelaron y reembolsaron 3 compras/)).toBeTruthy();
+  });
+
+  test("Editar: un evento cancelado queda en solo lectura, con el motivo", async () => {
+    apiFalsa({ "GET /eventos/e1": () => [200, cancelado()] });
+    await comoOrganizador(EditarEvento, { eventoId: "e1" });
+    expect(await screen.findByTestId("aviso-solo-lectura")).toHaveTextContent(
+      /Evento cancelado\. Motivo: La sala cerró por obras/,
+    );
+    expect(screen.queryByTestId("cancelar-evento")).toBeNull();
+    expect(screen.queryByTestId("agregar-tipo-entrada")).toBeNull();
+  });
+
+  test("el comprador ve la pill, el motivo y no puede comprar", async () => {
+    apiFalsa({
+      "GET /eventos/e1": () => [200, cancelado()],
+      "GET /eventos/e1/resenias": () => [200, { items: [], total: 0, pagina: 1, limite: 5 }],
+    });
+    await renderPantalla(DetalleEvento, { params: { eventoId: "e1" } });
+    expect(await screen.findByText("Este evento fue cancelado")).toBeTruthy();
+    expect(screen.getByText("Cancelado")).toBeTruthy();
+    expect(screen.getByText(/Motivo: La sala cerró por obras/)).toBeTruthy();
+    expect(screen.queryByTestId("boton-comprar")).toBeNull();
+  });
+
+  test("Mis compras: aviso de evento cancelado y reembolso automático", async () => {
+    await renderConTema(
+      <TarjetaCompra
+        compra={aCompra(
+          compraDto({
+            estado: "REEMBOLSADA",
+            motivoCancelacion: "EVENTO_CANCELADO",
+            fechaLimitePago: null,
+            acciones: { puedePagar: false },
+          }),
+        )}
+      />,
+    );
+    expect(screen.getByTestId("aviso-evento-cancelado")).toHaveTextContent(
+      "Evento cancelado: te reembolsamos automáticamente",
+    );
   });
 });

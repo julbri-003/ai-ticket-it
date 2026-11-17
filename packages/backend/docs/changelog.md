@@ -146,3 +146,11 @@
 - Tests del front: validaciones, creación (sin tipos no avanza, nombres duplicados, payload), edición (tipos y
   descripción original no editables, solo lectura), compras (Quedan N, Reembolsar), alerta de reembolsos y detalle
   en modo organizador.
+- **Cancelar un evento** (`POST /eventos/:id/cancelar`, motivo obligatorio, solo antes de que ocurra): todas las
+  compras se resuelven en el acto. Las pendientes quedan CANCELADAS sin cargo; las pagas pasan a CANCELADA →
+  REEMBOLSADA (reembolso automático del sistema); las canceladas con reembolso pendiente se reembolsan. Motivo de
+  compra nuevo `EVENTO_CANCELADO` y notificación `EVENTO_CANCELADO` al comprador con el motivo. El evento sale del
+  buscador, no se puede comprar ni editar, y el DTO suma `cancelado` y `cancelacion { motivo, fecha }`.
+- Front: botón "Cancelar evento" en Editar con modal de motivo; pill "Cancelado" (organizador y comprador), sección
+  **Cancelados** en Mis eventos y aviso "Evento cancelado" en Mis compras.
+- Cupo restante: cada tipo de entrada muestra siempre lo que queda ("Quedan N", "¡Es la última!" o "Agotado").

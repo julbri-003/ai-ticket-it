@@ -25,7 +25,11 @@ export function TarjetaEventoOrganizador({ evento, onPress, onEditar }) {
         talon={
           <FilaTalon>
             <TextoTalon>
-              {evento.cancelado ? "Cancelado · Ver compras ›" : evento.anterior ? "Finalizado" : "Ver compras ›"}
+              {evento.cancelado
+                ? "Cancelado · Ver compras ›"
+                : evento.anterior
+                  ? "Finalizado"
+                  : "Ver compras ›"}
             </TextoTalon>
             {!cerrado && onEditar ? (
               <Editar

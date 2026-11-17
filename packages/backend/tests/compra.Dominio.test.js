@@ -608,7 +608,9 @@ describe("Dominio Compra — cancelación del evento", () => {
     expect(compra.estado).toBe(CANCELADA);
     expect(compra.motivoCancelacion).toBe(MotivoCancelacion.EVENTO_CANCELADO);
     expect(compra.reembolsoPendiente).toBe(false);
-    expect(compra.historial.at(-1).detalle).toBe("Evento cancelado por el organizador: La sala cerró");
+    expect(compra.historial.at(-1).detalle).toBe(
+      "Evento cancelado por el organizador: La sala cerró",
+    );
   });
 
   test("CONFIRMADA → CANCELADA → REEMBOLSADA en el acto (reembolso automático del sistema)", () => {
@@ -620,7 +622,9 @@ describe("Dominio Compra — cancelación del evento", () => {
       [CANCELADA, organizador.id],
       [REEMBOLSADA, ACTOR_SISTEMA.id],
     ]);
-    expect(compra.historial.at(-1).detalle).toMatch(/Reembolso automático de .* por la cancelación del evento/);
+    expect(compra.historial.at(-1).detalle).toMatch(
+      /Reembolso automático de .* por la cancelación del evento/,
+    );
   });
 
   test("una CANCELADA con reembolso pendiente se reembolsa en el acto", () => {
@@ -639,7 +643,9 @@ describe("Dominio Compra — cancelación del evento", () => {
 
   test("si el evento no está cancelado → 409; no se puede comprar un evento cancelado", () => {
     const { compra, evento, reloj } = compraEn(PENDIENTE);
-    expect(() => compra.aplicarCancelacionDelEvento(evento, quien, reloj)).toThrow("no está cancelado");
+    expect(() => compra.aplicarCancelacionDelEvento(evento, quien, reloj)).toThrow(
+      "no está cancelado",
+    );
     evento.cancelar("Lluvia", quien, reloj);
     expect(() =>
       Compra.crear({ comprador, evento, tipoEntradaId: "tipo-vip", cantidad: 1, reloj }),

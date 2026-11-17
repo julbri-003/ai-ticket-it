@@ -38,6 +38,7 @@ export function aCompra(dto) {
     estadoTexto: ETIQUETAS_ESTADO[dto.estado] ?? dto.estado,
     motivoCancelacion: dto.motivoCancelacion,
     vencida: dto.motivoCancelacion === "VENCIDA",
+    eventoCancelado: dto.motivoCancelacion === "EVENTO_CANCELADO",
     fechaCompraTexto: diaHoraTexto(dto.fechaCompra),
     diasParaElEvento: dto.diasParaElEvento,
     diasTexto: dto.estado === "CONFIRMADA" ? diasRestantesTexto(dto.diasParaElEvento) : null,

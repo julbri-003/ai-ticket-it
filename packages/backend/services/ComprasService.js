@@ -306,7 +306,12 @@ export class ComprasService {
   #transicionAutomatica(compra, evento) {
     const ahora = this.reloj.ahora().getTime();
     if (evento.estaCancelado() && compra.afectadaPorCancelacionDelEvento()) {
-      return (c) => c.aplicarCancelacionDelEvento(evento, evento.cancelacion.quien ?? ACTOR_SISTEMA, this.reloj);
+      return (c) =>
+        c.aplicarCancelacionDelEvento(
+          evento,
+          evento.cancelacion.quien ?? ACTOR_SISTEMA,
+          this.reloj,
+        );
     }
     if (compra.estado === PENDIENTE && ahora >= compra.fechaLimitePago.getTime()) {
       return (c) => c.vencer(evento, this.reloj);

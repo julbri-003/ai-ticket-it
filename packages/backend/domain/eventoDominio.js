@@ -130,7 +130,11 @@ export class Evento extends Persistible {
     this.organizadorId = idObligatorio(organizadorId, "El evento debe tener un organizador");
     // { motivo, fecha, quien: { id, nombre, rol } } o null si no fue cancelado.
     this.cancelacion = cancelacion?.motivo
-      ? { motivo: cancelacion.motivo, fecha: new Date(cancelacion.fecha), quien: cancelacion.quien ?? null }
+      ? {
+          motivo: cancelacion.motivo,
+          fecha: new Date(cancelacion.fecha),
+          quien: cancelacion.quien ?? null,
+        }
       : null;
 
     restaurarAuditoria(this, { activo, fechaModificacion, modificadoPor });

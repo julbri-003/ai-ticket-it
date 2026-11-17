@@ -6,6 +6,7 @@ import {
   MessageCircle,
   RotateCcw,
   Star,
+  Ban,
 } from "lucide-react-native";
 import { Button, EstadoCompraBadge, ImagenEvento, TextoTalon, TicketCard } from "../ui";
 
@@ -26,6 +27,18 @@ function Aviso({ compra }) {
         <Hourglass size={16} color={theme.colors.estados.PENDIENTE.texto} accessible={false} />
         <TextoAviso $color={theme.colors.estados.PENDIENTE.texto}>
           Pagá antes del {compra.fechaLimitePagoTexto}
+        </TextoAviso>
+      </FilaAviso>
+    );
+  }
+  if (compra.eventoCancelado) {
+    return (
+      <FilaAviso $fondo={theme.colors.estados.CANCELADA.fondo} testID="aviso-evento-cancelado">
+        <Ban size={16} color={theme.colors.estados.CANCELADA.texto} accessible={false} />
+        <TextoAviso $color={theme.colors.estados.CANCELADA.texto}>
+          {compra.estado === "REEMBOLSADA"
+            ? "Evento cancelado: te reembolsamos automáticamente"
+            : "Evento cancelado por el organizador"}
         </TextoAviso>
       </FilaAviso>
     );

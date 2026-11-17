@@ -262,9 +262,9 @@ describe("Dominio Evento — cancelación", () => {
 
   test("no se cancela un evento que ya ocurrió", () => {
     const evento = crearEvento();
-    expect(() => evento.cancelar("Motivo", quien, relojFijo(new Date(evento.fecha.getTime() + HORA)))).toThrow(
-      "ya ocurrió",
-    );
+    expect(() =>
+      evento.cancelar("Motivo", quien, relojFijo(new Date(evento.fecha.getTime() + HORA))),
+    ).toThrow("ya ocurrió");
   });
 
   test("se restaura desde los datos persistidos", () => {

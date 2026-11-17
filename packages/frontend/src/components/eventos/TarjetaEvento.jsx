@@ -1,6 +1,6 @@
 import styled, { useTheme } from "styled-components/native";
 import { CalendarDays, Heart, MapPin } from "lucide-react-native";
-import { Badge, ImagenEvento, Rating, TextoTalon, TicketCard } from "../ui";
+import { Badge, EventoCanceladoBadge, ImagenEvento, Rating, TextoTalon, TicketCard } from "../ui";
 import { useFoco } from "../ui/foco";
 
 /** Corazón de favorito (toggle accesible). */
@@ -43,22 +43,24 @@ export function TarjetaEvento({
 }) {
   const theme = useTheme();
   const anterior = evento.anterior;
+  const cerrado = anterior || evento.cancelado;
+  const estadoTexto = evento.cancelado ? "Cancelado" : anterior ? "Finalizado" : null;
   return (
-    <Contenedor $anterior={anterior}>
+    <Contenedor $anterior={cerrado}>
       <TicketCard
         onPress={onPress}
         testID={`tarjeta-evento-${evento.id}`}
         accessibilityActions={accionesAccesibles}
         onAccessibilityAction={onAccionAccesible}
         accessibilityLabel={`${evento.nombre}. ${evento.categoria.nombre}. ${evento.fechaTexto}, ${evento.lugar}. ${
-          anterior ? "Finalizado" : evento.desdeTexto
+          estadoTexto ?? evento.desdeTexto
         }`}
         talon={
           <FilaTalon>
             <TextoTalon>
-              {anterior ? "Finalizado" : evento.agotado ? "Agotado" : evento.desdeTexto}
+              {estadoTexto ?? (evento.agotado ? "Agotado" : evento.desdeTexto)}
             </TextoTalon>
-            {!anterior && !evento.agotado ? <TextoTalon>Comprar ›</TextoTalon> : null}
+            {!cerrado && !evento.agotado ? <TextoTalon>Comprar ›</TextoTalon> : null}
           </FilaTalon>
         }
       >
@@ -67,9 +69,13 @@ export function TarjetaEvento({
           alt={evento.imagen?.alt ?? `Imagen de ${evento.nombre}`}
         />
         <FilaSuperior>
-          <Badge variant={anterior ? "neutral" : "primary"}>
-            {anterior ? "Finalizado" : evento.categoria.nombre}
-          </Badge>
+          {evento.cancelado ? (
+            <EventoCanceladoBadge />
+          ) : (
+            <Badge variant={anterior ? "neutral" : "primary"}>
+              {anterior ? "Finalizado" : evento.categoria.nombre}
+            </Badge>
+          )}
           {onFavorito ? (
             <BotonFavorito activo={esFavorito} onPress={onFavorito} nombre={evento.nombre} />
           ) : null}

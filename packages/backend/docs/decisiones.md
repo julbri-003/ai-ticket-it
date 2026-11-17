@@ -237,3 +237,14 @@ false` y `orden=relevancia` cae a `fecha`. Con `categoriaIds`, la intersección 
   el lector de pantalla no oculte el botón dentro de otro botón.
 - **Modo organizador de DetalleCompra**: se decide por `organizadorId === usuario.id`; las acciones del comprador ya
   vienen en `false` desde el back.
+- **Cancelación de eventos**: el reembolso es inmediato y lo hace el sistema (no espera las 24 h del organizador),
+  porque la cancelación es decisión del organizador. Se modela en el dominio con la transición
+  `cancelar por evento cancelado` (PENDIENTE/CONFIRMADA → CANCELADA) seguida de REEMBOLSAR en la misma operación,
+  así el historial muestra los dos pasos. Si alguna compra falla al resolverse (o se crea en paralelo), la
+  evaluación perezosa la resuelve la próxima vez que se lee.
+- **Cancelado ≠ finalizado**: el evento cancelado sigue activo para que sus compradores vean el detalle, pero tiene
+  `cancelacion` y el buscador lo excluye (ni próximos ni anteriores). En Mis eventos va en su propia sección.
+- **Notificación**: un único aviso `EVENTO_CANCELADO` al comprador con el motivo, en lugar de "compra cancelada" al
+  organizador (que fue quien canceló).
+- **Cupo restante**: se muestra siempre el número ("Quedan N"), con "¡Es la última!" para 1, en vez de "Disponible"
+  cuando quedaban más de 20.
