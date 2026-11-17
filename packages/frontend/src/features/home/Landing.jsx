@@ -236,7 +236,12 @@ export function Landing({ navigation }) {
         <GrillaCategorias>
           {(categorias ?? []).map((categoria) => (
             <CeldaCategoria key={categoria.id}>
-              <Card>
+              <Card
+                onPress={irALogin}
+                accessibilityLabel={`${categoria.nombre}. ${categoria.descripcion ?? ""}`}
+                accessibilityHint="Ingresá para explorar los eventos de esta categoría"
+                testID={`categoria-landing-${categoria.id}`}
+              >
                 <Clapperboard
                   size={22}
                   color={theme.colors.accentText}

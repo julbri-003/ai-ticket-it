@@ -68,20 +68,36 @@ describe("GET /api/eventos (buscador)", () => {
     expect(body.filtrosAplicados.categoriaIds).toEqual([cat.Teatro, cat.Danza]);
   });
 
-  test("rango de precio (algún tipo de entrada dentro)", async () => {
-    expect(nombres(await buscar({ precioMin: 40000 }))).toEqual([
-      "Noche de Jazz en el Sótano",
-      "Festival Primavera Sonora",
-    ]);
-    expect(nombres(await buscar({ precioMax: 5000 }))).toEqual([
-      "Títeres en la plaza",
-      "Feria de Food Trucks y Música",
-      "Jornada de Innovación y Diseño",
-    ]);
-    expect(nombres(await buscar({ precioMin: 15000, precioMax: 16000 }))).toEqual([
-      "Hamlet, versión de bolsillo",
-      "Tango y Contemporáneo",
-    ]);
+  test("rango de precio sobre el precio mínimo del evento (su entrada más barata)", async () => {
+    const todos = (await buscar({ limite: 50 })).items;
+    const esperados = (min, max) =>
+      todos
+        .filter((e) => (min == null || e.precioMinimo >= min) && (max == null || e.precioMinimo <= max))
+        .map((e) => e.nombre);
+
+    for (const [min, max] of [
+      [15000, undefined],
+      [undefined, 5000],
+      [15000, 16000],
+      [40000, undefined],
+    ]) {
+      const body = await buscar({
+        limite: 50,
+        ...(min != null && { precioMin: min }),
+        ...(max != null && { precioMax: max }),
+      });
+      expect(nombres(body)).toEqual(esperados(min, max));
+      for (const e of body.items) {
+        if (min != null) expect(e.precioMinimo).toBeGreaterThanOrEqual(min);
+        if (max != null) expect(e.precioMinimo).toBeLessThanOrEqual(max);
+      }
+    }
+    // Un evento con alguna entrada ≥ mínimo pero otra más barata NO entra.
+    const mixto = todos.find((e) => e.tiposEntrada.some((t) => t.precio > e.precioMinimo));
+    if (mixto) {
+      const corte = Math.max(...mixto.tiposEntrada.map((t) => t.precio));
+      expect(nombres(await buscar({ precioMin: corte, limite: 50 }))).not.toContain(mixto.nombre);
+    }
   });
 
   test("rango de fechas (fechaHasta con solo fecha incluye todo el día)", async () => {

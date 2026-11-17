@@ -47,3 +47,4 @@ Recorrer `specs/trazabilidad.md` fila por fila. En la columna Estado, poner ✅ 
 - [ ] Cada transición de una compra genera una notificación visible para quien corresponde.
 - [ ] `npm run lint` y `npm test` (back + front) pasan en CI.
 - [ ] Todas las filas de `trazabilidad.md` en ✅.
+- [ ] Flujo completo probado en **Android y en iOS** (dispositivo o emulador/simulador): teclado en chat y formularios, selector de fecha, subida de imágenes, swipe de favoritos y modo oscuro.

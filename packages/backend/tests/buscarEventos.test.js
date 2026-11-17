@@ -162,11 +162,12 @@ describe("EventosMongoRepository.buscar", () => {
   });
 
   test.each([
-    [{ precioMin: 20000 }, ["Jazz en el Sótano", "Hamlet", "Rock Nacional"]],
+    [{ precioMin: 20000 }, ["Rock Nacional"]],
+    [{ precioMin: 16000 }, ["Jazz en el Sótano", "Rock Nacional"]],
     [{ precioMax: 9000 }, ["Comedia agotada", "Final de Básquet"]],
-    [{ precioMin: 19000, precioMax: 24000 }, ["Hamlet"]],
+    [{ precioMin: 16000, precioMax: 20000 }, ["Jazz en el Sótano"]],
     [{ precioMin: 43000 }, []],
-  ])("rango de precio %p (algún tipo dentro del rango)", async (filtro, esperado) => {
+  ])("rango de precio %p (sobre el precio mínimo del evento)", async (filtro, esperado) => {
     expect(nombres(await eventos.buscar(filtro))).toEqual(esperado);
   });
 
@@ -260,6 +261,6 @@ describe("EventosMongoRepository.buscar", () => {
       orden: "precio",
       direccion: "desc",
     });
-    expect(nombres(r)).toEqual(["Rock Nacional", "Jazz en el Sótano"]);
+    expect(nombres(r)).toEqual(["Rock Nacional"]);
   });
 });

@@ -34,7 +34,7 @@ Todas las entidades persistibles **extienden `Persistible`** (copiar de REPO_REF
 Reglas:
 - Al crear: nombre, descripcion, categoria, lugar, fecha futura y **al menos un tipo de entrada**; nombres de tipo únicos dentro del evento.
 - `yaOcurrio(reloj)` = `fecha <= ahora`.
-- `tuPrecioEstaEntre(min, max)`: true si **algún** tipo de entrada tiene precio en [min, max]. Si min o max no vienen, ese extremo queda abierto.
+- `tuPrecioEstaEntre(min, max)`: true si el **precio mínimo** del evento (su entrada más barata, el "desde $X") está en [min, max]. Ej.: con mínimo 4000, un evento con entradas de 3000 y 4000 **no** entra. Si min o max no vienen, ese extremo queda abierto.
 - `precioMinimo` (getter).
 - **Edición restringida** (solo el organizador dueño y solo si `!yaOcurrio`):
   - `agregarMultimedia(rutas)` / `quitarMultimedia(ruta)`: lo único libremente editable.

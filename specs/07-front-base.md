@@ -42,7 +42,7 @@ Se mantienen: el nombre de cada componente, sus props y variantes, y la API de l
 
 ### `routes/`
 - `AppNavigator`: sin sesión → `AuthStack` (**Landing**, Login, Registro); COMPRADOR → `CompradorTabs` (Explorar, Mis compras, Favoritos, Mensajes, Perfil); ORGANIZADOR → `OrganizadorTabs` (Mis eventos, Crear, Mensajes, Notificaciones, Perfil). Top app bar con íconos de mensajería y campana, cada uno con su contador. Pantallas de detalle en stacks anidados.
-- `features/home/Landing` (sin sesión): hero con un ticket grande destacado (muescas, talón con "Nº 000001"), pill de tagline, título Playfair con una palabra en itálica de acento, CTAs, stat cards tipo talón, carrusel de próximos eventos (público), grilla de categorías, "Cómo funciona", sección compradores/organizadores, carrusel de reseñas destacadas, banner final y `Footer`.
+- `features/home/Landing` (sin sesión): hero con un ticket grande destacado (muescas, talón con "Nº 000001"), pill de tagline, título Playfair con una palabra en itálica de acento, CTAs, stat cards tipo talón, carrusel de próximos eventos (público), grilla de categorías (cada tarjeta es un botón que lleva al Login), "Cómo funciona", sección compradores/organizadores, carrusel de reseñas destacadas, banner final y `Footer`.
 - `components/layout/Footer`: al final de Landing y de Explorar (links, toggle de tema, ©).
 - Componentes compartidos adicionales: `Carrusel` (swipe, dots, contador "3/8", flechas enfocables, visor a pantalla completa) y `Paginacion` (pills numeradas + "Mostrando 1–10 de 87"), usados en toda lista larga. Los servicios de front piden páginas al back (`pagina`, `limite`).
 - En las tabs que corresponden a iteraciones futuras, poner una pantalla placeholder.
@@ -57,7 +57,7 @@ Implementar acá el checklist de accesibilidad de `00-contexto-comun.md`, para q
 - `theme.js`: verificar con un test (`utils/contraste.js`) que cada par texto/fondo y onPrimary/primary cumple ≥ 4,5:1 en ambos temas.
 - Todo componente interactivo con `accessibilityRole`, `accessibilityLabel` (obligatorio si es solo ícono) y `accessibilityState` (disabled, selected, busy, checked), y un **anillo de foco visible** (estado `focused` vía `onFocus`/`onBlur`).
 - `Input`/`Select`/`Textarea`: label visible obligatorio (prop `label`), `requerido` → `*`, `error` → mensaje debajo con ícono y `accessibilityLiveRegion="polite"`, `ayuda` → texto de ayuda.
-- `Toast`: anunciado con `AccessibilityInfo.announceForAccessibility` y con acción opcional "Deshacer".
+- `Toast`: anunciado con `AccessibilityInfo.announceForAccessibility`, con acción opcional "Deshacer", y **descartable con swipe hacia la derecha o hacia arriba** (PanResponder + Animated, umbral por distancia o velocidad; izquierda y abajo no descartan). Conserva siempre la **X** para cerrarlo con teclado o lector de pantalla.
 - `Modal`: atrapa el foco, se cierra con Escape/back y devuelve el foco al disparador.
 - `ImagenEvento`: prop `alt` obligatoria (o `decorativa`).
 

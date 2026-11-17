@@ -10,6 +10,7 @@ import {
 } from "lucide-react-native";
 import { Button } from "./Button";
 import { useFoco } from "./foco";
+import { ETIQUETAS_ESTADO } from "../../utils/estadosCompra";
 
 // ----- Card -----
 
@@ -111,11 +112,11 @@ const TextoPill = styled.Text`
 // ----- EstadoCompraBadge -----
 
 export const ESTADOS_COMPRA = {
-  PENDIENTE: { etiqueta: "Pendiente de pago", icono: Clock },
-  CONFIRMADA: { etiqueta: "Confirmada", icono: CheckCircle2 },
-  UTILIZADA: { etiqueta: "Utilizada", icono: Ticket },
-  CANCELADA: { etiqueta: "Cancelada", icono: XCircle },
-  REEMBOLSADA: { etiqueta: "Reembolsada", icono: RotateCcw },
+  PENDIENTE: { etiqueta: ETIQUETAS_ESTADO.PENDIENTE, icono: Clock },
+  CONFIRMADA: { etiqueta: ETIQUETAS_ESTADO.CONFIRMADA, icono: CheckCircle2 },
+  UTILIZADA: { etiqueta: ETIQUETAS_ESTADO.UTILIZADA, icono: Ticket },
+  CANCELADA: { etiqueta: ETIQUETAS_ESTADO.CANCELADA, icono: XCircle },
+  REEMBOLSADA: { etiqueta: ETIQUETAS_ESTADO.REEMBOLSADA, icono: RotateCcw },
 };
 
 /** Estado de una compra: color, ícono y texto (nunca solo color). */

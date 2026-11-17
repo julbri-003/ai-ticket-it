@@ -20,8 +20,8 @@ Cada requisito, dónde se implementa y cómo se verifica. Se usa en tres momento
 | CU8 | Solo se puede cancelar si no está UTILIZADA y el evento no ocurrió | 02 tabla de transiciones · 05 tests | 08 (botón según `puedeCancelar`) | `detalle-compra` | Intentar cancelar una UTILIZADA o con el evento pasado → 409 y sin botón | |
 | CU9 | Con la entrada UTILIZADA, el comprador puntúa y comenta | 02 Resenia · 05 `POST /resenia` | 08 Calificar | `calificar` | Solo UTILIZADA y una vez por compra; el puntaje del organizador se actualiza | |
 | CU10 | Las reseñas se ven en los eventos de cada organizador | 04 `GET /eventos/:id/resenias` | 08 DetalleEvento | `detalle-evento` | Un evento nuevo de un organizador con reseñas previas las muestra | |
-| CU11 | Ordenar por precio, fecha y puntaje del organizador | 03 `buscar` (orden) · 04 | 08 PanelFiltros | `filtros` | Probar los 3 órdenes asc/desc | |
-| CU12 | Comprar eligiendo tipo y cantidad sin superar el cupo | 02 `reservar` · 03 `reservarCupo` atómico · 05 `POST /compras` | 08 DetalleEvento + Checkout | `detalle-evento`, `checkout` | El stepper no supera lo disponible; test de concurrencia sin sobreventa | |
+| CU11 | Ordenar por precio, fecha y puntaje del organizador (el rango de precio filtra por el precio mínimo del evento) | 03 `buscar` (orden) · 04 | 08 PanelFiltros | `filtros` | Probar los 3 órdenes asc/desc | |
+| CU12 | Comprar eligiendo tipo y cantidad sin superar el cupo, confirmando la reserva en un modal | 02 `reservar` · 03 `reservarCupo` atómico · 05 `POST /compras` | 08 DetalleEvento + Checkout | `detalle-evento`, `checkout` | El stepper no supera lo disponible; test de concurrencia sin sobreventa | |
 
 ## B. Funcionalidades agregadas
 

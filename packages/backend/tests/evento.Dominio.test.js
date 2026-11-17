@@ -84,14 +84,14 @@ describe("Dominio Evento", () => {
     test.each([
       [10000, 20000, true],
       [20000, 40000, false],
-      [45000, 45000, true],
+      [45000, 45000, false],
       [15000, 15000, true],
       [null, 14999, false],
       [null, 15000, true],
       [45001, undefined, false],
-      [40000, undefined, true],
+      [40000, undefined, false],
       [undefined, undefined, true],
-    ])("tuPrecioEstaEntre(%p, %p) = %p", (min, max, esperado) => {
+    ])("tuPrecioEstaEntre(%p, %p) = %p (sobre el precio mínimo)", (min, max, esperado) => {
       expect(evento.tuPrecioEstaEntre(min, max)).toBe(esperado);
     });
   });

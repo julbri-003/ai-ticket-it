@@ -5,16 +5,20 @@ import { Compass, Heart, MessageCircle, Ticket, UserRound } from "lucide-react-n
 import { Encabezado } from "../components/layout/Encabezado";
 import { EnConstruccion } from "../components/layout/EnConstruccion";
 import { Perfil } from "../features/perfil/Perfil";
+import { Explorar } from "../features/eventos/Explorar";
+import { DetalleEvento } from "../features/eventos/DetalleEvento";
+import { Checkout } from "../features/compras/Checkout";
+import { DetalleCompra } from "../features/compras/DetalleCompra";
+import { MisCompras } from "../features/compras/MisCompras";
+import { Favoritos } from "../features/favoritos/Favoritos";
 import { opcionesStack, opcionesTabs } from "./opcionesNavegacion";
 
 const Tabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const Explorar = () => <EnConstruccion titulo="Explorar eventos" iteracion="08" />;
-const MisCompras = () => <EnConstruccion titulo="Mis compras" iteracion="08" />;
-const Favoritos = () => <EnConstruccion titulo="Favoritos" iteracion="08" />;
 const Mensajes = () => <EnConstruccion titulo="Mensajes" iteracion="10" />;
 const Notificaciones = () => <EnConstruccion titulo="Notificaciones" iteracion="10" />;
+const ChatCompra = () => <EnConstruccion titulo="Chat con el organizador" iteracion="10" />;
 
 const icono = (Icono) =>
   function IconoTab({ color, size }) {
@@ -70,6 +74,14 @@ export function CompradorTabs() {
         component={TabsComprador}
         options={{ headerShown: false }}
       />
+      <Stack.Screen name="DetalleEvento" component={DetalleEvento} options={{ title: "Evento" }} />
+      <Stack.Screen name="Checkout" component={Checkout} options={{ title: "Pago" }} />
+      <Stack.Screen
+        name="DetalleCompra"
+        component={DetalleCompra}
+        options={{ title: "Tu compra" }}
+      />
+      <Stack.Screen name="ChatCompra" component={ChatCompra} options={{ title: "Chat" }} />
       <Stack.Screen
         name="Notificaciones"
         component={Notificaciones}

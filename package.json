@@ -25,5 +25,8 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "globals": "^16.3.0",
     "prettier": "3.6.2"
+  },
+  "overrides": {
+    "react-native-worklets": "0.13.0"
   }
 }

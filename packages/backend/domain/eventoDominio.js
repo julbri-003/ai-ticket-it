@@ -135,10 +135,14 @@ export class Evento extends Persistible {
   }
 
   /** true si algún tipo de entrada tiene precio en [min, max]. Un extremo ausente queda abierto. */
+  /**
+   * El precio de un evento es el de su entrada más barata ("desde $X"): está en el rango si
+   * precioMinimo ∈ [min, max]. Así, con mínimo 4000, un evento con entradas de 3000 y 4000
+   * no aparece aunque tenga una entrada que cumple.
+   */
   tuPrecioEstaEntre(min, max) {
-    return this.tiposEntrada.some(
-      ({ precio }) => (min == null || precio >= min) && (max == null || precio <= max),
-    );
+    const precio = this.precioMinimo;
+    return (min == null || precio >= min) && (max == null || precio <= max);
   }
 
   get precioMinimo() {

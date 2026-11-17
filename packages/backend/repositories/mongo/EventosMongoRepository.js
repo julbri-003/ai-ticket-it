@@ -243,7 +243,8 @@ export class EventosMongoRepository extends RepositorioMongoPersistible {
    * Buscador con filtros combinables. Devuelve { items: Evento[], total, pagina, limite }.
    * - q: texto parcial, sin mayúsculas ni acentos, en nombre, descripción, ampliaciones, lugar
    *   y nombre del organizador.
-   * - precioMin/precioMax: algún tipo de entrada con precio en el rango (extremos opcionales).
+   * - precioMin/precioMax: el precio mínimo del evento (su entrada más barata) en el rango
+   *   (extremos opcionales).
    * - anteriores=true: eventos ya ocurridos o finalizados; si no, activos con fecha > ahora.
    * - categoriaIds: si viene un array (aunque esté vacío) filtra por esas categorías.
    * - orden: fecha | precio (precio mínimo) | puntaje (del organizador) | relevancia (peso de la
@@ -290,18 +291,6 @@ export class EventosMongoRepository extends RepositorioMongoPersistible {
         fecha: {
           ...(fechaDesde != null && { $gte: aFecha(fechaDesde) }),
           ...(fechaHasta != null && { $lte: aFecha(fechaHasta) }),
-        },
-      });
-    }
-    if (precioMin != null || precioMax != null) {
-      filtros.push({
-        tiposEntrada: {
-          $elemMatch: {
-            precio: {
-              ...(precioMin != null && { $gte: Number(precioMin) }),
-              ...(precioMax != null && { $lte: Number(precioMax) }),
-            },
-          },
         },
       });
     }
@@ -359,6 +348,19 @@ export class EventosMongoRepository extends RepositorioMongoPersistible {
           relevancia: expresionRelevancia(pesosCategorias),
         },
       },
+      // Rango de precio sobre el precio mínimo del evento (misma regla que Evento.tuPrecioEstaEntre).
+      ...(precioMin != null || precioMax != null
+        ? [
+            {
+              $match: {
+                precioMinimo: {
+                  ...(precioMin != null && { $gte: Number(precioMin) }),
+                  ...(precioMax != null && { $lte: Number(precioMax) }),
+                },
+              },
+            },
+          ]
+        : []),
       ...(puntajeMin != null
         ? [{ $match: { puntajeOrganizador: { $gte: Number(puntajeMin) } } }]
         : []),

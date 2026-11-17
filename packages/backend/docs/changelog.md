@@ -108,3 +108,22 @@
   - Pantallas: Landing, Login, Registro (selector de rol), Perfil (tema y cerrar sesión con confirmación), error
     genérico, sin conexión y límite de errores.
   - Tests: componentes, contraste, Login, AuthContext (restaurar sesión y 401) y AppNavigator por rol.
+
+## Iteración 08 — Front comprador
+
+- Servicios: `eventosApi`, `categoriasApi`, `comprasApi`, `favoritosApi`, `reseniasApi` y `eventosService`,
+  `comprasService`, `favoritosService` (DTO → modelo de UI con fechas y montos en es-AR). `utils/fechas.js`
+  (`diasRestantesTexto`, formatos y atajos de fechas), `utils/montos.js` y `utils/estadosCompra.js`.
+- Hooks: `useFiltrosEventos` (estado de filtros, query, conteo de filtros activos, validación de rangos y pills) y
+  `useFavorito` (toggle optimista con rollback y "Deshacer").
+- Componentes: `TarjetaEvento`, `Buscador` (debounce 400 ms + búsquedas recientes), `BarraFiltros` y
+  `PillsFiltrosAplicados`, `PanelFiltros` (bottom sheet con conteo en vivo), `CarruselRecomendados`,
+  `TarjetaCompra`, `TimelineEstados`, `SelectorCantidad`, `ModalCalificar` y `Segmentos` (ui).
+- Pantallas: Explorar (recomendados, buscador, filtros fijos, Próximos/Anteriores, paginación), DetalleEvento
+  (multimedia, ampliaciones, organizador, tipos de entrada, cantidad, compra y reseñas del organizador), Checkout
+  (cuenta regresiva y pago con confirmación), MisCompras (segmentos con contador), DetalleCompra (timeline y acciones
+  según flags) y Favoritos (quitar con swipe, corazón o acción accesible, con "Deshacer").
+- `react-native-gesture-handler`, `react-native-reanimated` y `react-native-worklets`; la app se envuelve en
+  `GestureHandlerRootView`.
+- Tests: filtros, Explorar, recomendados, TarjetaCompra, TimelineEstados, Checkout, DetalleCompra, DetalleEvento y
+  Favoritos.

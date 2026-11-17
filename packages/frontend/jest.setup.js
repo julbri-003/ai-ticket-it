@@ -24,3 +24,20 @@ jest.mock(
 jest.mock("socket.io-client", () => ({
   io: jest.fn(() => ({ connect: jest.fn(), on: jest.fn() })),
 }));
+
+// Gestos (swipe de favoritos) y animaciones de reanimated.
+require("react-native-gesture-handler/jestSetup");
+// ReanimatedSwipeable necesita los worklets nativos de reanimated 4: en los tests se reemplaza por
+// un contenedor que muestra el contenido y las acciones (el gesto en sí no se prueba en Jest).
+jest.mock("react-native-gesture-handler/ReanimatedSwipeable", () => {
+  const { View } = require("react-native");
+  function SwipeableFalso({ children, renderRightActions }) {
+    return (
+      <View>
+        {children}
+        {renderRightActions ? renderRightActions() : null}
+      </View>
+    );
+  }
+  return { __esModule: true, default: SwipeableFalso };
+});

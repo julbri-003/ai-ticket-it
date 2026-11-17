@@ -96,6 +96,17 @@ En React Native, el equivalente a `aria-*` son las props `accessibilityRole`, `a
 - [ ] El estado nunca se comunica solo con color: siempre ícono + texto. Áreas táctiles ≥ 44×44.
 - [ ] Modo claro y oscuro completos (Sistema / Claro / Oscuro).
 
+## Plataformas: iOS y Android
+La app tiene que funcionar en **ambas** con Expo Go, con el mismo código. Diferencias a contemplar siempre:
+- **Sombras**: `shadowColor/shadowOffset/shadowOpacity/shadowRadius` (iOS) **y** `elevation` (Android) en cada componente con sombra (TicketCard, Modal, Toast).
+- **Teclado**: `KeyboardAvoidingView` con `behavior={Platform.OS === 'ios' ? 'padding' : 'height'}` (login, formularios, chat).
+- **Safe areas**: `react-native-safe-area-context` para notch, Dynamic Island y barra de gestos de Android; nunca paddings fijos.
+- **Fecha y hora**: `@react-native-community/datetimepicker` se ve distinto en cada SO (inline/spinner en iOS, diálogo en Android); envolverlo en un componente propio `SelectorFecha` con la misma API.
+- **Permisos**: textos de permiso de cámara y galería en `app.config.js` (`ios.infoPlist` y plugin de `expo-image-picker`).
+- **Botón atrás de Android**: cierra modales y bottom sheets antes de navegar hacia atrás.
+- **Fuentes**: cargadas con `expo-font` antes de renderizar (splash), así se ven igual en las dos.
+- Usar `Platform.select` solo para estas diferencias; nada de pantallas separadas por SO.
+
 ## Cómo usar los diseños de `design/stitch/`
 Son **referencia visual** (layout, jerarquía, componentes, tono), no especificación funcional. Si una pantalla muestra algo que el producto no tiene, **se ignora y mandan las specs**: códigos QR, butacas/filas/palcos, descarga de PDF o wallet, facturas/AFIP, cargos de servicio (el total es precio × cantidad), estados distintos de los 5 definidos ("Emitido", "Activo", "Acceso prioritario"), pasos de progreso inventados en lugar del historial real, o cancelar como link chico en vez de botón con confirmación. Los colores y tipografías salen de los tokens de abajo, no de la config de Tailwind del HTML exportado (Stitch generó su propia paleta en `design/stitch/_design-system/DESIGN.md`, con un fondo rosado `#fff8f8` que **no** se usa). En cada pantalla, `screen.png`/`code.html` es la versión principal (clara), `screen-dark.png`/`code-dark.html` la oscura cuando existe, y `alt/` una variante clara alternativa de menor prioridad.
 

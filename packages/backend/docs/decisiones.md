@@ -202,3 +202,22 @@ false` y `orden=relevancia` cae a `fecha`. Con `categoriaIds`, la intersección 
 - **Tests del front**: un adapter de axios falso (`pruebas/apiFalsa.js`) hace correr los interceptores reales (Bearer
   y 401). En Jest, `lucide-react-native` se resuelve a su build CommonJS (la de RN es `.mjs` y Jest no la transforma).
   Con Testing Library v14, `render` y `fireEvent` son asíncronos y hay que esperarlos.
+
+## Iteración 08
+
+- **Videos del evento**: un botón "Ver video" que abre el archivo (`Linking`), el mínimo que acepta la spec, sin sumar
+  `expo-video`.
+- **Rango de fechas**: atajos ("Este finde", "Próximos 7 días", "Este mes") + campos `DD/MM/AAAA` validados, sin
+  datetimepicker nativo.
+- **Búsquedas recientes** en SecureStore (últimas 5), igual que el tema.
+- **Estado de los filtros** en `useFiltrosEventos` dentro de Explorar: la tab no se desmonta al abrir el detalle (que va
+  en el stack raíz), así que los filtros se conservan al volver. Todo cambio de filtro vuelve a la página 1.
+- **Conteo en vivo del panel**: mismo `GET /eventos` con `limite=1` sobre el borrador, con debounce de 300 ms.
+- **Para vos** se habilita solo si el carrusel de recomendados informa que hay favoritos; quitar la pill "Para vos"
+  también saca el orden por relevancia.
+- **Mis compras** pide todas las compras y filtra por estado en el cliente, para mostrar el contador de cada segmento.
+  Las pantallas de compras se recargan al volver a enfocarse (después de pagar, cancelar o calificar).
+- **Favoritos**: quitar es optimista con `LayoutAnimation` y "Deshacer" (sin modal). El swipe completo también lo quita.
+- **Eventos anteriores** en gris por opacidad: `filter: grayscale` no es confiable en styled-components/native.
+- **Tests**: `ReanimatedSwipeable` se mockea con un contenedor simple (reanimated 4 necesita worklets nativos aun desde
+  su mock); se prueban las vías equivalentes al swipe (acción accesible y corazón) y el "Deshacer".

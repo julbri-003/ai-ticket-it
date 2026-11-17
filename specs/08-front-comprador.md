@@ -15,7 +15,7 @@ Si existen: `design/stitch/{explorar,detalle-evento,checkout,mis-compras,detalle
 ### Explorar (`features/eventos/Explorar`)
 - **Carrusel "Recomendados para vos"** arriba de todo (solo comprador): `GET /eventos/recomendados`, con el `motivo` como subtítulo ("Porque guardaste eventos de Recitales y Teatro") y "Ver todos", que activa el filtro Para vos. Sin favoritos: tarjeta de estado vacío "Guardá eventos en favoritos y te recomendamos según lo que te gusta". Con sesión de organizador o sin sesión, no se muestra.
 - **Buscador**: input con label visible ("Buscar eventos, lugares u organizadores"), ícono, botón limpiar, debounce de 400 ms y búsquedas recientes (últimas 5, guardadas localmente, borrables).
-- **Barra de filtros** (pills horizontales, sticky): primero la pill **"✦ Para vos"** (toggle; deshabilitada con hint si no hay favoritos), después "Todas" + categorías (multi-selección) y al final el botón **Filtros** con contador de filtros activos.
+- **Barra de filtros** (pills horizontales, sticky): primero la pill **"✦ Para vos"** (toggle; deshabilitada con hint si no hay favoritos), después "Todas" + categorías (multi-selección) y al final el botón **Filtros** con contador de filtros activos. El botón **Filtros** va **fijo a la izquierda, fuera del scroll horizontal**, para que esté visible sin deslizar las categorías.
 - **Bottom sheet de Filtros** (`components/eventos/PanelFiltros`): orden (Fecha / Precio / Puntaje del organizador / Relevancia, esta última solo con Para vos) + dirección; rango de precio (mín/máx con validación inline); rango de fechas (desde/hasta, con atajos "Este finde", "Este mes"); switch "Solo con entradas disponibles"; puntaje mínimo del organizador (pills 3+, 4+, 4,5+). Botones "Limpiar" y "Aplicar (N resultados)" (conteo en vivo con `limite=1`).
 - **Pills de filtros aplicados** debajo de la barra, cada una con ✕ para quitarla, más "Limpiar todo". Encabezado de resultados: "87 eventos" o "12 eventos para vos".
 - El estado de los filtros vive en un hook `useFiltrosEventos()` que arma la query para `eventosService.buscar` y se conserva al volver desde el detalle.
@@ -29,7 +29,7 @@ Si existen: `design/stitch/{explorar,detalle-evento,checkout,mis-compras,detalle
 - Organizador: nombre, puntaje promedio y cantidad de reseñas.
 - **Tipos de entrada**: tarjetas seleccionables con nombre, descripción, precio y disponibles ("Quedan 12"; "Agotado" deshabilitado).
 - Selector de cantidad (stepper) limitado por `min(disponibles, 10)`.
-- Total calculado en vivo. Botón **Comprar** → crea la compra (PENDIENTE) y navega al checkout.
+- Total calculado en vivo. Botón **Comprar** → abre un **Modal de confirmación de reserva** ("Confirmar reserva": cantidad, tipo, evento con fecha, precio unitario, total y el aviso de que reservar compromete a pagar en 48 h; botones "Volver" / "Reservar"). Solo al confirmar crea la compra (PENDIENTE) y navega al checkout.
 - Si el evento ya ocurrió: todo en gris, sin compra.
 - **Reseñas del organizador** (caso de uso 10): lista paginada con estrellas, comentario, comprador, tipo de entrada y evento.
 
@@ -59,7 +59,11 @@ Si existen: `design/stitch/{explorar,detalle-evento,checkout,mis-compras,detalle
 Rating de 0.5 a 5 + comentario opcional (contador de caracteres, máx 1000). Al enviar: toast y se oculta el botón Calificar.
 
 ### Favoritos (`features/favoritos/Favoritos`)
-Lista de favoritos con la misma tarjeta; los anteriores en gris. Quitar con swipe o con el ícono.
+Lista de favoritos con la misma tarjeta; los anteriores en gris.
+- **Quitar con swipe** hacia la izquierda: `ReanimatedSwipeable` de `react-native-gesture-handler` (instalar con `npx expo install react-native-gesture-handler react-native-reanimated`), que revela una acción roja "Quitar" con ícono. App envuelta en `GestureHandlerRootView` (en `App.jsx`).
+- El swipe es un **atajo, no la única vía**: el corazón de la tarjeta sigue quitando el favorito, y la tarjeta expone `accessibilityActions={[{ name: 'quitar', label: 'Quitar de favoritos' }]}` para lectores de pantalla y teclado.
+- Al quitar (por cualquier vía): la tarjeta sale animada y aparece un Toast "Quitaste *La traviata* de favoritos" con **"Deshacer"** (vuelve a agregarlo). No pide modal: el deshacer cumple el requisito de acción destructiva reversible.
+- Tests: mockear gesture-handler con `react-native-gesture-handler/jestSetup` en `jest.setup.js`; probar que la accessibilityAction y el corazón llaman al service y que "Deshacer" lo restaura.
 
 ## Tests
 Explorar (aplica filtros y orden → llama al service con la query correcta; Para vos agrega `paraVos=true`; quitar una pill de filtro actualiza la query), `useFiltrosEventos` (cuenta los filtros activos, valida rangos), carrusel de recomendados (motivo y estado vacío), TarjetaCompra (muestra "Faltan N días" solo si está CONFIRMADA), Checkout (el modal muestra el importe correcto y confirmar llama a pagar), DetalleCompra (las acciones visibles dependen de los flags), TimelineEstados.

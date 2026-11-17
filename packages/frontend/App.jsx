@@ -1,6 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import styled from "styled-components/native";
 import {
   PlayfairDisplay_700Bold,
   PlayfairDisplay_700Bold_Italic,
@@ -30,17 +32,24 @@ export default function App() {
   if (!fuentesListas) return null;
 
   return (
-    <SafeAreaProvider>
-      <ThemeProvider>
-        <BarraDeEstado />
-        <LimiteDeError>
-          <ToastProvider>
-            <AuthProvider>
-              <AppNavigator />
-            </AuthProvider>
-          </ToastProvider>
-        </LimiteDeError>
-      </ThemeProvider>
-    </SafeAreaProvider>
+    <RaizGestos>
+      <SafeAreaProvider>
+        <ThemeProvider>
+          <BarraDeEstado />
+          <LimiteDeError>
+            <ToastProvider>
+              <AuthProvider>
+                <AppNavigator />
+              </AuthProvider>
+            </ToastProvider>
+          </LimiteDeError>
+        </ThemeProvider>
+      </SafeAreaProvider>
+    </RaizGestos>
   );
 }
+
+// Raíz de gestos (swipe de favoritos con react-native-gesture-handler).
+const RaizGestos = styled(GestureHandlerRootView)`
+  flex: 1;
+`;

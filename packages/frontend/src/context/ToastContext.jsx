@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { AccessibilityInfo, Animated } from "react-native";
+import { AccessibilityInfo, Animated, PanResponder } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import styled, { useTheme as useStyledTheme } from "styled-components/native";
 import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from "lucide-react-native";
@@ -26,24 +26,88 @@ const DURACION_CON_ACCION = 7000;
 
 let contador = 0;
 
+// Umbrales del swipe para descartar: distancia (px) o velocidad (px/ms).
+const UMBRAL_DERECHA = 80;
+const UMBRAL_ARRIBA = 40;
+const UMBRAL_VELOCIDAD = 0.5;
+const SALIDA = 600;
+
+/**
+ * Decide si un gesto descarta el aviso: hacia la derecha o hacia arriba, por distancia o por
+ * velocidad. Devuelve "derecha", "arriba" o null (vuelve a su lugar). Hacia la izquierda o
+ * hacia abajo nunca descarta.
+ */
+export function direccionDescarte({ dx, dy, vx = 0, vy = 0 }) {
+  const horizontal = Math.abs(dx) >= Math.abs(dy);
+  if (horizontal && (dx > UMBRAL_DERECHA || (dx > 0 && vx > UMBRAL_VELOCIDAD))) return "derecha";
+  if (!horizontal && (dy < -UMBRAL_ARRIBA || (dy < 0 && vy < -UMBRAL_VELOCIDAD))) return "arriba";
+  return null;
+}
+
 function ToastItem({ toast, alCerrar }) {
   const tema = useStyledTheme();
   const aparicion = useRef(new Animated.Value(0)).current;
+  const arrastre = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
   const Icono = ICONOS[toast.tipo];
 
   useEffect(() => {
     Animated.spring(aparicion, { toValue: 1, useNativeDriver: true, damping: 18 }).start();
   }, [aparicion]);
 
+  // Swipe para descartar (derecha o arriba). Solo toma el gesto cuando hay movimiento real,
+  // así los toques en "Deshacer" y en la X siguen funcionando. La X se conserva para quien no
+  // puede o no quiere deslizar (teclado, lector de pantalla).
+  const gestos = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: (_, { dx, dy }) => Math.abs(dx) > 8 || Math.abs(dy) > 8,
+      onPanResponderMove: (_, { dx, dy }) => {
+        // Solo acompaña el dedo en las direcciones que descartan.
+        arrastre.setValue({ x: Math.max(0, dx), y: Math.min(0, dy) });
+      },
+      onPanResponderRelease: (_, estado) => {
+        const direccion = direccionDescarte(estado);
+        if (!direccion) {
+          Animated.spring(arrastre, {
+            toValue: { x: 0, y: 0 },
+            useNativeDriver: true,
+          }).start();
+          return;
+        }
+        Animated.timing(arrastre, {
+          toValue: direccion === "derecha" ? { x: SALIDA, y: 0 } : { x: 0, y: -SALIDA / 3 },
+          duration: 180,
+          useNativeDriver: true,
+        }).start(() => alCerrar(toast.id));
+      },
+      onPanResponderTerminate: () => {
+        Animated.spring(arrastre, { toValue: { x: 0, y: 0 }, useNativeDriver: true }).start();
+      },
+    }),
+  ).current;
+
   const animacion = {
-    opacity: aparicion,
+    opacity: Animated.multiply(
+      aparicion,
+      arrastre.x.interpolate({ inputRange: [0, 250], outputRange: [1, 0.2], extrapolate: "clamp" }),
+    ),
     transform: [
-      { translateY: aparicion.interpolate({ inputRange: [0, 1], outputRange: [-20, 0] }) },
+      {
+        translateY: Animated.add(
+          aparicion.interpolate({ inputRange: [0, 1], outputRange: [-20, 0] }),
+          arrastre.y,
+        ),
+      },
+      { translateX: arrastre.x },
     ],
   };
 
   return (
-    <Animated.View style={animacion}>
+    <Animated.View
+      style={animacion}
+      {...gestos.panHandlers}
+      accessibilityHint="Deslizá hacia la derecha o hacia arriba para cerrarlo"
+      testID={`toast-swipe-${toast.tipo}`}
+    >
       <Tarjeta
         $tipo={toast.tipo}
         accessibilityRole="alert"

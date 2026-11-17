@@ -11,7 +11,7 @@ import { Theater } from "lucide-react-native";
  * Card con forma de entrada: radio 18px, muescas semicirculares laterales y línea punteada que
  * separa el talón (fondo `ticketStub`). Base de TarjetaEvento, TarjetaCompra y stat cards.
  */
-export function TicketCard({ children, talon, onPress, accessibilityLabel, testID }) {
+export function TicketCard({ children, talon, onPress, accessibilityLabel, testID, ...resto }) {
   const contenido = (
     <>
       <Cuerpo>{children}</Cuerpo>
@@ -34,13 +34,14 @@ export function TicketCard({ children, talon, onPress, accessibilityLabel, testI
         accessibilityRole="button"
         accessibilityLabel={accessibilityLabel}
         testID={testID}
+        {...resto}
       >
         {contenido}
       </TicketPresionable>
     );
   }
   return (
-    <Ticket accessibilityLabel={accessibilityLabel} testID={testID}>
+    <Ticket accessibilityLabel={accessibilityLabel} testID={testID} {...resto}>
       {contenido}
     </Ticket>
   );

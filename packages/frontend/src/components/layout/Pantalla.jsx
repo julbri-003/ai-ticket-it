@@ -13,6 +13,8 @@ export function Pantalla({
   refrescando = false,
   edges = ["left", "right"],
   sinPadding = false,
+  stickyHeaderIndices,
+  refScroll,
   testID,
 }) {
   const theme = useTheme();
@@ -20,6 +22,8 @@ export function Pantalla({
     <Fondo edges={edges} testID={testID}>
       {scroll ? (
         <Scroll
+          ref={refScroll}
+          stickyHeaderIndices={stickyHeaderIndices}
           contentContainerStyle={{ padding: sinPadding ? 0 : 20, gap: 20, paddingBottom: 40 }}
           keyboardShouldPersistTaps="handled"
           refreshControl={

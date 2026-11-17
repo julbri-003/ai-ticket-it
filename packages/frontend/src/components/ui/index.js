@@ -21,3 +21,4 @@ export { EtiquetaSeccion, ImagenEvento, TextoTalon, TicketCard, TituloEscena } f
 export { Carrusel } from "./Carrusel";
 export { Paginacion, paginasVisibles } from "./Paginacion";
 export { useFoco } from "./foco";
+export { Segmentos } from "./Segmentos";
