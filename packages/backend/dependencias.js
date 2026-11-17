@@ -20,6 +20,7 @@ import { EventosService } from "./services/EventosService.js";
 import { FavoritosService } from "./services/FavoritosService.js";
 import { RecomendacionesService } from "./services/RecomendacionesService.js";
 import { ReseniasService } from "./services/ReseniasService.js";
+import { ResumenPublicoService } from "./services/ResumenPublicoService.js";
 import { VistasEventos } from "./services/VistasEventos.js";
 
 export { reloj };
@@ -115,4 +116,10 @@ export const programadorTareas = new ProgramadorTareas({
     { nombre: "recordarEventosProximos", ejecutar: () => comprasService.recordarEventosProximos() },
     { nombre: "finalizarEventosPasados", ejecutar: () => eventosService.finalizarEventosPasados() },
   ],
+});
+
+export const resumenPublicoService = new ResumenPublicoService({
+  eventosRepository,
+  usuariosRepository,
+  reseniasRepository,
 });

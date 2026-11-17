@@ -56,6 +56,10 @@ export class UsuariosMongoRepository extends RepositorioMongoPersistible {
     return this.hidratar(doc);
   }
 
+  async contarPorRol(rol) {
+    return this.model.countDocuments({ rol });
+  }
+
   async obtenerPorEmail(email, { incluirInactivos = false } = {}) {
     if (typeof email !== "string") return null;
     const consulta = this.model.findOne({ email: email.trim().toLowerCase() });

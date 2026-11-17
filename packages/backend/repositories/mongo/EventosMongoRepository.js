@@ -130,6 +130,23 @@ export class EventosMongoRepository extends RepositorioMongoPersistible {
     return super.obtenerPorId(id, { incluirInactivos });
   }
 
+  /** Eventos activos y futuros, y entradas vendidas (cupo - disponibles) de todos los eventos. */
+  async estadisticas(ahora = this.reloj.ahora()) {
+    const [fila] = await this.model.aggregate([
+      { $unwind: "$tiposEntrada" },
+      {
+        $group: {
+          _id: null,
+          entradasVendidas: {
+            $sum: { $subtract: ["$tiposEntrada.cupo", "$tiposEntrada.disponibles"] },
+          },
+        },
+      },
+    ]);
+    const eventosActivos = await this.model.countDocuments({ fecha: { $gt: ahora } });
+    return { eventosActivos, entradasVendidas: fila?.entradasVendidas ?? 0 };
+  }
+
   /** Búsqueda exacta por nombre (incluye finalizados). La usan los seeds para ser idempotentes. */
   async obtenerPorNombre(nombre) {
     const doc = await this.model.findOne({ nombre }).incluirInactivos().lean();

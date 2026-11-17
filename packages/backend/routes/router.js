@@ -7,6 +7,7 @@ import favoritosRouter from "./favoritosRoutes.js";
 import { comprasDeEventoRouter, comprasRouter } from "./comprasRoutes.js";
 import mensajesRouter from "./mensajesRoutes.js";
 import notificacionesRouter from "./notificacionesRoutes.js";
+import resumenPublicoRouter from "./resumenPublicoRoutes.js";
 
 const router = express.Router();
 
@@ -19,5 +20,6 @@ router.use("/favoritos", favoritosRouter);
 router.use("/compras/:id/mensajes", mensajesRouter);
 router.use("/compras", comprasRouter);
 router.use("/notificaciones", notificacionesRouter);
+router.use("/resumen-publico", resumenPublicoRouter);
 
 export default router;

@@ -133,3 +133,19 @@ test("GET /api/categorias es público", async () => {
     descripcion: expect.any(String),
   });
 });
+
+test("GET /api/resumen-publico: estadísticas y reseñas destacadas para la landing", async () => {
+  const res = await request(app).get("/api/resumen-publico");
+  expect(res.status).toBe(200);
+  expect(res.body.estadisticas).toEqual({
+    eventosActivos: 13,
+    entradasVendidas: expect.any(Number),
+    organizadores: expect.any(Number),
+    puntajePromedio: 4.5,
+    cantidadResenias: 3,
+  });
+  expect(res.body.estadisticas.entradasVendidas).toBeGreaterThan(0);
+  expect(res.body.reseniasDestacadas.map((r) => r.puntuacion)).toEqual([5, 4.5, 4]);
+  expect(res.body.reseniasDestacadas[0].evento.nombre).toBe("Recital Acústico de Otoño");
+  expect(sinCamposInternos(res.body)).toBe(true);
+});

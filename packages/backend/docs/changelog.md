@@ -86,3 +86,25 @@
 - La semilla genera las notificaciones de las compras de demo con los mismos services, en orden cronológico.
 - Swagger: tags "Chat" (con los eventos de socket) y "Notificaciones".
 - Tests de templates, chat REST, socket.io (con `socket.io-client`), notificaciones por transición y recordatorio.
+
+## Iteración 07 — Front base
+
+- Back: `GET /api/resumen-publico` (estadísticas y reseñas destacadas para la landing), con test y Swagger.
+- Front:
+  - `styles/theme.js` con la paleta "Telón de terciopelo" (claro y oscuro) y `utils/contraste.js`; un test verifica
+    el contraste AA de todos los pares texto/fondo, rellenos, estados y bordes en ambos temas.
+  - Fuentes Playfair Display e Inter con `@expo-google-fonts` + `expo-font`.
+  - `service/`: `api.js` (Bearer desde un getter, callback de 401), `apiCaller` (+ `postForm`), `authApi`,
+    `authService`, `publicoService`, `notificacionesService` y `socket.js` (listo para la iteración 10).
+  - Contexts: `ThemeContext` (Sistema / Claro / Oscuro, persistido), `ToastContext` (animado, anunciado, con
+    acción "Deshacer") y `AuthContext` (restaura la sesión con `/auth/me`; 401 → cierra sesión con un aviso).
+  - `components/ui/`: TicketCard, TituloEscena, EtiquetaSeccion, Button, Input, Textarea, Select, Card, Badge,
+    EstadoCompraBadge, Modal y ModalConfirmacion, Skeleton (+ presets), Spinner, EmptyState, ErrorState, Rating,
+    Chip, ImagenEvento, Carrusel (con visor a pantalla completa) y Paginacion. Todos con roles, labels, estados y
+    anillo de foco.
+  - `components/layout/`: Pantalla, Encabezado (top bar con contadores), Footer y EnConstruccion.
+  - Navegación por rol (`AppNavigator`, `AuthStack`, `CompradorTabs`, `OrganizadorTabs`) con placeholders para las
+    iteraciones 08–10.
+  - Pantallas: Landing, Login, Registro (selector de rol), Perfil (tema y cerrar sesión con confirmación), error
+    genérico, sin conexión y límite de errores.
+  - Tests: componentes, contraste, Login, AuthContext (restaurar sesión y 401) y AppNavigator por rol.

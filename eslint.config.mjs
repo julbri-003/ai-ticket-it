@@ -27,6 +27,7 @@ export default defineConfig([
       "packages/frontend/src/**/*.{js,jsx,mjs,cjs}",
       "packages/frontend/App.jsx",
       "packages/frontend/__tests__/**/*.{js,jsx}",
+      "packages/frontend/pruebas/**/*.{js,jsx}",
     ],
     ...pluginReact.configs.flat.recommended,
     languageOptions: {
@@ -40,6 +41,7 @@ export default defineConfig([
       "packages/frontend/src/**/*.{js,jsx,mjs,cjs}",
       "packages/frontend/App.jsx",
       "packages/frontend/__tests__/**/*.{js,jsx}",
+      "packages/frontend/pruebas/**/*.{js,jsx}",
     ],
     plugins: { "react-hooks": pluginReactHooks },
     rules: {
@@ -49,7 +51,12 @@ export default defineConfig([
     },
   },
   {
-    files: ["packages/frontend/**/__tests__/**/*.{js,jsx}", "packages/frontend/**/*.test.{js,jsx}"],
+    files: [
+      "packages/frontend/**/__tests__/**/*.{js,jsx}",
+      "packages/frontend/**/*.test.{js,jsx}",
+      "packages/frontend/pruebas/**/*.{js,jsx}",
+      "packages/frontend/jest.setup.js",
+    ],
     languageOptions: { globals: { ...globals.jest } },
   },
 ]);

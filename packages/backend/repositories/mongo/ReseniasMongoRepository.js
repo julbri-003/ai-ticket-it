@@ -56,6 +56,23 @@ export class ReseniasMongoRepository extends RepositorioMongoPersistible {
     return (await this.model.deleteOne({ _id: id })).deletedCount === 1;
   }
 
+  /** Mejor puntuadas primero (y más recientes ante empate). */
+  async destacadas(limite = 6) {
+    const docs = await this.model.find().sort({ puntuacion: -1, fecha: -1 }).limit(limite).lean();
+    return docs.map((doc) => this.hidratar(doc));
+  }
+
+  /** Promedio de todas las reseñas activas (null si no hay ninguna). */
+  async promedioGeneral() {
+    const [fila] = await this.model.aggregate([
+      { $match: { activo: true } },
+      { $group: { _id: null, promedio: { $avg: "$puntuacion" }, cantidad: { $sum: 1 } } },
+    ]);
+    return fila
+      ? { promedio: fila.promedio, cantidad: fila.cantidad }
+      : { promedio: null, cantidad: 0 };
+  }
+
   async existeParaCompra(compraId) {
     if (!esIdValido(compraId)) return false;
     return (await this.model.exists({ compraId }).incluirInactivos()) != null;

@@ -178,3 +178,27 @@ false` y `orden=relevancia` cae a `fecha`. Con `categoriaIds`, la intersección 
 - **Los DTOs de notificación y mensaje** se reutilizan como payload de los eventos de socket, para que el front reciba
   la misma forma por REST y por socket.
 - **`socket.io-client`** pasa a ser devDependency del back (lo usan los tests de sockets).
+
+## Iteración 07
+
+- **`GET /api/resumen-publico`** (nuevo, público): la landing pide stats y reseñas destacadas y no había endpoint.
+  Devuelve eventos activos, entradas vendidas, organizadores, puntaje promedio general y las 6 reseñas mejor
+  puntuadas con el nombre del evento.
+- **Token en memoria + SecureStore**: el interceptor toma el token de un getter que registra AuthContext (no lee el
+  storage en cada request). Un 401 con sesión llama a `cerrarSesion({ vencida: true })`, que muestra un aviso; la
+  navegación vuelve sola al AuthStack porque depende de `usuario`. En login/registro el 401 no cierra nada (es
+  "Credenciales inválidas").
+- **Restaurar sesión sin conexión**: si `/auth/me` falla por red, se muestra el login pero no se borra el token
+  guardado (se reintenta la próxima vez que se abra la app). Solo un 401 lo borra.
+- **Preferencia de tema en SecureStore** (Sistema / Claro / Oscuro), para no sumar AsyncStorage.
+- **Login sin "Google/Apple" ni "¿Olvidaste tu contraseña?"** (están en el diseño de Stitch pero el back no los tiene).
+- **Contador de mensajes del top bar en 0** hasta la iteración 10 (`GET /compras/conversaciones`); la campana ya usa
+  `/notificaciones/no-leidas/cantidad`, al volver a la pantalla y cada minuto.
+- **Notificaciones del comprador**: no es una tab; la campana abre una pantalla del stack raíz (placeholder hasta la 10).
+- **Componentes agrupados por afinidad** (`Basicos.jsx`, `Escenario.jsx`) y exportados desde `components/ui/index.js`
+  con los nombres de REPO_REF (Button, Card, Badge, Modal...).
+- **Estilos inline** solo para valores dinámicos que no aplican a styled-components (animaciones de `Animated`,
+  tamaño de `expo-image`, safe area). Nada de `StyleSheet.create`.
+- **Tests del front**: un adapter de axios falso (`pruebas/apiFalsa.js`) hace correr los interceptores reales (Bearer
+  y 401). En Jest, `lucide-react-native` se resuelve a su build CommonJS (la de RN es `.mjs` y Jest no la transforma).
+  Con Testing Library v14, `render` y `fireEvent` son asíncronos y hay que esperarlos.
