@@ -52,3 +52,18 @@ jest.mock("expo-image-picker", () => ({
   requestMediaLibraryPermissionsAsync: jest.fn(async () => ({ granted: true })),
   launchImageLibraryAsync: jest.fn(async () => ({ canceled: true, assets: [] })),
 }));
+
+// Mapas (spec 11): en Jest el mapa es un View con sus props visibles para las aserciones.
+jest.mock("react-native-maps", () => {
+  const { createElement } = require("react");
+  const { View } = require("react-native");
+  const MapView = (props) => createElement(View, { ...props, testID: props.testID ?? "mapa" });
+  const Marker = (props) => createElement(View, { ...props, testID: props.testID ?? "pin" });
+  return { __esModule: true, default: MapView, Marker, PROVIDER_DEFAULT: null };
+});
+
+// Geocodificación del sistema: cada test define el resultado con mockResolvedValue.
+jest.mock("expo-location", () => ({
+  requestForegroundPermissionsAsync: jest.fn(async () => ({ status: "granted", granted: true })),
+  geocodeAsync: jest.fn(async () => []),
+}));

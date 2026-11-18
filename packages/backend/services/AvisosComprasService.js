@@ -93,6 +93,17 @@ export class AvisosComprasService {
     );
   }
 
+  /** Recordatorio de pago al comprador: le quedan 24 h o menos para pagar su reserva. */
+  async alRecordarPago(compra) {
+    const vars = await this.#variables(compra);
+    return this.notificacionesService.notificar(
+      T.RECORDATORIO_PAGO,
+      compra.compradorId,
+      { ...vars, fechaLimite: formatearFechaHora(compra.fechaLimitePago) },
+      vars.datos,
+    );
+  }
+
   /** Variables comunes. El nombre del comprador sale del historial (quien creó la compra). */
   async #variables(compra) {
     const evento = await this.eventosRepository.obtenerPorId(compra.eventoId, {

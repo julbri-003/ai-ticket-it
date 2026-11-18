@@ -9,6 +9,7 @@ function eventoResumenDTO(evento, { reloj, baseUrl }) {
     nombre: evento.nombre,
     fecha: evento.fecha,
     lugar: evento.lugar,
+    ubicacion: evento.ubicacion ?? null,
     imagen: imagen ? multimediaToDTO(imagen, baseUrl) : null,
     yaOcurrio: evento.yaOcurrio(reloj),
   };

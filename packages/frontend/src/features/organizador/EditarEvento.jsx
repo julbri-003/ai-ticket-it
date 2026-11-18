@@ -19,6 +19,7 @@ import {
   Textarea,
   TituloEscena,
 } from "../../components/ui";
+import { MapaEstatico } from "../../components/mapa/Mapa";
 import { useToast } from "../../context/ToastContext";
 import { organizadorService } from "../../service/organizadorService";
 
@@ -172,6 +173,12 @@ export function EditarEvento({ route }) {
         <CampoNoEditable etiqueta="Categoría" valor={evento.categoria.nombre} />
         <CampoNoEditable etiqueta="Fecha y hora" valor={evento.fechaLargaTexto} />
         <CampoNoEditable etiqueta="Lugar" valor={evento.lugar} />
+        {evento.ubicacion ? (
+          <>
+            <CampoNoEditable etiqueta="Ubicación en el mapa" valor={evento.ubicacion.direccion} />
+            <MapaEstatico ubicacion={evento.ubicacion} alto={120} testID="mapa-editar" />
+          </>
+        ) : null}
       </Card>
 
       <Seccion>

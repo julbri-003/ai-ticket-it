@@ -12,6 +12,7 @@ function aEventoDeCompra(dto) {
     fecha: dto.fecha,
     fechaTexto: fechaHoraTexto(dto.fecha),
     lugar: dto.lugar,
+    ubicacion: dto.ubicacion ?? null,
     imagen: dto.imagen ? { uri: dto.imagen.url, alt: dto.imagen.alt } : null,
     yaOcurrio: dto.yaOcurrio,
   };
@@ -58,6 +59,9 @@ export function aCompraDetalle(dto, usuarioId) {
   return {
     ...aCompra(dto),
     esOrganizador: Boolean(dto.organizadorId) && dto.organizadorId === usuarioId,
+    // Quien creó la compra (primer cambio de estado): para personalizar sugerencias del chat.
+    compradorNombre:
+      (dto.historial ?? []).find((c) => c.quien?.rol === "COMPRADOR")?.quien.nombre ?? null,
     historial: (dto.historial ?? []).map((c, i) => ({
       id: `${i}-${c.fechaHora}`,
       estado: c.estadoNuevo,

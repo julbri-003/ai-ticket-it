@@ -52,6 +52,7 @@ export class ComprasMongoRepository extends RepositorioMongoPersistible {
       fechaLimiteReembolso: compra.fechaLimiteReembolso,
       reseniaId: compra.reseniaId == null ? null : aObjectId(compra.reseniaId),
       recordatorioEnviado: compra.recordatorioEnviado,
+      recordatorioPagoEnviado: compra.recordatorioPagoEnviado,
     };
   }
 
@@ -209,6 +210,20 @@ export class ComprasMongoRepository extends RepositorioMongoPersistible {
   async listarPendientesVencidas(ahora) {
     const docs = await this.model
       .find({ estado: EstadoCompra.PENDIENTE, fechaLimitePago: { $lte: ahora } })
+      .lean();
+    return docs.map((doc) => this.hidratar(doc));
+  }
+
+  /** PENDIENTE sin recordatorio de pago y con la fecha límite dentro de las próximas 24 h. */
+  async listarParaRecordatorioPago(ahora) {
+    const limite = new Date(ahora.getTime() + 24 * 60 * 60 * 1000);
+    const docs = await this.model
+      .find({
+        estado: EstadoCompra.PENDIENTE,
+        recordatorioPagoEnviado: { $ne: true },
+        activo: true,
+        fechaLimitePago: { $gt: ahora, $lte: limite },
+      })
       .lean();
     return docs.map((doc) => this.hidratar(doc));
   }

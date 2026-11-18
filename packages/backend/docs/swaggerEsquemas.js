@@ -124,6 +124,23 @@ export const esquemas = {
       },
       fecha: FECHA,
       lugar: { type: "string", example: "Club del Sótano, San Telmo, CABA" },
+      ubicacion: {
+        type: "object",
+        nullable: true,
+        description:
+          "Ubicación exacta en el mapa (opcional). Se carga al crear el evento y no se edita.",
+        required: ["lat", "lng", "direccion"],
+        properties: {
+          lat: { type: "number", minimum: -90, maximum: 90, example: -34.6213 },
+          lng: { type: "number", minimum: -180, maximum: 180, example: -58.3731 },
+          direccion: {
+            type: "string",
+            minLength: 5,
+            maxLength: 200,
+            example: "Defensa 1200, San Telmo, CABA",
+          },
+        },
+      },
       tiposEntrada: { type: "array", items: { $ref: "#/components/schemas/TipoEntrada" } },
       multimedia: { type: "array", items: { $ref: "#/components/schemas/Multimedia" } },
       imagen: { $ref: "#/components/schemas/Multimedia" },
@@ -161,6 +178,23 @@ export const esquemas = {
       categoriaId: ID,
       fecha: { type: "string", format: "date-time", example: "2026-12-20T23:00:00-03:00" },
       lugar: { type: "string", example: "Club del Sótano, San Telmo, CABA" },
+      ubicacion: {
+        type: "object",
+        nullable: true,
+        description:
+          "Ubicación exacta en el mapa (opcional). Se carga al crear el evento y no se edita.",
+        required: ["lat", "lng", "direccion"],
+        properties: {
+          lat: { type: "number", minimum: -90, maximum: 90, example: -34.6213 },
+          lng: { type: "number", minimum: -180, maximum: 180, example: -58.3731 },
+          direccion: {
+            type: "string",
+            minLength: 5,
+            maxLength: 200,
+            example: "Defensa 1200, San Telmo, CABA",
+          },
+        },
+      },
       tiposEntrada: {
         type: "array",
         minItems: 1,
@@ -305,6 +339,15 @@ export const esquemas = {
       nombre: { type: "string", example: "Noche de Jazz en el Sótano" },
       fecha: FECHA,
       lugar: { type: "string", example: "Club del Sótano, San Telmo, CABA" },
+      ubicacion: {
+        type: "object",
+        nullable: true,
+        properties: {
+          lat: { type: "number", example: -34.6213 },
+          lng: { type: "number", example: -58.3731 },
+          direccion: { type: "string", example: "Defensa 1200, San Telmo, CABA" },
+        },
+      },
       imagen: { $ref: "#/components/schemas/Multimedia" },
       yaOcurrio: { type: "boolean", example: false },
     },
@@ -484,6 +527,7 @@ export const esquemas = {
           "NUEVO_MENSAJE",
           "NUEVA_RESENIA",
           "RECORDATORIO_EVENTO",
+          "RECORDATORIO_PAGO",
         ],
         example: "COMPRA_CANCELADA",
       },

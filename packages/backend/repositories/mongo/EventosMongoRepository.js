@@ -73,6 +73,7 @@ export class EventosMongoRepository extends RepositorioMongoPersistible {
       categoriaId: aObjectId(evento.categoriaId),
       fecha: evento.fecha,
       lugar: evento.lugar,
+      ubicacion: evento.ubicacion,
       multimedia: evento.multimedia,
       organizadorId: aObjectId(evento.organizadorId),
       cancelacion: evento.cancelacion,

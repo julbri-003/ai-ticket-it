@@ -38,6 +38,18 @@ const EventoSchema = new mongoose.Schema(
     categoriaId: { type: ObjectId, ref: "Categoria", required: true },
     fecha: { type: Date, required: true },
     lugar: { type: String, required: true, trim: true },
+    // Ubicación exacta (opcional, spec 11). La valida el dominio.
+    ubicacion: {
+      type: new mongoose.Schema(
+        {
+          lat: { type: Number, required: true },
+          lng: { type: Number, required: true },
+          direccion: { type: String, required: true, trim: true },
+        },
+        { _id: false },
+      ),
+      default: null,
+    },
     tiposEntrada: {
       type: [TipoEntradaSchema],
       validate: [(tipos) => tipos.length > 0, "El evento debe tener al menos un tipo de entrada"],

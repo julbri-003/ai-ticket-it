@@ -12,6 +12,31 @@ export const TipoMultimedia = Object.freeze({
 export const MAX_TEXTO_AMPLIACION = 2000;
 export const MAX_TEXTO_ALT = 300;
 export const MAX_MOTIVO_CANCELACION = 500;
+export const MIN_DIRECCION = 5;
+export const MAX_DIRECCION = 200;
+
+/**
+ * Ubicación exacta en el mapa (opcional): { lat, lng, direccion }. Si viene, viene completa y
+ * dentro de rango. Devuelve null cuando no hay ubicación.
+ */
+export function normalizarUbicacion(ubicacion) {
+  if (ubicacion == null) return null;
+  const { lat, lng } = ubicacion;
+  const numero = (n) => typeof n === "number" && Number.isFinite(n);
+  if (!numero(lat) || lat < -90 || lat > 90) {
+    throw new BadRequestError("La latitud de la ubicación debe estar entre -90 y 90");
+  }
+  if (!numero(lng) || lng < -180 || lng > 180) {
+    throw new BadRequestError("La longitud de la ubicación debe estar entre -180 y 180");
+  }
+  const direccion = typeof ubicacion.direccion === "string" ? ubicacion.direccion.trim() : "";
+  if (direccion.length < MIN_DIRECCION || direccion.length > MAX_DIRECCION) {
+    throw new BadRequestError(
+      `La dirección de la ubicación debe tener entre ${MIN_DIRECCION} y ${MAX_DIRECCION} caracteres`,
+    );
+  }
+  return { lat, lng, direccion };
+}
 
 // Campos que se pueden enviar a editar(); cualquier otro se rechaza.
 const CAMBIOS_PERMITIDOS = [
@@ -101,6 +126,7 @@ export class Evento extends Persistible {
     categoriaId,
     fecha,
     lugar,
+    ubicacion = null,
     tiposEntrada,
     multimedia = [],
     organizadorId,
@@ -124,6 +150,7 @@ export class Evento extends Persistible {
     this.categoriaId = idObligatorio(categoriaId, "El evento debe tener una categoría");
     this.fecha = fechaValida(fecha, "El evento debe tener una fecha válida");
     this.lugar = textoObligatorio(lugar, "El evento debe tener un lugar");
+    this.ubicacion = normalizarUbicacion(ubicacion);
     this.tiposEntrada = tiposEntrada.map(aTipoEntrada);
     exigirNombresUnicos(this.tiposEntrada);
     this.multimedia = multimedia.map(normalizarMultimedia);

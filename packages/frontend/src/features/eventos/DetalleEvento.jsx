@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Linking } from "react-native";
 import styled, { useTheme } from "styled-components/native";
-import { CalendarDays, MapPin, PlayCircle, ShoppingCart } from "lucide-react-native";
+import { CalendarDays, MapPin, Navigation, PlayCircle, ShoppingCart } from "lucide-react-native";
 import { Pantalla } from "../../components/layout/Pantalla";
 import { BotonFavorito } from "../../components/eventos/TarjetaEvento";
 import { SelectorCantidad, MAX_POR_COMPRA } from "../../components/compras/SelectorCantidad";
@@ -28,6 +28,8 @@ import { useToast } from "../../context/ToastContext";
 import { useFavorito } from "../../hooks/useFavorito";
 import { comprasService } from "../../service/comprasService";
 import { eventosService } from "../../service/eventosService";
+import { MapaEstatico } from "../../components/mapa/Mapa";
+import { urlComoLlegar } from "../../utils/mapas";
 import { montoTexto } from "../../utils/montos";
 
 const LIMITE_RESENIAS = 5;
@@ -263,6 +265,29 @@ export function DetalleEvento({ route, navigation }) {
         <MapPin size={18} color={theme.colors.textSecondary} accessible={false} />
         <Dato>{evento.lugar}</Dato>
       </Fila>
+
+      <Seccion testID="ubicacion-evento">
+        {evento.ubicacion ? (
+          <>
+            <MapaEstatico ubicacion={evento.ubicacion} />
+            <Dato testID="direccion-evento">{evento.ubicacion.direccion}</Dato>
+          </>
+        ) : null}
+        {!evento.anterior && !evento.cancelado ? (
+          <Button
+            variant="outline"
+            icono={Navigation}
+            onPress={() => {
+              const url = urlComoLlegar(evento);
+              if (url) Linking.openURL(url).catch(() => {});
+            }}
+            accessibilityHint="Abre Google Maps con la ruta en auto"
+            testID="como-llegar"
+          >
+            Cómo llegar
+          </Button>
+        ) : null}
+      </Seccion>
 
       <Seccion>
         <EtiquetaSeccion>Sobre el evento</EtiquetaSeccion>

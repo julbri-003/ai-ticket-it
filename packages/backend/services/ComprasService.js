@@ -28,6 +28,7 @@ export class ComprasService {
     alCambiarEstado = null,
     alReseniar = null,
     alRecordarEvento = null,
+    alRecordarPago = null,
     log = console,
   }) {
     this.comprasRepository = comprasRepository;
@@ -39,6 +40,7 @@ export class ComprasService {
     this.alCambiarEstado = alCambiarEstado;
     this.alReseniar = alReseniar;
     this.alRecordarEvento = alRecordarEvento;
+    this.alRecordarPago = alRecordarPago;
     this.log = log;
   }
 
@@ -273,6 +275,27 @@ export class ComprasService {
       if (!guardada) continue;
       enviados += 1;
       await this.#avisar("alRecordarEvento", guardada, evento);
+    }
+    return enviados;
+  }
+
+  /**
+   * Recordatorio de pago a las reservas PENDIENTE a las que les quedan 24 h o menos, una sola
+   * vez (flag recordatorioPagoEnviado guardado con condición, como recordarEventosProximos).
+   */
+  async recordarPagosPendientes() {
+    const compras = await this.comprasRepository.listarParaRecordatorioPago(this.reloj.ahora());
+    let enviados = 0;
+    for (const compra of compras) {
+      if (!compra.debeRecordarPago(this.reloj)) continue;
+      compra.marcarRecordatorioPagoEnviado();
+      const guardada = await this.comprasRepository.guardarSi(compra, {
+        estado: PENDIENTE,
+        recordatorioPagoEnviado: { $ne: true },
+      });
+      if (!guardada) continue;
+      enviados += 1;
+      await this.#avisar("alRecordarPago", guardada);
     }
     return enviados;
   }

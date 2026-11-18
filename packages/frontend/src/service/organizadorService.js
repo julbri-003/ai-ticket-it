@@ -21,8 +21,21 @@ export const MAX_ALT = 300;
 // ----- Validaciones del formulario (cliente; el back vuelve a validar) -----
 
 /** Paso 1: datos del evento. `fecha` es un Date. */
+/**
+ * Ubicación a enviar al back: { lat, lng, direccion } si hay pin (la dirección cae en el lugar
+ * si quedó vacía) o null.
+ */
+export function ubicacionParaEnviar(ubicacion, lugar = "") {
+  if (ubicacion?.lat == null || ubicacion?.lng == null) return null;
+  return {
+    lat: ubicacion.lat,
+    lng: ubicacion.lng,
+    direccion: (ubicacion.direccion?.trim() || lugar.trim()).slice(0, 200),
+  };
+}
+
 export function validarDatosEvento(
-  { nombre, categoriaId, fecha, lugar, descripcion },
+  { nombre, categoriaId, fecha, lugar, descripcion, ubicacion },
   ahora = new Date(),
 ) {
   const errores = {};
@@ -32,6 +45,10 @@ export function validarDatosEvento(
   else if (fecha.getTime() <= ahora.getTime()) errores.fecha = "La fecha tiene que ser futura.";
   if (!lugar?.trim()) errores.lugar = "Indicá dónde es el evento.";
   if (!descripcion?.trim()) errores.descripcion = "Contá de qué se trata el evento.";
+  const enMapa = ubicacionParaEnviar(ubicacion, lugar ?? "");
+  if (enMapa && enMapa.direccion.length < 5) {
+    errores.ubicacion = "Escribí la dirección exacta (al menos 5 caracteres) o quitá el pin.";
+  }
   return errores;
 }
 
@@ -191,8 +208,10 @@ export const organizadorService = {
     return (await eventosApi.mios()).map(aEventoOrganizador);
   },
 
-  async crearEvento({ nombre, categoriaId, fecha, lugar, descripcion, tiposEntrada }) {
+  async crearEvento({ nombre, categoriaId, fecha, lugar, descripcion, tiposEntrada, ubicacion }) {
+    const enMapa = ubicacionParaEnviar(ubicacion, lugar);
     const dto = await eventosApi.crear({
+      ...(enMapa ? { ubicacion: enMapa } : {}),
       nombre: nombre.trim(),
       descripcion: descripcion.trim(),
       categoriaId,

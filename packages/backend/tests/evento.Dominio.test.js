@@ -1,4 +1,4 @@
-import { Evento } from "../domain/eventoDominio.js";
+import { Evento, normalizarUbicacion } from "../domain/eventoDominio.js";
 import { TipoEntrada } from "../domain/tipoEntradaDominio.js";
 import { BadRequestError, ConflictError, NotFoundError } from "../errors/AppError.js";
 import {
@@ -273,5 +273,34 @@ describe("Dominio Evento — cancelación", () => {
     );
     expect(evento.estaCancelado()).toBe(true);
     expect(evento.cancelacion.fecha).toEqual(AHORA);
+  });
+});
+
+describe("Ubicación del evento (spec 11)", () => {
+  test("es opcional y se guarda recortada", () => {
+    expect(new Evento(datosEvento()).ubicacion).toBeNull();
+    const evento = new Evento(
+      datosEvento({ ubicacion: { lat: -34.6, lng: -58.4, direccion: "  Defensa 1200  " } }),
+    );
+    expect(evento.ubicacion).toEqual({ lat: -34.6, lng: -58.4, direccion: "Defensa 1200" });
+  });
+
+  test.each([
+    [{ lat: 91, lng: 0, direccion: "Calle 123" }, "latitud"],
+    [{ lat: "0", lng: 0, direccion: "Calle 123" }, "latitud"],
+    [{ lat: 0, lng: -180.5, direccion: "Calle 123" }, "longitud"],
+    [{ lat: 0, lng: 0 }, "dirección"],
+    [{ lat: 0, lng: 0, direccion: "abc" }, "dirección"],
+    [{ lat: 0, lng: 0, direccion: "a".repeat(201) }, "dirección"],
+  ])("rechaza %p", (ubicacion, texto) => {
+    expect(() => normalizarUbicacion(ubicacion)).toThrow(BadRequestError);
+    expect(() => normalizarUbicacion(ubicacion)).toThrow(texto);
+  });
+
+  test("los bordes del rango son válidos", () => {
+    expect(normalizarUbicacion({ lat: -90, lng: 180, direccion: "Polo Sur" })).toMatchObject({
+      lat: -90,
+      lng: 180,
+    });
   });
 });

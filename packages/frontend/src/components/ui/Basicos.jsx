@@ -145,7 +145,14 @@ export function EstadoCompraBadge({ estado }) {
 // ----- Chip -----
 
 /** Filtro seleccionable (pill). */
-export function Chip({ etiqueta, seleccionado = false, onPress, icono: Icono }) {
+export function Chip({
+  etiqueta,
+  seleccionado = false,
+  onPress,
+  icono: Icono,
+  accessibilityLabel,
+  testID,
+}) {
   const theme = useTheme();
   const { enfocado, propsFoco } = useFoco();
   const color = seleccionado ? theme.colors.onPrimary : theme.colors.textSecondary;
@@ -153,8 +160,9 @@ export function Chip({ etiqueta, seleccionado = false, onPress, icono: Icono }) 
     <ChipBase
       onPress={onPress}
       accessibilityRole="button"
-      accessibilityLabel={etiqueta}
+      accessibilityLabel={accessibilityLabel ?? etiqueta}
       accessibilityState={{ selected: seleccionado }}
+      testID={testID}
       $seleccionado={seleccionado}
       $enfocado={enfocado}
       {...propsFoco}

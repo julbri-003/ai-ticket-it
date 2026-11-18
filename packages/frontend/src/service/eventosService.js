@@ -47,6 +47,7 @@ export function aEvento(dto) {
     fechaTexto: fechaHoraTexto(dto.fecha),
     fechaLargaTexto: `${fechaLargaTexto(dto.fecha)} · ${horaTexto(dto.fecha)} h`,
     lugar: dto.lugar,
+    ubicacion: dto.ubicacion ?? null,
     tiposEntrada: (dto.tiposEntrada ?? []).map(aTipoEntrada),
     imagenes: (dto.multimedia ?? [])
       .filter((m) => m.tipo === "imagen")

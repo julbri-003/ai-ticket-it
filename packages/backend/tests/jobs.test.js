@@ -88,6 +88,7 @@ describe("Tareas sobre los datos de la semilla", () => {
     // reembolso pendiente que vence a +19 h; Folklore es el único evento que ocurre en 60 h.
     await avanzarReloj(60 * HORA);
     expect(await programadorTareas.ejecutarTodas()).toEqual({
+      recordarPagosPendientes: 0,
       vencerComprasPendientes: 2,
       marcarComprasUtilizadas: 0,
       reembolsosAutomaticos: 1,
@@ -100,6 +101,7 @@ describe("Tareas sobre los datos de la semilla", () => {
     expect(folklore.tiposEntrada[0].disponibles).toBe(80);
 
     expect(await programadorTareas.ejecutarTodas()).toEqual({
+      recordarPagosPendientes: 0,
       vencerComprasPendientes: 0,
       marcarComprasUtilizadas: 0,
       reembolsosAutomaticos: 0,

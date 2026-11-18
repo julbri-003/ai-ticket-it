@@ -652,3 +652,40 @@ describe("Dominio Compra — cancelación del evento", () => {
     ).toThrow("fue cancelado");
   });
 });
+
+describe("Recordatorio de pago (spec 11)", () => {
+  test("PENDIENTE con 24 h o menos para pagar y plazo total mayor a 24 h", () => {
+    const { compra, reloj } = crearCompra(); // evento a +10 días: plazo de 48 h
+    expect(compra.debeRecordarPago(reloj)).toBe(false); // faltan 48 h
+    reloj.avanzar(24 * HORA - 1);
+    expect(compra.debeRecordarPago(reloj)).toBe(false); // falta apenas más de 24 h
+    reloj.avanzar(1);
+    expect(compra.debeRecordarPago(reloj)).toBe(true); // exactamente 24 h
+    reloj.avanzar(24 * HORA);
+    expect(compra.debeRecordarPago(reloj)).toBe(false); // ya venció
+  });
+
+  test("no se recuerda dos veces ni fuera de PENDIENTE", () => {
+    const { compra, reloj } = crearCompra();
+    reloj.avanzar(30 * HORA);
+    compra.marcarRecordatorioPagoEnviado();
+    expect(compra.debeRecordarPago(reloj)).toBe(false);
+    const pagada = compraEn(CONFIRMADA);
+    pagada.reloj.avanzar(30 * HORA);
+    expect(pagada.compra.debeRecordarPago(pagada.reloj)).toBe(false);
+  });
+
+  test("con el evento cerca (plazo ≤ 24 h) no se recuerda", () => {
+    const evento = crearEvento({ fecha: new Date(AHORA.getTime() + 20 * HORA) });
+    const { compra, reloj } = crearCompra({ evento });
+    expect(compra.fechaLimitePago).toEqual(evento.fecha);
+    reloj.avanzar(HORA);
+    expect(compra.debeRecordarPago(reloj)).toBe(false);
+  });
+
+  test("el flag sobrevive a la rehidratación", () => {
+    const { compra } = crearCompra();
+    compra.marcarRecordatorioPagoEnviado();
+    expect(new Compra(JSON.parse(JSON.stringify(compra))).recordatorioPagoEnviado).toBe(true);
+  });
+});

@@ -123,6 +123,7 @@ export class Compra extends Persistible {
     ultimaLecturaComprador = null,
     ultimaLecturaOrganizador = null,
     recordatorioEnviado = false,
+    recordatorioPagoEnviado = false,
     activo,
     fechaModificacion,
     modificadoPor,
@@ -161,6 +162,7 @@ export class Compra extends Persistible {
       ? new Date(ultimaLecturaOrganizador)
       : null;
     this.recordatorioEnviado = recordatorioEnviado;
+    this.recordatorioPagoEnviado = recordatorioPagoEnviado;
 
     restaurarAuditoria(this, { activo, fechaModificacion, modificadoPor });
   }
@@ -485,6 +487,30 @@ export class Compra extends Persistible {
 
   marcarRecordatorioEnviado() {
     this.recordatorioEnviado = true;
+  }
+
+  // ----- Recordatorio de pago (24 h antes de que venza la reserva) -----
+
+  /**
+   * PENDIENTE, sin recordatorio de pago previo, con 24 h o menos para la fecha límite (sin
+   * vencer) y con un plazo total mayor a 24 h: si el plazo ya era corto (evento muy cercano),
+   * el comprador lo vio al reservar y no se le recuerda.
+   */
+  debeRecordarPago(reloj) {
+    const limite = this.fechaLimitePago.getTime();
+    const faltan = limite - ahoraMs(reloj);
+    const plazo = limite - this.fechaCompra.getTime();
+    return (
+      this.estado === PENDIENTE &&
+      !this.recordatorioPagoEnviado &&
+      faltan > 0 &&
+      faltan <= MS_POR_DIA &&
+      plazo > MS_POR_DIA
+    );
+  }
+
+  marcarRecordatorioPagoEnviado() {
+    this.recordatorioPagoEnviado = true;
   }
 
   /** Solo el comprador o el organizador del evento, en cualquier estado de la compra. */

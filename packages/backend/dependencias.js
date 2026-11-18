@@ -98,6 +98,7 @@ export const comprasService = new ComprasService({
   alCambiarEstado: (compra, cambio) => avisosComprasService.alCambiarEstado(compra, cambio),
   alReseniar: (compra, resenia) => avisosComprasService.alReseniar(compra, resenia),
   alRecordarEvento: (compra, evento) => avisosComprasService.alRecordarEvento(compra, evento),
+  alRecordarPago: (compra) => avisosComprasService.alRecordarPago(compra),
 });
 export const mensajesService = new MensajesService({
   comprasRepository,
@@ -113,6 +114,8 @@ export const programadorTareas = new ProgramadorTareas({
   reloj,
   intervaloMs: Number(process.env.INTERVALO_JOBS_MS) || 60000,
   tareas: [
+    // Antes de vencer: el recordatorio sale mientras la reserva todavía se puede pagar.
+    { nombre: "recordarPagosPendientes", ejecutar: () => comprasService.recordarPagosPendientes() },
     { nombre: "vencerComprasPendientes", ejecutar: () => comprasService.vencerComprasPendientes() },
     { nombre: "marcarComprasUtilizadas", ejecutar: () => comprasService.marcarComprasUtilizadas() },
     { nombre: "reembolsosAutomaticos", ejecutar: () => comprasService.reembolsosAutomaticos() },

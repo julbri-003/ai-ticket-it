@@ -12,6 +12,7 @@ import { useChatCompra } from "../../hooks/useChatCompra";
 import { useEstadoCompra } from "../../hooks/useEstadoCompra";
 import { comprasService } from "../../service/comprasService";
 import { conSeparadores } from "../../service/mensajesService";
+import { sugerenciasChat } from "../../service/sugerenciasService";
 
 /**
  * Chat de una compra (comprador ↔ organizador), disponible en cualquier estado. Cabecera con el
@@ -43,6 +44,13 @@ export function Chat({ route }) {
 
   const filas = conSeparadores(chat.mensajes);
   const otro = compra?.esOrganizador ? "el comprador" : "el organizador";
+  // Mensajes sugeridos (spec 11): mientras el usuario no haya escrito nada en esta conversación.
+  const [sugerenciasOcultas, setSugerenciasOcultas] = useState(false);
+  const yaEscribio = chat.mensajes.some((m) => m.propio);
+  const sugerencias =
+    compra && !chat.cargando && !yaEscribio && !sugerenciasOcultas
+      ? sugerenciasChat({ rol: compra.esOrganizador ? "ORGANIZADOR" : "COMPRADOR", compra })
+      : [];
 
   return (
     <Pantalla scroll={false} sinPadding>
@@ -97,7 +105,11 @@ export function Chat({ route }) {
               <EmptyState
                 icono={MessagesSquare}
                 titulo="Todavía no hay mensajes"
-                mensaje={`Escribile a ${otro}: el chat está disponible en cualquier estado de la compra.`}
+                mensaje={
+                  sugerencias.length
+                    ? `Empezá con un mensaje sugerido o escribile a ${otro}.`
+                    : `Escribile a ${otro}: el chat está disponible en cualquier estado de la compra.`
+                }
               />
             }
             renderItem={({ item }) =>
@@ -110,7 +122,11 @@ export function Chat({ route }) {
             testID="lista-mensajes"
           />
         )}
-        <EntradaMensaje onEnviar={chat.enviar} />
+        <EntradaMensaje
+          onEnviar={chat.enviar}
+          sugerencias={sugerencias}
+          onOcultarSugerencias={() => setSugerenciasOcultas(true)}
+        />
       </KeyboardAvoidingView>
     </Pantalla>
   );

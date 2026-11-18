@@ -6,9 +6,12 @@ import { CampoFechaHora } from "../../components/organizador/CampoFechaHora";
 import { EditorTiposEntrada, tipoVacio } from "../../components/organizador/EditorTiposEntrada";
 import { BarraOcupacion } from "../../components/organizador/BarraOcupacion";
 import { erroresAlt, SelectorMultimedia } from "../../components/organizador/SelectorMultimedia";
+import { SelectorUbicacion, ubicacionVacia } from "../../components/organizador/SelectorUbicacion";
+import { MapaEstatico } from "../../components/mapa/Mapa";
 import {
   Button,
   Card,
+  Chip,
   EtiquetaSeccion,
   Input,
   LeyendaObligatorio,
@@ -20,7 +23,15 @@ import {
 import { useToast } from "../../context/ToastContext";
 import { eventosService } from "../../service/eventosService";
 import {
+  agregarIdea,
+  ejemploNombre,
+  ideaUsada,
+  ideasDescripcion,
+  tiposSugeridos,
+} from "../../service/sugerenciasService";
+import {
   organizadorService,
+  ubicacionParaEnviar,
   validarDatosEvento,
   validarTiposEntrada,
 } from "../../service/organizadorService";
@@ -29,7 +40,81 @@ import { montoTexto } from "../../utils/montos";
 
 export const PASOS = ["Datos", "Entradas", "Multimedia", "Revisión"];
 
-const DATOS_INICIALES = { nombre: "", categoriaId: null, fecha: null, lugar: "", descripcion: "" };
+const DATOS_INICIALES = {
+  nombre: "",
+  categoriaId: null,
+  fecha: null,
+  lugar: "",
+  descripcion: "",
+  ubicacion: ubicacionVacia(),
+};
+
+/** "Ideas para tu descripción" (spec 11): cada chip agrega una línea con su rótulo. */
+function IdeasDescripcion({ categoria, descripcion, onCambiar }) {
+  const [aviso, setAviso] = useState(null);
+  return (
+    <Ideas accessibilityLabel="Ideas para tu descripción" testID="ideas-descripcion">
+      <TituloIdeas>Ideas para tu descripción</TituloIdeas>
+      <FilaChips>
+        {ideasDescripcion(categoria).map((idea) => {
+          const usada = ideaUsada(descripcion, idea);
+          return (
+            <Chip
+              key={idea}
+              etiqueta={idea}
+              seleccionado={usada}
+              accessibilityLabel={
+                usada ? `${idea}, ya agregada` : `Agregar a la descripción: ${idea}`
+              }
+              testID={`idea-${idea}`}
+              onPress={() => {
+                const resultado = agregarIdea(descripcion, idea);
+                if (resultado.agregada) {
+                  onCambiar(resultado.descripcion);
+                  setAviso(null);
+                } else if (resultado.motivo === "maximo") {
+                  setAviso("La descripción ya llegó al máximo de caracteres.");
+                }
+              }}
+            />
+          );
+        })}
+      </FilaChips>
+      {aviso ? <AvisoIdeas accessibilityLiveRegion="polite">{aviso}</AvisoIdeas> : null}
+    </Ideas>
+  );
+}
+
+/** Tipos de entrada sugeridos: completan el nombre del primer tipo vacío o agregan uno nuevo. */
+function TiposSugeridos({ categoria, tipos, onCambiar }) {
+  const usados = new Set(tipos.map((t) => t.nombre.trim().toLowerCase()));
+  const disponibles = tiposSugeridos(categoria).filter((n) => !usados.has(n.toLowerCase()));
+  if (disponibles.length === 0) return null;
+  const usar = (nombre) => {
+    const vacio = tipos.findIndex((t) => !t.nombre.trim());
+    onCambiar(
+      vacio >= 0
+        ? tipos.map((t, i) => (i === vacio ? { ...t, nombre } : t))
+        : [...tipos, { ...tipoVacio(), nombre }],
+    );
+  };
+  return (
+    <Ideas accessibilityLabel="Tipos de entrada sugeridos" testID="tipos-sugeridos">
+      <TituloIdeas>Tipos de entrada sugeridos</TituloIdeas>
+      <FilaChips>
+        {disponibles.map((nombre) => (
+          <Chip
+            key={nombre}
+            etiqueta={nombre}
+            accessibilityLabel={`Usar tipo de entrada ${nombre}`}
+            testID={`tipo-sugerido-${nombre}`}
+            onPress={() => usar(nombre)}
+          />
+        ))}
+      </FilaChips>
+    </Ideas>
+  );
+}
 
 /** Indicador de pasos (1 de 4…). */
 function Pasos({ actual }) {
@@ -73,6 +158,8 @@ export function CrearEvento({ navigation }) {
   }, []);
 
   const cambiar = (campo) => (valor) => setDatos((d) => ({ ...d, [campo]: valor }));
+  const categoria = categorias.find((c) => c.id === datos.categoriaId);
+  const ubicacionFinal = ubicacionParaEnviar(datos.ubicacion, datos.lugar);
 
   const validarPaso = (n) => {
     if (n === 0) return validarDatosEvento(datos);
@@ -138,8 +225,6 @@ export function CrearEvento({ navigation }) {
     }
   };
 
-  const categoria = categorias.find((c) => c.id === datos.categoriaId);
-
   return (
     <Pantalla>
       <EtiquetaSeccion>Nuevo evento</EtiquetaSeccion>
@@ -155,6 +240,7 @@ export function CrearEvento({ navigation }) {
             value={datos.nombre}
             onChangeText={cambiar("nombre")}
             error={errores.nombre}
+            placeholder={ejemploNombre(categoria?.nombre)}
             testID="evento-nombre"
           />
           <Select
@@ -180,6 +266,11 @@ export function CrearEvento({ navigation }) {
             placeholder="Sala, dirección y ciudad"
             testID="evento-lugar"
           />
+          <SelectorUbicacion
+            valor={datos.ubicacion}
+            onCambiar={cambiar("ubicacion")}
+            error={errores.ubicacion}
+          />
           <Textarea
             label="Descripción"
             requerido
@@ -190,11 +281,19 @@ export function CrearEvento({ navigation }) {
             ayuda="Después de publicar no se puede editar: solo agregar actualizaciones."
             testID="evento-descripcion"
           />
+          <IdeasDescripcion
+            categoria={categoria?.nombre}
+            descripcion={datos.descripcion}
+            onCambiar={cambiar("descripcion")}
+          />
         </Formulario>
       ) : null}
 
       {paso === 1 ? (
-        <EditorTiposEntrada tipos={tipos} errores={errores.tipos} onCambiar={setTipos} />
+        <Formulario>
+          <TiposSugeridos categoria={categoria?.nombre} tipos={tipos} onCambiar={setTipos} />
+          <EditorTiposEntrada tipos={tipos} errores={errores.tipos} onCambiar={setTipos} />
+        </Formulario>
       ) : null}
 
       {paso === 2 ? (
@@ -210,6 +309,12 @@ export function CrearEvento({ navigation }) {
             {datos.fecha ? `${fechaLargaTexto(datos.fecha)} · ${horaTexto(datos.fecha)} h` : ""}
           </Detalle>
           <Detalle>{datos.lugar}</Detalle>
+          {ubicacionFinal ? (
+            <>
+              <Detalle testID="revision-direccion">Dirección: {ubicacionFinal.direccion}</Detalle>
+              <MapaEstatico ubicacion={ubicacionFinal} alto={120} testID="revision-mapa" />
+            </>
+          ) : null}
           {tipos.map((t) => (
             <Detalle key={t.clave}>
               {t.nombre} · {montoTexto(Number(String(t.precio).replace(",", ".")))} · cupo {t.cupo}
@@ -318,5 +423,27 @@ const Navegacion = styled.View`
 `;
 
 const Vacio = styled.View``;
+
+const Ideas = styled.View`
+  gap: 8px;
+`;
+
+const TituloIdeas = styled.Text`
+  font-family: ${({ theme }) => theme.typography.fontBodySemibold};
+  font-size: ${({ theme }) => theme.typography.sizes.bodySm}px;
+  color: ${({ theme }) => theme.colors.textSecondary};
+`;
+
+const FilaChips = styled.View`
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+`;
+
+const AvisoIdeas = styled.Text`
+  font-family: ${({ theme }) => theme.typography.fontBody};
+  font-size: ${({ theme }) => theme.typography.sizes.caption}px;
+  color: ${({ theme }) => theme.colors.warning};
+`;
 
 export default CrearEvento;

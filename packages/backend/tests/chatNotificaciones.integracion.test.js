@@ -270,6 +270,34 @@ describe("Notificaciones por cada transición", () => {
     expect(recordatorios).toHaveLength(1);
     expect((await comprasRepository.obtenerPorId(compra.id)).recordatorioEnviado).toBe(true);
   });
+
+  test("recordatorio de pago cuando faltan 24 h para que venza la reserva, una sola vez", async () => {
+    const reserva = await compraDeAna(await eventoDeLucia(96)); // vence a las 48 h
+    const pagada = await compraDeAna(await eventoDeLucia(96));
+    await accion(ANA, pagada, "pagar");
+    const cercana = await compraDeAna(await eventoDeLucia(20)); // plazo de 20 h: no se recuerda
+    const antes = (await notificacionesDe(ANA, reserva.id)).length;
+    await comprasService.recordarPagosPendientes();
+    expect(await notificacionesDe(ANA, reserva.id)).toHaveLength(antes); // faltan 48 h
+
+    await avanzarReloj(25 * HORA);
+    // Avisa a esta reserva (y a otras pendientes de la semilla que estén en la misma ventana).
+    expect(await comprasService.recordarPagosPendientes()).toBeGreaterThanOrEqual(1);
+    expect(await comprasService.recordarPagosPendientes()).toBe(0); // segunda corrida: nada
+
+    const avisos = (await notificacionesDe(ANA, reserva.id)).filter(
+      (n) => n.tipo === "RECORDATORIO_PAGO",
+    );
+    expect(avisos).toHaveLength(1);
+    expect(avisos[0].titulo).toBe("Tu reserva vence pronto");
+    expect(avisos[0].mensaje).toContain("Te quedan menos de 24 h para pagar 2 entradas General de");
+    expect(avisos[0].mensaje).toContain("Vence el");
+    expect((await comprasRepository.obtenerPorId(reserva.id)).recordatorioPagoEnviado).toBe(true);
+    for (const otra of [pagada, cercana]) {
+      const tipos = (await notificacionesDe(ANA, otra.id)).map((n) => n.tipo);
+      expect(tipos).not.toContain("RECORDATORIO_PAGO");
+    }
+  });
 });
 
 describe("REST /api/notificaciones", () => {

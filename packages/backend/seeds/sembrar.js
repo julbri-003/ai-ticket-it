@@ -179,6 +179,7 @@ export async function sembrarDatos({
       categoriaId: categoria.id,
       fecha: new Date(ahora.getTime() + datos.enHoras * MS_POR_HORA),
       lugar: datos.lugar,
+      ubicacion: datos.ubicacion ?? null,
       organizadorId: organizador.id,
       tiposEntrada: datos.tipos.map((t) => ({ ...t, id: idsTipo[t.id] })),
       multimedia: [

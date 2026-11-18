@@ -57,6 +57,12 @@ Las specs de cada iteración están en [`specs/`](specs/README.md).
 
 Para levantar back y front juntos: `npm run start:dev`.
 
+**Mapa (spec 11):** en Expo Go el mapa funciona sin configurar nada. Un build de producción para
+Android necesita una API key de Google Maps: definila en `packages/frontend/.env` como
+`GOOGLE_MAPS_ANDROID_API_KEY=...` (`app.config.js` la toma de ahí). **No la commitees.** En iOS el mapa
+usa Apple Maps y no necesita key. "Cómo llegar" abre Google Maps (app o navegador) sin pedir permiso de
+ubicación; el permiso solo se pide al organizador para buscar una dirección.
+
 ## Scripts (desde la raíz)
 
 | Script                   | Qué hace                                                  |

@@ -111,6 +111,49 @@ describe("POST /api/eventos", () => {
   });
 });
 
+describe("Ubicación en el mapa (spec 11)", () => {
+  const UBICACION = { lat: -34.6213, lng: -58.3731, direccion: "Defensa 1200, San Telmo, CABA" };
+
+  test("se crea con ubicación y vuelve en el detalle, el buscador y Mis eventos", async () => {
+    const evento = await crearEventoDeLucia({ nombre: "Con mapa", ubicacion: UBICACION });
+    expect(evento.ubicacion).toEqual(UBICACION);
+    const detalle = await request(app).get(`/api/eventos/${evento.id}`);
+    expect(detalle.body.ubicacion).toEqual(UBICACION);
+    const busqueda = await request(app).get("/api/eventos").query({ q: "con mapa" });
+    expect(busqueda.body.items.find((e) => e.id === evento.id).ubicacion).toEqual(UBICACION);
+    const mios = await request(app)
+      .get("/api/eventos/mios")
+      .set(await auth(LUCIA));
+    expect(mios.body.find((e) => e.id === evento.id).ubicacion).toEqual(UBICACION);
+  });
+
+  test("sin ubicación (o con null) devuelve ubicacion: null", async () => {
+    expect((await crearEventoDeLucia()).ubicacion).toBeNull();
+    expect((await crearEventoDeLucia({ ubicacion: null })).ubicacion).toBeNull();
+  });
+
+  test.each([
+    [{ ...UBICACION, lat: -91 }, "latitud"],
+    [{ ...UBICACION, lng: 181 }, "longitud"],
+    [{ lat: -34.6, lng: -58.4 }, "dirección"],
+    [{ ...UBICACION, direccion: "x" }, "al menos 5"],
+    [{ ...UBICACION, direccion: "x".repeat(201) }, "200"],
+    [{ ...UBICACION, altura: 3 }, ""], // .strict()
+  ])("ubicación inválida %p → 400", async (ubicacion, texto) => {
+    const res = await request(app)
+      .post("/api/eventos")
+      .set(await auth(LUCIA))
+      .send(nuevoEvento({ ubicacion }));
+    expect(res.status).toBe(400);
+    expect(JSON.stringify(res.body)).toContain(texto);
+  });
+
+  test("la semilla trae coordenadas en los lugares reales", async () => {
+    const { items } = (await request(app).get("/api/eventos").query({ limite: 50 })).body;
+    expect(items.some((e) => e.ubicacion?.direccion)).toBe(true);
+  });
+});
+
 describe("GET /api/eventos/:id", () => {
   test("detalle con tipos, organizador, ampliaciones y URL absoluta de la imagen", async () => {
     const hamlet = await eventoSemilla("hamlet");

@@ -12,6 +12,11 @@ export default {
       supportsTablet: true,
     },
     android: {
+      // Mapa en builds de producción (en Expo Go no hace falta). La key NO va en el repo: se define
+      // en packages/frontend/.env como GOOGLE_MAPS_ANDROID_API_KEY (ver README).
+      ...(process.env.GOOGLE_MAPS_ANDROID_API_KEY
+        ? { config: { googleMaps: { apiKey: process.env.GOOGLE_MAPS_ANDROID_API_KEY } } }
+        : {}),
       adaptiveIcon: {
         backgroundColor: "#f6efe2",
         foregroundImage: "./assets/android-icon-foreground.png",
@@ -31,6 +36,13 @@ export default {
         {
           photosPermission:
             "AI Ticket It necesita acceder a tus fotos y videos para que puedas subirlos a tus eventos.",
+        },
+      ],
+      [
+        "expo-location",
+        {
+          // Solo se usa para buscar la dirección del evento en el mapa (geocodificación).
+          locationWhenInUsePermission: "Para buscar la dirección de tu evento en el mapa.",
         },
       ],
     ],

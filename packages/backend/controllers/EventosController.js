@@ -73,6 +73,24 @@ export const tipoEntradaSchema = z
   })
   .strict();
 
+export const ubicacionSchema = z
+  .object({
+    lat: z
+      .number({ error: "La latitud debe ser un número" })
+      .min(-90, "La latitud debe estar entre -90 y 90")
+      .max(90, "La latitud debe estar entre -90 y 90"),
+    lng: z
+      .number({ error: "La longitud debe ser un número" })
+      .min(-180, "La longitud debe estar entre -180 y 180")
+      .max(180, "La longitud debe estar entre -180 y 180"),
+    direccion: z
+      .string({ error: "La dirección es obligatoria" })
+      .trim()
+      .min(5, "La dirección debe tener al menos 5 caracteres")
+      .max(200, "La dirección admite como máximo 200 caracteres"),
+  })
+  .strict();
+
 export const crearEventoSchema = z
   .object({
     nombre: z.string().trim().min(1, "El nombre es obligatorio").max(120),
@@ -80,6 +98,7 @@ export const crearEventoSchema = z
     categoriaId: objectId("La categoría"),
     fecha: z.iso.datetime({ offset: true, error: "La fecha debe incluir hora y zona (ISO 8601)" }),
     lugar: z.string().trim().min(1, "El lugar es obligatorio").max(200),
+    ubicacion: ubicacionSchema.nullable().optional(),
     tiposEntrada: z
       .array(tipoEntradaSchema, { error: "tiposEntrada debe ser una lista" })
       .min(1, "El evento debe tener al menos un tipo de entrada")

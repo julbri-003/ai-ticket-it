@@ -40,6 +40,13 @@ export function eventoToDTO(
       : { id: evento.categoriaId },
     fecha: evento.fecha,
     lugar: evento.lugar,
+    ubicacion: evento.ubicacion
+      ? {
+          lat: evento.ubicacion.lat,
+          lng: evento.ubicacion.lng,
+          direccion: evento.ubicacion.direccion,
+        }
+      : null,
     tiposEntrada: evento.tiposEntrada.map(tipoEntradaToDTO),
     multimedia: evento.multimedia.map((m) => multimediaToDTO(m, baseUrl)),
     imagen: imagen ? multimediaToDTO(imagen, baseUrl) : null,

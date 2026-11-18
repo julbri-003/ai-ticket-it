@@ -54,6 +54,7 @@ const CompraSchema = new mongoose.Schema(
     ultimaLecturaComprador: { type: Date, default: null },
     ultimaLecturaOrganizador: { type: Date, default: null },
     recordatorioEnviado: { type: Boolean, default: false },
+    recordatorioPagoEnviado: { type: Boolean, default: false },
   },
   { timestamps: true, collection: "compras" },
 );

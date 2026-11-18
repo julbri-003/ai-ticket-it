@@ -12,6 +12,7 @@ export const TiposNotificacion = Object.freeze({
   NUEVO_MENSAJE: "NUEVO_MENSAJE",
   NUEVA_RESENIA: "NUEVA_RESENIA",
   RECORDATORIO_EVENTO: "RECORDATORIO_EVENTO",
+  RECORDATORIO_PAGO: "RECORDATORIO_PAGO",
 });
 
 const entradas = (cantidad, tipo) =>
@@ -92,5 +93,11 @@ export const notificationTemplates = {
     titulo: "¡Mañana es la función!",
     mensaje: ({ evento, fecha, lugar }) =>
       `"${evento}" es el ${fecha} en ${lugar}. ¡No te olvides tus entradas!`,
+  },
+
+  RECORDATORIO_PAGO: {
+    titulo: "Tu reserva vence pronto",
+    mensaje: ({ cantidad, tipoEntrada, evento, total, fechaLimite }) =>
+      `Te quedan menos de 24 h para pagar ${entradas(cantidad, tipoEntrada)} de "${evento}" (${total}). Vence el ${fechaLimite}.`,
   },
 };

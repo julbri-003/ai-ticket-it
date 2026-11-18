@@ -1,13 +1,25 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { AccessibilityInfo } from "react-native";
 import styled, { useTheme } from "styled-components/native";
 import { Send } from "lucide-react-native";
 import { useFoco } from "../ui/foco";
 import { MAX_CARACTERES_MENSAJE } from "../../service/mensajesService";
+import { SugerenciasChat } from "./SugerenciasChat";
 
-/** Caja de texto del chat con contador (máx. 1000) y botón enviar (deshabilitado si está vacía). */
-export function EntradaMensaje({ onEnviar }) {
+/**
+ * Caja de texto del chat con contador (máx. 1000) y botón enviar (deshabilitado si está vacía).
+ * Con `sugerencias`, muestra arriba los mensajes sugeridos: elegir uno completa el campo (no envía).
+ */
+export function EntradaMensaje({ onEnviar, sugerencias, onOcultarSugerencias }) {
   const theme = useTheme();
   const [texto, setTexto] = useState("");
+  const campo = useRef(null);
+
+  const usarSugerencia = (sugerencia) => {
+    setTexto(sugerencia.slice(0, MAX_CARACTERES_MENSAJE));
+    campo.current?.focus();
+    AccessibilityInfo.announceForAccessibility?.("Sugerencia agregada al mensaje");
+  };
   const { enfocado, propsFoco } = useFoco();
   const vacio = texto.trim().length === 0;
 
@@ -18,37 +30,45 @@ export function EntradaMensaje({ onEnviar }) {
   };
 
   return (
-    <Barra>
-      <Columna>
-        <Campo
-          value={texto}
-          onChangeText={setTexto}
-          placeholder="Escribí un mensaje"
-          placeholderTextColor={theme.colors.textMuted}
-          multiline
-          maxLength={MAX_CARACTERES_MENSAJE}
-          accessibilityLabel="Mensaje"
-          accessibilityHint={`Hasta ${MAX_CARACTERES_MENSAJE} caracteres`}
-          $enfocado={enfocado}
-          testID="chat-input"
-          {...propsFoco}
-        />
-        <Contador accessibilityLabel={`${texto.length} de ${MAX_CARACTERES_MENSAJE} caracteres`}>
-          {texto.length}/{MAX_CARACTERES_MENSAJE}
-        </Contador>
-      </Columna>
-      <BotonEnviar
-        onPress={enviar}
-        disabled={vacio}
-        accessibilityRole="button"
-        accessibilityLabel="Enviar mensaje"
-        accessibilityState={{ disabled: vacio }}
-        $vacio={vacio}
-        testID="chat-enviar"
-      >
-        <Send size={20} color={theme.colors.onPrimary} accessible={false} />
-      </BotonEnviar>
-    </Barra>
+    <>
+      <SugerenciasChat
+        sugerencias={sugerencias}
+        onElegir={usarSugerencia}
+        onOcultar={onOcultarSugerencias}
+      />
+      <Barra>
+        <Columna>
+          <Campo
+            ref={campo}
+            value={texto}
+            onChangeText={setTexto}
+            placeholder="Escribí un mensaje"
+            placeholderTextColor={theme.colors.textMuted}
+            multiline
+            maxLength={MAX_CARACTERES_MENSAJE}
+            accessibilityLabel="Mensaje"
+            accessibilityHint={`Hasta ${MAX_CARACTERES_MENSAJE} caracteres`}
+            $enfocado={enfocado}
+            testID="chat-input"
+            {...propsFoco}
+          />
+          <Contador accessibilityLabel={`${texto.length} de ${MAX_CARACTERES_MENSAJE} caracteres`}>
+            {texto.length}/{MAX_CARACTERES_MENSAJE}
+          </Contador>
+        </Columna>
+        <BotonEnviar
+          onPress={enviar}
+          disabled={vacio}
+          accessibilityRole="button"
+          accessibilityLabel="Enviar mensaje"
+          accessibilityState={{ disabled: vacio }}
+          $vacio={vacio}
+          testID="chat-enviar"
+        >
+          <Send size={20} color={theme.colors.onPrimary} accessible={false} />
+        </BotonEnviar>
+      </Barra>
+    </>
   );
 }
 

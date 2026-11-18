@@ -181,6 +181,7 @@ eventosRouter.get("/:id/resenias", (req, res) => eventosController.resenias(req,
  *             categoriaId: "6740a1f2c3d4e5f6a7b8c9d0"
  *             fecha: "2026-12-20T23:00:00-03:00"
  *             lugar: "Club del Sótano, San Telmo, CABA"
+ *             ubicacion: { lat: -34.6213, lng: -58.3731, direccion: "Defensa 1200, San Telmo, CABA" }
  *             tiposEntrada:
  *               - { nombre: "General", precio: 18000, cupo: 120 }
  *               - { nombre: "VIP", descripcion: "Mesa cerca del escenario", precio: 42000, cupo: 20 }

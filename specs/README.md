@@ -31,6 +31,7 @@ Specs para construir **AI Ticket It** con un agente de IA (Claude Code, Cline, C
 | 08 | `08-front-comprador.md` | Explorar, detalle, checkout, mis compras, favoritos, reseñas |
 | 09 | `09-front-organizador.md` | Mis eventos, crear y editar evento, compras por evento, reembolsos |
 | 10 | `10-front-chat-notificaciones-cierre.md` | Chat, notificaciones, pulido final y datos para el video |
+| 11 | `11-sugerencias-mapa-recordatorio-pago.md` | Mensajes sugeridos en el chat, ideas al crear eventos, ubicación en el mapa con "Cómo llegar" y recordatorio de pago a 24 h |
 
 ## Chequeo de cobertura
 `trazabilidad.md` lista cada caso de uso del enunciado y cada funcionalidad agregada, con la spec que lo implementa, la pantalla de Stitch y cómo verificarlo. Al terminar cada spec, pedile al agente: "Marcá en specs/trazabilidad.md las filas que completa esta spec, con su evidencia".
